@@ -9,6 +9,8 @@ Example user stories and workflows v0.1: https://miro.com/app/board/o9J_l4xoxek=
 
 ## Service architecture
 
+V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/blob/main/AnnotationService_SystemArch_2022_05_23.png
+
 ## Inspiration sources for UI solutions:
 1) solution as a plugin: https://youtu.be/FvU6O23Ozyc
 2) integrated NER solutions: https://semlab.io/howto/selavy_alpha  
