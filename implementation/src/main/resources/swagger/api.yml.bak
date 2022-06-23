@@ -1,0 +1,55 @@
+openapi: 3.0.1
+info:
+  title: annotationService
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api
+    description: Development server
+  - url: https://localhost:8080/api
+    description: Development server with TLS Profile
+paths:
+  /status:
+    get:
+      summary: get the current status of the service
+      description: ''
+      operationId: getStatus
+      responses:
+        default:
+          description: Default error sample response
+  /annotation/wikidata:
+    get:
+      summary: >-
+        retrieves a text and delivers a list of all recognized entities and
+        relations within the wikiData knowlegdegraph as well as the
+        corresponding class hierachy tree
+      description: >-
+        Uses Falcon2.0 Tool to retrieve entities and relations from wikidata.
+        Adds the category hierarchy graph for these entities and relations,
+        based on the "is subclass of" relation within wikiData
+      operationId: getWikiDataAnnotation
+      responses:
+        default:
+          description: Default error sample response
+components:
+  responses:
+    Problem:
+      description: >-
+        error occurred - see status code and problem object for more
+        information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: https://opensource.zalando.com/problem/schema.yaml#/Problem
+  securitySchemes:
+    jwt:
+      type: http
+      description: JWT Authentication
+      scheme: bearer
+      bearerFormat: JWT
+    basic:
+      type: http
+      description: Basic Authentication
+      scheme: basic
+security:
+  - jwt: []
+  - basic: []
