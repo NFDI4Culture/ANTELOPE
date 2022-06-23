@@ -1,0 +1,89 @@
+openapi: 3.0.1
+info:
+  title: annotationService
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api
+    description: Development server
+  - url: https://localhost:8080/api
+    description: Development server with TLS Profile
+paths:
+  /status:
+    get:
+      summary: get the current status of the service
+      description: ''
+      operationId: getStatus
+      responses:
+        '200':
+          description: Service is running
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+             
+        default:
+          description: Unexpected error
+  /annotation/wikidata:
+    post:
+      summary: >-
+        retrieves a text and delivers a list of all recognized entities and
+        relations within the wikiData knowlegdegraph as well as the
+        corresponding class hierachy tree
+      description: >-
+        Uses Falcon2.0 Tool to retrieve entities and relations from wikidata.
+        Adds the category hierarchy graph for these entities and relations,
+        based on the "is subclass of" relation within wikiData
+      operationId: getWikiDataAnnotation
+      requestBody:
+        description: Json array of text samples to annotate
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextArray'
+      responses:
+        '200':
+          description: Annotations of the given post parameters
+            content:
+              application/json:
+                schema:
+                  type: string
+                  example: OK
+          description: Default error sample response
+components:
+  schemas:
+    TextAnnotation:
+      properties:
+        entities:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        relations:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        hierarchy:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+
+  securitySchemes:
+    jwt:
+      type: http
+      description: JWT Authentication
+      scheme: bearer
+      bearerFormat: JWT
+    basic:
+      type: http
+      description: Basic Authentication
+      scheme: basic
+security:
+  - jwt: []
+  - basic: []
