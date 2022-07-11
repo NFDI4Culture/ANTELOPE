@@ -60,7 +60,8 @@ public class SecurityConfiguration {
                 .antMatchers("/content/**")
                 .antMatchers("/h2-console/**")
                 .antMatchers("/swagger-ui/**")
-                .antMatchers("/test/**");
+                .antMatchers("/test/**")
+                .antMatchers("/api/annotation/**");
     }
 
     @Bean
@@ -94,6 +95,7 @@ public class SecurityConfiguration {
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/api/annotation/**").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/health/**").permitAll()

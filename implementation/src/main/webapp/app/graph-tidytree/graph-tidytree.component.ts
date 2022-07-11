@@ -1,0 +1,234 @@
+import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import * as d3 from 'd3';
+import { HierarchyNode } from 'd3';
+
+type NodeData = {x:number, y:number, parentId: string};
+
+type WikiDataClass = {
+  type: string; 
+  value: string; // e.g uri
+};
+
+type WikiDataClassLabel = {
+  "xml:lang": string; // language
+  type: string; 
+  value: string; // classname
+}
+
+type WikiDataHierarchy = {
+  class: WikiDataClass;
+  classLabel: WikiDataClassLabel;
+  superclass: WikiDataClass
+  superclassLabel: WikiDataClassLabel;
+}
+
+type HierarchyTree = {
+  id: string;
+  name: string;
+  link: string;
+  children: [];
+}
+
+@Component({
+  selector: 'jhi-graph-tidytree',
+  templateUrl: './graph-tidytree.component.html',
+  styleUrls: ['./graph-tidytree.component.scss']
+})
+export class GraphTidytreeComponent implements OnInit {
+  
+  //tree:SVGSVGElement|null = null;
+  
+  constructor() { }
+
+  ngOnInit(): void {
+    /*const flare = {
+      name: "flare",
+      children: [
+        {name: "analytics", children: Array(3)},
+        {name: "animate", children: Array(12)},
+        {name: "data", children: Array(7)},
+        {name: "display", children: Array(4)},
+        {name: "flex", children: Array(1)},
+        {name: "physics", children: Array(8)},
+        {name: "query", children: Array(29)},
+        {name: "scale", children: Array(10)},
+        {name: "util", children: Array(19)},
+        {name: "vis", children: Array(7)},
+      ]
+    }
+    
+    const helpFunctions = {
+      label: (d:any):string => d.data !== undefined ? d.data.name as string: "label" ,
+      title: (d:any, n:d3.HierarchyNode<unknown>):string => `${n.ancestors().reverse().map((d2:any) => d2.data !== undefined ? d2.data.name as string : "name").join(".")}`, // hover text
+      link: (d:any, n:d3.HierarchyNode<unknown>):string => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map((d2:any) => d2.data !== undefined ? d2.data.name as string : "link").join("/")}${n.children ? "" : ".as"}`,
+      width: 1152
+    }
+    this.graph.createTree(flare, helpFunctions)*/
+  }
+
+  clear():void {
+    const svg = d3.select("#tree");
+    svg.selectAll("*").remove();
+    
+  }
+
+  createTreeFromWikiDataHierarchy( data: HierarchyTree): void {
+   let preparedData = {};
+    //preparedData = d3.stratify()
+     // .id( d => d );
+    //const rollUpData = d3.group( data, d => d.superclassLabel.value);
+    preparedData = data;
+    const helpFunctions = {
+      label: (d:any):string => d.data.name !== undefined ? d.data.name as string: "label" ,
+      title: (d:any, n:d3.HierarchyNode<HierarchyTree>):string => n.data.name+" ("+n.data.link+")", // hover text
+      link: (d:any, n:d3.HierarchyNode<HierarchyTree>):string => n.data.link,
+      
+      width: 1600
+    }
+ 
+    this.createTree(preparedData, helpFunctions);
+  }
+
+   // Copyright 2021 Observable, Inc.
+    // Released under the ISC license.
+    // https://observablehq.com/@d3/tree
+  createTree(data : any, { // data is either tabular (array of objects) or hierarchy (nested objects)
+      //path, // as an alternative to id and parentId, returns an array identifier, imputing internal nodes
+      id = Array.isArray(data) ? (d:d3.HierarchyNode<NodeData>) => d.id : null, // if tabular data, given a d in data, returns a unique identifier (string)
+      parentId = Array.isArray(data) ? (d:d3.HierarchyNode<NodeData>) => d.parent?.id : null, // if tabular data, given a node d, returns its parent’s identifier
+      children = (d:any):Iterable<any> | null | undefined => d !== undefined ? d.children as Iterable<any> : [], // if hierarchical data, given a d in data, returns its children
+      tree = d3.tree, // layout algorithm (typically d3.tree or d3.cluster)
+      sort = null, // how to sort nodes prior to layout (e.g., (a, b) => d3.descending(a.height, b.height))
+      label = (d:any):string => "label", // given a node d, returns the display name
+      title = (d:any, n:any):string => "title", // given a node d, returns its hover text
+      link =  (d:any, n:any):string => "link", // given a node d, its link (if any)
+      linkTarget = "_blank", // the target attribute for links (if any)
+      width = 640, // outer width, in pixels
+      height = 1200, // outer height, in pixels
+      r = 3, // radius of nodes
+      padding = 1, // horizontal padding for first and last column
+      fill = "#999", // fill for nodes
+      fillOpacity = null, // fill opacity for nodes
+      stroke = "#555", // stroke for links
+      strokeWidth = 1.5, // stroke width for links
+      strokeOpacity = 0.4, // stroke opacity for links
+      strokeLinejoin = null, // stroke line join for links
+      strokeLinecap = null, // stroke line cap for links
+      halo = "#fff", // color of label halo 
+      haloWidth = 3, // padding around the labels
+    } ): void {
+
+      // If id and parentId options are specified, or the path option, use d3.stratify
+      // to convert tabular data to a hierarchy; otherwise we assume that the data is
+      // specified as an object {children} with nested objects (a.k.a. the “flare.json”
+      // format), and use d3.hierarchy.
+
+/* eslint-disable no-console */
+      let root:d3.HierarchyNode<NodeData> = null as unknown as d3.HierarchyNode<NodeData>;
+      //if( path != null ) {
+        //root = d3.stratify().path(path)(data) as HierarchyNode<NodeData> ;
+      //} else 
+      if( id != null || parentId != null ){
+        console.log("use d3.stratify()");
+        console.debug( data );
+        //root = d3.stratify().id((d:any, i:any, data2:any): string|null|undefined => d.id as string).parentId((d:any, i:any, data2:any): string|null|undefined => d.parent?.id as string)(data) as HierarchyNode<NodeData> ;
+        //root = d3.stratify().id((d:any, i:any, data2:any): string|null|undefined => d["superclass"]["value"] as string).parentId((d:any, i:any, data2:any): string|null|undefined => d["class"]["value"] as string)(data) as HierarchyNode<NodeData> ;
+        root = d3.stratify().id((d:any, i:any, data2:any): string|null|undefined => d["id"] as string).parentId((d:any, i:any, data2:any): string|null|undefined => d["parentId"] as string)(data) as HierarchyNode<NodeData> ;
+      
+      } else {
+        console.log("use d3.hierarchy()");
+        root =  d3.hierarchy(data, children ) as HierarchyNode<NodeData> ;
+      }
+          
+      
+    //console.debug( root );
+    /* eslint-enable no-console */
+          
+      // Sort the nodes.
+      //if (sort != null){ 
+      //  root.sort(sort); 
+      //}
+
+      // Compute labels and titles.
+      const descendants = root.descendants();
+      const L:string[]|null = descendants.map((d:any) => label(d));
+
+      // Compute the layout.
+      const dx = 10;
+      const dy = width / (root.height + padding);
+      tree().nodeSize([dx, dy])(root);
+
+      // Center the tree.
+      let x0 = Infinity;
+      let x1 = -x0;
+      root.each((d:any) => {
+        if (d.x > x1) {x1 = d.x};
+        if (d.x < x0) {x0 = d.x};
+      });
+
+      // Compute the default height.
+      if (!height) {height = x1 - x0 + dx * 2;}
+
+      const linkGenerator = d3.linkHorizontal()
+      .x((d:any) => d.y as number)
+      .y((d:any) => d.x as number);
+
+      const lineGenerator = d3.line<d3.HierarchyPointNode<NodeData>>()
+      .x((d:any) => d.x as number)
+      .y((d:any) => d.y as number);
+
+      const svg = d3.select("#tree")
+          .attr("viewBox", [-dy * padding / 2, x0 - dx, width, height])
+          .attr("width", width)
+          .attr("height", height)
+          .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
+          .attr("font-family", "sans-serif")
+          .attr("font-size", 10);
+
+     
+
+      svg.append("g")
+          .attr("fill", "none")
+          .attr("stroke", stroke)
+          .attr("stroke-opacity", strokeOpacity)
+          .attr("stroke-linecap", strokeLinecap)
+          .attr("stroke-linejoin", strokeLinejoin)
+          .attr("stroke-width", strokeWidth)
+        .selectAll("path")
+          .data(root.links())
+          .join("path")
+            .attr("d", (d:any)=> linkGenerator(d) as unknown as string )
+             ;
+
+      const node = svg.append("g")
+        .selectAll("a")
+        .data(root.descendants())
+        .join("a")
+          .attr("xlink:href", (d:any) => link(d.data, d))
+          .attr("target",  linkTarget)
+          .attr("transform", (d:any) => `translate(${d.y as string},${d.x as string})`);
+
+      node.append("circle")
+          .attr("fill", (d:any) => d.children ? stroke : fill)
+          .attr("r", r);
+
+     //if (title) { 
+          node.append("title") 
+          .text((d:any) => title(d.data, d));
+      //}
+      
+      //if (L) { 
+          node.append("text") 
+          .attr("dy", "0.32em")
+          .attr("x", (d:any) => d.children ? -6 : 6)
+          .attr("text-anchor", (d:any) => d.children ? "end" : "start")
+          .attr("paint-order", "stroke")
+          .attr("stroke", halo)
+          .attr("stroke-width", haloWidth)
+          .text((d:any, i:any) => L[i] );
+      //}
+     
+      //this.tree = svg.node();
+    }
+}

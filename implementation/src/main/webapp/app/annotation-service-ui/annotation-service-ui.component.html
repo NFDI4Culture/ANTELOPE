@@ -1,1 +1,10 @@
-<div>annotation-service-ui works!</div>
+<h2>Try out the Annotation via Falcon</h2>
+<label for="textToAnnotate">Insert text: </label>
+<textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate"> </textarea>
+<p>Text to annotate: {{ textToAnnotate.value }}</p>
+
+<button type="button" class="btn btn-primary" (click)="annotate()">Start</button>
+<button type="button" class="btn btn-secondary" (click)="clearAll()">Reset</button>
+<p>{{ msg }}</p>
+
+<jhi-graph-tidytree></jhi-graph-tidytree>

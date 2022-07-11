@@ -13,6 +13,7 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotation-service-ui.component';
+import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -28,7 +29,8 @@ import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotati
     SortByDirective,
     SortDirective,
     ItemCountComponent,
-    AnnotationServiceUIComponent
+    AnnotationServiceUIComponent,
+    GraphTidytreeComponent
   ],
   exports: [
     SharedLibsModule,
@@ -43,7 +45,8 @@ import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotati
     SortByDirective,
     SortDirective,
     ItemCountComponent,
-    AnnotationServiceUIComponent
+    AnnotationServiceUIComponent,
+   GraphTidytreeComponent
   ],
 })
 export class SharedModule {}
