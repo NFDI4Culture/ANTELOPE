@@ -5,7 +5,7 @@ This is the repository where we'll organize research and work on the annotation 
 ## Description
 We are in the process of researching and planning this service which will connect various terminology services with enduser applications (Wikibase / Kompakkt for now, potentially more in the future) supporting users with automation and NER features.
 
-Example user stories and workflows v0.1: https://miro.com/app/board/o9J_l4xoxek=/?share_link_id=311697039902 
+Example user stories and workflows v0.1: https://miro.com/app/board/uXjVOn6frZY=/
 
 ## Service architecture
 
