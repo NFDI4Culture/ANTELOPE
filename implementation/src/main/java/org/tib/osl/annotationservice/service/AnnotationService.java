@@ -357,37 +357,54 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
      */
     private JSONObject createTreeStructureFromEntityToSuperclass(Map<String, JSONArray> hierarchyMap) {
         
-        JSONObject result = new JSONObject();
-        
+        JSONObject rootNode = new JSONObject();
+        rootNode.put("id", "0");
+        rootNode.put("name", "results");
+        rootNode.put("link", "");
+        rootNode.put("children", new JSONArray());
+
         // for each requested entity, build a tree and add it to the
-        JSONArray entityTrees = new JSONArray();
         int startId = 1;
+        Map<String, JSONArray> newHierarchyMap = new HashMap<>();
         for( Map.Entry<String, JSONArray> actEntry : hierarchyMap.entrySet() ) {
             JSONArray arr = new JSONArray(actEntry.getKey());
             String entityName = arr.getString(0);
             String entityUri = arr.getString(1);
             entityUri = entityUri.replace("<", "").replace(">","");
 
-            JSONObject actEntityTree = getTree(startId, entityUri, entityName, actEntry.getValue());
+            // save hierarchy again under entityName
+            newHierarchyMap.put(entityName, actEntry.getValue());
+
+            JSONObject childNode = new JSONObject();
+            childNode.put("id", ""+startId);
+            childNode.put("name", entityName);
+            childNode.put("link", entityUri);
+            childNode.put("children", new JSONArray());
+
+            rootNode.getJSONArray("children").put(childNode);
+
             startId += 10000; // define a wide id range for each entity class tree
-            entityTrees.put( actEntityTree );
         }
 
-        result.put("id", "0");
-        result.put("name", "results");
-        result.put("link", "");
-        result.put("children", entityTrees);
+        for( Object o : rootNode.getJSONArray("children")) {
+            JSONObject actChild = (JSONObject)o;
+            
+            
+            
+            addChildTree(rootNode, actChild, newHierarchyMap.get(actChild.getString("name")));
+        }
         
-        return result;
+        return rootNode;
     }
 
-    private JSONObject getTree(int actId, String startNodeUri, String startNodeName, JSONArray hierarchyEntries) {
+    private void addChildTree(JSONObject parentTree, JSONObject startNode, JSONArray hierarchyEntries) {
+        int actId = startNode.getInt("id");
+        String startNodeUri = startNode.getString("link");
         
         
         System.out.println( "call getTree() for startNode: "+startNodeUri );
         //System.out.println( hierarchyEntries );
         // get all nodes, that have the startNodeUri as childclass (key "class")
-        
         List<JSONObject> hierarchyEntriesOfStartNode = new ArrayList<>();
         for( Object o : hierarchyEntries ) {
             JSONObject j = (JSONObject)o;
@@ -398,14 +415,12 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             String actSuperClassName = j.getJSONObject("superclassLabel").getString("value");
             if( actNodeUri.equals(startNodeUri) ) {
                 System.out.println("found entry: "+actNodeName+" ("+actNodeUri+") --> "+actSuperClassName+" ("+actSuperClassUri+")");
-                startNodeName = actNodeName;
                 hierarchyEntriesOfStartNode.add( j );
             }
         }
         
-
-        // recursive call get ChildNodes for every Superclass of the startNode class
-        JSONArray childrenArr = new JSONArray();
+        // get children for resultNode
+        
         for( JSONObject j : hierarchyEntriesOfStartNode) {
             
             String actClassUri = j.getJSONObject("class").getString("value");
@@ -424,37 +439,30 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
 
             }
 
-            // check if superclass already exist in tree (search in all already found children)
-            for( Object o : childrenArr ) {
+            JSONObject childNode = new JSONObject();
+            childNode.put("id", ""+actId);
+            childNode.put("name", actSuperClassName);
+            childNode.put("link", actSuperClassUri);
+            childNode.put("children", new JSONArray());
 
-            }
-
-            JSONObject actChilds = getTree( actId, actSuperClassUri, actSuperClassName, hierarchyEntries );
+            
             // check if one component in the child tree is equal to startNode (circle)
-            if( !hasEqualNamedChildOrSubChild(actSuperClassUri, actChilds)) {
-                actId = actChilds.getInt("id");
-                childrenArr.put(actChilds);
+            String childAlreadyExistSequence = "\"link\":\""+actSuperClassUri+"\"";
+            System.out.println( childAlreadyExistSequence );
+            if( !parentTree.toString().contains( childAlreadyExistSequence )) {
+                startNode.getJSONArray("children").put(childNode);
+                addChildTree( parentTree, childNode, hierarchyEntries );
+            } else {
+                System.out.println( "Child already exist, skip: "+actSuperClassName+" - "+actSuperClassUri );
             }
             
+            
+
         }
-        JSONObject result = new JSONObject();
-        result.put("id", ""+actId);
-        result.put("name", startNodeName);
-        result.put("link", startNodeUri);
-        result.put("children", childrenArr);
-
-        return result;
-    }
-
-    private boolean hasEqualNamedChildOrSubChild( String compareUri, JSONObject nodeToTest ){
         
-        for( Object o : nodeToTest.getJSONArray("children") ) {
-            if( hasEqualNamedChildOrSubChild(compareUri, (JSONObject)o) ){
-                return true;
-            }
-        }
-        return false;
     }
+
+    
 
     
    
