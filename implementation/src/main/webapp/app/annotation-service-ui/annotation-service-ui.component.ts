@@ -60,26 +60,6 @@ export class AnnotationServiceUIComponent implements OnInit {
   ngAfterViewInit():void {
     //setTimeout(() => this.seconds = () => this.timerComponent.seconds, 0);
   }
-  
-  /*createGraph():void {
-    
-    // create graph dataModel
-     data = {};
-    this.annotation.relations.forEach( () => {  } );
-
-    const helpFunctions = {
-      label: (d:any):string => d.data.classLabel !== undefined ? d.data.classLabel.value as string: "label" ,
-      title: (d:any, n:d3.HierarchyNode<unknown>):string => `${n.ancestors().reverse().map((d2:any) => d2.data.classLabel !== undefined ? d2.data.classLabel.value as string : "name").join(".")}`, // hover text
-      link: (d:any, n:d3.HierarchyNode<unknown>):string => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map((d2:any) => d2.data.superclass !== undefined ? d2.data.superclass.value as string : "link").join("/")}${n.children ? "" : ".as"}`,
-
-      width: 1152
-    }
-
-   
-    
-
-    this.graph.createTree(data, helpFunctions)
-  }*/
 
   async annotate(): Promise<void> {
     try {

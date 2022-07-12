@@ -100,7 +100,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             json.append("\"text\":\""+actText+"\"");
             json.append("}");
 
-            System.out.println(json.toString());
+            
             // send a JSON data
             post.setEntity(new StringEntity(json.toString()));
 
@@ -111,7 +111,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
                 falconResults.add(result);
             }
         }
-        
+        System.out.println("falconResult:"+falconResults);
         return falconResults;
     }
 
@@ -123,40 +123,51 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
      */
     protected Map<String, String> getWikiDataClasses( List<String> falconResults ) throws Exception {
         Map<String, String> wikidataResultsByEntity = new HashMap<>();
-    
-        // get superclass triples from wikiData for each entity that falcon delivered (get class tree)
-        for( String actFalconResult : falconResults) {
-            JSONObject obj = new JSONObject(actFalconResult);
-            if( obj.has("entities_wikidata")) {
-                JSONArray entities = obj.getJSONArray("entities_wikidata");
-                for( Object actEntity : entities) {
-                    
-                    //String entityLabel = ((JSONArray)actEntity).get(0).toString();
-                    String entityUrl = ((JSONArray)actEntity).get(1).toString();
-                    String[] entityUrlParts = entityUrl.replace(">", "").split("/");
-                    String entityId = entityUrlParts[ entityUrlParts.length-1 ];
-                    // init connection to wikiData api
-                    String result = "";
-                    String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+entityId+" wdt:P31*/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
-                    //String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+entityId+" wdt:P31/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
-                    HttpGet get = new HttpGet(new URI("https://query.wikidata.org/sparql?format=json&query="+URLEncoder.encode(sparqlQuery, StandardCharsets.UTF_8)+""));
-                    //get.addHeader("content-type", "application/json");
-                    System.out.println(sparqlQuery);
-                    result = null;
-                    try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                        CloseableHttpResponse response = httpClient.execute(get)) {
-
-                        result = EntityUtils.toString(response.getEntity());
-                        //System.out.println( "Entity:"+actEntity+" result:"+ result );
-                        
-                    } 
-                    
-                    wikidataResultsByEntity.put(actEntity.toString(), result);
+        List<JSONArray> falconResultsToProcess = new ArrayList<>();
+        
+        try {
+            // get superclass triples from wikiData for each entity that falcon delivered (get class tree)
+            for( String actFalconResult : falconResults) {
+                JSONObject obj = new JSONObject(actFalconResult);
+                if( obj.has("entities_wikidata")) {
+                    JSONArray entities = obj.getJSONArray("entities_wikidata");
+                    falconResultsToProcess.add(entities);
                 }
-            } else {
-                System.out.println( "no wikidata entities, maybe empty falcon result" );
-            }
-        }     
+                if( obj.has("relations_wikidata")) {
+                    JSONArray relations = obj.getJSONArray("relations_wikidata");
+                    falconResultsToProcess.add(relations);
+                }
+                for( JSONArray objects : falconResultsToProcess) {
+                    for( Object actObject : objects) {
+                        
+                        //String entityLabel = ((JSONArray)actEntity).get(0).toString();
+                        String url = ((JSONArray)actObject).get(1).toString();
+                        String[] urlParts = url.replace(">", "").split("/");
+                        String objId = urlParts[ urlParts.length-1 ];
+                        // init connection to wikiData api
+                        String result = "";
+                        String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+objId+" wdt:P31*/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
+                        //String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+entityId+" wdt:P31/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
+                        HttpGet get = new HttpGet(new URI("https://query.wikidata.org/sparql?format=json&query="+URLEncoder.encode(sparqlQuery, StandardCharsets.UTF_8)+""));
+                        //get.addHeader("content-type", "application/json");
+                        //System.out.println(sparqlQuery);
+                        result = null;
+                        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                            CloseableHttpResponse response = httpClient.execute(get)) {
+
+                            result = EntityUtils.toString(response.getEntity());
+                            //System.out.println( "Entity:"+actEntity+" result:"+ result );
+                            
+                        } 
+                        
+                        wikidataResultsByEntity.put(actObject.toString(), result);
+                    }
+                } 
+            } 
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.err.println( "error in getWikiDataClasses:" + e.getMessage() );
+        }    
         return wikidataResultsByEntity;
     }
 
@@ -210,7 +221,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             String actResult = entry.getValue();
             JSONObject actWDJson = new JSONObject( actResult );
             JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
-            System.out.println( wdHierarchy );
+            //System.out.println( wdHierarchy );
             // add results for act entity
             hierarchyMap.put(actEntity, wdHierarchy);   
         
@@ -419,8 +430,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             }
         }
         
-        // get children for resultNode
-        
+        // add children for resultNode
         for( JSONObject j : hierarchyEntriesOfStartNode) {
             
             String actClassUri = j.getJSONObject("class").getString("value");
@@ -428,25 +438,24 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             String actSuperClassName = j.getJSONObject("superclassLabel").getString("value");
             System.out.println("get tree for startNode: "+actSuperClassName+" ("+actSuperClassUri+")");
             actId++;
-            if( actId > 10) {
+            if( actId > 20) {
                 continue;
             }
-            // check if class and superclass are not equal to avoid infinite recursion(circle)
+            // handle reflexivity: check if class and superclass are not equal to avoid infinite recursion(circle) 
             System.out.println("check for equality: "+actClassUri+" and "+actSuperClassUri);
             if( actClassUri.equals( actSuperClassUri ) ) {
                 System.out.println("equal, skip!");
                 continue;
-
             }
 
+            //create new Node for current child
             JSONObject childNode = new JSONObject();
             childNode.put("id", ""+actId);
             childNode.put("name", actSuperClassName);
             childNode.put("link", actSuperClassUri);
             childNode.put("children", new JSONArray());
-
             
-            // check if one component in the child tree is equal to startNode (circle)
+            // check if the act ChildNode uri already exist in the parent tree (if so, dont add the child)
             String childAlreadyExistSequence = "\"link\":\""+actSuperClassUri+"\"";
             System.out.println( childAlreadyExistSequence );
             if( !parentTree.toString().contains( childAlreadyExistSequence )) {

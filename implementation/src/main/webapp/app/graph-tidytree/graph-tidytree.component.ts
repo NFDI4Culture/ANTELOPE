@@ -106,13 +106,13 @@ export class GraphTidytreeComponent implements OnInit {
       linkTarget = "_blank", // the target attribute for links (if any)
       width = 640, // outer width, in pixels
       height = 1200, // outer height, in pixels
-      r = 3, // radius of nodes
+      r = 4, // radius of nodes
       padding = 1, // horizontal padding for first and last column
-      fill = "#999", // fill for nodes
+      fill = "steelblue", // fill for nodes
       fillOpacity = null, // fill opacity for nodes
-      stroke = "#555", // stroke for links
+      stroke = "#333", // stroke for links
       strokeWidth = 1.5, // stroke width for links
-      strokeOpacity = 0.4, // stroke opacity for links
+      strokeOpacity = 0.2, // stroke opacity for links
       strokeLinejoin = null, // stroke line join for links
       strokeLinecap = null, // stroke line cap for links
       halo = "#fff", // color of label halo 
@@ -155,7 +155,7 @@ export class GraphTidytreeComponent implements OnInit {
       const L:string[]|null = descendants.map((d:any) => label(d));
 
       // Compute the layout.
-      const dx = 10;
+      const dx = 20;
       const dy = width / (root.height + padding);
       tree().nodeSize([dx, dy])(root);
 
@@ -184,9 +184,7 @@ export class GraphTidytreeComponent implements OnInit {
           .attr("height", height)
           .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
           .attr("font-family", "sans-serif")
-          .attr("font-size", 10);
-
-     
+          .attr("font-size", 11);
 
       svg.append("g")
           .attr("fill", "none")
@@ -210,7 +208,10 @@ export class GraphTidytreeComponent implements OnInit {
           .attr("transform", (d:any) => `translate(${d.y as string},${d.x as string})`);
 
       node.append("circle")
-          .attr("fill", (d:any) => d.children ? stroke : fill)
+          //.attr("fill", (d:any) => d.children ? stroke : fill)
+          .attr("fill", "#fff")
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", "3px")
           .attr("r", r);
 
      //if (title) { 
@@ -219,16 +220,22 @@ export class GraphTidytreeComponent implements OnInit {
       //}
       
       //if (L) { 
-          node.append("text") 
+      const textNode = node.append("text") 
           .attr("dy", "0.32em")
-          .attr("x", (d:any) => d.children ? -6 : 6)
-          .attr("text-anchor", (d:any) => d.children ? "end" : "start")
+          //.attr("x", (d:any) => d.children ? -6 : 6)
+          .attr("x", (d:any) => 6 )
+          //.attr("text-anchor", (d:any) => d.children ? "end" : "start")
+          .attr("text-anchor", (d:any) => "start")
           .attr("paint-order", "stroke")
-          .attr("stroke", halo)
-          .attr("stroke-width", haloWidth)
-          .text((d:any, i:any) => L[i] );
+          .attr("fill", "none")
+          .attr("stroke", stroke)
+          .attr("stroke-width", "")
+          .attr("stroke-opacity", "0.8")
+          .text((d:any, i:any) => L[i] )
+       
       //}
-     
+      
       //this.tree = svg.node();
     }
+    
 }
