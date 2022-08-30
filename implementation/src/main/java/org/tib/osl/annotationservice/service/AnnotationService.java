@@ -1,9 +1,6 @@
 package org.tib.osl.annotationservice.service;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -13,7 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -33,8 +29,13 @@ import org.tib.osl.annotationservice.web.api.AnnotationApiDelegate;
 import org.tib.osl.annotationservice.web.api.StatusApiDelegate;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 @Service
 public class AnnotationService implements StatusApiDelegate, AnnotationApiDelegate {
+    private Logger log = LoggerFactory.getLogger(AnnotationService.class);
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
@@ -92,7 +93,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
         // init connection to falcon api
         for( String actText : requestText) {
             String result = "";
-            HttpPost post = new HttpPost(new URI("https://labs.tib.eu/falcon/falcon2/api?mode=long"));
+            HttpPost post = new HttpPost(new URI("https://labs.tib.eu/falcon/falcon2/api?mode=long&db=1&k=10"));
             post.addHeader("content-type", "application/json");
 
             StringBuilder json = new StringBuilder();
@@ -115,6 +116,8 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
         return falconResults;
     }
 
+
+
     /**
      * connecting the wikidata sparql web api. get all superclasses for every recognized entity within the falconResult parameter List
      * @param falconResults Every element contains a json object in falcon specific format. one json object per requested entity
@@ -133,8 +136,16 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
                     JSONArray entities = obj.getJSONArray("entities_wikidata");
                     falconResultsToProcess.add(entities);
                 }
+                if( obj.has("entities_dbpedia")) {
+                    JSONArray entities = obj.getJSONArray("entities_dbpedia");
+                    falconResultsToProcess.add(entities);
+                }
                 if( obj.has("relations_wikidata")) {
                     JSONArray relations = obj.getJSONArray("relations_wikidata");
+                    falconResultsToProcess.add(relations);
+                }
+                if( obj.has("relations_dbpedia")) {
+                    JSONArray relations = obj.getJSONArray("relations_dbpedia");
                     falconResultsToProcess.add(relations);
                 }
                 for( JSONArray objects : falconResultsToProcess) {
@@ -156,11 +167,14 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
                             CloseableHttpResponse response = httpClient.execute(get)) {
 
                             result = EntityUtils.toString(response.getEntity());
+                            wikidataResultsByEntity.put(actObject.toString(), result);
                             //System.out.println( "Entity:"+actEntity+" result:"+ result );
                             
-                        } 
+                        } catch ( Exception e) {
+                            log.warn( "unable to receive wikiData Classes for '"+actObject.toString()+"' error: "+e.getMessage() );
+                        }
                         
-                        wikidataResultsByEntity.put(actObject.toString(), result);
+                        
                     }
                 } 
             } 
@@ -169,6 +183,66 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             System.err.println( "error in getWikiDataClasses:" + e.getMessage() );
         }    
         return wikidataResultsByEntity;
+    }
+
+     /**
+     * connecting the wikidata sparql web api. get all superclasses for every recognized entity within the falconResult parameter List
+     * @param falconResults Every element contains a json object in falcon specific format. one json object per requested entity
+     * @return map of wikidata results, grouped by entity name in wikidata specific json format
+     * @throws Exception
+     */
+    //FIXME: mockup method
+    protected Map<String, String> getDbPediaClasses( List<String> falconResults ) throws Exception {
+        Map<String, String> dbpediaResultsByEntity = new HashMap<>();
+        List<JSONArray> falconResultsToProcess = new ArrayList<>();
+        
+        try {
+            // get superclass triples from wikiData for each entity that falcon delivered (get class tree)
+            for( String actFalconResult : falconResults) {
+                JSONObject obj = new JSONObject(actFalconResult);
+                if( obj.has("entities_dbpedia")) {
+                    JSONArray entities = obj.getJSONArray("entities_dbpedia");
+                    falconResultsToProcess.add(entities);
+                }
+                if( obj.has("relations_dbpedia")) {
+                    JSONArray relations = obj.getJSONArray("relations_dbpedia");
+                    falconResultsToProcess.add(relations);
+                }
+                for( JSONArray objects : falconResultsToProcess) {
+                    for( Object actObject : objects) {
+                        
+                        //String entityLabel = ((JSONArray)actEntity).get(0).toString();
+                        String url = ((JSONArray)actObject).get(1).toString();
+                        String[] urlParts = url.replace(">", "").split("/");
+                        String objId = urlParts[ urlParts.length-1 ];
+                        // init connection to wikiData api
+                        String result = "";
+                        String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+objId+" wdt:P31*/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
+                        //String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+entityId+" wdt:P31/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
+                        HttpGet get = new HttpGet(new URI("https://query.wikidata.org/sparql?format=json&query="+URLEncoder.encode(sparqlQuery, StandardCharsets.UTF_8)+""));
+                        //get.addHeader("content-type", "application/json");
+                        //System.out.println(sparqlQuery);
+                        result = null;
+                        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                            CloseableHttpResponse response = httpClient.execute(get)) {
+
+                            result = EntityUtils.toString(response.getEntity());
+                            dbpediaResultsByEntity.put(actObject.toString(), result);
+                            //System.out.println( "Entity:"+actEntity+" result:"+ result );
+                            
+                        } catch ( Exception e) {
+                            log.warn( "unable to receive wikiData Classes for '"+actObject.toString()+"' error: "+e.getMessage() );
+                        }
+                        
+                        
+                    }
+                } 
+            } 
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.err.println( "error in getWikiDataClasses:" + e.getMessage() );
+        }    
+        return dbpediaResultsByEntity;
     }
 
     /**
@@ -183,6 +257,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
         // combine falcon and Wikidata Results
         JSONObject finalResult = new JSONObject();
 
+        //log.debug( wikidataResultsByEntity.toString() );
         // add all entities from falcon
         JSONArray entitiesArr = new JSONArray();
         for (String actFalconResult : falconResults){
@@ -374,7 +449,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
         rootNode.put("link", "");
         rootNode.put("children", new JSONArray());
 
-        // for each requested entity, build a tree and add it to the
+        // for each requested entity, build a tree and add it to the result
         int startId = 1;
         Map<String, JSONArray> newHierarchyMap = new HashMap<>();
         for( Map.Entry<String, JSONArray> actEntry : hierarchyMap.entrySet() ) {
@@ -399,9 +474,6 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
 
         for( Object o : rootNode.getJSONArray("children")) {
             JSONObject actChild = (JSONObject)o;
-            
-            
-            
             addChildTree(rootNode, actChild, newHierarchyMap.get(actChild.getString("name")));
         }
         
@@ -425,7 +497,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             String actSuperClassUri = j.getJSONObject("superclass").getString("value");
             String actSuperClassName = j.getJSONObject("superclassLabel").getString("value");
             if( actNodeUri.equals(startNodeUri) ) {
-                System.out.println("found entry: "+actNodeName+" ("+actNodeUri+") --> "+actSuperClassName+" ("+actSuperClassUri+")");
+                System.out.println("found child entry: "+actNodeName+" ("+actNodeUri+") --> "+actSuperClassName+" ("+actSuperClassUri+")");
                 hierarchyEntriesOfStartNode.add( j );
             }
         }
@@ -436,15 +508,17 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             String actClassUri = j.getJSONObject("class").getString("value");
             String actSuperClassUri = j.getJSONObject("superclass").getString("value");
             String actSuperClassName = j.getJSONObject("superclassLabel").getString("value");
-            System.out.println("get tree for startNode: "+actSuperClassName+" ("+actSuperClassUri+")");
+            System.out.println("get subtree for startNode: "+actSuperClassName+" ("+actSuperClassUri+")");
             actId++;
-            if( actId > 20) {
-                continue;
+            int maxNodeCount = 1000;
+            if( actId > maxNodeCount) {
+                //log.info("max Number of Nodes reached ("+maxNodeCount+") skip further nodes processing. Results will not be displayed!");
+               // continue;
             }
             // handle reflexivity: check if class and superclass are not equal to avoid infinite recursion(circle) 
             System.out.println("check for equality: "+actClassUri+" and "+actSuperClassUri);
             if( actClassUri.equals( actSuperClassUri ) ) {
-                System.out.println("equal, skip!");
+                log.info("act node is equal to superclass node. skip!");
                 continue;
             }
 
@@ -457,10 +531,12 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             
             // check if the act ChildNode uri already exist in the parent tree (if so, dont add the child)
             String childAlreadyExistSequence = "\"link\":\""+actSuperClassUri+"\"";
-            System.out.println( childAlreadyExistSequence );
+            //System.out.println( childAlreadyExistSequence );
             if( !parentTree.toString().contains( childAlreadyExistSequence )) {
+                log.debug("put "+childNode.get("name")+" as child of "+startNode.getString("name"));
                 startNode.getJSONArray("children").put(childNode);
                 addChildTree( parentTree, childNode, hierarchyEntries );
+                
             } else {
                 System.out.println( "Child already exist, skip: "+actSuperClassName+" - "+actSuperClassUri );
             }
