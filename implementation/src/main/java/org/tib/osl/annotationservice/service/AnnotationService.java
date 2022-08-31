@@ -59,7 +59,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             return new ResponseEntity<>("Failed to request Falcon API", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         
-        // get all superclasses for the falcon entities
+        // get all superclasses for the falcon entities from wikidata
         Map<String, String> wikidataResultsByEntity = new HashMap<>();
         try {
             wikidataResultsByEntity = getWikiDataClasses(falconResults);
@@ -68,10 +68,19 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             return new ResponseEntity<>("Failed to request WikiData API", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        // get all superclasses for the falcon entities from dbpedia
+        Map<String, String> dbpediaResultsByEntity = new HashMap<>();
+        try {
+            dbpediaResultsByEntity = getDbPediaClasses(falconResults);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to request DBPedia API", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         // build hierarchy
         JSONObject finalResult = null;
         try {
-            finalResult = combineFalconAndWikidataResults(falconResults, wikidataResultsByEntity);
+            finalResult = combineResults(falconResults, wikidataResultsByEntity, dbpediaResultsByEntity);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Failed to build category tree", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -212,26 +221,28 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
                     for( Object actObject : objects) {
                         
                         //String entityLabel = ((JSONArray)actEntity).get(0).toString();
-                        String url = ((JSONArray)actObject).get(1).toString();
-                        String[] urlParts = url.replace(">", "").split("/");
-                        String objId = urlParts[ urlParts.length-1 ];
-                        // init connection to wikiData api
+                        String url = ((JSONArray)actObject).get(0).toString();
+                       
+                        // init connection to dbpedia api (virtuoso)
                         String result = "";
-                        String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+objId+" wdt:P31*/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
-                        //String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+entityId+" wdt:P31/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
-                        HttpGet get = new HttpGet(new URI("https://query.wikidata.org/sparql?format=json&query="+URLEncoder.encode(sparqlQuery, StandardCharsets.UTF_8)+""));
-                        //get.addHeader("content-type", "application/json");
-                        //System.out.println(sparqlQuery);
+                        String sparqlQuery = ""+
+                            "SELECT *"+
+                            "WHERE {"+ 
+                               "<"+url+"> rdf:type*/rdfs:subClassOf* ?class ."+
+                                "?class rdf:type*/rdfs:subClassOf* ?superclass."+
+                                "?class rdfs:label ?classLabel."+
+                                "?superclass rdfs:label ?superclassLabel."+
+                                "FILTER(LANG(?classLabel) = 'en' && LANG(?superclassLabel) = 'en' && ?class != ?superclass)."+
+                            "}";
+                        HttpGet get = new HttpGet(new URI("https://dbpedia.org/sparql/?format=application%2Fsparql-results%2Bjson&timeout=30000&query="+URLEncoder.encode(sparqlQuery, StandardCharsets.UTF_8)+""));
                         result = null;
                         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                             CloseableHttpResponse response = httpClient.execute(get)) {
 
                             result = EntityUtils.toString(response.getEntity());
                             dbpediaResultsByEntity.put(actObject.toString(), result);
-                            //System.out.println( "Entity:"+actEntity+" result:"+ result );
-                            
                         } catch ( Exception e) {
-                            log.warn( "unable to receive wikiData Classes for '"+actObject.toString()+"' error: "+e.getMessage() );
+                            log.warn( "unable to receive dbPedia Classes for '"+actObject.toString()+"' error: "+e.getMessage() );
                         }
                         
                         
@@ -240,7 +251,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             } 
         } catch(Exception e) {
             e.printStackTrace();
-            System.err.println( "error in getWikiDataClasses:" + e.getMessage() );
+            System.err.println( "error in getDbPediaClasses:" + e.getMessage() );
         }    
         return dbpediaResultsByEntity;
     }
@@ -249,11 +260,17 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
      * combine results from falcon and wikidata and build a category tree datastructure. 
      * @param falconResults
      * @param wikidataResultsByEntity 
+     * @param dbpediaResultsByEntity 
      * @return jsonobject with the keys "entities", "relations" and "hierarchy"
      * @throws Exception
      */
-    private JSONObject combineFalconAndWikidataResults(List<String> falconResults, Map<String,String> wikidataResultsByEntity) throws Exception {
+    private JSONObject combineResults(
+            List<String> falconResults, 
+            Map<String,String> wikidataResultsByEntity, 
+            Map<String,String> dbpediaResultsByEntity) throws Exception {
     
+        wikidataResultsByEntity.putAll(dbpediaResultsByEntity);
+
         // combine falcon and Wikidata Results
         JSONObject finalResult = new JSONObject();
 
@@ -510,11 +527,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
             String actSuperClassName = j.getJSONObject("superclassLabel").getString("value");
             System.out.println("get subtree for startNode: "+actSuperClassName+" ("+actSuperClassUri+")");
             actId++;
-            int maxNodeCount = 1000;
-            if( actId > maxNodeCount) {
-                //log.info("max Number of Nodes reached ("+maxNodeCount+") skip further nodes processing. Results will not be displayed!");
-               // continue;
-            }
+
             // handle reflexivity: check if class and superclass are not equal to avoid infinite recursion(circle) 
             System.out.println("check for equality: "+actClassUri+" and "+actSuperClassUri);
             if( actClassUri.equals( actSuperClassUri ) ) {
