@@ -16,7 +16,7 @@ V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/b
 2) integrated NER solutions: https://semlab.io/howto/selavy_alpha  
 
 ## Roadmap
-Coming soon...
+You can view the current version of the [product roadmap here](https://docs.google.com/spreadsheets/d/1vaIIuVmeJM7F9hfCqZXNk-QC6Z1-XcoMeWWEE6eW9TE/edit?usp=sharing).
 
 ## Authors and acknowledgment
 Contributors to this project: Kolja Bailly, Paul Duchesne and Lozana Rossenova
