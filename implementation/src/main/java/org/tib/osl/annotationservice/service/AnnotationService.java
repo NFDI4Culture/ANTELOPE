@@ -145,23 +145,15 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
                     JSONArray entities = obj.getJSONArray("entities_wikidata");
                     falconResultsToProcess.add(entities);
                 }
-                if( obj.has("entities_dbpedia")) {
-                    JSONArray entities = obj.getJSONArray("entities_dbpedia");
-                    falconResultsToProcess.add(entities);
-                }
                 if( obj.has("relations_wikidata")) {
                     JSONArray relations = obj.getJSONArray("relations_wikidata");
-                    falconResultsToProcess.add(relations);
-                }
-                if( obj.has("relations_dbpedia")) {
-                    JSONArray relations = obj.getJSONArray("relations_dbpedia");
                     falconResultsToProcess.add(relations);
                 }
                 for( JSONArray objects : falconResultsToProcess) {
                     for( Object actObject : objects) {
                         
-                        //String entityLabel = ((JSONArray)actEntity).get(0).toString();
-                        String url = ((JSONArray)actObject).get(1).toString();
+                        //String entityLabel = ((JSONObject)actObject).getString("surface form");
+                        String url = ((JSONObject)actObject).getString("URI");
                         String[] urlParts = url.replace(">", "").split("/");
                         String objId = urlParts[ urlParts.length-1 ];
                         // init connection to wikiData api
@@ -221,8 +213,8 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
                     for( Object actObject : objects) {
                         
                         //String entityLabel = ((JSONArray)actEntity).get(0).toString();
-                        String url = ((JSONArray)actObject).get(0).toString();
-                       
+                        //String url = ((JSONArray)actObject).get(0).toString();
+                        String url = ((JSONObject)actObject).getString("URI");
                         // init connection to dbpedia api (virtuoso)
                         String result = "";
                         String sparqlQuery = ""+
@@ -362,7 +354,7 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
 
         for( String actRootClass : rootClasses ) {
             for( Map.Entry<String, String> entry : wikidataResultsByEntity.entrySet()) {
-                JSONArray actEntity = new JSONArray(entry.getKey());
+                JSONObject actEntity = new JSONObject(entry.getKey());
                 String actResult = entry.getValue();
                 JSONObject actWDJson = new JSONObject( actResult );
                 JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
@@ -370,13 +362,13 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
                 // Create Entries for Entity Node for later use
                 JSONObject entityNode = new JSONObject();
                 entityNode.put("type", "uri");
-                String link = actEntity.getString(1);
+                String link = actEntity.getString("URI");
                 entityNode.put("value", link);
 
                 JSONObject entityNodeLabel = new JSONObject();
                 entityNodeLabel.put("xml:lang", "en");
                 entityNodeLabel.put("type", "literal");
-                entityNodeLabel.put("value", actEntity.get(0));
+                entityNodeLabel.put("value", actEntity.get("surface form"));
 
                 for ( int i = 0; i < wdHierarchy.length(); i++ ) {
                     JSONObject actObj = wdHierarchy.getJSONObject(i);
@@ -470,9 +462,9 @@ public class AnnotationService implements StatusApiDelegate, AnnotationApiDelega
         int startId = 1;
         Map<String, JSONArray> newHierarchyMap = new HashMap<>();
         for( Map.Entry<String, JSONArray> actEntry : hierarchyMap.entrySet() ) {
-            JSONArray arr = new JSONArray(actEntry.getKey());
-            String entityName = arr.getString(0);
-            String entityUri = arr.getString(1);
+            JSONObject falconResult = new JSONObject(actEntry.getKey());
+            String entityName = falconResult.getString("surface form");
+            String entityUri = falconResult.getString("URI");
             entityUri = entityUri.replace("<", "").replace(">","");
 
             // save hierarchy again under entityName
