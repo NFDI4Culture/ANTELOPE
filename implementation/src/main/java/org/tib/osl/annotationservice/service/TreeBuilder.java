@@ -24,7 +24,7 @@ public class TreeBuilder {
      * @param wikidataResultsByEntity
      * @return
      */
-    public static JSONObject buildCategoryTree(Map<String,String> nerResultsByEntity, int rootNodeId, String rootNodeName, String rootNodeLink, int indexOfEntityNameInJson, int indexOfEntityUrlInJson) {
+    public static JSONObject buildCategoryTree(Map<String,String> nerResultsByEntity, int rootNodeId, String rootNodeName, String rootNodeLink, String keyOfEntityNameInJson, String keyOfEntityUrlInJson) {
 
         Map<String, JSONArray> hierarchyMap = new TreeMap<>(); // key: entity, result: a childClass -> Superclass entry
         Set<String> childClasses = new HashSet<>();
@@ -46,13 +46,13 @@ public class TreeBuilder {
         Set<String> rootClasses = identifyRootClasses(childClasses, nerResultsByEntity);
 
         // add Entries for root Childclasses (connect to common "root" node)
-        insertRootNode(rootClasses, nerResultsByEntity, hierarchyMap, rootNodeName, rootNodeLink, indexOfEntityNameInJson, indexOfEntityUrlInJson);
+        insertRootNode(rootClasses, nerResultsByEntity, hierarchyMap, rootNodeName, rootNodeLink, keyOfEntityNameInJson, keyOfEntityUrlInJson);
 
         // eliminate duplicates
         eliminateDuplicates(hierarchyMap);
 
         //now all links are created in tabular format. create hierarchy in json tree format
-        JSONObject result = createTreeStructureFromEntityToSuperclass( hierarchyMap, rootNodeId, rootNodeName, rootNodeLink, indexOfEntityNameInJson, indexOfEntityUrlInJson );
+        JSONObject result = createTreeStructureFromEntityToSuperclass( hierarchyMap, rootNodeId, rootNodeName, rootNodeLink, keyOfEntityNameInJson, keyOfEntityUrlInJson );
         return result;
     }
 /*
@@ -65,8 +65,8 @@ public class TreeBuilder {
         Map<String, JSONArray> hierarchyMap, 
         String rootNodeName, 
         String rootNodeLink, 
-        int indexOfEntityNameInJson, 
-        int indexOfEntityUrlInJson) {
+        String keyOfEntityNameInJson, 
+        String keyOfEntityUrlInJson) {
 
         JSONObject rootNode = new JSONObject();
         rootNode.put("type", "uri");
@@ -79,7 +79,7 @@ public class TreeBuilder {
 
         for( String actRootClass : rootClasses ) {
             for( Map.Entry<String, String> entry : nerResultsByEntity.entrySet()) {
-                JSONArray actEntity = new JSONArray(entry.getKey());
+                JSONObject actEntity = new JSONObject(entry.getKey());
                 String actResult = entry.getValue();
                 JSONObject actWDJson = new JSONObject( actResult );
                 JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
@@ -87,13 +87,13 @@ public class TreeBuilder {
                 // Create Entries for Entity Node for later use
                 JSONObject entityNode = new JSONObject();
                 entityNode.put("type", "uri");
-                String link = actEntity.getString(indexOfEntityUrlInJson);
+                String link = actEntity.getString(keyOfEntityUrlInJson);
                 entityNode.put("value", link);
 
                 JSONObject entityNodeLabel = new JSONObject();
                 entityNodeLabel.put("xml:lang", "en");
                 entityNodeLabel.put("type", "literal");
-                entityNodeLabel.put("value", actEntity.get(indexOfEntityNameInJson));
+                entityNodeLabel.put("value", actEntity.get(keyOfEntityNameInJson));
 
                 for ( int i = 0; i < wdHierarchy.length(); i++ ) {
                     JSONObject actObj = wdHierarchy.getJSONObject(i);
@@ -217,7 +217,7 @@ public class TreeBuilder {
         ]
         }
      */
-    private static JSONObject createTreeStructureFromEntityToSuperclass(Map<String, JSONArray> hierarchyMap, int rootId, String rootNodeName, String rootNodeLink, int indexOfEntityNameInJson, int indexOfEntityUrlInJson) {
+    private static JSONObject createTreeStructureFromEntityToSuperclass(Map<String, JSONArray> hierarchyMap, int rootId, String rootNodeName, String rootNodeLink, String keyOfEntityNameInJson, String keyOfEntityUrlInJson) {
         
         JSONObject rootNode = new JSONObject();
         rootNode.put("id", rootId);
@@ -229,9 +229,9 @@ public class TreeBuilder {
         int startId = rootId + 1;
         Map<String, JSONArray> newHierarchyMap = new HashMap<>();
         for( Map.Entry<String, JSONArray> actEntry : hierarchyMap.entrySet() ) {
-            JSONArray arr = new JSONArray(actEntry.getKey());
-            String entityName = arr.getString( indexOfEntityNameInJson );
-            String entityUri = arr.getString( indexOfEntityUrlInJson );
+            JSONObject obj = new JSONObject(actEntry.getKey());
+            String entityName = obj.getString( keyOfEntityNameInJson );
+            String entityUri = obj.getString( keyOfEntityUrlInJson );
             entityUri = entityUri.replace("<", "").replace(">","");
 
             // save hierarchy again under entityName

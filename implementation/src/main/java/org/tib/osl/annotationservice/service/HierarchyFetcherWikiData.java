@@ -3,6 +3,7 @@ package org.tib.osl.annotationservice.service;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 public class HierarchyFetcherWikiData extends HierarchyFetcher{
     private static Logger log = LoggerFactory.getLogger(HierarchyFetcherWikiData.class);
 
-    public HierarchyFetcherWikiData(Map<String, String> resultContainer, JSONArray falconResultsToProcess) {
+    public HierarchyFetcherWikiData(Map<String, String> resultContainer, JSONObject falconResultsToProcess) {
         super(resultContainer, falconResultsToProcess);
     }    
 
@@ -26,7 +27,7 @@ public class HierarchyFetcherWikiData extends HierarchyFetcher{
     @Override
     public void run() {
         //String entityLabel = ((JSONArray)actEntity).get(0).toString();
-        String url = super.falconResultsToProcess.get(1).toString();
+        String url = super.falconResultsToProcess.get("URI").toString();
         String[] urlParts = url.replace(">", "").split("/");
         String objId = urlParts[ urlParts.length-1 ];
         // init connection to wikiData api

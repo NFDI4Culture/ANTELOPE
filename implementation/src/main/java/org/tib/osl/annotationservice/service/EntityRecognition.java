@@ -1,16 +1,17 @@
 package org.tib.osl.annotationservice.service;
 
+
 import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -46,14 +47,15 @@ public class EntityRecognition {
             json.append("\"text\":\""+actText+"\"");
             json.append("}");
 
-            
+            log.debug(json.toString());
             // send a JSON data
             post.setEntity(new StringEntity(json.toString()));
-
+            
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(post)) {
 
                 result = EntityUtils.toString(response.getEntity());
+                log.debug( result.toString() );
                 falconResults.add(result);
             }
         }
@@ -72,7 +74,8 @@ public class EntityRecognition {
     public static Map<String, String> getWikiDataClasses( List<String> falconResults ) throws Exception {
         Map<String, String> wikidataResultsByEntity = new HashMap<>();
         List<JSONArray> falconResultsToProcess = new ArrayList<>();
-        
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        List<Future> futures = new ArrayList<Future>();
         try {
             // get superclass triples from wikiData for each entity that falcon delivered (get class tree)
             for( String actFalconResult : falconResults) {
@@ -87,31 +90,9 @@ public class EntityRecognition {
                 }
                 for( JSONArray objects : falconResultsToProcess) {
                     for( Object actObject : objects) {
-                        
-                        //String entityLabel = ((JSONArray)actEntity).get(0).toString();
-                        String url = ((JSONArray)actObject).get(1).toString();
-                        String[] urlParts = url.replace(">", "").split("/");
-                        String objId = urlParts[ urlParts.length-1 ];
-                        // init connection to wikiData api
-                        String result = "";
-                        String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+objId+" wdt:P31*/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
-                        //String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+entityId+" wdt:P31/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
-                        HttpGet get = new HttpGet(new URI("https://query.wikidata.org/sparql?format=json&query="+URLEncoder.encode(sparqlQuery, StandardCharsets.UTF_8)+""));
-                        //get.addHeader("content-type", "application/json");
-                        //System.out.println(sparqlQuery);
-                        result = null;
-                        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                            CloseableHttpResponse response = httpClient.execute(get)) {
-
-                            result = EntityUtils.toString(response.getEntity());
-                            wikidataResultsByEntity.put(actObject.toString(), result);
-                            //System.out.println( "Entity:"+actEntity+" result:"+ result );
-                            
-                        } catch ( Exception e) {
-                            log.warn( "unable to receive wikiData Classes for '"+actObject.toString()+"' error: "+e.getMessage() );
-                        }
-                        
-                        
+                        HierarchyFetcherWikiData fetcher = new HierarchyFetcherWikiData(wikidataResultsByEntity, (JSONObject)actObject);
+                        Future actFuture = executorService.submit(fetcher);
+                        futures.add(actFuture);    
                     }
                 } 
             } 
@@ -119,6 +100,14 @@ public class EntityRecognition {
             e.printStackTrace();
             System.err.println( "error in getWikiDataClasses:" + e.getMessage() );
         }    
+
+        // wait for http requests to terminate
+        while( !futures.stream().allMatch(f -> f.isDone())) {
+            log.debug("wait for completion of wikidata fetching");
+            Thread.sleep(200);
+        }
+        executorService.shutdown();
+
         return wikidataResultsByEntity;
     }
 
@@ -131,7 +120,8 @@ public class EntityRecognition {
     public static Map<String, String> getDbPediaClasses( List<String> falconResults ) throws Exception {
         Map<String, String> dbpediaResultsByEntity = new HashMap<>();
         List<JSONArray> falconResultsToProcess = new ArrayList<>();
-        
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        List<Future> futures = new ArrayList<Future>();
         try {
             // get superclass triples from wikiData for each entity that falcon delivered (get class tree)
             for( String actFalconResult : falconResults) {
@@ -146,40 +136,24 @@ public class EntityRecognition {
                 }
                 for( JSONArray objects : falconResultsToProcess) {
                     for( Object actObject : objects) {
-                        
-                        //String entityLabel = ((JSONArray)actEntity).get(0).toString();
-                        String url = ((JSONArray)actObject).get(0).toString();
-                        
-                        // init connection to dbpedia api (virtuoso)
-                        String result = "";
-                        String sparqlQuery = ""+
-                            "SELECT *"+
-                            "WHERE {"+ 
-                               "<"+url+"> rdf:type*/rdfs:subClassOf* ?class ."+
-                                "?class rdf:type*/rdfs:subClassOf* ?superclass."+
-                                "?class rdfs:label ?classLabel."+
-                                "?superclass rdfs:label ?superclassLabel."+
-                                "FILTER(LANG(?classLabel) = 'en' && LANG(?superclassLabel) = 'en' && ?class != ?superclass)."+
-                            "}";
-                        HttpGet get = new HttpGet(new URI("https://dbpedia.org/sparql/?format=application%2Fsparql-results%2Bjson&timeout=30000&query="+URLEncoder.encode(sparqlQuery, StandardCharsets.UTF_8)+""));
-                        result = null;
-                        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                            CloseableHttpResponse response = httpClient.execute(get)) {
-
-                            result = EntityUtils.toString(response.getEntity());
-                            dbpediaResultsByEntity.put(actObject.toString(), result);
-                        } catch ( Exception e) {
-                            log.warn( "unable to receive dbPedia Classes for '"+actObject.toString()+"' error: "+e.getMessage() );
-                        }
-                        
-                        
+                        HierarchyFetcherDBpedia fetcher = new HierarchyFetcherDBpedia(dbpediaResultsByEntity, (JSONObject)actObject);
+                        Future actFuture = executorService.submit(fetcher);
+                        futures.add(actFuture);
                     }
                 } 
             } 
         } catch(Exception e) {
             e.printStackTrace();
             System.err.println( "error in getDbPediaClasses:" + e.getMessage() );
-        }    
+        }
+       
+         // wait for http requests to terminate
+         while( !futures.stream().allMatch(f -> f.isDone())) {
+            log.debug("wait for completion of dbpedia fetching");
+            Thread.sleep(200);
+        }
+        executorService.shutdown();
+        
         return dbpediaResultsByEntity;
     }
 
@@ -209,8 +183,14 @@ public class EntityRecognition {
         for (String actFalconResult : falconResults){
             JSONObject actFalconJson = new JSONObject( actFalconResult );
             JSONArray falconEntities = new JSONArray();
-            falconEntities.putAll( actFalconJson.optJSONArray("entities_wikidata") );
-            falconEntities.putAll( actFalconJson.optJSONArray("entities_dbpedia") );
+            
+            String[] keysToProcess = new String[] {"entities_wikidata", "entities_dbpedia"};
+            for( String actKey : keysToProcess) { 
+                if( actFalconJson.optJSONArray(actKey) != null) {
+                    falconEntities.putAll( actFalconJson.optJSONArray(actKey) );
+                }
+            }
+            
             entitiesArr.putAll( falconEntities );
         }
         finalResult.put("entities", entitiesArr);
@@ -222,8 +202,13 @@ public class EntityRecognition {
         for (String actFalconResult : falconResults){
             JSONObject actFalconJson = new JSONObject( actFalconResult );
             JSONArray falconRels = new JSONArray();
-            falconRels.putAll( actFalconJson.optJSONArray("relations_wikidata") );
-            falconRels.putAll( actFalconJson.optJSONArray("relations_dbpedia") );
+
+            String[] keysToProcess = new String[] {"relations_wikidata", "relations_dbpedia"};
+            for( String actKey : keysToProcess) { 
+                if( actFalconJson.optJSONArray(actKey) != null) {
+                    falconRels.putAll( actFalconJson.optJSONArray(actKey) );
+                }
+            }
             relationsArr.putAll( falconRels );
         }
         finalResult.put("relations", relationsArr);
@@ -231,10 +216,10 @@ public class EntityRecognition {
         // ========== section hierarchy ===============
 
         // build hierarchy from Wikidata
-        JSONObject wdHierarchy = TreeBuilder.buildCategoryTree( wikidataResultsByEntity , 1, "Wikidata", "http://wikidata.org", 0, 1);
+        JSONObject wdHierarchy = TreeBuilder.buildCategoryTree( wikidataResultsByEntity , 1, "Wikidata", "http://wikidata.org", "surface form", "URI");
 
         // build hierarchy from dbPedia
-        JSONObject dpHierarchy = TreeBuilder.buildCategoryTree( dbpediaResultsByEntity , 1000, "DBpedia", "http://dbpedia.org", 1, 0);
+        JSONObject dpHierarchy = TreeBuilder.buildCategoryTree( dbpediaResultsByEntity , 1000, "DBpedia", "http://dbpedia.org", "surface form", "URI");
 
 
         // create empty root node

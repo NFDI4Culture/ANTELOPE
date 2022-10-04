@@ -14,7 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import org.json.JSONArray;
-
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ public class HierarchyFetcherDBpedia extends HierarchyFetcher{
     
     private static Logger log = LoggerFactory.getLogger(HierarchyFetcherDBpedia.class);
 
-    public HierarchyFetcherDBpedia(Map<String, String> resultContainer, JSONArray falconResultsToProcess) {
+    public HierarchyFetcherDBpedia(Map<String, String> resultContainer, JSONObject falconResultsToProcess) {
         super(resultContainer, falconResultsToProcess);
     }    
 
@@ -31,7 +31,7 @@ public class HierarchyFetcherDBpedia extends HierarchyFetcher{
     public void run() {
         
         //String entityLabel = ((JSONArray)actEntity).get(0).toString();
-        String url = (super.falconResultsToProcess).get(0).toString();
+        String url = (super.falconResultsToProcess).get("URI").toString();
                         
         // init connection to dbpedia api (virtuoso)
         String result = "";

@@ -1,4 +1,16 @@
 bin/
-target/
+######################
+# Project Specific
+######################
+/src/main/webapp/content/css/main.css
+/target/classes/static/**
+/src/test/javascript/coverage/
+/target
+
+######################
+# Node
+######################
+/node/
+node_tmp/
 node_modules/
 *.class
