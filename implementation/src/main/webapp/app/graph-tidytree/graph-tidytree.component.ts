@@ -80,11 +80,22 @@ export class GraphTidytreeComponent implements OnInit {
     //const rollUpData = d3.group( data, d => d.superclassLabel.value);
     preparedData = data;
     const helpFunctions = {
-      label: (d:any):string => d.data.name !== undefined ? d.data.name as string: "label" ,
+      label(d:any):string {
+        if(d.data.name !== undefined) {
+          
+          if(d.data.name.length < 20) {
+            return d.data.name as string;
+          } else {
+            return d.data.name.substring(0,16) as string +"[..]";
+          }
+        } else {
+          return "label" ;
+        }
+      },
       title: (d:any, n:d3.HierarchyNode<HierarchyTree>):string => n.data.name+" ("+n.data.link+")", // hover text
       link: (d:any, n:d3.HierarchyNode<HierarchyTree>):string => n.data.link,
       
-      width: 1600
+      width: 800
     }
  
     this.createTree(preparedData, helpFunctions);
@@ -116,7 +127,7 @@ export class GraphTidytreeComponent implements OnInit {
       strokeLinejoin = null, // stroke line join for links
       strokeLinecap = null, // stroke line cap for links
       halo = "#fff", // color of label halo 
-      haloWidth = 3, // padding around the labels
+      haloWidth = 5, // padding around the labels
     } ): void {
 
       // If id and parentId options are specified, or the path option, use d3.stratify
@@ -155,7 +166,7 @@ export class GraphTidytreeComponent implements OnInit {
       const L:string[]|null = descendants.map((d:any) => label(d));
 
       // Compute the layout.
-      const dx = 20;
+      const dx = 13;
       const dy = width / (root.height + padding);
       tree().nodeSize([dx, dy])(root);
 
@@ -168,8 +179,10 @@ export class GraphTidytreeComponent implements OnInit {
       });
 
       // Compute the default height.
-      if (!height) {height = x1 - x0 + dx * 2;}
-
+      //if (!height) {height = x1 - x0 + dx * 2;}
+      //if (!width) {width = x1 - x0 + dx * 2;}
+      height = x1 - x0 + dx * 2;
+      width = x1 - x0 + dx * 2;
       const linkGenerator = d3.linkHorizontal()
       .x((d:any) => d.y as number)
       .y((d:any) => d.x as number);
@@ -180,7 +193,8 @@ export class GraphTidytreeComponent implements OnInit {
 
       const svg = d3.select("#tree")
           .attr("viewBox", [-dy * padding / 2, x0 - dx, width, height])
-          .attr("width", width)
+        //  .attr("viewBox", [0,0,width, height]) 
+         .attr("width", width)
           .attr("height", height)
           .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
           .attr("font-family", "sans-serif")
@@ -219,6 +233,16 @@ export class GraphTidytreeComponent implements OnInit {
           .text((d:any) => title(d.data, d));
       //}
       
+      const textBackground = node.append("rect")
+        .attr("rx", 5)
+        .attr("ry", 5)
+        .attr("x", function(d){ return  this.getBBox().x + 5;})
+        .attr("y", function(d, i){ return  this.getBBox().y - 8 })
+        //.attr("width", function(d){ return this.getBBox().width + 80;})
+        .attr("width", function(d, i){ return this.getBBox().width + (L[i].length * 6);})
+        .attr("height", function(d) {return 14;})
+        .style("fill", "#FFFFFF");
+
       //if (L) { 
       const textNode = node.append("text") 
           .attr("dy", "0.32em")
@@ -237,5 +261,9 @@ export class GraphTidytreeComponent implements OnInit {
       
       //this.tree = svg.node();
     }
+
+    
     
 }
+
+
