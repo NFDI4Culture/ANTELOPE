@@ -14,9 +14,15 @@ import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotation-service-ui.component';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 @NgModule({
-  imports: [SharedLibsModule],
+  imports: [
+    SharedLibsModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    LoadingBarModule
+  ],
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,

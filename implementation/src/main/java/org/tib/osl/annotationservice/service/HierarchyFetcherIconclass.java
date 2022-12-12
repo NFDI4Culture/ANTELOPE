@@ -40,28 +40,43 @@ public class HierarchyFetcherIconclass implements Runnable{
             // fetch superclass json
             JSONArray superclassNotationsArr = notationJson.getJSONArray("p");
             JSONArray resultArr = new JSONArray();
-            for( int i=0; i<superclassNotationsArr.length(); i++){ 
+            String lastSuperclass = null;
+            String lastSuperclassNotationName = null;
+            String actChildclass = pageUri;
+
+            for( int i=superclassNotationsArr.length()-1; i>=0; i--){ 
+                if( lastSuperclass != null){
+                    actChildclass = lastSuperclass;
+                    actNotationName = lastSuperclassNotationName;
+                }
+
                 String superclassNotation = superclassNotationsArr.getString(i);
                 String fileName2 = superclassNotation+".json";
                 String fileUri2 = host+fileName2;
-                String pageUri2 = host+superclassNotation;
+                                
                 log.debug("fetch: "+fileUri2);
                 in = new BufferedInputStream(new URL( fileUri2 ).openStream());
                 tokener = new JSONTokener(in);
                 JSONObject superclassNotationJson = new JSONObject(tokener);
                 log.debug("superclass:"+superclassNotationJson.toString());
+                
+                String actSuperClass = host+superclassNotation;
+                String actSuperClassNotationName = superclassNotationJson.getJSONObject("txt").getString("en");
 
                 // embedd respone data into falcon json format
                 JSONObject obj = new JSONObject();
-                obj.put("class", pageUri);
-                obj.put("superclass", pageUri2);
-
+                obj.put("class", actChildclass);
+                obj.put("superclass", actSuperClass);
+                 obj.put("classLabel", actNotationName);
+                obj.put("superclassLabel", actSuperClassNotationName);
                 
-                obj.put("classLabel", actNotationName);
-                obj.put("superclassLabel", superclassNotationJson.getJSONObject("txt").getString("en"));
                 // add json object to result json array
                 resultArr.put(obj);
                 log.debug("iconclass result fetched sucessfully");
+
+                // save used notation for use as childClass in next result (results in iconclass are already hierarchic)
+                lastSuperclass = actSuperClass;
+                lastSuperclassNotationName = actNotationName;
             }
             resultsByEntity.put(notationToProcess.toString(), resultArr.toString());
         } catch ( Exception e) {

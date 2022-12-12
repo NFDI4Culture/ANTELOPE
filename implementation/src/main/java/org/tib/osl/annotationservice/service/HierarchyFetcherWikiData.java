@@ -47,11 +47,48 @@ public class HierarchyFetcherWikiData extends HierarchyFetcher{
             CloseableHttpResponse response = httpClient.execute(get)) {
 
             result = EntityUtils.toString(response.getEntity());
-            super.resultsByEntity.put(super.falconResultsToProcess.toString(), result);
+            JSONObject json = new JSONObject(result);
+            //super.resultsByEntity.put(super.falconResultsToProcess.toString(), json.getJSONObject("results").optJSONArray("bindings").toString());
             //System.out.println( "Entity:"+actEntity+" result:"+ result );
+            JSONArray jsonFetchResultArr = json.getJSONObject("results").optJSONArray("bindings");
+            JSONArray resultArr = new JSONArray();
+            for( int i=0; i<jsonFetchResultArr.length(); i++){ 
+                JSONObject j = jsonFetchResultArr.getJSONObject(i);
+                String actNodeName = j.getJSONObject("classLabel").getString("value");
+                String actNodeUri = j.getJSONObject("class").getString("value");
+                String actSuperClassUri = j.getJSONObject("superclass").getString("value");
+                String actSuperClassName = j.getJSONObject("superclassLabel").getString("value");
+
+                // embedd respone data into falcon json format
+                JSONObject obj = new JSONObject();
+                obj.put("class", actNodeUri);
+                obj.put("superclass", actSuperClassUri);
+                obj.put("classLabel", actNodeName);
+                obj.put("superclassLabel", actSuperClassName);
+                // add json object to result json array
+                resultArr.put(obj);
+                log.debug("iconclass result fetched sucessfully");
+            }
+
+            // falcon includes only the surface form label, we want to show the wikidata/dbpedia label of the entity
+            String entityLabel = super.falconResultsToProcess.get("surface form").toString(); // default setting
+            String resourceUrl = "https://www.wikidata.org/wiki/Special:EntityData/"+objId+".json";
+            try {
+                get = new HttpGet(new URI(resourceUrl));
+                CloseableHttpResponse response2 = httpClient.execute(get);
+                String r = EntityUtils.toString(response2.getEntity());
+                JSONObject resourceJson = new JSONObject(r);
+                entityLabel = resourceJson.getJSONObject("entities").getJSONObject(objId).getJSONObject("labels").getJSONObject("en").getString("value");
+            } catch (Exception e) {
+                log.error( "unable init WikiData url error: "+resourceUrl+e.getMessage() );
+            }
+            falconResultsToProcess.put("label", entityLabel);
+
+            resultsByEntity.put(falconResultsToProcess.toString(), resultArr.toString());
             log.debug("wikidata result fetched sucessfully");
         } catch ( Exception e) {
             log.warn( "unable to receive wikiData Classes for '"+super.falconResultsToProcess.toString()+"' error: "+e.getMessage() );
+            e.printStackTrace();
         }
     }
 }

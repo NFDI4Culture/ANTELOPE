@@ -12,13 +12,21 @@ declare class DevOpsGuru extends Service {
   constructor(options?: DevOpsGuru.Types.ClientConfiguration)
   config: Config & DevOpsGuru.Types.ClientConfiguration;
   /**
-   *  Adds a notification channel to DevOps Guru. A notification channel is used to notify you about important DevOps Guru events, such as when an insight is generated.  If you use an Amazon SNS topic in another account, you must attach a policy to it that grants DevOps Guru permission to it notifications. DevOps Guru adds the required policy on your behalf to send notifications using Amazon SNS in your account. For more information, see Permissions for cross account Amazon SNS topics. If you use an Amazon SNS topic that is encrypted by an Amazon Web Services Key Management Service customer-managed key (CMK), then you must add permissions to the CMK. For more information, see Permissions for Amazon Web Services KMS–encrypted Amazon SNS topics.
+   *  Adds a notification channel to DevOps Guru. A notification channel is used to notify you about important DevOps Guru events, such as when an insight is generated.  If you use an Amazon SNS topic in another account, you must attach a policy to it that grants DevOps Guru permission to it notifications. DevOps Guru adds the required policy on your behalf to send notifications using Amazon SNS in your account. DevOps Guru only supports standard SNS topics. For more information, see Permissions for cross account Amazon SNS topics. If you use an Amazon SNS topic in another account, you must attach a policy to it that grants DevOps Guru permission to it notifications. DevOps Guru adds the required policy on your behalf to send notifications using Amazon SNS in your account. For more information, see Permissions for cross account Amazon SNS topics. If you use an Amazon SNS topic that is encrypted by an Amazon Web Services Key Management Service customer-managed key (CMK), then you must add permissions to the CMK. For more information, see Permissions for Amazon Web Services KMS–encrypted Amazon SNS topics.
    */
   addNotificationChannel(params: DevOpsGuru.Types.AddNotificationChannelRequest, callback?: (err: AWSError, data: DevOpsGuru.Types.AddNotificationChannelResponse) => void): Request<DevOpsGuru.Types.AddNotificationChannelResponse, AWSError>;
   /**
-   *  Adds a notification channel to DevOps Guru. A notification channel is used to notify you about important DevOps Guru events, such as when an insight is generated.  If you use an Amazon SNS topic in another account, you must attach a policy to it that grants DevOps Guru permission to it notifications. DevOps Guru adds the required policy on your behalf to send notifications using Amazon SNS in your account. For more information, see Permissions for cross account Amazon SNS topics. If you use an Amazon SNS topic that is encrypted by an Amazon Web Services Key Management Service customer-managed key (CMK), then you must add permissions to the CMK. For more information, see Permissions for Amazon Web Services KMS–encrypted Amazon SNS topics.
+   *  Adds a notification channel to DevOps Guru. A notification channel is used to notify you about important DevOps Guru events, such as when an insight is generated.  If you use an Amazon SNS topic in another account, you must attach a policy to it that grants DevOps Guru permission to it notifications. DevOps Guru adds the required policy on your behalf to send notifications using Amazon SNS in your account. DevOps Guru only supports standard SNS topics. For more information, see Permissions for cross account Amazon SNS topics. If you use an Amazon SNS topic in another account, you must attach a policy to it that grants DevOps Guru permission to it notifications. DevOps Guru adds the required policy on your behalf to send notifications using Amazon SNS in your account. For more information, see Permissions for cross account Amazon SNS topics. If you use an Amazon SNS topic that is encrypted by an Amazon Web Services Key Management Service customer-managed key (CMK), then you must add permissions to the CMK. For more information, see Permissions for Amazon Web Services KMS–encrypted Amazon SNS topics.
    */
   addNotificationChannel(callback?: (err: AWSError, data: DevOpsGuru.Types.AddNotificationChannelResponse) => void): Request<DevOpsGuru.Types.AddNotificationChannelResponse, AWSError>;
+  /**
+   * Deletes the insight along with the associated anomalies, events and recommendations.
+   */
+  deleteInsight(params: DevOpsGuru.Types.DeleteInsightRequest, callback?: (err: AWSError, data: DevOpsGuru.Types.DeleteInsightResponse) => void): Request<DevOpsGuru.Types.DeleteInsightResponse, AWSError>;
+  /**
+   * Deletes the insight along with the associated anomalies, events and recommendations.
+   */
+  deleteInsight(callback?: (err: AWSError, data: DevOpsGuru.Types.DeleteInsightResponse) => void): Request<DevOpsGuru.Types.DeleteInsightResponse, AWSError>;
   /**
    *  Returns the number of open reactive insights, the number of open proactive insights, and the number of metrics analyzed in your Amazon Web Services account. Use these numbers to gauge the health of operations in your Amazon Web Services account. 
    */
@@ -44,11 +52,11 @@ declare class DevOpsGuru extends Service {
    */
   describeAnomaly(callback?: (err: AWSError, data: DevOpsGuru.Types.DescribeAnomalyResponse) => void): Request<DevOpsGuru.Types.DescribeAnomalyResponse, AWSError>;
   /**
-   * This operation lists details about a DevOps Guru event source that is shared with your&#x2028; account.
+   * Returns the integration status of services that are integrated with DevOps Guru as Consumer via EventBridge. The one service that can be integrated with DevOps Guru is Amazon CodeGuru Profiler, which can produce proactive recommendations which can be stored and viewed in DevOps Guru.
    */
   describeEventSourcesConfig(params: DevOpsGuru.Types.DescribeEventSourcesConfigRequest, callback?: (err: AWSError, data: DevOpsGuru.Types.DescribeEventSourcesConfigResponse) => void): Request<DevOpsGuru.Types.DescribeEventSourcesConfigResponse, AWSError>;
   /**
-   * This operation lists details about a DevOps Guru event source that is shared with your&#x2028; account.
+   * Returns the integration status of services that are integrated with DevOps Guru as Consumer via EventBridge. The one service that can be integrated with DevOps Guru is Amazon CodeGuru Profiler, which can produce proactive recommendations which can be stored and viewed in DevOps Guru.
    */
   describeEventSourcesConfig(callback?: (err: AWSError, data: DevOpsGuru.Types.DescribeEventSourcesConfigResponse) => void): Request<DevOpsGuru.Types.DescribeEventSourcesConfigResponse, AWSError>;
   /**
@@ -132,6 +140,14 @@ declare class DevOpsGuru extends Service {
    */
   listAnomaliesForInsight(callback?: (err: AWSError, data: DevOpsGuru.Types.ListAnomaliesForInsightResponse) => void): Request<DevOpsGuru.Types.ListAnomaliesForInsightResponse, AWSError>;
   /**
+   *  Returns the list of log groups that contain log anomalies. 
+   */
+  listAnomalousLogGroups(params: DevOpsGuru.Types.ListAnomalousLogGroupsRequest, callback?: (err: AWSError, data: DevOpsGuru.Types.ListAnomalousLogGroupsResponse) => void): Request<DevOpsGuru.Types.ListAnomalousLogGroupsResponse, AWSError>;
+  /**
+   *  Returns the list of log groups that contain log anomalies. 
+   */
+  listAnomalousLogGroups(callback?: (err: AWSError, data: DevOpsGuru.Types.ListAnomalousLogGroupsResponse) => void): Request<DevOpsGuru.Types.ListAnomalousLogGroupsResponse, AWSError>;
+  /**
    *  Returns a list of the events emitted by the resources that are evaluated by DevOps Guru. You can use filters to specify which events are returned. 
    */
   listEvents(params: DevOpsGuru.Types.ListEventsRequest, callback?: (err: AWSError, data: DevOpsGuru.Types.ListEventsResponse) => void): Request<DevOpsGuru.Types.ListEventsResponse, AWSError>;
@@ -147,6 +163,14 @@ declare class DevOpsGuru extends Service {
    *  Returns a list of insights in your Amazon Web Services account. You can specify which insights are returned by their start time and status (ONGOING, CLOSED, or ANY). 
    */
   listInsights(callback?: (err: AWSError, data: DevOpsGuru.Types.ListInsightsResponse) => void): Request<DevOpsGuru.Types.ListInsightsResponse, AWSError>;
+  /**
+   *  Returns the list of all log groups that are being monitored and tagged by DevOps Guru. 
+   */
+  listMonitoredResources(params: DevOpsGuru.Types.ListMonitoredResourcesRequest, callback?: (err: AWSError, data: DevOpsGuru.Types.ListMonitoredResourcesResponse) => void): Request<DevOpsGuru.Types.ListMonitoredResourcesResponse, AWSError>;
+  /**
+   *  Returns the list of all log groups that are being monitored and tagged by DevOps Guru. 
+   */
+  listMonitoredResources(callback?: (err: AWSError, data: DevOpsGuru.Types.ListMonitoredResourcesResponse) => void): Request<DevOpsGuru.Types.ListMonitoredResourcesResponse, AWSError>;
   /**
    *  Returns a list of notification channels configured for DevOps Guru. Each notification channel is used to notify you when DevOps Guru generates an insight that contains information about how to improve your operations. The one supported notification channel is Amazon Simple Notification Service (Amazon SNS). 
    */
@@ -212,11 +236,11 @@ declare class DevOpsGuru extends Service {
    */
   startCostEstimation(callback?: (err: AWSError, data: DevOpsGuru.Types.StartCostEstimationResponse) => void): Request<DevOpsGuru.Types.StartCostEstimationResponse, AWSError>;
   /**
-   * Updates the event source configuration.
+   * Enables or disables integration with a service that can be integrated with DevOps Guru. The one service that can be integrated with DevOps Guru is Amazon CodeGuru Profiler, which can produce proactive recommendations which can be stored and viewed in DevOps Guru.
    */
   updateEventSourcesConfig(params: DevOpsGuru.Types.UpdateEventSourcesConfigRequest, callback?: (err: AWSError, data: DevOpsGuru.Types.UpdateEventSourcesConfigResponse) => void): Request<DevOpsGuru.Types.UpdateEventSourcesConfigResponse, AWSError>;
   /**
-   * Updates the event source configuration.
+   * Enables or disables integration with a service that can be integrated with DevOps Guru. The one service that can be integrated with DevOps Guru is Amazon CodeGuru Profiler, which can produce proactive recommendations which can be stored and viewed in DevOps Guru.
    */
   updateEventSourcesConfig(callback?: (err: AWSError, data: DevOpsGuru.Types.UpdateEventSourcesConfigResponse) => void): Request<DevOpsGuru.Types.UpdateEventSourcesConfigResponse, AWSError>;
   /**
@@ -273,10 +297,33 @@ declare namespace DevOpsGuru {
   }
   export interface AmazonCodeGuruProfilerIntegration {
     /**
-     * The status of the CodeGuru Profiler integration.
+     * The status of the CodeGuru Profiler integration. Specifies if DevOps Guru is enabled to consume recommendations that are generated from Amazon CodeGuru Profiler.
      */
     Status?: EventSourceOptInStatus;
   }
+  export interface AnomalousLogGroup {
+    /**
+     *  The name of the CloudWatch log group. 
+     */
+    LogGroupName?: LogGroupName;
+    /**
+     *  The time the anomalous log events began. The impact start time indicates the time of the first log anomaly event that occurs. 
+     */
+    ImpactStartTime?: Timestamp;
+    /**
+     *  The time the anomalous log events stopped. 
+     */
+    ImpactEndTime?: Timestamp;
+    /**
+     *  The number of log lines that were scanned for anomalous log events. 
+     */
+    NumberOfLogLinesScanned?: NumberOfLogLinesScanned;
+    /**
+     *  The log anomalies in the log group. Each log anomaly displayed represents a cluster of similar anomalous log events. 
+     */
+    LogAnomalyShowcases?: LogAnomalyShowcases;
+  }
+  export type AnomalousLogGroups = AnomalousLogGroup[];
   export type AnomalyDescription = string;
   export type AnomalyId = string;
   export type AnomalyLimit = number;
@@ -460,6 +507,14 @@ declare namespace DevOpsGuru {
      */
     EndTime?: Timestamp;
   }
+  export interface DeleteInsightRequest {
+    /**
+     * The ID of the insight.
+     */
+    Id: InsightId;
+  }
+  export interface DeleteInsightResponse {
+  }
   export interface DescribeAccountHealthRequest {
   }
   export interface DescribeAccountHealthResponse {
@@ -528,7 +583,7 @@ declare namespace DevOpsGuru {
   }
   export interface DescribeEventSourcesConfigResponse {
     /**
-     * The name of the event source.
+     * Lists the event sources in the configuration.
      */
     EventSources?: EventSourcesConfig;
   }
@@ -761,7 +816,7 @@ declare namespace DevOpsGuru {
   export type EventSourceOptInStatus = "ENABLED"|"DISABLED"|string;
   export interface EventSourcesConfig {
     /**
-     * 
+     * Information about whether DevOps Guru is configured to consume recommendations which are generated from AWS CodeGuru Profiler.
      */
     AmazonCodeGuruProfiler?: AmazonCodeGuruProfilerIntegration;
   }
@@ -776,6 +831,7 @@ declare namespace DevOpsGuru {
     ToTime: Timestamp;
   }
   export type Events = Event[];
+  export type Explanation = string;
   export interface GetCostEstimationRequest {
     /**
      * The pagination token to use to retrieve the next page of results for this operation. If this value is null, it retrieves the first page.
@@ -908,6 +964,35 @@ declare namespace DevOpsGuru {
      */
     NextToken?: UuidNextToken;
   }
+  export type ListAnomalousLogGroupsMaxResults = number;
+  export interface ListAnomalousLogGroupsRequest {
+    /**
+     *  The ID of the insight containing the log groups. 
+     */
+    InsightId: InsightId;
+    /**
+     * The maximum number of results to return with a single call. To retrieve the remaining results, make another call with the returned nextToken value.
+     */
+    MaxResults?: ListAnomalousLogGroupsMaxResults;
+    /**
+     * The pagination token to use to retrieve the next page of results for this operation. If this value is null, it retrieves the first page.
+     */
+    NextToken?: UuidNextToken;
+  }
+  export interface ListAnomalousLogGroupsResponse {
+    /**
+     *  The ID of the insight containing the log groups. 
+     */
+    InsightId: InsightId;
+    /**
+     *  The list of Amazon CloudWatch log groups that are related to an insight. 
+     */
+    AnomalousLogGroups: AnomalousLogGroups;
+    /**
+     * The pagination token to use to retrieve the next page of results for this operation. If there are no more pages, this value is null.
+     */
+    NextToken?: UuidNextToken;
+  }
   export interface ListEventsFilters {
     /**
      *  An ID of an insight that is related to the events you want to filter for. 
@@ -1031,6 +1116,41 @@ declare namespace DevOpsGuru {
      */
     Any?: ListInsightsAnyStatusFilter;
   }
+  export interface ListMonitoredResourcesFilters {
+    /**
+     *  The permission status of a resource. 
+     */
+    ResourcePermission: ResourcePermission;
+    /**
+     *  The type of resource that you wish to retrieve, such as log groups. 
+     */
+    ResourceTypeFilters: ResourceTypeFilters;
+  }
+  export type ListMonitoredResourcesMaxResults = number;
+  export interface ListMonitoredResourcesRequest {
+    /**
+     *  Filters to determine which monitored resources you want to retrieve. You can filter by resource type or resource permission status. 
+     */
+    Filters: ListMonitoredResourcesFilters;
+    /**
+     * The maximum number of results to return with a single call. To retrieve the remaining results, make another call with the returned nextToken value.
+     */
+    MaxResults?: ListMonitoredResourcesMaxResults;
+    /**
+     * The pagination token to use to retrieve the next page of results for this operation. If this value is null, it retrieves the first page.
+     */
+    NextToken?: UuidNextToken;
+  }
+  export interface ListMonitoredResourcesResponse {
+    /**
+     *  Information about the resource that is being monitored, including the name of the resource, the type of resource, and whether or not permission is given to DevOps Guru to access that resource. 
+     */
+    MonitoredResourceIdentifiers: MonitoredResourceIdentifiers;
+    /**
+     * The pagination token to use to retrieve the next page of results for this operation. If there are no more pages, this value is null.
+     */
+    NextToken?: UuidNextToken;
+  }
   export interface ListNotificationChannelsRequest {
     /**
      * The pagination token to use to retrieve the next page of results for this operation. If this value is null, it retrieves the first page.
@@ -1109,8 +1229,79 @@ declare namespace DevOpsGuru {
     NextToken?: UuidNextToken;
   }
   export type Locale = "DE_DE"|"EN_US"|"EN_GB"|"ES_ES"|"FR_FR"|"IT_IT"|"JA_JP"|"KO_KR"|"PT_BR"|"ZH_CN"|"ZH_TW"|string;
+  export interface LogAnomalyClass {
+    /**
+     *  The name of the Amazon CloudWatch log stream that the anomalous log event belongs to. A log stream is a sequence of log events that share the same source. 
+     */
+    LogStreamName?: LogStreamName;
+    /**
+     *  The type of log anomaly that has been detected. 
+     */
+    LogAnomalyType?: LogAnomalyType;
+    /**
+     *  The token where the anomaly was detected. This may refer to an exception or another location, or it may be blank for log anomalies such as format anomalies. 
+     */
+    LogAnomalyToken?: LogAnomalyToken;
+    /**
+     *  The ID of the log event. 
+     */
+    LogEventId?: LogEventId;
+    /**
+     *  The explanation for why the log event is considered an anomaly. 
+     */
+    Explanation?: Explanation;
+    /**
+     *  The number of log lines where this anomalous log event occurs. 
+     */
+    NumberOfLogLinesOccurrences?: NumberOfLogLinesOccurrences;
+    /**
+     *  The time of the first occurrence of the anomalous log event. 
+     */
+    LogEventTimestamp?: Timestamp;
+  }
+  export type LogAnomalyClasses = LogAnomalyClass[];
+  export interface LogAnomalyShowcase {
+    /**
+     *  A list of anomalous log events that may be related. 
+     */
+    LogAnomalyClasses?: LogAnomalyClasses;
+  }
+  export type LogAnomalyShowcases = LogAnomalyShowcase[];
+  export type LogAnomalyToken = string;
+  export type LogAnomalyType = "KEYWORD"|"KEYWORD_TOKEN"|"FORMAT"|"HTTP_CODE"|"BLOCK_FORMAT"|"NUMERICAL_POINT"|"NUMERICAL_NAN"|"NEW_FIELD_NAME"|string;
+  export type LogEventId = string;
+  export type LogGroupName = string;
+  export type LogStreamName = string;
+  export interface LogsAnomalyDetectionIntegration {
+    /**
+     * Specifies if DevOps Guru is configured to perform log anomaly detection on CloudWatch log groups.
+     */
+    OptInStatus?: OptInStatus;
+  }
+  export interface LogsAnomalyDetectionIntegrationConfig {
+    /**
+     * Specifies if DevOps Guru is configured to perform log anomaly detection on CloudWatch log groups.
+     */
+    OptInStatus?: OptInStatus;
+  }
   export type MeanTimeToRecoverInMilliseconds = number;
   export type MetricValue = number;
+  export interface MonitoredResourceIdentifier {
+    /**
+     *  The name of the resource being monitored. 
+     */
+    MonitoredResourceName?: MonitoredResourceName;
+    /**
+     *  The type of resource being monitored. 
+     */
+    Type?: ResourceType;
+    /**
+     *  The permission status of a resource. 
+     */
+    ResourcePermission?: ResourcePermission;
+  }
+  export type MonitoredResourceIdentifiers = MonitoredResourceIdentifier[];
+  export type MonitoredResourceName = string;
   export interface NotificationChannel {
     /**
      *  The ID of a notification channel. 
@@ -1123,7 +1314,7 @@ declare namespace DevOpsGuru {
   }
   export interface NotificationChannelConfig {
     /**
-     *  Information about a notification channel configured in DevOps Guru to send notifications when insights are created.  If you use an Amazon SNS topic in another account, you must attach a policy to it that grants DevOps Guru permission to it notifications. DevOps Guru adds the required policy on your behalf to send notifications using Amazon SNS in your account. For more information, see Permissions for cross account Amazon SNS topics. If you use an Amazon SNS topic that is encrypted by an Amazon Web Services Key Management Service customer-managed key (CMK), then you must add permissions to the CMK. For more information, see Permissions for Amazon Web Services KMS–encrypted Amazon SNS topics.
+     *  Information about a notification channel configured in DevOps Guru to send notifications when insights are created.  If you use an Amazon SNS topic in another account, you must attach a policy to it that grants DevOps Guru permission to it notifications. DevOps Guru adds the required policy on your behalf to send notifications using Amazon SNS in your account. DevOps Guru only supports standard SNS topics. For more information, see Permissions for cross account Amazon SNS topics. If you use an Amazon SNS topic in another account, you must attach a policy to it that grants DevOps Guru permission to it notifications. DevOps Guru adds the required policy on your behalf to send notifications using Amazon SNS in your account. For more information, see Permissions for cross account Amazon SNS topics. If you use an Amazon SNS topic that is encrypted by an Amazon Web Services Key Management Service customer-managed key (CMK), then you must add permissions to the CMK. For more information, see Permissions for Amazon Web Services KMS–encrypted Amazon SNS topics.
      */
     Sns: SnsChannelConfig;
   }
@@ -1133,6 +1324,8 @@ declare namespace DevOpsGuru {
   export type NumOpenReactiveInsights = number;
   export type NumProactiveInsights = number;
   export type NumReactiveInsights = number;
+  export type NumberOfLogLinesOccurrences = number;
+  export type NumberOfLogLinesScanned = number;
   export interface OpsCenterIntegration {
     /**
      *  Specifies if DevOps Guru is enabled to create an Amazon Web Services Systems Manager OpsItem for each created insight. 
@@ -1355,7 +1548,7 @@ declare namespace DevOpsGuru {
      */
     Limit?: AnomalyLimit;
     /**
-     * Returns the metadata of the source.
+     * The metadata of the source which detects proactive anomalies.
      */
     SourceMetadata?: AnomalySourceMetadata;
     /**
@@ -1786,7 +1979,10 @@ declare namespace DevOpsGuru {
   export type ResourceCollectionType = "AWS_CLOUD_FORMATION"|"AWS_SERVICE"|"AWS_TAGS"|string;
   export type ResourceHours = number;
   export type ResourceName = string;
+  export type ResourcePermission = "FULL_PERMISSION"|"MISSING_PERMISSION"|string;
   export type ResourceType = string;
+  export type ResourceTypeFilter = "LOG_GROUPS"|string;
+  export type ResourceTypeFilters = ResourceTypeFilter[];
   export type SearchInsightsAccountIdList = AwsAccountId[];
   export interface SearchInsightsFilters {
     /**
@@ -1922,6 +2118,10 @@ declare namespace DevOpsGuru {
      *  Information about whether DevOps Guru is configured to create an OpsItem in Amazon Web Services Systems Manager OpsCenter for each created insight. 
      */
     OpsCenter?: OpsCenterIntegration;
+    /**
+     *  Information about whether DevOps Guru is configured to perform log anomaly detection on Amazon CloudWatch log groups. 
+     */
+    LogsAnomalyDetection?: LogsAnomalyDetectionIntegration;
   }
   export type ServiceName = "API_GATEWAY"|"APPLICATION_ELB"|"AUTO_SCALING_GROUP"|"CLOUD_FRONT"|"DYNAMO_DB"|"EC2"|"ECS"|"EKS"|"ELASTIC_BEANSTALK"|"ELASTI_CACHE"|"ELB"|"ES"|"KINESIS"|"LAMBDA"|"NAT_GATEWAY"|"NETWORK_ELB"|"RDS"|"REDSHIFT"|"ROUTE_53"|"S3"|"SAGE_MAKER"|"SNS"|"SQS"|"STEP_FUNCTIONS"|"SWF"|string;
   export type ServiceNames = ServiceName[];
@@ -2050,7 +2250,7 @@ declare namespace DevOpsGuru {
   }
   export interface UpdateEventSourcesConfigRequest {
     /**
-     * The name of the event source.
+     * Configuration information about the integration of DevOps Guru as the Consumer via EventBridge with another AWS Service.
      */
     EventSources?: EventSourcesConfig;
   }
@@ -2078,6 +2278,10 @@ declare namespace DevOpsGuru {
   }
   export interface UpdateServiceIntegrationConfig {
     OpsCenter?: OpsCenterIntegrationConfig;
+    /**
+     *  Information about whether DevOps Guru is configured to perform log anomaly detection on Amazon CloudWatch log groups. 
+     */
+    LogsAnomalyDetection?: LogsAnomalyDetectionIntegrationConfig;
   }
   export interface UpdateServiceIntegrationRequest {
     /**

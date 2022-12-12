@@ -34,8 +34,9 @@ public class TreeBuilder {
         for( Map.Entry<String, String> entry : nerResultsByEntity.entrySet()) {
             String actEntity = entry.getKey();
             String actResult = entry.getValue();
-            JSONObject actWDJson = new JSONObject( actResult );
-            JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
+            JSONArray wdHierarchy = new JSONArray( actResult );
+            //JSONObject actWDJson = new JSONObject( actResult );
+            //JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
             hierarchyMap.put(actEntity, wdHierarchy);  
         }
 
@@ -68,38 +69,23 @@ public class TreeBuilder {
         String keyOfEntityNameInJson, 
         String keyOfEntityUrlInJson) {
 
-        JSONObject rootNode = new JSONObject();
-        rootNode.put("type", "uri");
-        rootNode.put("value", rootNodeLink);
-
-        JSONObject rootNodeLabel = new JSONObject();
-        rootNodeLabel.put("xml:lang", "en");
-        rootNodeLabel.put("type", "literal");
-        rootNodeLabel.put("value", rootNodeName);
-
         for( String actRootClass : rootClasses ) {
             for( Map.Entry<String, String> entry : nerResultsByEntity.entrySet()) {
                 JSONObject actEntity = new JSONObject(entry.getKey());
                 String actResult = entry.getValue();
-                JSONObject actWDJson = new JSONObject( actResult );
-                JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
+                JSONArray wdHierarchy = new JSONArray( actResult );
+                //JSONObject actWDJson = new JSONObject( actResult );
+                //JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
 
                 // Create Entries for Entity Node for later use
-                JSONObject entityNode = new JSONObject();
-                entityNode.put("type", "uri");
-                String link = actEntity.getString(keyOfEntityUrlInJson);
-                entityNode.put("value", link);
-
-                JSONObject entityNodeLabel = new JSONObject();
-                entityNodeLabel.put("xml:lang", "en");
-                entityNodeLabel.put("type", "literal");
-                entityNodeLabel.put("value", actEntity.get(keyOfEntityNameInJson));
+                String entityNode = actEntity.getString(keyOfEntityUrlInJson);
+                String entityNodeLabel = actEntity.getString(keyOfEntityNameInJson);
 
                 for ( int i = 0; i < wdHierarchy.length(); i++ ) {
                     JSONObject actObj = wdHierarchy.getJSONObject(i);
                     
-                    JSONObject classNodeLabel = actObj.getJSONObject("classLabel");
-                    JSONObject classNode = actObj.getJSONObject("class");
+                    String classNodeLabel = actObj.getString("classLabel");
+                    String classNode = actObj.getString("class");
 
                     // if this entry has the actClass as childClass. get all the childclass infos from it to create new link to the root
                     // the new connection will be: rootNode ---> entityNode ---> classNode
@@ -110,8 +96,8 @@ public class TreeBuilder {
                         JSONObject rootToEntity = new JSONObject();
                         rootToEntity.put("superclassLabel", entityNodeLabel);
                         rootToEntity.put("superclass", entityNode);
-                        rootToEntity.put("classLabel", rootNodeLabel);
-                        rootToEntity.put("class", rootNode);
+                        rootToEntity.put("classLabel", rootNodeName);
+                        rootToEntity.put("class", rootNodeLink);
                         
                         hierarchyEntries.put(rootToEntity);
 
@@ -132,8 +118,9 @@ public class TreeBuilder {
     private static void sortChildAndSuperClasses(Set<String> childClassesContainer, Set<String> superClassesContainer,  Map<String,String> nerResultsByEntity ) {
         for( Map.Entry<String, String> entry : nerResultsByEntity.entrySet()) {
             String actResult = entry.getValue();
-            JSONObject actWDJson = new JSONObject( actResult );
-            JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
+            JSONArray wdHierarchy = new JSONArray( actResult );
+            //JSONObject actWDJson = new JSONObject( actResult );
+            //JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
             //System.out.println( wdHierarchy );
             
         
@@ -180,8 +167,9 @@ public class TreeBuilder {
             for( Map.Entry<String, String> entry : nerResultsByEntity.entrySet()) {
                 //String actEntity = entry.getKey();
                 String actResult = entry.getValue();
-                JSONObject actWDJson = new JSONObject( actResult );
-                JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
+                JSONArray wdHierarchy = new JSONArray( actResult );
+                //JSONObject actWDJson = new JSONObject( actResult );
+                //JSONArray wdHierarchy = actWDJson.getJSONObject("results").optJSONArray("bindings") ;
                 for ( int i = 0; i < wdHierarchy.length(); i++ ) {
                     JSONObject actObj = wdHierarchy.getJSONObject(i);
                     String superClassJson = actObj.get("superclass").toString();
@@ -267,11 +255,11 @@ public class TreeBuilder {
         List<JSONObject> hierarchyEntriesOfStartNode = new ArrayList<>();
         for( Object o : hierarchyEntries ) {
             JSONObject j = (JSONObject)o;
-            
-            String actNodeName = j.getJSONObject("classLabel").getString("value");
-            String actNodeUri = j.getJSONObject("class").getString("value");
-            String actSuperClassUri = j.getJSONObject("superclass").getString("value");
-            String actSuperClassName = j.getJSONObject("superclassLabel").getString("value");
+            System.out.println(j.toString());
+            String actNodeName = j.getString("classLabel");
+            String actNodeUri = j.getString("class");
+            String actSuperClassUri = j.getString("superclass");
+            String actSuperClassName = j.getString("superclassLabel");
             if( actNodeUri.equals(startNodeUri) ) {
                 System.out.println("found child entry: "+actNodeName+" ("+actNodeUri+") --> "+actSuperClassName+" ("+actSuperClassUri+")");
                 hierarchyEntriesOfStartNode.add( j );
@@ -281,9 +269,9 @@ public class TreeBuilder {
         // add children for resultNode
         for( JSONObject j : hierarchyEntriesOfStartNode) {
             
-            String actClassUri = j.getJSONObject("class").getString("value");
-            String actSuperClassUri = j.getJSONObject("superclass").getString("value");
-            String actSuperClassName = j.getJSONObject("superclassLabel").getString("value");
+            String actClassUri = j.getString("class");
+            String actSuperClassUri = j.getString("superclass");
+            String actSuperClassName = j.getString("superclassLabel");
             System.out.println("get subtree for startNode: "+actSuperClassName+" ("+actSuperClassUri+")");
             actId++;
 

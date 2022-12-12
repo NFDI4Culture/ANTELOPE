@@ -1,9 +1,26 @@
+<ngx-loading-bar [includeSpinner]=false diameter="40px" height="14px" ></ngx-loading-bar>
 <h2>Try out the Annotation via Falcon</h2>
 <label for="textToAnnotate">Insert text: </label>
 <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate"> </textarea>
-<p>Text to annotate: {{ textToAnnotate.value }}</p>
-
-<button type="button" class="btn btn-primary" (click)="annotate()">Start</button>
-<button type="button" class="btn btn-secondary" (click)="clearAll()">Reset</button>
-
+<form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
+    <div 
+        *ngFor="let datasource of datasources; let i=index"
+        [ngClass]="{'greyout': datasource.disabled == true}">
+        
+        <input 
+            type="checkbox" 
+            formArrayName="selectedSources" 
+            [value]="datasource.value" 
+            [checked]="datasource.checked == true" 
+            [disabled]="datasource.disabled == true"
+            (change)="onCheckboxChange($event)" />
+        
+        {{datasource.name}}
+        
+    </div>
+</form>
+<div>
+    <button type="submit" class="btn btn-primary" (click)="annotate()">Start</button>
+    <button type="button" class="btn btn-secondary" (click)="clearAll()">Reset</button>
+</div>
 <jhi-graph-tidytree></jhi-graph-tidytree>

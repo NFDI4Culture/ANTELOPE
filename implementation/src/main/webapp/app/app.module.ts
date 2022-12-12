@@ -25,7 +25,7 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
-//import { GraphTidytreeComponent } from './graph-tidytree/graph-tidytree.component';
+// import { GraphTidytreeComponent } from './graph-tidytree/graph-tidytree.component';
 
 @NgModule({
   imports: [
@@ -39,6 +39,7 @@ import { ErrorComponent } from './layouts/error/error.component';
     HttpClientModule,
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     TranslationModule,
+    
   ],
   providers: [
     Title,
@@ -48,6 +49,7 @@ import { ErrorComponent } from './layouts/error/error.component';
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   bootstrap: [MainComponent],
+  
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

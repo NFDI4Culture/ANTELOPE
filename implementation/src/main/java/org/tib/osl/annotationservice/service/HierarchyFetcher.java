@@ -1,8 +1,6 @@
 package org.tib.osl.annotationservice.service;
 
 import java.util.Map;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public abstract class HierarchyFetcher implements Runnable {

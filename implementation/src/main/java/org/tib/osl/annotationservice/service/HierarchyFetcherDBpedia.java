@@ -32,7 +32,9 @@ public class HierarchyFetcherDBpedia extends HierarchyFetcher{
         
         //String entityLabel = ((JSONArray)actEntity).get(0).toString();
         String url = (super.falconResultsToProcess).get("URI").toString();
-                        
+        String[] urlParts = url.replace(">", "").split("/");
+        String objId = urlParts[ urlParts.length-1 ];
+
         // init connection to dbpedia api (virtuoso)
         String result = "";
         String sparqlQuery = ""+
@@ -55,7 +57,35 @@ public class HierarchyFetcherDBpedia extends HierarchyFetcher{
             CloseableHttpResponse response = httpClient.execute(get)) {
 
             result = EntityUtils.toString(response.getEntity());
-            super.resultsByEntity.put(super.falconResultsToProcess.toString(), result);
+            JSONObject json = new JSONObject(result);
+            //super.resultsByEntity.put(super.falconResultsToProcess.toString(), json.getJSONObject("results").optJSONArray("bindings").toString());
+            JSONArray jsonFetchResultArr = json.getJSONObject("results").optJSONArray("bindings");
+            JSONArray resultArr = new JSONArray();
+            for( int i=0; i<jsonFetchResultArr.length(); i++){ 
+                JSONObject j = jsonFetchResultArr.getJSONObject(i);
+                String actNodeName = j.getJSONObject("classLabel").getString("value");
+                String actNodeUri = j.getJSONObject("class").getString("value");
+                String actSuperClassUri = j.getJSONObject("superclass").getString("value");
+                String actSuperClassName = j.getJSONObject("superclassLabel").getString("value");
+
+                // embedd respone data into falcon json format
+                JSONObject obj = new JSONObject();
+                obj.put("class", actNodeUri);
+                obj.put("superclass", actSuperClassUri);
+                obj.put("classLabel", actNodeName);
+                obj.put("superclassLabel", actSuperClassName);
+                // add json object to result json array
+                resultArr.put(obj);
+                log.debug("iconclass result fetched sucessfully");
+            }
+
+            // falcon includes only the surface form label, we want to show the wikidata/dbpedia label of the entity
+            //String entityLabel = super.falconResultsToProcess.get("surface form").toString(); // default setting
+            String entityLabel = objId;
+            
+            falconResultsToProcess.put("label", entityLabel);
+
+            resultsByEntity.put(falconResultsToProcess.toString(), resultArr.toString());
             log.debug("dbpedia result fetched sucessfully");
         } catch ( Exception e) {
             log.warn( "unable to receive dbPedia Classes for '"+super.falconResultsToProcess.toString()+"' error: "+e.getMessage() );

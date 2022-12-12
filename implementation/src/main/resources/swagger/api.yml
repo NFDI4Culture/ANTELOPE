@@ -24,17 +24,34 @@ paths:
              
         default:
           description: Unexpected error
-  /annotation/wikidata:
+  /annotation/entities:
     post:
       summary: >-
         retrieves a text and delivers a list of all recognized entities and
-        relations within the wikiData knowlegdegraph as well as the
+        relations within the specified datasources as well as the
         corresponding class hierachy tree
       description: >-
-        Uses Falcon2.0 Tool to retrieve entities and relations from wikidata.
-        Adds the category hierarchy graph for these entities and relations,
-        based on the "is subclass of" relation within wikiData
-      operationId: getWikiDataAnnotation
+        Uses the specified datasources to retrieve entities and relations.
+        Adds the category hierarchy graph for these entities and relations.
+      operationId: getEntities 
+      
+      parameters:
+        - in: query
+          name: wikidata
+          required: false
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from wikidata
+        - in: query
+          name: wikidata_dbpedia
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from dbpedia
+        - in: query
+          name: iconclass
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities(notations) from iconclass
       
       requestBody:
         description: Json array of text samples to annotate

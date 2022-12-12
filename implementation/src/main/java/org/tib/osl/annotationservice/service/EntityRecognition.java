@@ -1,8 +1,12 @@
 package org.tib.osl.annotationservice.service;
 
-
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
-
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -33,13 +38,17 @@ public class EntityRecognition {
      * @return falcon specific json result containing result arrays under the keys "entities_wikidata" and "relations_wikidata"
      * @throws Exception
      */
-    protected static List<String> getFalconResults( List<String> requestText) throws Exception {
+    protected static List<String> getFalconResults( List<String> requestText, boolean useDbpedia) throws Exception {
         List<String> falconResults = new ArrayList<>();
        
         // init connection to falcon api
         for( String actText : requestText) {
             String result = "";
-            HttpPost post = new HttpPost(new URI("https://labs.tib.eu/falcon/falcon2/api?mode=long&db=1&k=10"));
+            String url = "https://labs.tib.eu/falcon/falcon2/api?mode=long&k=10";
+            if( useDbpedia ){
+                url += "&db=1";
+            }
+            HttpPost post = new HttpPost(new URI(url));
             post.addHeader("content-type", "application/json");
 
             StringBuilder json = new StringBuilder();
@@ -55,7 +64,14 @@ public class EntityRecognition {
                 CloseableHttpResponse response = httpClient.execute(post)) {
 
                 result = EntityUtils.toString(response.getEntity());
-                log.debug( result.toString() );
+                // log.debug( result.toString() );
+                JSONObject resultJson = new JSONObject( result );  
+                String[] resultArrKeys = new String[]{"entities_wikidata", "entities_dbpedia"};
+                for( String actResultArrKey : resultArrKeys) {
+                    JSONArray entities = resultJson.getJSONArray(actResultArrKey);
+
+                }
+
                 falconResults.add(result);
             }
         }
@@ -63,7 +79,103 @@ public class EntityRecognition {
         return falconResults;
     }
 
+    protected static List<String> getIconclassNotations( List<String> requestText) throws Exception {
+        List<String> iconclassResults = new ArrayList<>();
 
+        // init connection to falcon api
+        for( String actText : requestText) {
+            String result = "";
+            // see https://iconclass.org/docs#/default/api_search_api_search_get
+            HttpGet request = new HttpGet(new URI("https://iconclass.org/api/search?q="+URLEncoder.encode(actText, StandardCharsets.UTF_8)+"&lang=en&size=10&page=1&sort=rank&keys=1"));
+            request.addHeader("content-type", "application/json");
+            
+             // init json objects to fill with results
+            JSONObject jsonResult = new JSONObject();
+            JSONArray arr = new JSONArray();
+            jsonResult.put("notations_iconclass", arr);
+
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
+                result = EntityUtils.toString(response.getEntity());
+                log.debug( result.toString() );
+                JSONObject actJsonResult = new JSONObject( result );
+                JSONArray resultArr = actJsonResult.getJSONArray("result"); 
+                
+                // for each respondet iconclass notation for the act requestText: fetch details and combine all the results in a json object
+                for( Object notationObj : resultArr){
+                    String actNotationName = notationObj.toString();
+                    
+                    // fetch detail of act notation
+                    String host = "https://iconclass.org/";
+                    String fileName =actNotationName.replace(" ", "%28")+".json";
+                    String fileUri = host+fileName;
+                    String pageUri = host+actNotationName;
+                    log.debug("fetch: "+fileUri);
+                    //BufferedInputStream in = new BufferedInputStream(new URL( fileUri ).openStream());
+                    // parse json response
+                    //JSONTokener tokener = new JSONTokener(in);
+                    //JSONObject notationJson = new JSONObject(tokener);
+
+                    JSONObject notationJson = null;
+                    URL url = new URL( fileUri );
+                    try (InputStream input = url.openStream()) {
+                        InputStreamReader isr = new InputStreamReader(input);
+                        BufferedReader reader = new BufferedReader(isr);
+                        StringBuilder json = new StringBuilder();
+                        int c;
+                        while ((c = reader.read()) != -1) {
+                            json.append((char) c);
+                        }
+                        String jsonStr = json.toString();
+                        log.debug(url.toString()+" result= "+jsonStr);
+                        notationJson = new JSONObject(jsonStr);
+                    }
+
+                    // embedd respone data into falcon json format
+                    JSONObject obj = new JSONObject();
+                    obj.put("URI", pageUri);
+                    String name = notationJson.getJSONObject("txt").getString("en");
+                    obj.put("notationName", name);
+                    // add json object to result json array
+                    arr.put(obj);
+                    
+                }
+            }
+            iconclassResults.add( jsonResult.toString() );
+        }
+
+        // now make a call to the iconclass api to get more data about the entities (notations) found
+        // see https://iconclass.org/docs#/default/api_search_api_search_get
+        
+        // uri build for method 'json' respond with null for some entities, e.g for "47I41( 9q5243)"
+        /*
+        String result = "";
+        String uri = "https://iconclass.org/json?";
+        for( String actNotation : notationsFound){
+            uri += "notation="+actNotation+"&";
+        }
+
+        log.debug("call:"+uri);
+        HttpGet request = new HttpGet(new URI(uri));
+        request.addHeader("content-type", "application/json");
+        
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+            CloseableHttpResponse response = httpClient.execute(request)) {
+
+            result = EntityUtils.toString(response.getEntity());
+            log.debug( result.toString() );
+            JSONObject actJsonResult = new JSONObject( result );
+            JSONArray resultArr = actJsonResult.getJSONArray("result"); 
+            for( Object obj : resultArr){
+                iconclassResults.add( obj.toString() );
+            }
+        }*/
+        
+
+        System.out.println("iconclassResults:"+iconclassResults);
+        return iconclassResults;
+    }
 
     /**
      * connecting the wikidata sparql web api. get all superclasses for every recognized entity within the falconResult parameter List
@@ -75,7 +187,7 @@ public class EntityRecognition {
         Map<String, String> wikidataResultsByEntity = new HashMap<>();
         List<JSONArray> falconResultsToProcess = new ArrayList<>();
         ExecutorService executorService = Executors.newFixedThreadPool(10);
-        List<Future> futures = new ArrayList<Future>();
+        List<Future<?>> futures = new ArrayList<Future<?>>();
         try {
             // get superclass triples from wikiData for each entity that falcon delivered (get class tree)
             for( String actFalconResult : falconResults) {
@@ -91,7 +203,7 @@ public class EntityRecognition {
                 for( JSONArray objects : falconResultsToProcess) {
                     for( Object actObject : objects) {
                         HierarchyFetcherWikiData fetcher = new HierarchyFetcherWikiData(wikidataResultsByEntity, (JSONObject)actObject);
-                        Future actFuture = executorService.submit(fetcher);
+                        Future<?> actFuture = executorService.submit(fetcher);
                         futures.add(actFuture);    
                     }
                 } 
@@ -121,7 +233,7 @@ public class EntityRecognition {
         Map<String, String> dbpediaResultsByEntity = new HashMap<>();
         List<JSONArray> falconResultsToProcess = new ArrayList<>();
         ExecutorService executorService = Executors.newFixedThreadPool(10);
-        List<Future> futures = new ArrayList<Future>();
+        List<Future<?>> futures = new ArrayList<Future<?>>();
         try {
             // get superclass triples from wikiData for each entity that falcon delivered (get class tree)
             for( String actFalconResult : falconResults) {
@@ -137,7 +249,7 @@ public class EntityRecognition {
                 for( JSONArray objects : falconResultsToProcess) {
                     for( Object actObject : objects) {
                         HierarchyFetcherDBpedia fetcher = new HierarchyFetcherDBpedia(dbpediaResultsByEntity, (JSONObject)actObject);
-                        Future actFuture = executorService.submit(fetcher);
+                        Future<?> actFuture = executorService.submit(fetcher);
                         futures.add(actFuture);
                     }
                 } 
@@ -157,6 +269,44 @@ public class EntityRecognition {
         return dbpediaResultsByEntity;
     }
 
+     /**
+     * connecting the Iconclass web api. get all superclasses for every recognized entity within the Result parameter List
+     * @param iconclassResults Every element contains a json object in iconclass specific format. one json object per requested entity
+     * @return map of iconclass results, grouped by entity name in iconclass specific json format
+     * @throws Exception
+     */
+    
+    public static Map<String, String> geIconclassSuperClasses( List<String> iconclassResults ) throws Exception {
+        Map<String, String> resultsByEntity = new HashMap<>();
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        List<Future<?>> futures = new ArrayList<Future<?>>();
+        try {
+            // get superclass triples from iconclass for each notation that was given (get class tree)
+            for( String actResults : iconclassResults) {
+                JSONObject obj = new JSONObject(actResults);
+                JSONArray notations = obj.getJSONArray("notations_iconclass");
+                for( Object actNotation : notations) {
+                    HierarchyFetcherIconclass fetcher = new HierarchyFetcherIconclass(resultsByEntity, (JSONObject)actNotation);
+                    Future<?> actFuture = executorService.submit(fetcher);
+                    futures.add(actFuture);
+                }
+            } 
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.err.println( "error in geIconclassSuperClasses:" + e.getMessage() );
+        }
+       
+         // wait for http requests to terminate
+         while( !futures.stream().allMatch(f -> f.isDone())) {
+            log.debug("wait for completion of iconclass fetching");
+            Thread.sleep(200);
+        }
+        executorService.shutdown();
+        
+        return resultsByEntity;
+    }
+
+
     /**
      * combine results from falcon and its sources and build a category tree datastructure. 
      * @param falconResults
@@ -168,7 +318,9 @@ public class EntityRecognition {
     public static JSONObject combineResults(
             List<String> falconResults, 
             Map<String,String> wikidataResultsByEntity, 
-            Map<String,String> dbpediaResultsByEntity) throws Exception {
+            Map<String,String> dbpediaResultsByEntity,
+            List<String> iconclassResults,
+            Map<String,String> iconclassResultsByEntity) throws Exception {
     
        //wikidataResultsByEntity.putAll(dbpediaResultsByEntity);
 
@@ -190,10 +342,9 @@ public class EntityRecognition {
                     falconEntities.putAll( actFalconJson.optJSONArray(actKey) );
                 }
             }
-            
+
             entitiesArr.putAll( falconEntities );
         }
-        finalResult.put("entities", entitiesArr);
 
         // ========== section relations =============
 
@@ -212,25 +363,40 @@ public class EntityRecognition {
             relationsArr.putAll( falconRels );
         }
         finalResult.put("relations", relationsArr);
+
+        // ========== section notations =============
+        // add all notations from iconclass
+        for (String actIconclassResult : iconclassResults){
+            JSONObject actJson = new JSONObject( actIconclassResult );
+            entitiesArr.putAll( actJson.optJSONArray("notations_iconclass"));
+        }
+        finalResult.put("entities", entitiesArr);
         
         // ========== section hierarchy ===============
-
-        // build hierarchy from Wikidata
-        JSONObject wdHierarchy = TreeBuilder.buildCategoryTree( wikidataResultsByEntity , 1, "Wikidata", "http://wikidata.org", "surface form", "URI");
-
-        // build hierarchy from dbPedia
-        JSONObject dpHierarchy = TreeBuilder.buildCategoryTree( dbpediaResultsByEntity , 1000, "DBpedia", "http://dbpedia.org", "surface form", "URI");
-
-
         // create empty root node
         JSONObject resultHierarchy = new JSONObject();
-        
         resultHierarchy.put("id", "0");
         resultHierarchy.put("name", "results");
         resultHierarchy.put("link", "");
         resultHierarchy.put("children", new JSONArray());
-        resultHierarchy.getJSONArray("children").put(wdHierarchy);
-        resultHierarchy.getJSONArray("children").put(dpHierarchy);
+
+        // build hierarchy from Wikidata and add to root node
+        if( !wikidataResultsByEntity.isEmpty() ) {
+            JSONObject wdHierarchy = TreeBuilder.buildCategoryTree( wikidataResultsByEntity , 1, "Wikidata", "http://wikidata.org", "label", "URI");
+            resultHierarchy.getJSONArray("children").put(wdHierarchy);
+        }
+
+        // build hierarchy from dbPedia and add to root node
+        if( !dbpediaResultsByEntity.isEmpty() ) {
+            JSONObject dpHierarchy = TreeBuilder.buildCategoryTree( dbpediaResultsByEntity , 1000, "DBpedia", "http://dbpedia.org", "label", "URI");
+            resultHierarchy.getJSONArray("children").put(dpHierarchy);
+        }
+
+        // build hierarchy from iconclass and add to root node
+        if( !iconclassResultsByEntity.isEmpty() ) {
+            JSONObject icHierarchy = TreeBuilder.buildCategoryTree( iconclassResultsByEntity , 10000, "Iconclass", "http://iconclass.org", "notationName", "URI");
+            resultHierarchy.getJSONArray("children").put(icHierarchy);
+        }
 
         finalResult.put( "hierarchy", resultHierarchy );
 
