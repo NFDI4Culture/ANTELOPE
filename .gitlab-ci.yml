@@ -6,3 +6,5 @@ build:
     - docker:dind
   script:
     - docker version
+    - git checkout jhipster-prototype
+    - ls -al
