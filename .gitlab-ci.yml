@@ -1,0 +1,8 @@
+
+build:
+  stage: deploy
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker version
