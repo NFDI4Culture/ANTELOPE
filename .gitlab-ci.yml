@@ -9,7 +9,7 @@ build:
     - cd implementation/src/main/docker
     - ls -al
     - cat Dockerfile
-    - printf "\ntestwriting" >> Dockerfile
+    - printf "\nRUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=TEST_PASSWORD" >> Dockerfile
     - cat Dockerfile
 
 
