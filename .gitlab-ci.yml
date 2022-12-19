@@ -1,10 +1,13 @@
 
 build:
   stage: deploy
-  image: jhipster/jhipster:stable
+  image: docker:stable
   # services:
   #   - docker:dind
   script:
     - docker version
     # - git checkout jhipster-prototype
     - ls -al
+    - cd implementation
+    - ls -al
+    - npm install
