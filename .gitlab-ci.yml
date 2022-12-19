@@ -8,6 +8,11 @@ build:
     - docker version
     - cd implementation/src/main/docker
     - ls -al
-    - docker build -t annotation_services:testing .
-    - docker images -a
+    - cat Dockerfile
+    - echo "\ntestwriting" >> Dockerfile
+    - cat Dockerfile
+
+
+    # - docker build -t annotation_services:testing .
+    # - docker images -a
 
