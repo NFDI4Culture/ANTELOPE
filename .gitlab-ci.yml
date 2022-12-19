@@ -1,9 +1,9 @@
 
 build:
   stage: deploy
-  image: docker:stable
-  services:
-    - docker:dind
+  image: jhipster:stable
+  # services:
+  #   - docker:dind
   script:
     - docker version
     # - git checkout jhipster-prototype
