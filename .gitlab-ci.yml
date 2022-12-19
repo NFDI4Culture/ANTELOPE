@@ -9,3 +9,6 @@ build:
     - ls -al
     - cd implementation/src/main/docker
     - ls -al
+    - docker build -t annotation_services:testing .
+
+
