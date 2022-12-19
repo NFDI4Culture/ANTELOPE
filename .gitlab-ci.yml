@@ -9,6 +9,7 @@ build:
     - ls -al
     - cd implementation
     - ls -al
-    - ./mvnw package -Pprod verify jib:dockerBuild
+    - npm install
+    # - ./mvnw package -Pprod verify jib:dockerBuild
 
 
