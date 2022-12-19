@@ -6,8 +6,6 @@ build:
     - docker:dind
   script:
     - docker version
-    # - git checkout jhipster-prototype
     - ls -al
-    - cd implementation
+    - cd implementation/src/main/docker
     - ls -al
-    - npm install
