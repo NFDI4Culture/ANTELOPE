@@ -704,7 +704,7 @@
                             </platforms>
                         </from>
                         <to>
-                            <image>annotationservice:latest</image>
+                            <image>registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest</image>
                         </to>
                         <container>
                             <entrypoint>

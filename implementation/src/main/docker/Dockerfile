@@ -15,7 +15,7 @@ RUN npm install
 
 
 
-# build application using jib/dockerBuild to create a docker image of the application
-#RUN ./mvnw clean package -Pprod verify jib:dockerBuild
-RUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=<USERNAME> \
- -Djib.to.auth.password=<PASSWORD>
+# build application using jib to create a docker image of the application and push it to the TIB gitlab registry
+# You have to insert your gitlab username and passwort to push to the annotationService registry
+# if you just want a development environment, outcomment the line below. the container should has everything onboard to build the application within the container. see README
+RUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=<USERNAME> -Djib.to.auth.password=<PASSWORD>
