@@ -7,8 +7,8 @@ build:
   script:
     - docker version
     - ls -al
-    - cd implementation/src/main/docker
+    - cd implementation
     - ls -al
-    - docker build -t annotation_services:testing .
+    - ./mvnw package -Pprod verify jib:dockerBuild
 
 
