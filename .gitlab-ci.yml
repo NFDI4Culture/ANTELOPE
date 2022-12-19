@@ -1,7 +1,7 @@
 
 build:
   stage: deploy
-  image: jhipster:stable
+  image: jhipster/jhipster:stable
   # services:
   #   - docker:dind
   script:
