@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
 
@@ -41,31 +40,7 @@ export class GraphTidytreeComponent implements OnInit {
   
   constructor() { }
 
-  ngOnInit(): void {
-    /*const flare = {
-      name: "flare",
-      children: [
-        {name: "analytics", children: Array(3)},
-        {name: "animate", children: Array(12)},
-        {name: "data", children: Array(7)},
-        {name: "display", children: Array(4)},
-        {name: "flex", children: Array(1)},
-        {name: "physics", children: Array(8)},
-        {name: "query", children: Array(29)},
-        {name: "scale", children: Array(10)},
-        {name: "util", children: Array(19)},
-        {name: "vis", children: Array(7)},
-      ]
-    }
-    
-    const helpFunctions = {
-      label: (d:any):string => d.data !== undefined ? d.data.name as string: "label" ,
-      title: (d:any, n:d3.HierarchyNode<unknown>):string => `${n.ancestors().reverse().map((d2:any) => d2.data !== undefined ? d2.data.name as string : "name").join(".")}`, // hover text
-      link: (d:any, n:d3.HierarchyNode<unknown>):string => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map((d2:any) => d2.data !== undefined ? d2.data.name as string : "link").join("/")}${n.children ? "" : ".as"}`,
-      width: 1152
-    }
-    this.graph.createTree(flare, helpFunctions)*/
-  }
+  ngOnInit(): void {  }
 
   clear():void {
     const svg = d3.select("#tree");
@@ -75,9 +50,7 @@ export class GraphTidytreeComponent implements OnInit {
 
   createTreeFromWikiDataHierarchy( data: HierarchyTree): void {
    let preparedData = {};
-    //preparedData = d3.stratify()
-     // .id( d => d );
-    //const rollUpData = d3.group( data, d => d.superclassLabel.value);
+    
     preparedData = data;
     const helpFunctions = {
       label(d:any):string {
@@ -135,32 +108,19 @@ export class GraphTidytreeComponent implements OnInit {
       // specified as an object {children} with nested objects (a.k.a. the “flare.json”
       // format), and use d3.hierarchy.
 
-/* eslint-disable no-console */
+
       let root:d3.HierarchyNode<NodeData> = null as unknown as d3.HierarchyNode<NodeData>;
-      //if( path != null ) {
-        //root = d3.stratify().path(path)(data) as HierarchyNode<NodeData> ;
-      //} else 
+     
       if( id != null || parentId != null ){
-        console.log("use d3.stratify()");
-        console.debug( data );
-        //root = d3.stratify().id((d:any, i:any, data2:any): string|null|undefined => d.id as string).parentId((d:any, i:any, data2:any): string|null|undefined => d.parent?.id as string)(data) as HierarchyNode<NodeData> ;
-        //root = d3.stratify().id((d:any, i:any, data2:any): string|null|undefined => d["superclass"]["value"] as string).parentId((d:any, i:any, data2:any): string|null|undefined => d["class"]["value"] as string)(data) as HierarchyNode<NodeData> ;
+        //console.log("use d3.stratify()");
+        //console.debug( data );
         root = d3.stratify().id((d:any, i:any, data2:any): string|null|undefined => d["id"] as string).parentId((d:any, i:any, data2:any): string|null|undefined => d["parentId"] as string)(data) as HierarchyNode<NodeData> ;
       
       } else {
-        console.log("use d3.hierarchy()");
+        //console.log("use d3.hierarchy()");
         root =  d3.hierarchy(data, children ) as HierarchyNode<NodeData> ;
       }
           
-      
-    //console.debug( root );
-    /* eslint-enable no-console */
-          
-      // Sort the nodes.
-      //if (sort != null){ 
-      //  root.sort(sort); 
-      //}
-
       // Compute labels and titles.
       const descendants = root.descendants();
       const L:string[]|null = descendants.map((d:any) => label(d));
@@ -193,7 +153,6 @@ export class GraphTidytreeComponent implements OnInit {
 
       const svg = d3.select("#tree")
           .attr("viewBox", [-dy * padding / 2, x0 - dx, width, height])
-        //  .attr("viewBox", [0,0,width, height]) 
          .attr("width", width)
           .attr("height", height)
           .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
@@ -222,33 +181,29 @@ export class GraphTidytreeComponent implements OnInit {
           .attr("transform", (d:any) => `translate(${d.y as string},${d.x as string})`);
 
       node.append("circle")
-          //.attr("fill", (d:any) => d.children ? stroke : fill)
           .attr("fill", "#fff")
           .attr("stroke", "steelblue")
           .attr("stroke-width", "3px")
           .attr("r", r);
 
-     //if (title) { 
-          node.append("title") 
+     
+      node.append("title") 
           .text((d:any) => title(d.data, d));
-      //}
+      
       
       const textBackground = node.append("rect")
         .attr("rx", 5)
         .attr("ry", 5)
         .attr("x", function(d){ return  this.getBBox().x + 5;})
         .attr("y", function(d, i){ return  this.getBBox().y - 8 })
-        //.attr("width", function(d){ return this.getBBox().width + 80;})
         .attr("width", function(d, i){ return this.getBBox().width + (L[i].length * 6);})
         .attr("height", function(d) {return 14;})
         .style("fill", "#FFFFFF");
 
-      //if (L) { 
+     
       const textNode = node.append("text") 
           .attr("dy", "0.32em")
-          //.attr("x", (d:any) => d.children ? -6 : 6)
           .attr("x", (d:any) => 6 )
-          //.attr("text-anchor", (d:any) => d.children ? "end" : "start")
           .attr("text-anchor", (d:any) => "start")
           .attr("paint-order", "stroke")
           .attr("fill", "none")
@@ -256,10 +211,6 @@ export class GraphTidytreeComponent implements OnInit {
           .attr("stroke-width", "")
           .attr("stroke-opacity", "0.8")
           .text((d:any, i:any) => L[i] )
-       
-      //}
-      
-      //this.tree = svg.node();
     }
 
     

@@ -1,6 +1,6 @@
 <ngx-loading-bar [includeSpinner]=false diameter="40px" height="14px" ></ngx-loading-bar>
-<h2>Try out the Annotation via Falcon</h2>
-<label for="textToAnnotate">Insert text: </label>
+<h2>Try out the annotation-service</h2>
+<label for="textToAnnotate">Insert word or text for entity mapping: </label>
 <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate"> </textarea>
 <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
     <div 
