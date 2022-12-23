@@ -202,7 +202,7 @@ jhipster:
   clientApp:
     name: 'annotationServiceApp'
   # By default CORS is disabled. Uncomment to enable.
-   cors:
+  cors:
      allowed-origins: "http://localhost:8080,http://localhost:9000"
      allowed-methods: "*"
      allowed-headers: "*"
