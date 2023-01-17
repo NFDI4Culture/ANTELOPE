@@ -60,8 +60,8 @@ public class SecurityConfiguration {
                 .antMatchers("/content/**")
                 .antMatchers("/h2-console/**")
                 .antMatchers("/swagger-ui/**")
-                .antMatchers("/test/**")
-                .antMatchers("/api/annotation/**");
+                .antMatchers("/test/**");
+                //.antMatchers("/api/annotation/**");
     }
 
     @Bean
