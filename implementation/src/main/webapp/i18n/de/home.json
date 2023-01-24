@@ -1,6 +1,10 @@
 {
   "home": {
+<<<<<<< HEAD
     "title": "Willkommen, Java Hipster!",
+=======
+    "title": "AnnotationService",
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
     "subtitle": "Dies ist Ihre Hauptseite",
     "logged": {
       "message": "Sie sind als Benutzer \"{{username}}\" angemeldet."

@@ -2,7 +2,11 @@
 version: '3.8'
 services:
   annotationservice-app:
+<<<<<<< HEAD
     image: annotationservice
+=======
+    image: registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
@@ -11,11 +15,19 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
       - SPRING_DATASOURCE_URL=jdbc:postgresql://annotationservice-postgresql:5432/annotationService
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://annotationservice-postgresql:5432/annotationService
+<<<<<<< HEAD
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
       - 127.0.0.1:8080:8080
+=======
+      - JHIPSTER_SLEEP=60 # gives time for other services to boot before the application
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 8080:8080
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
   annotationservice-postgresql:
     image: postgres:14.2
     # volumes:

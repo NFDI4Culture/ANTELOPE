@@ -13,9 +13,22 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotation-service-ui.component';
+<<<<<<< HEAD
 
 @NgModule({
   imports: [SharedLibsModule],
+=======
+import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
+
+@NgModule({
+  imports: [
+    SharedLibsModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    LoadingBarModule
+  ],
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,
@@ -28,7 +41,12 @@ import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotati
     SortByDirective,
     SortDirective,
     ItemCountComponent,
+<<<<<<< HEAD
     AnnotationServiceUIComponent
+=======
+    AnnotationServiceUIComponent,
+    GraphTidytreeComponent
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
   ],
   exports: [
     SharedLibsModule,
@@ -43,7 +61,12 @@ import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotati
     SortByDirective,
     SortDirective,
     ItemCountComponent,
+<<<<<<< HEAD
     AnnotationServiceUIComponent
+=======
+    AnnotationServiceUIComponent,
+   GraphTidytreeComponent
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
   ],
 })
 export class SharedModule {}

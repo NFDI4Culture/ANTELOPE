@@ -16,7 +16,12 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "module": "es2020",
+<<<<<<< HEAD
     "lib": ["es2018", "dom"]
+=======
+    "lib": ["es2018", "dom"],
+    "allowJs": true
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

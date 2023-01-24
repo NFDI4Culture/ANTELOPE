@@ -8,7 +8,11 @@ servers:
   - url: https://localhost:8080/api
     description: Development server with TLS Profile
 paths:
+<<<<<<< HEAD
   /status:
+=======
+  /annotation/status:
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
     get:
       summary: get the current status of the service
       description: ''
@@ -24,6 +28,7 @@ paths:
              
         default:
           description: Unexpected error
+<<<<<<< HEAD
   /annotation/wikidata:
     post:
       summary: >-
@@ -35,6 +40,36 @@ paths:
         Adds the category hierarchy graph for these entities and relations,
         based on the "is subclass of" relation within wikiData
       operationId: getWikiDataAnnotation
+=======
+  /annotation/entities:
+    post:
+      summary: >-
+        retrieves a text and delivers a list of all recognized entities and
+        relations within the specified datasources as well as the
+        corresponding class hierachy tree
+      description: >-
+        Uses the specified datasources to retrieve entities and relations.
+        Adds the category hierarchy graph for these entities and relations.
+      operationId: getEntities 
+      
+      parameters:
+        - in: query
+          name: wikidata
+          required: false
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from wikidata
+        - in: query
+          name: wikidata_dbpedia
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from dbpedia
+        - in: query
+          name: iconclass
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities(notations) from iconclass
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
       
       requestBody:
         description: Json array of text samples to annotate

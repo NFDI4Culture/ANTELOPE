@@ -8,7 +8,11 @@
 
     <p class="lead" jhiTranslate="home.subtitle">This is the homepage</p>
 
+<<<<<<< HEAD
     <div [ngSwitch]="account !== null">
+=======
+    <!--<div [ngSwitch]="account !== null">
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
       <div class="alert alert-success" *ngSwitchCase="true">
         <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" [translateValues]="{ username: account.login }"
           >You are logged in as user "{{ account.login }}".</span
@@ -28,8 +32,13 @@
         <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
         <a class="alert-link" routerLink="account/register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
       </div>
+<<<<<<< HEAD
     </div>
     <jhi-annotation-service-ui>test</jhi-annotation-service-ui>
+=======
+    </div>-->
+    <jhi-annotation-service-ui></jhi-annotation-service-ui>
+>>>>>>> 2e5545b139a65403936136a7357967bad22257fa
   </div>
  
 </div>
