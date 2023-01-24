@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-<<<<<<< HEAD
-
-=======
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
 import { ViewChild } from '@angular/core';
@@ -21,22 +18,12 @@ type HierarchyTree = {
   link: string;
   children: [];
 }
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
 
 @Component({
   selector: 'jhi-annotation-service-ui',
   templateUrl: './annotation-service-ui.component.html',
   styleUrls: ['./annotation-service-ui.component.scss']
 })
-<<<<<<< HEAD
-export class AnnotationServiceUIComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-=======
 
 export class AnnotationServiceUIComponent implements OnInit {
   loader = this.loadingBar.useRef();
@@ -184,5 +171,4 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.graph.clear();
     this.loadingBar.useRef().complete();
   }
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
 }

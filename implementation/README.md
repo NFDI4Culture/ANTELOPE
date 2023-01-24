@@ -2,8 +2,6 @@
 
 This application was generated using JHipster 7.8.1, you can find documentation and help at [https://www.jhipster.tech](https://www.jhipster.tech).
 
-<<<<<<< HEAD
-=======
 
 ## CI/CD
 use the ./src/main/docker/Dockerfile to build a container image of the application:
@@ -16,7 +14,6 @@ docker-compose -f src/main/docker/app.yml up
 ## development environment
 If you want to have a docker image for development purposes, use the ./src/main/docker/Dockerfile but remove the line for building the image
 
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
 ## Project Structure
 
 Node is required for generation and recommended for development. `package.json` is always generated for a better development experience with prettier, commit hooks, scripts and so on.

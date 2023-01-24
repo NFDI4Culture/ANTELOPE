@@ -2,8 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 
-<<<<<<< HEAD
-"$(dirname "$0")/../npmw" exec --no-install lint-staged
-=======
 #"$(dirname "$0")/../npmw" exec --no-install lint-staged
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa

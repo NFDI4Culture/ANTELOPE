@@ -8,11 +8,7 @@ servers:
   - url: https://localhost:8080/api
     description: Development server with TLS Profile
 paths:
-<<<<<<< HEAD
-  /status:
-=======
   /annotation/status:
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
     get:
       summary: get the current status of the service
       description: ''
@@ -28,19 +24,6 @@ paths:
              
         default:
           description: Unexpected error
-<<<<<<< HEAD
-  /annotation/wikidata:
-    post:
-      summary: >-
-        retrieves a text and delivers a list of all recognized entities and
-        relations within the wikiData knowlegdegraph as well as the
-        corresponding class hierachy tree
-      description: >-
-        Uses Falcon2.0 Tool to retrieve entities and relations from wikidata.
-        Adds the category hierarchy graph for these entities and relations,
-        based on the "is subclass of" relation within wikiData
-      operationId: getWikiDataAnnotation
-=======
   /annotation/entities:
     post:
       summary: >-
@@ -69,7 +52,6 @@ paths:
           schema:
             type: boolean
           description: Optional parameter to include or exclude entities(notations) from iconclass
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
       
       requestBody:
         description: Json array of text samples to annotate

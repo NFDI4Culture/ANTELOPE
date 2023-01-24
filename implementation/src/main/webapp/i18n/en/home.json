@@ -1,10 +1,6 @@
 {
   "home": {
-<<<<<<< HEAD
-    "title": "Welcome, Java Hipster!",
-=======
     "title": "AnnotationService",
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
     "subtitle": "This is your homepage",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."

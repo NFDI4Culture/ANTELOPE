@@ -202,13 +202,8 @@ jhipster:
   clientApp:
     name: 'annotationServiceApp'
   # By default CORS is disabled. Uncomment to enable.
-<<<<<<< HEAD
-  # cors:
-  #   allowed-origins: "http://localhost:8100,http://localhost:9000"
-=======
   #cors:
   #   allowed-origins: "http://localhost:8080,http://localhost:9000"
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
   #   allowed-methods: "*"
   #   allowed-headers: "*"
   #   exposed-headers: "Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params"
@@ -229,11 +224,7 @@ jhipster:
     license: unlicensed
     license-url:
   security:
-<<<<<<< HEAD
-    content-security-policy: "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:"
-=======
     content-security-policy:  "default-src 'self' http://nfdi4cultureann21.service.tib.eu:8080 upgrade-insecure-requests; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:"
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

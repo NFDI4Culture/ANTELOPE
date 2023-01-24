@@ -61,10 +61,6 @@ public class SecurityConfiguration {
                 .antMatchers("/h2-console/**")
                 .antMatchers("/swagger-ui/**")
                 .antMatchers("/test/**");
-<<<<<<< HEAD
-=======
-                //.antMatchers("/api/annotation/**");
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
     }
 
     @Bean
@@ -98,10 +94,7 @@ public class SecurityConfiguration {
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
-<<<<<<< HEAD
-=======
             .antMatchers("/api/annotation/**").permitAll()
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/health/**").permitAll()
