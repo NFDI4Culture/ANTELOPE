@@ -10,7 +10,7 @@ RUN git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-ser
 WORKDIR /tib-dev/annotationService
 RUN git checkout jhipster-prototype
 WORKDIR /tib-dev/annotationService/implementation
-RUN rm -R node_modules
+#RUN rm -R node_modules
 RUN npm install
 
 
