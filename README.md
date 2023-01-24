@@ -5,18 +5,23 @@ This is the repository where we'll organize research and work on the annotation 
 ## Description
 We are in the process of researching and planning this service which will connect various terminology services with enduser applications (Wikibase / Kompakkt for now, potentially more in the future) supporting users with automation and NER features.
 
-Example user stories and workflows v0.1: https://miro.com/app/board/o9J_l4xoxek=/?share_link_id=311697039902 
+Example user stories and workflows v0.1: https://miro.com/app/board/uXjVOn6frZY=/
+
+Report from preparatory user research workshop with the NFDI community: https://zenodo.org/record/7100818 
 
 ## Service architecture
 
 V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/blob/main/AnnotationService_SystemArch_2022_05_23.png
+
+## Screenshot of tool interface
+V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/blob/main/2022_11_30_AnnotationService_screenshot.png 
 
 ## Inspiration sources for UI solutions:
 1) solution as a plugin: https://youtu.be/FvU6O23Ozyc
 2) integrated NER solutions: https://semlab.io/howto/selavy_alpha  
 
 ## Roadmap
-Coming soon...
+You can view the current version of the [product roadmap here](https://docs.google.com/spreadsheets/d/1vaIIuVmeJM7F9hfCqZXNk-QC6Z1-XcoMeWWEE6eW9TE/edit?usp=sharing).
 
 ## Authors and acknowledgment
 Contributors to this project: Kolja Bailly, Paul Duchesne and Lozana Rossenova
