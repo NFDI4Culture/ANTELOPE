@@ -199,14 +199,11 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-<<<<<<< HEAD
-=======
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
         </dependency>
         <dependency>
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable.version}</version>
@@ -707,11 +704,7 @@
                             </platforms>
                         </from>
                         <to>
-<<<<<<< HEAD
-                            <image>annotationservice:latest</image>
-=======
                             <image>registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest</image>
->>>>>>> 2e5545b139a65403936136a7357967bad22257fa
                         </to>
                         <container>
                             <entrypoint>
