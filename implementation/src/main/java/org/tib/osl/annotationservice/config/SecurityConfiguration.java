@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.filter.CorsFilter;
 import org.tib.osl.annotationservice.security.*;
 import org.tib.osl.annotationservice.security.jwt.*;
@@ -60,6 +61,8 @@ public class SecurityConfiguration {
                 .antMatchers("/content/**")
                 .antMatchers("/h2-console/**")
                 .antMatchers("/swagger-ui/**")
+                .antMatchers("/swagger-resources/**")
+                .antMatchers("/v3/api-docs")
                 .antMatchers("/test/**");
     }
 
@@ -82,7 +85,13 @@ public class SecurityConfiguration {
             .permissionsPolicy().policy("camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()")
         .and()
             .frameOptions()
-            .deny()
+            //.deny()
+            // to allow embedding of the annotations api result within <iframe> tags.
+            .disable()
+            .addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS",
+                    "ALLOW-FROM http://localhost:9000/api/*"
+                    //"ALLOW-FROM example2.com",
+                    ))
         .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -101,6 +110,8 @@ public class SecurityConfiguration {
             .antMatchers("/management/info").permitAll()
             .antMatchers("/management/prometheus").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/v3/api-docs").permitAll()
+            .antMatchers("/swagger-ui/**").permitAll()
         .and()
             .httpBasic()
         .and()

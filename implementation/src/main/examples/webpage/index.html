@@ -1,0 +1,61 @@
+
+<html>
+   
+    <body>
+        <label for="textToAnnotate">Insert word or text for entity mapping: </label>
+        <textarea id="textToAnnotate"> </textarea>
+        <button type="submit" onClick="queryEntities()">Search</button>
+
+        <!-- iframe of the annotationService -->
+        <iframe src="http://localhost:9000/api/annotation/entities/selectcomponent" height="600" width="800" name="AnnotationService select component" id="annotationservice-selectentity-iframe" sandbox="allow-scripts"></iframe>
+        <!-- necessary scripts for the annotationService iframe. Implement your own code in function 'onMessage()' below to handle the data from the annotationService (e.g entity selection by the user)-->
+        <script>
+            const iframe = document.getElementById('annotationservice-selectentity-iframe');
+            const channel = new MessageChannel();
+            const annotationServiceLocalPort = channel.port1;
+            const annotationServiceIframePort = channel.port2;
+
+            // Wait for the annotationService iframe to load, then exchange ports for sending messages through
+            iframe.addEventListener("load", function onLoad() {
+                    // Listen for messages from the annotationService iframe (see function 'onMessage()' below)
+                    annotationServiceLocalPort.onmessage = onMessage;
+                    // Transfer port2 to the iframe to enable it to send messages to the parent window (your webpage)
+                    iframe.contentWindow.postMessage('init', '*', [annotationServiceIframePort]);
+                }
+            );
+
+            // Send search text to iframe to search for entities and actualize selectbox
+            function queryEntities() {
+                console.log("send searchText to iframe annotationService...")
+                var searchText = document.getElementById("textToAnnotate").value
+                var data = {
+                    message: 'annotationService-searchEntities',
+                    text: searchText
+                }; 
+                console.log(searchText)
+                annotationServiceLocalPort.postMessage(data)
+            }
+
+            // Handle messages received on port1
+            function onMessage(e) {
+                if(e.data.message === "annotationService-entitySelectionChanged") {
+                    // *********************************************************
+                    // * insert your own code below to use the selected entity *
+                    // *********************************************************
+                    var entityStr = JSON.parse(e.data.entity)
+                    console.log("Parent window: received message from annotationService --> new entitiy selection:"+entityStr)
+                    //var entity = JSON.parse(entityStr)
+                    document.getElementById('selectedEntity').innerHTML = JSON.stringify(entityStr)
+                    return
+                }
+                console.err("Parent window: ERROR: received message of unkown type from the annotationService iframe...")
+                console.log(e)
+            }
+ 
+        </script>
+        
+        <p>Selected entity:<div id="selectedEntity"></div></p>
+    </body>
+    
+</html>
+

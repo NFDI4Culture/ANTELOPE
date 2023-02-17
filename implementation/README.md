@@ -143,6 +143,8 @@ To edit the `api.yml` definition file, you can use a tool such as [Swagger-Edito
 
 Refer to [Doing API-First development][] for more details.
 
+If the your IDE doesnt include the generated files from the build folder ("import cannot be resolved") try to reload via ./mvnw eclipse:clean eclipse:eclipse (for eclipse or vsCode).
+
 ## Building for production
 
 ### Packaging as jar

@@ -70,7 +70,30 @@ paths:
                 # $ref: '#/components/schemas/TextAnnotation'
         default:
           description: Generic error response
-          
+  /annotation/entities/selectcomponent:
+    get:
+      summary: >-
+        get a html selectbox for all found entities according to the delivered text
+      description: >-
+        retrieves a text and delivers a html page, containing an interactive 
+        selectbox of all recognized entities within the specified datasources. 
+        The selectpage can be embedded via the <iframe> tag into other websites
+      operationId: getEntitiesSelectComponent 
+      responses:
+        '200':
+          description: a rendered html selectbox
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <select>
+                          <option value="entity1">entity1</option>
+                          <option value="entity2">entity2</option>
+                         </select>
+             
+        default:
+          description: Unexpected error
+
 components:
   schemas:
     TextArray:

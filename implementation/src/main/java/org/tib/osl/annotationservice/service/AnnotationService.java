@@ -1,6 +1,10 @@
 package org.tib.osl.annotationservice.service;
 
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,32 +12,70 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.Locale;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.context.Context;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.tib.osl.annotationservice.web.api.AnnotationApiDelegate;
-import org.tib.osl.annotationservice.web.api.StatusApiDelegate;
 
 
 @Service
-public class AnnotationService implements StatusApiDelegate, AnnotationApiDelegate {
+public class AnnotationService implements AnnotationApiDelegate {
+    @Autowired
+    private SpringTemplateEngine templateEngine;
     private Logger log = LoggerFactory.getLogger(AnnotationService.class);
 
-    @Override
-    public Optional<NativeWebRequest> getRequest() {
-        return StatusApiDelegate.super.getRequest();
-    }
+   // @Override
+   // public Optional<NativeWebRequest> getRequest() {
+   //     return StatusApiDelegate.super.getRequest();
+   // }
 
     @Override
     public ResponseEntity<String> getStatus() {
         return new ResponseEntity<>("Service is running", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> getEntitiesSelectComponent(){
+               
+        List<String> entitiesToSearch = Arrays.asList( new String[]{"test"} );
+        String[] entitiesToSelect = new String[]{};
+
+        try {
+            /*ResponseEntity<String> entitySearchResult = getEntities(entitiesToSearch, null, null, null);
+            JSONObject result = new JSONObject(entitySearchResult.getBody());
+            JSONArray entitiesArr = result.getJSONArray("entities");
+            List<String> entitiesList = entitiesArr.toList().stream().map(Object::toString).collect(java.util.stream.Collectors.toList());
+            entitiesToSelect = entitiesList.toArray(new String[entitiesList.size()]);
+            */
+            entitiesToSelect = new String[]{};
+        
+            
+            Locale locale = Locale.forLanguageTag("de");
+            Context context = new Context(locale);
+            context.setVariable("entities", entitiesToSelect);
+            String content = templateEngine.process("annotationService-selectComponent", context);
+
+            
+            //String content = "test";
+            return new ResponseEntity<>(content, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Interner Fehler", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

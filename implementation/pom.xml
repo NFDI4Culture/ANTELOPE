@@ -827,6 +827,12 @@
                                             <exclude>config/*.yml</exclude>
                                         </excludes>
                                     </resource>
+                                    <resource>
+                                        <directory>${project.build.directory}/generated-sources/</directory>
+                                        <includes>
+                                            <include>*.java</include>
+                                        </includes>
+                                    </resource>
                                 </resources>
                             </configuration>
                         </execution>
@@ -1396,32 +1402,19 @@
                             <artifactId>build-helper-maven-plugin</artifactId>
                             <version>3.3.0</version>
                              <executions>
-
-     <execution>
-
-      <id>add-source</id>
-
-      <phase>generate-sources</phase>
-
-      <goals>
-
-       <goal>add-source</goal>
-
-      </goals>
-
-      <configuration>
-
-       <sources>
-
-        <source>${project.build.directory}/generated-sources/openapi/src/main/java</source>
-
-       </sources>
-
-      </configuration>
-
-     </execution>
-
-    </executions>
+                                <execution>
+                                    <id>add-source</id>
+                                    <phase>generate-sources</phase>
+                                    <goals>
+                                        <goal>add-source</goal>
+                                    </goals>
+                                    <configuration>
+                                        <sources>
+                                            <source>${project.build.directory}/generated-sources/openapi/src/main/java</source>
+                                        </sources>
+                                    </configuration>
+                                </execution>
+                            </executions>
                         </plugin>
                     </plugins>
                 </pluginManagement>

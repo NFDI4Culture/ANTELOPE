@@ -1,0 +1,100 @@
+<script>
+    // port of a MessageChannel we get from the parent window via the init method call
+    let parentWindowMessagePort;
+    
+    // Listen for the initial port transfer message
+    window.addEventListener('message', 
+        function initPort(e) {
+            // Setup the transferred port
+            parentWindowMessagePort = e.ports[0];
+            // listen to port for messages
+            parentWindowMessagePort.onmessage = onMessage;
+            console.log('init messagePort')
+        }
+    );
+
+
+    // Handle messages received on parentWindowMessagePort 
+    function onMessage(e) {
+        if(e.data.message === "annotationService-searchEntities") {
+            const searchText = e.data.text
+            console.log("AnnotationService(iframe): received searchEntities() request from parent window:"+ searchText);
+            var entitySelector = document.getElementById("entitySelector");
+            entitySelector.innerHTML = ""
+            entitySelector.add(newOption("loading..."))
+            fetchResult = fetchEntities(searchText)
+
+            return
+        }
+
+        console.error("Error, annotationService(iframe) received message of unknown message type: "+e.data.message)
+    }
+
+    function fetchEntities( searchText ) {
+        fetch('http://localhost:9000/api/annotation/entities', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify([searchText])
+        })
+        .then(response => response.json())
+        .then(response => initEntitySelector(response))
+        
+        
+    }
+
+    function newOption(text, value) {
+        var o = document.createElement("option");
+        o.text = text;
+        o.value = value;
+        return o
+    }
+
+    function initEntitySelector(optionsData) {
+        
+        console.log("initEntitySelector...")
+        console.log(optionsData.entities)
+        
+        var entitySelector = document.getElementById("entitySelector");
+        entitySelector.innerHTML = ""; // clear all options
+
+        if( optionsData.entities.length == 0 ) {
+            entitySelector.add( newOption( "no results found", ""));
+            return
+        }
+
+        entitySelector.add( newOption( "select entity", ""))
+        for (var key in optionsData.entities) {   
+            var option = optionsData.entities[key]
+            var text = option.URI
+            if( option.hasOwnProperty('surface form') ){
+                text = option.surface_form
+            } 
+            if( option.hasOwnProperty('notationName') ){
+                text = option.notationName
+            }
+            entitySelector.add(newOption(text, JSON.stringify(option)))
+        }
+
+    }
+
+    // Handle change event in the entitySelector
+    function entitySelectionChanged(){
+        console.log('AnnotationService(iframe): Entity selection changed. sending message to parent window...');
+        // Get entity from select field
+        var entity = document.getElementById('entitySelector').value+"";
+        var data = {
+            message: 'annotationService-entitySelectionChanged',
+            entity: entity
+        };
+        // send message to parent window
+        parentWindowMessagePort.postMessage(data);
+    }
+</script>
+<Select id='entitySelector' onchange='entitySelectionChanged()'>
+    <option value="0">select entity</option>
+    <option value="1">1</option>
+    <option th:each="entity : ${entities}" th:value='${entity}' th:text='${entity}'></option>
+</Select>
