@@ -2,6 +2,15 @@
 
 This application was generated using JHipster 7.8.1, you can find documentation and help at [https://www.jhipster.tech](https://www.jhipster.tech).
 
+## Integration in other websites
+To integrate the annotationService into another website, use the integration html code found in src/main/examples/webpage/index.html.
+This will integrate the annotationService within an iframe on the website, as well as some javascript code to handle data exchange.
+The example gets Text from a user via a textfield and sends it to the annotationService for entity mapping via the iframe (function 'queryEntities()').
+The Annotationservice will display the results in a select component (e.g. a selectbox) within the iframe.
+When the user selects a result within the iframe, a message is send to the parent frame (your website).
+The message contains the selected entity data and is processed within the function 'onMessage()'
+In the example, the function displays the selected entity data using a <div> tag 'selectedEntity' feel free to change the onMessage function according to your needs and usecases.
+See schema graph: src/main/examples/webpage/integrationConcept.svg 
 
 ## CI/CD
 use the ./src/main/docker/Dockerfile to build a container image of the application:
