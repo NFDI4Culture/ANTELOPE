@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
+import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 
@@ -28,7 +29,8 @@ type HierarchyTree = {
 export class AnnotationServiceUIComponent implements OnInit {
   loader = this.loadingBar.useRef();
   textToAnnotate = new FormControl('');
-  selectedSources = new FormArray([]);
+  initArray:FormControl[] = [];
+  selectedSources = new FormArray(this.initArray);
   msg = "";
   
   // create a FormGroup to select the datasources checkboxes state
@@ -50,7 +52,7 @@ export class AnnotationServiceUIComponent implements OnInit {
   
   // init a custom loadingbar to show progress while waiting for the annotationService result and creating the d3 graph
   constructor(private loadingBar: LoadingBarService, fb: FormBuilder) {
-    const initialSources = new FormArray([])
+    const initialSources = new FormArray(this.initArray)
       this.datasources.forEach((element) => {
         if( element.checked ) {   
           initialSources.push( new FormControl( element.value ) )
@@ -81,7 +83,7 @@ export class AnnotationServiceUIComponent implements OnInit {
   onCheckboxChange(event: any): void {  
     const selectedSources = (this.sourcesForm.controls['selectedSources'] as FormArray);
     if (event.target.checked) {
-      this.selectedSources.push(new FormControl(event.target.value));
+      this.selectedSources.push(new FormControl<boolean[]>(event.target.value));
       if( event.target.value === 'wikidata'){
         this.datasources[1].disabled = true;
       } else if( event.target.value === 'wikidata_dbpedia'){
@@ -118,7 +120,7 @@ export class AnnotationServiceUIComponent implements OnInit {
       let url = 'api/annotation/entities?';
 
       // add datasource parameters (optional) to url e.g. wikidata=true, based on the checkbox formgroup
-      this.selectedSources.controls.forEach((element) => {
+      this.selectedSources.controls.forEach((element:FormControl) => {
         url += this.getStringValue(element.value)+"=true&";  
       });
         

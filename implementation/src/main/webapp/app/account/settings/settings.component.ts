@@ -15,10 +15,10 @@ export class SettingsComponent implements OnInit {
   success = false;
   languages = LANGUAGES;
   settingsForm = this.fb.group({
-    firstName: [undefined, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
-    lastName: [undefined, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
-    email: [undefined, [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
-    langKey: [undefined],
+    firstName: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+    lastName: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+    email: ["", [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
+    langKey: [""],
   });
 
   constructor(private accountService: AccountService, private fb: FormBuilder, private translateService: TranslateService) {}

@@ -103,6 +103,38 @@
     <noscript>
       <h1>You must enable JavaScript to view this page.</h1>
     </noscript>
+    
+    <script>
+      const channel = new MessageChannel();
+      // Listen for messages from the iframe
+      channel.port2.onmessage = function(event) {
+        console.log('Parent window received message:', event.data);
+      };
+
+      // Send the MessageChannel to the iframe
+      var iframe = document.getElementById('annotationservice-selectentity-iframe');
+      iframe.contentWindow.postMessage('Init', '*', [channel.port1]);
+
+      console.log('add eventListener for annotationService..')
+      window.addEventListener('message', function(event) {
+        console.log('Parent window: received event from annotationService-entitySelectionChanged')
+        console.log(event)
+        if (event.origin !== 'http://localhost:9000/api/annotation/entities/selectcomponent') {
+          console.log('error, event from invalid source:'+event.source)
+          return;
+        } else 
+        console.log(test)
+        // Handle the message from the iframe
+        var buffer = new Uint8Array(event.data);
+        var message = new TextDecoder().decode(buffer);
+        console.log(message)
+        if (event.data.message === 'annotationService-entitySelectionChanged') {
+          console.log('received')
+          window.dispatchEvent(new Event('customEvent'));
+        }
+
+      }, false)
+    </script>
     <script type="text/javascript">
       // show an error message if the app loading takes more than 4 sec
       window.onload = function () {

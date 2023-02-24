@@ -1,5 +1,13 @@
 <ngx-loading-bar [includeSpinner]=false diameter="40px" height="14px" ></ngx-loading-bar>
-<h2>Try out the annotation-service</h2>
+<ul class="nav nav-tabs">
+    <li class="active"><a showtab="" href="#tabone">Tab One</a></li>
+    <li><a showtab="" href="#tabtwo">Tab Two</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="tabone">1</div>
+    <div class="tab-pane" id="tabtwo">2</div>
+</div>
+
 <label for="textToAnnotate">Insert word or text for entity mapping: </label>
 <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate"> </textarea>
 <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
@@ -24,3 +32,5 @@
     <button type="button" class="btn btn-secondary" (click)="clearAll()">Reset</button>
 </div>
 <jhi-graph-tidytree></jhi-graph-tidytree>
+<jhi-annotationservice-result-selectcomponent></jhi-annotationservice-result-selectcomponent>
+

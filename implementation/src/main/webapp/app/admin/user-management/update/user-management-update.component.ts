@@ -17,7 +17,7 @@ export class UserManagementUpdateComponent implements OnInit {
   isSaving = false;
 
   editForm = this.fb.group({
-    id: [],
+    id: undefined,  // previously: []
     login: [
       '',
       [
@@ -30,9 +30,9 @@ export class UserManagementUpdateComponent implements OnInit {
     firstName: ['', [Validators.maxLength(50)]],
     lastName: ['', [Validators.maxLength(50)]],
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
-    activated: [],
-    langKey: [],
-    authorities: [],
+    activated: undefined, // previously [],
+    langKey: undefined, // previously [],
+    authorities: undefined, // previously [],
   });
 
   constructor(private userService: UserManagementService, private route: ActivatedRoute, private fb: FormBuilder) {}

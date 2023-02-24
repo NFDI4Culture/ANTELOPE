@@ -128,7 +128,7 @@ export class GraphTidytreeComponent implements OnInit {
       // Compute the layout.
       const dx = 13;
       const dy = width / (root.height + padding);
-      tree().nodeSize([dx, dy])(root);
+      tree<NodeData>().nodeSize([dx, dy])(root);
 
       // Center the tree.
       let x0 = Infinity;
@@ -194,10 +194,10 @@ export class GraphTidytreeComponent implements OnInit {
       const textBackground = node.append("rect")
         .attr("rx", 5)
         .attr("ry", 5)
-        .attr("x", function(d){ return  this.getBBox().x + 5;})
-        .attr("y", function(d, i){ return  this.getBBox().y - 8 })
-        .attr("width", function(d, i){ return this.getBBox().width + (L[i].length * 6);})
-        .attr("height", function(d) {return 14;})
+        .attr("x", function(d:any){ return  this.getBBox().x + 5;})
+        .attr("y", function(d:any, i:any){ return  this.getBBox().y - 8 })
+        .attr("width", function(d:any, i:any){ return this.getBBox().width + (L[i].length * 6);})
+        .attr("height", function(d:any) {return 14;})
         .style("fill", "#FFFFFF");
 
      

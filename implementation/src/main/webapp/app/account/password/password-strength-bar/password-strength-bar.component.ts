@@ -52,7 +52,7 @@ export class PasswordStrengthBarComponent {
   }
 
   @Input()
-  set passwordToCheck(password: string) {
+  set passwordToCheck(password: any) {
     if (password) {
       const c = this.getColor(this.measureStrength(password));
       const element = this.elementRef.nativeElement;
