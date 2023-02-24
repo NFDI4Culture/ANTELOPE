@@ -2,7 +2,7 @@
 version: '3.8'
 services:
   annotationservice-app:
-    image: registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest
+    image: annotationservice
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
@@ -11,13 +11,13 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
       - SPRING_DATASOURCE_URL=jdbc:postgresql://annotationservice-postgresql:5432/annotationService
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://annotationservice-postgresql:5432/annotationService
-      - JHIPSTER_SLEEP=60 # gives time for other services to boot before the application
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 8080:8080
+      - 127.0.0.1:8080:8080
   annotationservice-postgresql:
-    image: postgres:14.2
+    image: postgres:14.5
     # volumes:
     #   - ~/volumes/jhipster/annotationService/postgresql/:/var/lib/postgresql/data/
     environment:
@@ -43,7 +43,7 @@ services:
       - SPRING_SECURITY_USER_PASSWORD=admin
       - JHIPSTER_REGISTRY_PASSWORD=admin
       - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
-      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/localhost-config/
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/docker-config/
       # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=git
       # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_URI=https://github.com/jhipster/jhipster-registry/
       # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_PATHS=central-config
