@@ -314,11 +314,14 @@
             <artifactId>metrics-core</artifactId>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
-        <dependency>
+
+         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20220924</version>
+            <version>20220320</version>
         </dependency>
+
+
     </dependencies>
 
     <build>

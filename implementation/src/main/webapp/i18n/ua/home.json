@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "AnnotationService",
+    "title": "Ласкаво просимо, Java hipster!",
     "subtitle": "Це ваша домашня сторінка",
     "logged": {
       "message": "Ви ввійшли як користувач \"{{username}}\"."

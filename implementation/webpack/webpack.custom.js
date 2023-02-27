@@ -23,11 +23,15 @@ module.exports = async (config, options, targetOptions) => {
   if (config.mode === 'development') {
     config.plugins.push(
       new ESLintPlugin({
-        extensions: ['js', 'ts'],
+        baseConfig: {
+          parserOptions: {
+            project: ['../tsconfig.app.json'],
+          },
+        },
       }),
       new WebpackNotifierPlugin({
         title: 'Annotation Service',
-        contentImage: path.join(__dirname, 'antelope.png'),
+        contentImage: path.join(__dirname, 'logo-jhipster.png'),
       })
     );
   }

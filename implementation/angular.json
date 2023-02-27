@@ -98,13 +98,13 @@
       }
     }
   },
-  "defaultProject": "annotation-service",
   "cli": {
     "cache": {
       "enabled": true,
       "path": "./target/angular/",
       "environment": "all"
     },
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": false
   }
 }

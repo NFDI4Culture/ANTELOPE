@@ -12,18 +12,15 @@ import { FormatMediumDatePipe } from './date/format-medium-date.pipe';
 import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
+import { FilterComponent } from './filter/filter.component';
 import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotation-service-ui.component';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
-import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
-//import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 
+
 @NgModule({
-  imports: [
-    SharedLibsModule,
-    //NgMultiSelectDropDownModule.forRoot(),
-    LoadingBarModule
-  ],
+  imports: [SharedLibsModule],
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,
@@ -36,9 +33,10 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
     SortByDirective,
     SortDirective,
     ItemCountComponent,
+    FilterComponent,
     AnnotationServiceUIComponent,
-    GraphTidytreeComponent,
-    AnnotationserviceResultSelectcomponentComponent
+    GraphTidytreeComponent
+
   ],
   exports: [
     SharedLibsModule,
@@ -53,9 +51,10 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
     SortByDirective,
     SortDirective,
     ItemCountComponent,
+    FilterComponent,
     AnnotationServiceUIComponent,
-    GraphTidytreeComponent,
-    AnnotationserviceResultSelectcomponentComponent
+    GraphTidytreeComponent
+
   ],
 })
 export class SharedModule {}
