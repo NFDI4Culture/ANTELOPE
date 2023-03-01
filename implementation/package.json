@@ -93,6 +93,7 @@
     "@ngx-translate/core": "14.0.0",
     "@ngx-translate/http-loader": "7.0.0",
     "@popperjs/core": "2.11.6",
+    "angular-animations": "^0.11.0",
     "bootstrap": "5.2.0",
     "bootswatch": "5.2.0",
     "d3": "7.4",

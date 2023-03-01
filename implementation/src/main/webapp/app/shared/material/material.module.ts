@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
@@ -10,12 +9,10 @@ import {MatTooltipModule} from '@angular/material/tooltip';
   imports: [
     CommonModule,
     MatTabsModule,
-    MatTooltipModule,
-    BrowserAnimationsModule
+    MatTooltipModule
   ],
   exports: [
     MatTabsModule, 
-    MatTooltipModule, 
-    BrowserAnimationsModule]
+    MatTooltipModule]
 })
 export class MaterialModule { }

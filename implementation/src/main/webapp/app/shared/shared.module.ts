@@ -17,7 +17,7 @@ import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotati
 import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
-import {MaterialModule} from "./material/material.module";
+import { MaterialModule } from "./material/material.module";
 
 
 @NgModule({

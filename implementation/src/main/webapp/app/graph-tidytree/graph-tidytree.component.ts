@@ -158,8 +158,10 @@ export class GraphTidytreeComponent implements OnInit {
           .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
           .attr("font-family", "sans-serif")
           .attr("font-size", 11);
+      
+      const g = svg.append("g");
 
-      svg.append("g")
+      g.append("g")
           .attr("fill", "none")
           .attr("stroke", stroke)
           .attr("stroke-opacity", strokeOpacity)
@@ -172,7 +174,7 @@ export class GraphTidytreeComponent implements OnInit {
             .attr("d", (d:any)=> linkGenerator(d) as unknown as string )
              ;
 
-      const node = svg.append("g")
+      const node = g.append("g")
         .selectAll("a")
         .data(root.descendants())
         .join("a")
@@ -211,6 +213,24 @@ export class GraphTidytreeComponent implements OnInit {
           .attr("stroke-width", "")
           .attr("stroke-opacity", "0.8")
           .text((d:any, i:any) => L[i] )
+       
+      const zoom = d3.zoom<SVGSVGElement, unknown>()
+        .extent([[0, 0], [width, height]])
+        //.translateExtent([[-0.5*height,-0.5*width],[0.5*height,0.5*height]])
+        .scaleExtent([-8, 8])
+
+        .on("zoom", ({transform}) => {
+          
+              
+          g.attr("transform", transform);
+          
+        }) as any;
+
+      svg.call(zoom);
+          
+      
+    
+      
     }
 
     
