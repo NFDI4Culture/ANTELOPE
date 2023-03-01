@@ -4,6 +4,10 @@ import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.compon
 import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { MatTabGroup } from '@angular/material/tabs';
+import { MatTab } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip } from '@angular/material/tooltip';
 
 // data model of the RESTful annotationService API result
 type AnnotationResponse = {

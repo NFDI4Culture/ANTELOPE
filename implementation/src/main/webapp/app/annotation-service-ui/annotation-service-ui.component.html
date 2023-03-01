@@ -1,36 +1,70 @@
 <ngx-loading-bar [includeSpinner]=false diameter="40px" height="14px" ></ngx-loading-bar>
-<ul class="nav nav-tabs">
-    <li class="active"><a showtab="" href="#tabone">Tab One</a></li>
-    <li><a showtab="" href="#tabtwo">Tab Two</a></li>
-</ul>
-<div class="tab-content">
-    <div class="tab-pane active" id="tabone">1</div>
-    <div class="tab-pane" id="tabtwo">2</div>
-</div>
-
-<label for="textToAnnotate">Insert word or text for entity mapping: </label>
-<textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate"> </textarea>
-<form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
-    <div 
-        *ngFor="let datasource of datasources; let i=index"
-        [ngClass]="{'greyout': datasource.disabled == true}">
-        
-        <input 
-            type="checkbox" 
-            formArrayName="selectedSources" 
-            [value]="datasource.value" 
-            [checked]="datasource.checked == true" 
-            [disabled]="datasource.disabled == true"
-            (change)="onCheckboxChange($event)" />
-        
-        {{datasource.name}}
-        
-    </div>
-</form>
-<div>
-    <button type="submit" class="btn btn-primary" (click)="annotate()">Start</button>
-    <button type="button" class="btn btn-secondary" (click)="clearAll()">Reset</button>
-</div>
-<jhi-graph-tidytree></jhi-graph-tidytree>
-<jhi-annotationservice-result-selectcomponent></jhi-annotationservice-result-selectcomponent>
+<mat-tab-group dynamicHeight preserveContent>
+    <mat-tab label="Terminology search">
+        <div style="margin: 5px;">
+            <br>
+            <label for="textToAnnotate">Type the term you want to search for (single word or phrase): </label>
+            <div class="btn tib-btn-info" 
+                matTooltip="Terminology search is used to search for a term in a controlled vocabulary. The annotation service will propose entities, that are best matching the whole provided phrase. If you want to receive all contained entities within your phrase, choose 'Entity recognition' above"
+                matTooltipPosition="right"
+                matTooltipSize="12px"></div>
+            <input type="text" id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"/>
+            <span style="font-size: 14px;" >Select terminology sources:</span>
+            <div class="btn tib-btn-info" 
+                matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
+                matTooltipPosition="right"></div>
+            
+            <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
+                <div style="font-size: 14px;"
+                    *ngFor="let datasource of datasources; let i=index"
+                    [ngClass]="{'greyout': datasource.disabled == true}">
+                    
+                    <input 
+                        type="checkbox" 
+                        formArrayName="selectedSources" 
+                        [value]="datasource.value" 
+                        [checked]="datasource.checked == true" 
+                        [disabled]="datasource.disabled == true"
+                        (change)="onCheckboxChange($event)" />
+                    
+                    {{datasource.name}}
+                    
+                </div>
+            </form>
+            <div style="margin-top:15px">
+                <button type="submit" class="btn btn-tib" (click)="annotate()">Run service</button>
+                <button type="button" class="btn btn-tib-secondary" (click)="clearAll()">Reset</button>
+            </div>
+            <jhi-graph-tidytree></jhi-graph-tidytree>
+            <jhi-annotationservice-result-selectcomponent></jhi-annotationservice-result-selectcomponent>
+        </div>
+    </mat-tab>
+    <mat-tab label="Entity recognition">
+        <label for="textToAnnotate">Insert word or text for entity mapping: </label>
+        <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate"> </textarea>
+        <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
+            <div 
+                *ngFor="let datasource of datasources; let i=index"
+                [ngClass]="{'greyout': datasource.disabled == true}">
+                
+                <input 
+                    type="checkbox" 
+                    formArrayName="selectedSources" 
+                    [value]="datasource.value" 
+                    [checked]="datasource.checked == true" 
+                    [disabled]="datasource.disabled == true"
+                    (change)="onCheckboxChange($event)" />
+                
+                {{datasource.name}}
+                
+            </div>
+        </form>
+        <div>
+            <button type="submit" class="btn btn-primary" (click)="annotate()">Start</button>
+            <button type="button" class="btn btn-secondary" (click)="clearAll()">Reset</button>
+        </div>
+        <jhi-graph-tidytree></jhi-graph-tidytree>
+        <jhi-annotationservice-result-selectcomponent></jhi-annotationservice-result-selectcomponent>
+    </mat-tab>
+</mat-tab-group>
 

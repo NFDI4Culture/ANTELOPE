@@ -17,10 +17,11 @@ import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotati
 import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
+import {MaterialModule} from "./material/material.module";
 
 
 @NgModule({
-  imports: [SharedLibsModule, LoadingBarModule],
+  imports: [SharedLibsModule, LoadingBarModule, MaterialModule],
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,
@@ -56,7 +57,8 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
     FilterComponent,
     AnnotationServiceUIComponent,
     AnnotationserviceResultSelectcomponentComponent,
-    GraphTidytreeComponent
+    GraphTidytreeComponent,
+    MaterialModule
 
   ],
 })
