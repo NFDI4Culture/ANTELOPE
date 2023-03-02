@@ -37,6 +37,7 @@ public class AnnotationService implements AnnotationApiDelegate {
     @Autowired
     private SpringTemplateEngine templateEngine;
     private Logger log = LoggerFactory.getLogger(AnnotationService.class);
+    public enum SearchMode {TERMINOLOGY_SEARCH, ENITTY_RECOGNITION};
 
    // @Override
    // public Optional<NativeWebRequest> getRequest() {
@@ -79,11 +80,31 @@ public class AnnotationService implements AnnotationApiDelegate {
     }
 
     @Override
+    public ResponseEntity<String> getTerminology(String searchText, 
+    Boolean wikidata,
+    Boolean wikidataDbpedia,
+    Boolean iconclass) {
+        List<String> requestBody = new ArrayList<String>();
+        requestBody.add(searchText);
+        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass);
+    }
+
+    @Override
     public ResponseEntity<String> getEntities(List<String> requestBody, 
     Boolean wikidata,
     Boolean wikidataDbpedia,
     Boolean iconclass) {
-        
+        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass);
+    }
+
+
+    public ResponseEntity<String> search(
+    List<String> requestBody, 
+    SearchMode searchMode,
+    Boolean wikidata,
+    Boolean wikidataDbpedia,
+    Boolean iconclass) {
+        System.out.println("test");
         // decide which datasources to use
         // if no parameter is given, all datasources are used
         boolean useAllSources = true;
@@ -102,7 +123,7 @@ public class AnnotationService implements AnnotationApiDelegate {
                 useDbpedia = true;
             }
             try {
-                falconResults = EntityRecognition.getFalconResults(requestBody, useDbpedia);
+                falconResults = EntityRecognition.getFalconResults(requestBody, useDbpedia, searchMode);
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseEntity<>("Failed to request Falcon API", HttpStatus.INTERNAL_SERVER_ERROR);

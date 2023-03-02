@@ -1,23 +1,176 @@
-# API-first development with OpenAPI
-# This file will be used at compile time to generate Spring-MVC endpoint stubs using openapi-generator
-openapi: '3.0.1'
+openapi: 3.0.1
 info:
-  title: 'annotationService'
+  title: annotationService
   version: 0.0.1
 servers:
   - url: http://localhost:8080/api
     description: Development server
   - url: https://localhost:8080/api
     description: Development server with TLS Profile
-paths: {}
-components:
-  responses:
-    Problem:
-      description: error occurred - see status code and problem object for more information.
-      content:
-        'application/problem+json':
+paths:
+  /annotation/status:
+    get:
+      summary: get the current status of the service
+      description: ''
+      operationId: getStatus
+      responses:
+        '200':
+          description: Service is running
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+             
+        default:
+          description: Unexpected error
+  /annotation/terminology:
+    get:
+      summary: >-
+        retrieves a text and delivers a list of all recognized entities and
+        relations within the specified datasources as well as the
+        corresponding class hierachy tree
+      description: >-
+        Uses the specified datasources to retrieve entities and relations.
+        Adds the category hierarchy graph for these entities and relations.
+      operationId: getTerminology
+      
+      parameters:
+        - in: query
+          name: searchtext
+          required: true
           schema:
-            $ref: 'https://opensource.zalando.com/problem/schema.yaml#/Problem'
+            type: string
+          description: text that contains or describes the wanted entity/terminology
+        - in: query
+          name: wikidata
+          required: false
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from wikidata
+        - in: query
+          name: wikidata_dbpedia
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from dbpedia
+        - in: query
+          name: iconclass
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities(notations) from iconclass
+      
+      responses:
+        '200':
+          description: Annotations of the given searchtext
+          content:
+            application/json:
+              schema:
+                type: string  
+                # $ref: '#/components/schemas/TextAnnotation'
+        default:
+          description: Generic error response
+  /annotation/entities:
+    post:
+      summary: >-
+        retrieves a text and delivers a list of all recognized entities and
+        relations within the specified datasources as well as the
+        corresponding class hierachy tree
+      description: >-
+        Uses the specified datasources to retrieve entities and relations.
+        Adds the category hierarchy graph for these entities and relations.
+      operationId: getEntities 
+      
+      parameters:
+        - in: query
+          name: wikidata
+          required: false
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from wikidata
+        - in: query
+          name: wikidata_dbpedia
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from dbpedia
+        - in: query
+          name: iconclass
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities(notations) from iconclass
+      
+      requestBody:
+        description: Json array of text samples to annotate
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextArray'
+      responses:
+        '200':
+          description: Annotations of the given post parameters
+          content:
+            application/json:
+              schema:
+                type: string  
+                # $ref: '#/components/schemas/TextAnnotation'
+        default:
+          description: Generic error response
+  /annotation/entities/selectcomponent:
+    get:
+      summary: >-
+        get a html selectbox for all found entities according to the delivered text
+      description: >-
+        retrieves a text and delivers a html page, containing an interactive 
+        selectbox of all recognized entities within the specified datasources. 
+        The selectpage can be embedded via the <iframe> tag into other websites
+      operationId: getEntitiesSelectComponent 
+      responses:
+        '200':
+          description: a rendered html selectbox
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <select>
+                          <option value="entity1">entity1</option>
+                          <option value="entity2">entity2</option>
+                         </select>
+             
+        default:
+          description: Unexpected error
+
+components:
+  schemas:
+    TextArray:
+        type: array
+        items:
+          type: string
+          example: 'Single entity name or fulltext'
+          
+    TextAnnotation:
+      properties:
+        entities:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+              example: ['Entity label', 'Wikidata URL']
+              
+        relations:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+              example: ['Relation label', 'Wikidata URL']
+        hierarchy:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+              example: ['Subclass label', 'Parentclass label']
 
   securitySchemes:
     jwt:
@@ -32,3 +185,4 @@ components:
 security:
   - jwt: []
   - basic: []
+

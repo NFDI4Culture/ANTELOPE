@@ -33,40 +33,52 @@
                 </div>
             </form>
             <div style="margin-top:15px">
-                <button type="submit" class="btn btn-tib" (click)="annotate()">Run service</button>
+                <button type="submit" class="btn btn-tib" (click)="terminologySearch()">Run service</button>
                 <button type="button" class="btn btn-tib-secondary" (click)="clearAll()">Reset</button>
             </div>
-            <jhi-graph-tidytree></jhi-graph-tidytree>
+            
             
         </div>
     </mat-tab>
     <!-- ********************** Entity Recognition ********************* -->
     <mat-tab label="Entity recognition">
-        <label for="textToAnnotate">Insert word or text for entity mapping: </label>
-        <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate"> </textarea>
-        <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
-            <div 
-                *ngFor="let datasource of datasources; let i=index"
-                [ngClass]="{'greyout': datasource.disabled == true}">
-                
-                <input 
-                    type="checkbox" 
-                    formArrayName="selectedSources" 
-                    [value]="datasource.value" 
-                    [checked]="datasource.checked == true" 
-                    [disabled]="datasource.disabled == true"
-                    (change)="onCheckboxChange($event)" />
-                
-                {{datasource.name}}
-                
+        <div style="margin: 5px;">
+            <br>
+            <label for="textToAnnotate">Type the text you want to run entity recognition on (single words or whole sentences): </label>
+            <div class="btn tib-btn-info" 
+                matTooltip="Use Entity recognition to map as many words as possible, of your input text, to entities from the datasources. If you want to search for a single term, that is described by your text, choose 'Terminology search' above"
+                matTooltipPosition="right"
+                matTooltipSize="12px"></div>
+            <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"></textarea>
+            <span style="font-size: 14px;" >Select terminology sources:</span>
+            <div class="btn tib-btn-info" 
+                matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
+                matTooltipPosition="right"></div>
+            
+            <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
+                <div style="font-size: 14px;"
+                    *ngFor="let datasource of datasources; let i=index"
+                    [ngClass]="{'greyout': datasource.disabled == true}">
+                    
+                    <input 
+                        type="checkbox" 
+                        formArrayName="selectedSources" 
+                        [value]="datasource.value" 
+                        [checked]="datasource.checked == true" 
+                        [disabled]="datasource.disabled == true"
+                        (change)="onCheckboxChange($event)" />
+                    
+                    {{datasource.name}}
+                    
+                </div>
+            </form>
+            <div style="margin-top:15px">
+                <button type="submit" class="btn btn-tib" (click)="entityRecognition()">Run service</button>
+                <button type="button" class="btn btn-tib-secondary" (click)="clearAll()">Reset</button>
             </div>
-        </form>
-        <div>
-            <button type="submit" class="btn btn-primary" (click)="annotate()">Start</button>
-            <button type="button" class="btn btn-secondary" (click)="clearAll()">Reset</button>
+            
+            
         </div>
-        <jhi-graph-tidytree></jhi-graph-tidytree>
-        <jhi-annotationservice-result-selectcomponent></jhi-annotationservice-result-selectcomponent>
     </mat-tab>
 
      <!-- ********************** Integration ********************* -->
@@ -84,13 +96,16 @@
         <div id="embedd">
             <h3>Embedding via iFrame</h3>
             <div>Copy the code below and place it on your website or web-based software.
-                This will display the <b>ANTELOPE</b> frontend component within your side.
-                You may send search requests to the component from your own site. 
-                After your users select entities within the <b>ANTELOPE</b> component, the results are available in your site for further use.
+                This will display the <b>ANTELOPE</b> frontend component within your site.
                 <br/><br/>
                 <pre>
-<code>&lt;iframe src=&quot;http://localhost:9000/api/annotation/entities/selectcomponent&quot; height=&quot;600&quot; width=&quot;800&quot; name=&quot;antelope&quot; id=&quot;antelope-iframe&quot; sandbox=&quot;allow-scripts&quot;&gt;&lt;/iframe&gt;</code>
+    <code>&lt;iframe 
+        src=&quot;http://localhost:9000/api/annotation/entities/selectcomponent&quot; 
+        height=&quot;600&quot; width=&quot;800&quot; name=&quot;antelope&quot; id=&quot;antelope-iframe&quot; sandbox=&quot;allow-scripts&quot;&gt;
+    &lt;/iframe&gt;</code>
                 </pre>
+                You may send search requests to the component from your own site. 
+                After your users select entities within the <b>ANTELOPE</b> component, the results are available in your site for further use.
                 For detailled documentation of embedding <b>ANTELOPE</b> see <a href="">here</a>.
                  
             </div>
@@ -104,4 +119,6 @@
         </div>
     </mat-tab>
 </mat-tab-group>
+<p id="msg">{{msg}}<p><p id="err" class="error">{{err}}<p>
+<jhi-graph-tidytree></jhi-graph-tidytree>
 

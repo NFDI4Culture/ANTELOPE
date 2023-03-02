@@ -92,7 +92,7 @@ export class GraphTidytreeComponent implements OnInit {
       height = 1200, // outer height, in pixels
       r = 4, // radius of nodes
       padding = 1, // horizontal padding for first and last column
-      fill = "steelblue", // fill for nodes
+      fill = "black", // fill for nodes
       fillOpacity = null, // fill opacity for nodes
       stroke = "#333", // stroke for links
       strokeWidth = 1.5, // stroke width for links
@@ -142,7 +142,7 @@ export class GraphTidytreeComponent implements OnInit {
       //if (!height) {height = x1 - x0 + dx * 2;}
       //if (!width) {width = x1 - x0 + dx * 2;}
       height = x1 - x0 + dx * 2;
-      width = x1 - x0 + dx * 2;
+      width = x1 - x0 + dy * 2;
       const linkGenerator = d3.linkHorizontal()
       .x((d:any) => d.y as number)
       .y((d:any) => d.x as number);
@@ -152,14 +152,18 @@ export class GraphTidytreeComponent implements OnInit {
       .y((d:any) => d.y as number);
 
       const svg = d3.select("#tree")
-          .attr("viewBox", [-dy * padding / 2, x0 - dx, width, height])
-         .attr("width", width)
+         .attr("viewBox", [-dy * padding, x0 - dx, width, height])
+          //.attr("viewBox", [x1-dy , x0 - dx, width, height])
+          //.attr("viewBow", [0,0, width, height])
+        
+          .attr("width", "100%")
           .attr("height", height)
           .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
           .attr("font-family", "sans-serif")
           .attr("font-size", 11);
       
-      const g = svg.append("g");
+      const g = svg.append("g")
+     
 
       g.append("g")
           .attr("fill", "none")
@@ -183,9 +187,9 @@ export class GraphTidytreeComponent implements OnInit {
           .attr("transform", (d:any) => `translate(${d.y as string},${d.x as string})`);
 
       node.append("circle")
-          .attr("fill", "#fff")
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", "3px")
+          .attr("fill", "#f9cd0e")
+          .attr("stroke", "black")
+          .attr("stroke-width", "1.25px")
           .attr("r", r);
 
      
@@ -220,10 +224,7 @@ export class GraphTidytreeComponent implements OnInit {
         .scaleExtent([-8, 8])
 
         .on("zoom", ({transform}) => {
-          
-              
           g.attr("transform", transform);
-          
         }) as any;
 
       svg.call(zoom);

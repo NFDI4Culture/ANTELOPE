@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tib.osl.annotationservice.service.AnnotationService.SearchMode;
 
 public class EntityRecognition {
     private static Logger log = LoggerFactory.getLogger(EntityRecognition.class);
@@ -38,13 +39,18 @@ public class EntityRecognition {
      * @return falcon specific json result containing result arrays under the keys "entities_wikidata" and "relations_wikidata"
      * @throws Exception
      */
-    protected static List<String> getFalconResults( List<String> requestText, boolean useDbpedia) throws Exception {
+    protected static List<String> getFalconResults( List<String> requestText, boolean useDbpedia, SearchMode searchMode) throws Exception {
         List<String> falconResults = new ArrayList<>();
-       
+        String mode = "long";
+        if( searchMode.equals(SearchMode.TERMINOLOGY_SEARCH)) {
+            mode = "short";
+        } else if ( searchMode.equals(SearchMode.ENITTY_RECOGNITION)) {
+            mode = "long";
+        }
         // init connection to falcon api
         for( String actText : requestText) {
             String result = "";
-            String url = "https://labs.tib.eu/falcon/falcon2/api?mode=long&k=10";
+            String url = "https://labs.tib.eu/falcon/falcon2/api?mode="+mode+"&k=10";
             if( useDbpedia ){
                 url += "&db=1";
             }

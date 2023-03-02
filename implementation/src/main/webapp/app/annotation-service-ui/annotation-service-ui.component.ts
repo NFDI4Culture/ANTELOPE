@@ -36,6 +36,7 @@ export class AnnotationServiceUIComponent implements OnInit {
   initArray:FormControl[] = [];
   selectedSources = new FormArray(this.initArray);
   msg = "";
+  err = "";
   
   // create a FormGroup to select the datasources checkboxes state
   sourcesForm: FormGroup;
@@ -107,7 +108,7 @@ export class AnnotationServiceUIComponent implements OnInit {
 
   submit():void { 
     this.startLoading();
-    this.annotate();
+    //this.annotate();
     this.stopLoading();
   }
 
@@ -115,41 +116,73 @@ export class AnnotationServiceUIComponent implements OnInit {
     return String(value);
   }
 
+  async terminologySearch(): Promise<void> {
+    return this.callAnnotationService("terminology", "GET");
+  }
+
+  async entityRecognition(): Promise<void> {
+    return this.callAnnotationService("entities", "POST");
+  }
+
   // start the annotation process when user submit the request form
-  async annotate(): Promise<void> {
+  async callAnnotationService(endpoint:string, method:string): Promise<void> {
+    console.log(endpoint)
     // start the loading bar
     this.loader.start();
     try {
       // url of the annotationService api (restful service with json payload)
-      let url = 'api/annotation/entities?';
-
+      let url = 'api/annotation/'+endpoint+'?';
+      let body ;
       // add datasource parameters (optional) to url e.g. wikidata=true, based on the checkbox formgroup
       this.selectedSources.controls.forEach((element:FormControl) => {
         url += this.getStringValue(element.value)+"=true&";  
       });
         
-      const response = await fetch(url, {
-        method: 'POST',
+      var response;
+      if( endpoint == "terminology") {
+
+        url += "searchtext="+this.textToAnnotate.value;
+        response = await fetch(url, {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        });
         
-        body: JSON.stringify(
+      } else {
+
+        body = JSON.stringify(
           [this.textToAnnotate.value]
-          ),
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      });
+          );
+
+          response = await fetch(url, {
+          method: "POST",
+          
+          body: body,
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        });
+        
+      }
 
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
-      }
+      } 
+      console.log(url);
+      
+
+     
 
       // get response and save
       const result = (await response.json()) as AnnotationResponse;
       
       // display as string
-      this.msg = JSON.stringify(result, null, 4);
+      //this.msg = JSON.stringify(result, null, 4);
       this.annotation = result;
+      //console.log(result);
       
       // finish loading bar
       this.loader.complete();
@@ -158,11 +191,12 @@ export class AnnotationServiceUIComponent implements OnInit {
       this.graph.clear();
       this.graph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
 
+      this.msg = "Use the mousewheel to zoom in/out. Use drag and drop to move the graph."
     } catch (error) {
       if (error instanceof Error) {
-        this.msg = error.message;
+        this.err = error.message;
       } else {
-        this.msg = 'An unexpected error occurred';
+        this.err = 'An unexpected error occurred';
       }
     }
     
@@ -170,11 +204,14 @@ export class AnnotationServiceUIComponent implements OnInit {
 
   // remove the graph and clear all input fields
   clearAll(): void {
+    console.log("test")
     this.msg = "";
+    this.err = "";
     this.annotation = {"entities":[], "relations":[], hierarchy:{} as unknown as HierarchyTree};
     this.textToAnnotate.setValue("");
-    this.selectedSources.setValue([]);
+    this.selectedSources = new FormArray(this.initArray);
     this.graph.clear();
-    this.loadingBar.useRef().complete();
+    this.loader.stop();
+    this.loader.set(0);
   }
 }
