@@ -120,5 +120,17 @@
     </mat-tab>
 </mat-tab-group>
 <p id="msg">{{msg}}<p><p id="err" class="error">{{err}}<p>
-<jhi-graph-tidytree></jhi-graph-tidytree>
 
+<div [hidden]="!showResultContainer">
+    <h4>Results</h4>
+    <mat-tab-group>
+        <mat-tab label="Graph" style="font-size:10px !important;">
+            <jhi-graph-tidytree></jhi-graph-tidytree>
+        </mat-tab>
+        <mat-tab label="JSON">
+            <pre><p style="font-size:11px;">{{ annotation | json}}</p></pre>
+        </mat-tab>
+        <mat-tab label="Table">
+        </mat-tab>
+    </mat-tab-group>
+</div>

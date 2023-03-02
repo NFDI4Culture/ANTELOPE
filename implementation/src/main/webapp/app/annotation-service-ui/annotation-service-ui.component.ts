@@ -37,6 +37,8 @@ export class AnnotationServiceUIComponent implements OnInit {
   selectedSources = new FormArray(this.initArray);
   msg = "";
   err = "";
+  showResultContainer:boolean = false;
+  
   
   // create a FormGroup to select the datasources checkboxes state
   sourcesForm: FormGroup;
@@ -50,7 +52,7 @@ export class AnnotationServiceUIComponent implements OnInit {
   selectedItems = [];
   dropdownSettings = {};
   
-  private annotation: AnnotationResponse = {entities:[], relations:[], hierarchy:{} as unknown as HierarchyTree};
+  public annotation: AnnotationResponse = {entities:[], relations:[], hierarchy:{} as unknown as HierarchyTree};
   
   @ViewChild(GraphTidytreeComponent)
   private graph!: GraphTidytreeComponent;
@@ -126,13 +128,22 @@ export class AnnotationServiceUIComponent implements OnInit {
 
   // start the annotation process when user submit the request form
   async callAnnotationService(endpoint:string, method:string): Promise<void> {
-    console.log(endpoint)
+    this.err = "";
+    this.msg = "";
+    this.graph.clear();
+    this.showResultContainer = false;
+
+    if( this.textToAnnotate.value == "") {
+      this.err = 'Search text cannot be empty';
+      return;
+    }
     // start the loading bar
     this.loader.start();
     try {
+
       // url of the annotationService api (restful service with json payload)
       let url = 'api/annotation/'+endpoint+'?';
-      let body ;
+      
       // add datasource parameters (optional) to url e.g. wikidata=true, based on the checkbox formgroup
       this.selectedSources.controls.forEach((element:FormControl) => {
         url += this.getStringValue(element.value)+"=true&";  
@@ -152,7 +163,7 @@ export class AnnotationServiceUIComponent implements OnInit {
         
       } else {
 
-        body = JSON.stringify(
+        let body = JSON.stringify(
           [this.textToAnnotate.value]
           );
 
@@ -172,9 +183,6 @@ export class AnnotationServiceUIComponent implements OnInit {
         throw new Error(`Error! status: ${response.status}`);
       } 
       console.log(url);
-      
-
-     
 
       // get response and save
       const result = (await response.json()) as AnnotationResponse;
@@ -187,11 +195,19 @@ export class AnnotationServiceUIComponent implements OnInit {
       // finish loading bar
       this.loader.complete();
       
-      // update graph
-      this.graph.clear();
-      this.graph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
 
-      this.msg = "Use the mousewheel to zoom in/out. Use drag and drop to move the graph."
+      if( result.entities.length > 0) {
+        this.msg = "Results are displayed below. Use the mousewheel to zoom in/out. Use drag and drop to move the graph.";
+        this.showResultContainer = true;
+        // update graph
+        this.graph.clear();
+        this.graph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
+
+      } else {
+        this.msg = "No Results found";
+        this.showResultContainer = false;
+      }
+
     } catch (error) {
       if (error instanceof Error) {
         this.err = error.message;
@@ -213,5 +229,6 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.graph.clear();
     this.loader.stop();
     this.loader.set(0);
+    this.showResultContainer = false;
   }
 }
