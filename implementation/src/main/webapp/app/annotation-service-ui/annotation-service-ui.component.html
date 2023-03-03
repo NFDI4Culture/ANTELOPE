@@ -135,19 +135,21 @@
             <pre><p style="font-size:11px;">{{ annotation | json}}</p></pre>
         </mat-tab>
         <mat-tab label="Table">
-            <table class="table table-striped">
+            <button style="margin:5px;margin-left:339px;" class="btn btn-tib" (click)="saveTableCSV()">CSV</button>
+            <button class="btn btn-tib" (click)="saveTableXLS()">EXCEL</button>
+            <table class="table table-striped" #result_table>
                 <thead>
                     <tr>
                       <th>Entity label</th>
                       <th>URI</th>
-                      
+                      <th>Classes</th>
                     </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let entity of annotation.entities">
                     <td>{{ entity["surface form"] }}{{ entity["notationName"] }}</td>
-                    
                     <td><a href='{{ entity.URI }}' target="_blank">{{ entity.URI }}</a></td>
+                    <td>n.n.</td>
                   </tr>
                 </tbody>
               </table>

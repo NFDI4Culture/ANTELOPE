@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef } from '@angular/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
 import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
@@ -8,7 +8,9 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { MatTab } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTooltip } from '@angular/material/tooltip';
+import * as XLSX from 'xlsx';
 
+const EXCEL_EXTENSION = '.xlsx';
 
 interface ENTITIES {
   
@@ -48,6 +50,7 @@ export class AnnotationServiceUIComponent implements OnInit {
   err = "";
   showResultContainer:boolean = false;
   
+  @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
   
   // create a FormGroup to select the datasources checkboxes state
   sourcesForm: FormGroup;
@@ -241,10 +244,20 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.showResultContainer = false;
   }
 
+
   saveJson(){
-    //you can enter your own file name and extension
     this.writeContents(JSON.stringify(this.annotation, null, 2), 'antelope_result'+'.json', 'text/plain');
   }
+
+  saveTableCSV(){
+    this.exportTableElmToCsv(this.resultTableRef, 'antelope_result');
+  }
+
+  saveTableXLS(){
+    this.exportTableElmToExcel(this.resultTableRef, 'antelope_result');
+  }
+
+  //save content to file and download it
   writeContents(content:string, fileName:string, contentType:string) {
     var a = document.createElement('a');
     var file = new Blob([content], {type: contentType});
@@ -252,4 +265,31 @@ export class AnnotationServiceUIComponent implements OnInit {
     a.download = fileName;
     a.click();
   }
+
+  // get a html table element reference and write it to xls file
+  public exportTableElmToExcel(element: ElementRef, fileName: string): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element.nativeElement);
+    // generate workbook and add the worksheet
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, ws, 'Sheet1');
+    // save to file
+    XLSX.writeFile(workbook, `${fileName}${EXCEL_EXTENSION}`);
+    
+
+  }
+
+   // get a html table element reference and write it to csv file
+   public exportTableElmToCsv(element: ElementRef, fileName: string): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element.nativeElement);
+    // generate workbook and add the worksheet
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, ws, 'Sheet1');
+    const csvOutput: string = XLSX.utils.sheet_to_csv(ws);
+    // save to file
+    this.writeContents(csvOutput, fileName, 'text/csv')
+    
+
+  }
+
+  
 }

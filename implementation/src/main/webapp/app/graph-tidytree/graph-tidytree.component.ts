@@ -158,7 +158,7 @@ export class GraphTidytreeComponent implements OnInit {
         
           .attr("width", "100%")
           .attr("height", height)
-          .attr("style", "position: relative ; min-height: 600px; min-width: 600px; max-width: 100%; height: auto; height: intrinsic; padding: 50px; padding-bottom:150px; z-index:100")
+          .attr("style", "position: relative ; min-height: 600px; min-width: 600px; max-width: 100%; height: auto; height: intrinsic; margin: 10px; margin-bottom:150px; z-index:100")
           .attr("font-family", "sans-serif")
           .attr("font-size", 11);
       
