@@ -158,7 +158,7 @@ export class GraphTidytreeComponent implements OnInit {
         
           .attr("width", "100%")
           .attr("height", height)
-          .attr("style", "min-height: 300px; max-width: 100%; height: auto; height: intrinsic; padding: 50px; padding-bottom:150px;")
+          .attr("style", "position: relative ; min-height: 600px; min-width: 600px; max-width: 100%; height: auto; height: intrinsic; padding: 50px; padding-bottom:150px; z-index:100")
           .attr("font-family", "sans-serif")
           .attr("font-size", 11);
       
@@ -225,6 +225,9 @@ export class GraphTidytreeComponent implements OnInit {
 
         .on("zoom", ({transform}) => {
           g.attr("transform", transform);
+          svg.attr("height", height*transform.k)
+          // resize viewbox e.g. if we zoom in, the graph gets larger and we want still to see it when scrolling down
+          .attr("viewBox", [-dy * padding, x0 - dx, width, height*1.1*transform.k])
         }) as any;
 
       svg.call(zoom);

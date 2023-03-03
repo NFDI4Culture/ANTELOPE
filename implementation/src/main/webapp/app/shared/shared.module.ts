@@ -18,10 +18,11 @@ import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotations
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MaterialModule } from "./material/material.module";
+import {ClipboardModule} from '@angular/cdk/clipboard'; 
 
 
 @NgModule({
-  imports: [SharedLibsModule, LoadingBarModule, MaterialModule],
+  imports: [SharedLibsModule, LoadingBarModule, MaterialModule, ClipboardModule],
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,
@@ -58,8 +59,8 @@ import { MaterialModule } from "./material/material.module";
     AnnotationServiceUIComponent,
     AnnotationserviceResultSelectcomponentComponent,
     GraphTidytreeComponent,
-    MaterialModule
-
+    MaterialModule,
+    ClipboardModule
   ],
 })
 export class SharedModule {}

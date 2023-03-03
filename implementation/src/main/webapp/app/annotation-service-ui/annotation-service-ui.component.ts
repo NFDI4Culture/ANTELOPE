@@ -9,9 +9,18 @@ import { MatTab } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTooltip } from '@angular/material/tooltip';
 
+
+interface ENTITIES {
+  
+  URI: String;
+  "surface form": String;
+  "notationName":String;
+
+}
+
 // data model of the RESTful annotationService API result
 type AnnotationResponse = {
-  entities: [];
+  entities: ENTITIES[];
   relations: [];
   hierarchy: HierarchyTree;
 };
@@ -230,5 +239,17 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.loader.stop();
     this.loader.set(0);
     this.showResultContainer = false;
+  }
+
+  saveJson(){
+    //you can enter your own file name and extension
+    this.writeContents(JSON.stringify(this.annotation, null, 2), 'antelope_result'+'.json', 'text/plain');
+  }
+  writeContents(content:string, fileName:string, contentType:string) {
+    var a = document.createElement('a');
+    var file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
   }
 }

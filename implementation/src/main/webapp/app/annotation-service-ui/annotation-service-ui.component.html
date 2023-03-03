@@ -1,5 +1,6 @@
 <ngx-loading-bar [includeSpinner]=false diameter="40px" height="14px" ></ngx-loading-bar>
-<mat-tab-group dynamicHeight preserveContent>
+
+<mat-tab-group dynamicHeight preserveContent >
      <!-- ********************** Terminology search ********************* -->
     <mat-tab label="Terminology search">
         <div style="margin: 5px;">
@@ -121,16 +122,35 @@
 </mat-tab-group>
 <p id="msg">{{msg}}<p><p id="err" class="error">{{err}}<p>
 
-<div [hidden]="!showResultContainer">
+<!-- ********************** Results ********************* -->    
+<div [hidden]="!showResultContainer" style="position:relative">
     <h4>Results</h4>
-    <mat-tab-group>
+    <mat-tab-group style='min-height:1000px'>
         <mat-tab label="Graph" style="font-size:10px !important;">
             <jhi-graph-tidytree></jhi-graph-tidytree>
         </mat-tab>
         <mat-tab label="JSON">
+            <button style="margin:5px;margin-left:157px;" class="btn btn-tib" [cdkCopyToClipboard]="annotation | json">Copy</button>
+            <button class="btn btn-tib" (click)="saveJson()">Download</button>
             <pre><p style="font-size:11px;">{{ annotation | json}}</p></pre>
         </mat-tab>
         <mat-tab label="Table">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                      <th>Entity label</th>
+                      <th>URI</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entity of annotation.entities">
+                    <td>{{ entity["surface form"] }}{{ entity["notationName"] }}</td>
+                    
+                    <td><a href='{{ entity.URI }}' target="_blank">{{ entity.URI }}</a></td>
+                  </tr>
+                </tbody>
+              </table>
         </mat-tab>
     </mat-tab-group>
 </div>
