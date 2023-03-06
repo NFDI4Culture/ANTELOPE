@@ -69,12 +69,10 @@
         for (var key in optionsData.entities) {   
             var option = optionsData.entities[key]
             var text = option.URI
-            if( option.hasOwnProperty('surface form') ){
-                text = option.surface_form
+            if( option.hasOwnProperty('label') ){
+                text = option.label
             } 
-            if( option.hasOwnProperty('notationName') ){
-                text = option.notationName
-            }
+            
             entitySelector.add(newOption(text, JSON.stringify(option)))
         }
 

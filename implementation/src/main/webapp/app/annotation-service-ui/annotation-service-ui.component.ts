@@ -14,9 +14,10 @@ const EXCEL_EXTENSION = '.xlsx';
 
 interface ENTITIES {
   
-  URI: String;
-  "surface form": String;
-  "notationName":String;
+  uri: String;
+  label: String;
+  source: String;
+  classes: String
 
 }
 
@@ -209,7 +210,7 @@ export class AnnotationServiceUIComponent implements OnInit {
       
 
       if( result.entities.length > 0) {
-        this.msg = "Results are displayed below. Use the mousewheel to zoom in/out. Use drag and drop to move the graph.";
+        this.msg = "";
         this.showResultContainer = true;
         // update graph
         this.graph.clear();
@@ -223,6 +224,8 @@ export class AnnotationServiceUIComponent implements OnInit {
     } catch (error) {
       if (error instanceof Error) {
         this.err = error.message;
+        this.loader.stop();
+        this.loader.set(0);
       } else {
         this.err = 'An unexpected error occurred';
       }

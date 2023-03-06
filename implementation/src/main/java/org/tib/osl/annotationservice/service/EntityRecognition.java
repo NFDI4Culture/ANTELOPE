@@ -49,7 +49,7 @@ public class EntityRecognition {
         }
         // init connection to falcon api
         for( String actText : requestText) {
-            String result = "";
+            String resultStr = "";
             String url = "https://labs.tib.eu/falcon/falcon2/api?mode="+mode+"&k=10";
             if( useDbpedia ){
                 url += "&db=1";
@@ -69,16 +69,28 @@ public class EntityRecognition {
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(post)) {
 
-                result = EntityUtils.toString(response.getEntity());
+                resultStr = EntityUtils.toString(response.getEntity());
+                
                 // log.debug( result.toString() );
-                JSONObject resultJson = new JSONObject( result );  
+                JSONObject resultJson = new JSONObject( resultStr );  
+                JSONObject normalizedResultJson = new JSONObject();
                 String[] resultArrKeys = new String[]{"entities_wikidata", "entities_dbpedia"};
                 for( String actResultArrKey : resultArrKeys) {
                     JSONArray entities = resultJson.getJSONArray(actResultArrKey);
-
+                    JSONArray normalizedEntities = new JSONArray();
+                    java.util.Iterator<Object> iterator = entities.iterator();
+                    while (iterator.hasNext()) {
+                        JSONObject actEntity = (JSONObject)iterator.next();
+                        JSONObject normalizedEntity = new JSONObject();
+                        normalizedEntity.put("label", actEntity.getString("surface form"));
+                        normalizedEntity.put("URI", actEntity.getString("URI"));
+                        normalizedEntity.put("source", actResultArrKey.split("_")[1]);
+                        normalizedEntities.put(normalizedEntity);
+                    }
+                    normalizedResultJson.put(actResultArrKey, normalizedEntities);
                 }
 
-                falconResults.add(result);
+                falconResults.add(normalizedResultJson.toString());
             }
         }
         System.out.println("falconResult:"+falconResults);
@@ -142,7 +154,8 @@ public class EntityRecognition {
                     JSONObject obj = new JSONObject();
                     obj.put("URI", pageUri);
                     String name = notationJson.getJSONObject("txt").getString("en");
-                    obj.put("notationName", name);
+                    obj.put("label", name);
+                    obj.put("source", "iconclass");
                     // add json object to result json array
                     arr.put(obj);
                     
@@ -400,7 +413,7 @@ public class EntityRecognition {
 
         // build hierarchy from iconclass and add to root node
         if( !iconclassResultsByEntity.isEmpty() ) {
-            JSONObject icHierarchy = TreeBuilder.buildCategoryTree( iconclassResultsByEntity , 10000, "Iconclass", "http://iconclass.org", "notationName", "URI");
+            JSONObject icHierarchy = TreeBuilder.buildCategoryTree( iconclassResultsByEntity , 10000, "Iconclass", "http://iconclass.org", "label", "URI");
             resultHierarchy.getJSONArray("children").put(icHierarchy);
         }
 

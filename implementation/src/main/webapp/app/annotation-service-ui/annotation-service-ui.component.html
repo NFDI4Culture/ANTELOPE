@@ -127,6 +127,7 @@
     <h4>Results</h4>
     <mat-tab-group style='min-height:1000px'>
         <mat-tab label="Graph" style="font-size:10px !important;">
+            Use the mousewheel to zoom in/out. Use drag and drop to move the graph.
             <jhi-graph-tidytree></jhi-graph-tidytree>
         </mat-tab>
         <mat-tab label="JSON">
@@ -140,6 +141,7 @@
             <table class="table table-striped" #result_table>
                 <thead>
                     <tr>
+                      <th>Source</th>
                       <th>Entity label</th>
                       <th>URI</th>
                       <th>Classes</th>
@@ -147,8 +149,9 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let entity of annotation.entities">
-                    <td>{{ entity["surface form"] }}{{ entity["notationName"] }}</td>
-                    <td><a href='{{ entity.URI }}' target="_blank">{{ entity.URI }}</a></td>
+                    <td>{{ entity.source }}</td>
+                    <td>{{ entity.label }}</td>
+                    <td><a href='{{ entity.uri }}' target="_blank">{{ entity.uri }}</a></td>
                     <td>n.n.</td>
                   </tr>
                 </tbody>
