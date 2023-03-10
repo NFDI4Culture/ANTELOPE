@@ -17,6 +17,7 @@ import org.tib.osl.annotationservice.security.*;
 import org.tib.osl.annotationservice.security.jwt.*;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 import tech.jhipster.config.JHipsterProperties;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -66,7 +67,14 @@ public class SecurityConfiguration {
             .and()
                 .permissionsPolicy().policy("camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()")
             .and()
-                .frameOptions().sameOrigin()
+                //.frameOptions().sameOrigin()
+                .frameOptions().disable()
+                // to allow embedding of the annotations api result within <iframe> tags.
+                .addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS",
+                    "ALLOW-FROM http://localhost:9000/api/*"
+                    //"ALLOW-FROM example2.com",
+                    ))
+
         .and()
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

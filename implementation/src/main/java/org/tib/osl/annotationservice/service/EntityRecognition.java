@@ -81,8 +81,11 @@ public class EntityRecognition {
                     java.util.Iterator<Object> iterator = entities.iterator();
                     while (iterator.hasNext()) {
                         JSONObject actEntity = (JSONObject)iterator.next();
+                        String[]uriParts = actEntity.getString("URI").split("/");
+                        String id = uriParts[ uriParts.length -1 ];
                         JSONObject normalizedEntity = new JSONObject();
                         normalizedEntity.put("label", actEntity.getString("surface form"));
+                        normalizedEntity.put("id", id);
                         normalizedEntity.put("URI", actEntity.getString("URI"));
                         normalizedEntity.put("source", actResultArrKey.split("_")[1]);
                         normalizedEntities.put(normalizedEntity);
@@ -152,6 +155,7 @@ public class EntityRecognition {
 
                     // embedd respone data into falcon json format
                     JSONObject obj = new JSONObject();
+                    obj.put("id", actNotationName);
                     obj.put("URI", pageUri);
                     String name = notationJson.getJSONObject("txt").getString("en");
                     obj.put("label", name);

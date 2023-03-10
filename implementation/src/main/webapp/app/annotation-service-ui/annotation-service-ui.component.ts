@@ -13,8 +13,8 @@ import * as XLSX from 'xlsx';
 const EXCEL_EXTENSION = '.xlsx';
 
 interface ENTITIES {
-  
-  uri: String;
+  id : String;
+  URI: String;
   label: String;
   source: String;
   classes: String

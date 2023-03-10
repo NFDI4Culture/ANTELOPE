@@ -92,7 +92,6 @@
     }
 </script>
 <Select id='entitySelector' onchange='entitySelectionChanged()'>
-    <option value="0">select entity</option>
-    <option value="1">1</option>
+    <option value="0">Start search to select entities!</option>
     <option th:each="entity : ${entities}" th:value='${entity}' th:text='${entity}'></option>
 </Select>
