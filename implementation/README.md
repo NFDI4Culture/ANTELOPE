@@ -2,6 +2,28 @@
 
 This application was generated using JHipster 7.9.3, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.9.3](https://www.jhipster.tech/documentation-archive/v7.9.3).
 
+## Integration in other websites
+To integrate the annotationService into another website, use the integration html code found in src/main/examples/webpage/index.html.
+This will integrate the annotationService within an iframe on the website, as well as some javascript code to handle data exchange.
+The example gets Text from a user via a textfield and sends it to the annotationService for entity mapping via the iframe (function 'queryEntities()').
+The Annotationservice will display the results in a select component (e.g. a selectbox) within the iframe.
+When the user selects a result within the iframe, a message is send to the parent frame (your website).
+The message contains the selected entity data and is processed within the function 'onMessage()'
+In the example, the function displays the selected entity data using a  tag 'selectedEntity' feel free to change the onMessage function according to your needs and usecases.
+See schema graph: src/main/examples/webpage/integrationConcept.svg
+
+## CI/CD
+use the ./src/main/docker/Dockerfile to build a container image of the application:
+The dockerfile is capable to push the image into the annotationService container registry. See Dockerfile comments for further instructions
+docker build - < src/Dockmain/docker/Dockerfile
+
+start the application via docker:
+docker-compose -f src/main/docker/app.yml up
+
+development environment
+If you want to have a docker image for development purposes, use the ./src/main/docker/Dockerfile but remove the line for building the image
+
+
 ## Project Structure
 
 Node is required for generation and recommended for development. `package.json` is always generated for a better development experience with prettier, commit hooks, scripts and so on.
