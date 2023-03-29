@@ -1,0 +1,21 @@
+# this Dockerfile creates a container for development purposes of the annotationservice
+# it contains the newest annotationService code from the repository as well as anything to build a docker image of the application
+# build with: "docker build - < Dockerfile"
+FROM jhipster/jhipster
+WORKDIR /tib-dev
+# get latest code from repo
+USER root
+RUN mkdir annotationService
+RUN git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
+WORKDIR /tib-dev/annotationService
+RUN git checkout test
+WORKDIR /tib-dev/annotationService/implementation
+#RUN rm -R node_modules
+RUN npm install
+
+
+
+# build application using jib to create a docker image of the application and push it to the TIB gitlab registry
+# You have to insert your gitlab username and passwort to push to the annotationService registry
+# if you just want a development environment, outcomment the line below. the container should has everything onboard to build the application within the container. see README
+# RUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=<USERNAME> -Djib.to.auth.password=<PASSWORD>
