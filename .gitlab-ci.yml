@@ -1,5 +1,7 @@
 
-build:
+build_prod:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   stage: deploy
   image: docker:stable
   services:
@@ -8,4 +10,18 @@ build:
     - docker version
     - cd implementation/src/main/docker
     - printf "\nRUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile
+    - docker build -t annotation_services_builder .
+
+
+build_test:
+  rules:
+    - if: $CI_COMMIT_BRANCH == test
+  stage: deploy
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker version
+    - cd implementation/src/main/docker
+    - printf "\nRUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service-dev:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile
     - docker build -t annotation_services_builder .
