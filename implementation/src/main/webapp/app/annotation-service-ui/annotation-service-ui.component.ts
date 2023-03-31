@@ -1,23 +1,23 @@
-import { Component, OnInit,ElementRef } from '@angular/core';
+import { Component,ElementRef } from '@angular/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
-import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
+//import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
-import { MatTabGroup } from '@angular/material/tabs';
-import { MatTab } from '@angular/material/tabs';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTooltip } from '@angular/material/tooltip';
+//import { MatTabGroup } from '@angular/material/tabs';
+//import { MatTab } from '@angular/material/tabs';
+//import { MatTooltipModule } from '@angular/material/tooltip';
+//import { MatTooltip } from '@angular/material/tooltip';
 import * as XLSX from 'xlsx';
 
 const EXCEL_EXTENSION = '.xlsx';
 
 interface ENTITIES {
-  id : String;
-  URI: String;
-  label: String;
-  source: String;
-  classes: String
+  id : string;
+  URI: string;
+  label: string;
+  source: string;
+  classes: string
 
 }
 
@@ -42,14 +42,14 @@ type HierarchyTree = {
   styleUrls: ['./annotation-service-ui.component.scss']
 })
 
-export class AnnotationServiceUIComponent implements OnInit {
+export class AnnotationServiceUIComponent {
   loader = this.loadingBar.useRef();
   textToAnnotate = new FormControl('');
   initArray:FormControl[] = [];
   selectedSources = new FormArray(this.initArray);
   msg = "";
   err = "";
-  showResultContainer:boolean = false;
+  showResultContainer = false;
   
   @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
   
@@ -96,10 +96,6 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.loadingBar.useRef().complete();
   }
 
-  ngOnInit(): void {
-
-  }
-
   onCheckboxChange(event: any): void {  
     const selectedSources = (this.sourcesForm.controls['selectedSources'] as FormArray);
     if (event.target.checked) {
@@ -123,7 +119,7 @@ export class AnnotationServiceUIComponent implements OnInit {
 
   submit():void { 
     this.startLoading();
-    //this.annotate();
+    // this.annotate();
     this.stopLoading();
   }
 
@@ -146,7 +142,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.graph.clear();
     this.showResultContainer = false;
 
-    if( this.textToAnnotate.value == "") {
+    if( this.textToAnnotate.value === "") {
       this.err = 'Search text cannot be empty';
       return;
     }
@@ -162,10 +158,10 @@ export class AnnotationServiceUIComponent implements OnInit {
         url += this.getStringValue(element.value)+"=true&";  
       });
         
-      var response;
-      if( endpoint == "terminology") {
+      let response;
+      if( endpoint === "terminology") {
 
-        url += "searchtext="+this.textToAnnotate.value;
+        url += "searchtext="+String(this.textToAnnotate.value);
         response = await fetch(url, {
           method: "GET",
           headers: {
@@ -176,14 +172,13 @@ export class AnnotationServiceUIComponent implements OnInit {
         
       } else {
 
-        let body = JSON.stringify(
+        const body = JSON.stringify(
           [this.textToAnnotate.value]
           );
 
           response = await fetch(url, {
           method: "POST",
-          
-          body: body,
+          body,
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
@@ -195,15 +190,14 @@ export class AnnotationServiceUIComponent implements OnInit {
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       } 
-      console.log(url);
 
       // get response and save
       const result = (await response.json()) as AnnotationResponse;
       
       // display as string
-      //this.msg = JSON.stringify(result, null, 4);
+      // this.msg = JSON.stringify(result, null, 4);
       this.annotation = result;
-      //console.log(result);
+      // console.log(result);
       
       // finish loading bar
       this.loader.complete();
@@ -235,7 +229,7 @@ export class AnnotationServiceUIComponent implements OnInit {
 
   // remove the graph and clear all input fields
   clearAll(): void {
-    console.log("test")
+    // console.log("test")
     this.msg = "";
     this.err = "";
     this.annotation = {"entities":[], "relations":[], hierarchy:{} as unknown as HierarchyTree};
@@ -248,22 +242,22 @@ export class AnnotationServiceUIComponent implements OnInit {
   }
 
 
-  saveJson(){
+  saveJson():void{
     this.writeContents(JSON.stringify(this.annotation, null, 2), 'antelope_result'+'.json', 'text/plain');
   }
 
-  saveTableCSV(){
+  saveTableCSV():void{
     this.exportTableElmToCsv(this.resultTableRef, 'antelope_result');
   }
 
-  saveTableXLS(){
+  saveTableXLS():void{
     this.exportTableElmToExcel(this.resultTableRef, 'antelope_result');
   }
 
-  //save content to file and download it
-  writeContents(content:string, fileName:string, contentType:string) {
-    var a = document.createElement('a');
-    var file = new Blob([content], {type: contentType});
+  // save content to file and download it
+  writeContents(content:string, fileName:string, contentType:string):void {
+    const a = document.createElement('a');
+    const file = new Blob([content], {type: contentType});
     a.href = URL.createObjectURL(file);
     a.download = fileName;
     a.click();

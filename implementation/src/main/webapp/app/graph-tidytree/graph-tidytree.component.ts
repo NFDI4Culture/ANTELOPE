@@ -15,12 +15,12 @@ type WikiDataClassLabel = {
   value: string; // classname
 }
 
-type WikiDataHierarchy = {
+/*type WikiDataHierarchy = {
   class: WikiDataClass;
   classLabel: WikiDataClassLabel;
   superclass: WikiDataClass
   superclassLabel: WikiDataClassLabel;
-}
+}*/
 
 type HierarchyTree = {
   id: string;
@@ -34,13 +34,9 @@ type HierarchyTree = {
   templateUrl: './graph-tidytree.component.html',
   styleUrls: ['./graph-tidytree.component.scss']
 })
-export class GraphTidytreeComponent implements OnInit {
+export class GraphTidytreeComponent {
   
-  //tree:SVGSVGElement|null = null;
-  
-  constructor() { }
-
-  ngOnInit(): void {  }
+  // tree:SVGSVGElement|null = null;
 
   clear():void {
     const svg = d3.select("#tree");
