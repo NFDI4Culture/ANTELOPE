@@ -23,5 +23,5 @@ build_test:
   script:
     - docker version
     - cd implementation/src/main/docker
-    - printf "\nRUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service-dev:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile
+    - printf "\nRUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/test:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile
     - docker build -t annotation_services_builder .
