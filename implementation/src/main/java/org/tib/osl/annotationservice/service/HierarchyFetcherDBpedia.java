@@ -79,8 +79,7 @@ public class HierarchyFetcherDBpedia extends HierarchyFetcher{
                 log.debug("iconclass result fetched sucessfully");
             }
 
-            // falcon includes only the surface form label, we want to show the wikidata/dbpedia label of the entity
-            //String entityLabel = super.falconResultsToProcess.get("surface form").toString(); // default setting
+            
             String entityLabel = objId;
             
             falconResultsToProcess.put("label", entityLabel);

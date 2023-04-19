@@ -71,7 +71,7 @@ public class HierarchyFetcherWikiData extends HierarchyFetcher{
             }
 
             // falcon includes only the surface form label, we want to show the wikidata/dbpedia label of the entity
-            String entityLabel = super.falconResultsToProcess.get("surface form").toString(); // default setting
+            String entityLabel = super.falconResultsToProcess.get("label").toString(); // default setting
             String resourceUrl = "https://www.wikidata.org/wiki/Special:EntityData/"+objId+".json";
             try {
                 get = new HttpGet(new URI(resourceUrl));

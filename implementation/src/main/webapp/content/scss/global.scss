@@ -7,7 +7,11 @@
 Bootstrap tweaks
 ===============================================================*/
 
-body,
+body {
+ font-family: Roboto, "Helvetica Neue", sans-serif;;
+ --bs-link-color: #dfb80b;
+ --bs-link-hover-color: #555;
+}
 h1,
 h2,
 h3,
@@ -129,6 +133,14 @@ Custom alerts for notification
 }
 
 /* ==========================================================================
+entity list page css
+========================================================================== */
+
+.table-entities thead th .d-flex > * {
+  margin: auto 0;
+}
+
+/* ==========================================================================
 entity detail page css
 ========================================================================== */
 .row-md.jh-entity-details {
@@ -200,3 +212,4 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+

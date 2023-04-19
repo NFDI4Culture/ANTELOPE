@@ -11,7 +11,6 @@ import { Account } from 'app/core/auth/account.model';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-
 export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
 

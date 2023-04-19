@@ -23,8 +23,6 @@ class TechnicalStructureTest {
         .layer("Domain").definedBy("..domain..")
 
         .whereLayer("Config").mayNotBeAccessedByAnyLayer()
-        // we made "web" accessible from underlying layer "service" because the api-first (openAPI) generator of jhipster
-        // generates a interface to implement for the service backend that is in a subpackage of the annotationservice.service package but is named "web"
         .whereLayer("Web").mayOnlyBeAccessedByLayers("Config", "Service")
         .whereLayer("Service").mayOnlyBeAccessedByLayers("Web", "Config", "Service")
         .whereLayer("Security").mayOnlyBeAccessedByLayers("Config", "Service", "Web")
@@ -34,9 +32,6 @@ class TechnicalStructureTest {
         .ignoreDependency(belongToAnyOf(AnnotationServiceApp.class), alwaysTrue())
         .ignoreDependency(alwaysTrue(), belongToAnyOf(
             org.tib.osl.annotationservice.config.Constants.class,
-            org.tib.osl.annotationservice.config.ApplicationProperties.class,
-            org.tib.osl.annotationservice.service.AnnotationService.class
-            
-        ))
-        ;
+            org.tib.osl.annotationservice.config.ApplicationProperties.class
+        ));
 }

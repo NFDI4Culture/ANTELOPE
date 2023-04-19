@@ -5,10 +5,11 @@ Main page styles
 .logo {
   display: inline-block;
   width: 347px;
-  height: 497px;
-  background: url('../../content/images/logo.webp') no-repeat center top;
+  height: 200px;
+  background: url('../../content/images/logo_antelope.png') no-repeat center top;
   background-size: contain;
 }
+
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
@@ -17,7 +18,7 @@ Main page styles
   only screen and (min-resolution: 192dpi),
   only screen and (min-resolution: 2dppx) {
   .logo {
-    background: url('../../content/images/logo.webp') no-repeat center top;
+    background: url('../../content/images/logo_antelope.png') no-repeat center top;
     background-size: contain;
   }
 }

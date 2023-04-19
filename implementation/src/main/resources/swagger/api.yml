@@ -24,6 +24,51 @@ paths:
              
         default:
           description: Unexpected error
+  /annotation/terminology:
+    get:
+      summary: >-
+        retrieves a text and delivers a list of all recognized entities and
+        relations within the specified datasources as well as the
+        corresponding class hierachy tree
+      description: >-
+        Uses the specified datasources to retrieve entities and relations.
+        Adds the category hierarchy graph for these entities and relations.
+      operationId: getTerminology
+      
+      parameters:
+        - in: query
+          name: searchtext
+          required: true
+          schema:
+            type: string
+          description: text that contains or describes the wanted entity/terminology
+        - in: query
+          name: wikidata
+          required: false
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from wikidata
+        - in: query
+          name: wikidata_dbpedia
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities from dbpedia
+        - in: query
+          name: iconclass
+          schema:
+            type: boolean
+          description: Optional parameter to include or exclude entities(notations) from iconclass
+      
+      responses:
+        '200':
+          description: Annotations of the given searchtext
+          content:
+            application/json:
+              schema:
+                type: string  
+                # $ref: '#/components/schemas/TextAnnotation'
+        default:
+          description: Generic error response
   /annotation/entities:
     post:
       summary: >-
@@ -140,3 +185,4 @@ components:
 security:
   - jwt: []
   - basic: []
+

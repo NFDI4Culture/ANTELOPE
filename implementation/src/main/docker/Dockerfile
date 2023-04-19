@@ -8,7 +8,8 @@ USER root
 RUN mkdir annotationService
 RUN git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
 WORKDIR /tib-dev/annotationService
-RUN git checkout main
+#RUN git checkout main
+RUN git checkout test
 WORKDIR /tib-dev/annotationService/implementation
 #RUN rm -R node_modules
 RUN npm install

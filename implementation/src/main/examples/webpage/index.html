@@ -12,10 +12,19 @@ In the example, the function displays the selected entity data using a <div> tag
 <html>
    
     <body>
+        <hr>
+        My Website
+        <hr>
+        <p>Current selected entity:<div id="selectedEntity"></div></p>
         <label for="textToAnnotate">Insert word or text for entity mapping: </label>
         <textarea id="textToAnnotate"> </textarea>
         <button type="submit" onClick="queryEntities()">Search</button>
-
+        
+        <br>
+        <br>
+        <br>
+        <br>
+        --- embedded ANTELOPE component ---<br>
         <!-- iframe of the annotationService -->
         <iframe src="http://localhost:9000/api/annotation/entities/selectcomponent" height="600" width="800" name="AnnotationService select component" id="annotationservice-selectentity-iframe" sandbox="allow-scripts"></iframe>
         <!-- necessary scripts for the annotationService iframe. Implement your own code in function 'onMessage()' below to handle the data from the annotationService (e.g entity selection by the user)-->
@@ -64,7 +73,7 @@ In the example, the function displays the selected entity data using a <div> tag
  
         </script>
         
-        <p>Selected entity:<div id="selectedEntity"></div></p>
+       
     </body>
     
 </html>

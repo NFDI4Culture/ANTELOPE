@@ -69,12 +69,10 @@
         for (var key in optionsData.entities) {   
             var option = optionsData.entities[key]
             var text = option.URI
-            if( option.hasOwnProperty('surface form') ){
-                text = option.surface_form
+            if( option.hasOwnProperty('label') ){
+                text = option.label
             } 
-            if( option.hasOwnProperty('notationName') ){
-                text = option.notationName
-            }
+            
             entitySelector.add(newOption(text, JSON.stringify(option)))
         }
 
@@ -94,7 +92,6 @@
     }
 </script>
 <Select id='entitySelector' onchange='entitySelectionChanged()'>
-    <option value="0">select entity</option>
-    <option value="1">1</option>
+    <option value="0">Start search to select entities!</option>
     <option th:each="entity : ${entities}" th:value='${entity}' th:text='${entity}'></option>
 </Select>

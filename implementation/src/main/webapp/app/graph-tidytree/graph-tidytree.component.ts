@@ -15,12 +15,12 @@ type WikiDataClassLabel = {
   value: string; // classname
 }
 
-type WikiDataHierarchy = {
+/*type WikiDataHierarchy = {
   class: WikiDataClass;
   classLabel: WikiDataClassLabel;
   superclass: WikiDataClass
   superclassLabel: WikiDataClassLabel;
-}
+}*/
 
 type HierarchyTree = {
   id: string;
@@ -34,13 +34,9 @@ type HierarchyTree = {
   templateUrl: './graph-tidytree.component.html',
   styleUrls: ['./graph-tidytree.component.scss']
 })
-export class GraphTidytreeComponent implements OnInit {
+export class GraphTidytreeComponent {
   
-  //tree:SVGSVGElement|null = null;
-  
-  constructor() { }
-
-  ngOnInit(): void {  }
+  // tree:SVGSVGElement|null = null;
 
   clear():void {
     const svg = d3.select("#tree");
@@ -92,7 +88,7 @@ export class GraphTidytreeComponent implements OnInit {
       height = 1200, // outer height, in pixels
       r = 4, // radius of nodes
       padding = 1, // horizontal padding for first and last column
-      fill = "steelblue", // fill for nodes
+      fill = "black", // fill for nodes
       fillOpacity = null, // fill opacity for nodes
       stroke = "#333", // stroke for links
       strokeWidth = 1.5, // stroke width for links
@@ -128,7 +124,7 @@ export class GraphTidytreeComponent implements OnInit {
       // Compute the layout.
       const dx = 13;
       const dy = width / (root.height + padding);
-      tree().nodeSize([dx, dy])(root);
+      tree<NodeData>().nodeSize([dx, dy])(root);
 
       // Center the tree.
       let x0 = Infinity;
@@ -142,7 +138,7 @@ export class GraphTidytreeComponent implements OnInit {
       //if (!height) {height = x1 - x0 + dx * 2;}
       //if (!width) {width = x1 - x0 + dx * 2;}
       height = x1 - x0 + dx * 2;
-      width = x1 - x0 + dx * 2;
+      width = x1 - x0 + dy * 2;
       const linkGenerator = d3.linkHorizontal()
       .x((d:any) => d.y as number)
       .y((d:any) => d.x as number);
@@ -152,14 +148,20 @@ export class GraphTidytreeComponent implements OnInit {
       .y((d:any) => d.y as number);
 
       const svg = d3.select("#tree")
-          .attr("viewBox", [-dy * padding / 2, x0 - dx, width, height])
-         .attr("width", width)
+         .attr("viewBox", [-dy * padding, x0 - dx, width, height])
+          //.attr("viewBox", [x1-dy , x0 - dx, width, height])
+          //.attr("viewBow", [0,0, width, height])
+        
+          .attr("width", "100%")
           .attr("height", height)
-          .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
+          .attr("style", "position: relative ; min-height: 600px; min-width: 600px; max-width: 100%; height: auto; height: intrinsic; margin: 10px; margin-bottom:150px; z-index:100")
           .attr("font-family", "sans-serif")
           .attr("font-size", 11);
+      
+      const g = svg.append("g")
+     
 
-      svg.append("g")
+      g.append("g")
           .attr("fill", "none")
           .attr("stroke", stroke)
           .attr("stroke-opacity", strokeOpacity)
@@ -172,7 +174,7 @@ export class GraphTidytreeComponent implements OnInit {
             .attr("d", (d:any)=> linkGenerator(d) as unknown as string )
              ;
 
-      const node = svg.append("g")
+      const node = g.append("g")
         .selectAll("a")
         .data(root.descendants())
         .join("a")
@@ -181,9 +183,9 @@ export class GraphTidytreeComponent implements OnInit {
           .attr("transform", (d:any) => `translate(${d.y as string},${d.x as string})`);
 
       node.append("circle")
-          .attr("fill", "#fff")
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", "3px")
+          .attr("fill", "#f9cd0e")
+          .attr("stroke", "black")
+          .attr("stroke-width", "1.25px")
           .attr("r", r);
 
      
@@ -194,10 +196,10 @@ export class GraphTidytreeComponent implements OnInit {
       const textBackground = node.append("rect")
         .attr("rx", 5)
         .attr("ry", 5)
-        .attr("x", function(d){ return  this.getBBox().x + 5;})
-        .attr("y", function(d, i){ return  this.getBBox().y - 8 })
-        .attr("width", function(d, i){ return this.getBBox().width + (L[i].length * 6);})
-        .attr("height", function(d) {return 14;})
+        .attr("x", function(d:any){ return  this.getBBox().x + 5;})
+        .attr("y", function(d:any, i:any){ return  this.getBBox().y - 8 })
+        .attr("width", function(d:any, i:any){ return this.getBBox().width + (L[i].length * 6);})
+        .attr("height", function(d:any) {return 14;})
         .style("fill", "#FFFFFF");
 
      
@@ -211,6 +213,24 @@ export class GraphTidytreeComponent implements OnInit {
           .attr("stroke-width", "")
           .attr("stroke-opacity", "0.8")
           .text((d:any, i:any) => L[i] )
+       
+      const zoom = d3.zoom<SVGSVGElement, unknown>()
+        .extent([[0, 0], [width, height]])
+        //.translateExtent([[-0.5*height,-0.5*width],[0.5*height,0.5*height]])
+        .scaleExtent([-8, 8])
+
+        .on("zoom", ({transform}) => {
+          g.attr("transform", transform);
+          svg.attr("height", height*transform.k)
+          // resize viewbox e.g. if we zoom in, the graph gets larger and we want still to see it when scrolling down
+          .attr("viewBox", [-dy * padding, x0 - dx, width, height*1.1*transform.k])
+        }) as any;
+
+      svg.call(zoom);
+          
+      
+    
+      
     }
 
     

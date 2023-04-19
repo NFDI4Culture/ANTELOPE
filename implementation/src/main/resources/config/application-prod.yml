@@ -90,7 +90,7 @@ spring:
 # keytool -genkey -alias annotationservice -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
 #
 # You can also use Let's Encrypt:
-# https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
+# See details in topic "Create a Java Keystore (.JKS) from Let's Encrypt Certificates" on https://maximilian-boehm.com/en-gb/blog
 #
 # Then, modify the server.ssl properties so your "server" configuration looks like:
 #
@@ -149,15 +149,6 @@ jhipster:
       host: localhost
       port: 5000
       queue-size: 512
-    # By default CORS is disabled. Uncomment to enable.
-  cors:
-     #allowed-origins: "http://localhost:8080,http://nfdi4cultureann21.service.tib.eu:8080,http://nfdi4cultureann11.service.tib.eu:8080,https://service.tib.eu/annotation/, https://service.tib.eu"
-     allowed-origins: "*"
-     allowed-methods: "*"
-     allowed-headers: "*"
-     exposed-headers: "Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params"
-     allow-credentials: false
-     max-age: 1800
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

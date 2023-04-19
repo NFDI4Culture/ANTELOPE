@@ -1,26 +1,163 @@
 <ngx-loading-bar [includeSpinner]=false diameter="40px" height="14px" ></ngx-loading-bar>
-<h2>Try out the annotation-service</h2>
-<label for="textToAnnotate">Insert word or text for entity mapping: </label>
-<textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate"> </textarea>
-<form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
-    <div 
-        *ngFor="let datasource of datasources; let i=index"
-        [ngClass]="{'greyout': datasource.disabled == true}">
-        
-        <input 
-            type="checkbox" 
-            formArrayName="selectedSources" 
-            [value]="datasource.value" 
-            [checked]="datasource.checked == true" 
-            [disabled]="datasource.disabled == true"
-            (change)="onCheckboxChange($event)" />
-        
-        {{datasource.name}}
-        
-    </div>
-</form>
-<div>
-    <button type="submit" class="btn btn-primary" (click)="annotate()">Start</button>
-    <button type="button" class="btn btn-secondary" (click)="clearAll()">Reset</button>
+
+<mat-tab-group dynamicHeight preserveContent >
+     <!-- ********************** Terminology search ********************* -->
+    <mat-tab label="Terminology search">
+        <div style="margin: 5px;">
+            <br>
+            <label for="textToAnnotate">Type the term you want to search for (single word or phrase): </label>
+            <div class="btn tib-btn-info" 
+                matTooltip="Terminology search is used to search for a term in a controlled vocabulary. The annotation service will propose entities, that are best matching the whole provided phrase. If you want to receive all contained entities within your phrase, choose 'Entity recognition' above"
+                matTooltipPosition="right"
+                matTooltipSize="12px"></div>
+            <input type="text" id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"/>
+            <span style="font-size: 14px;" >Select terminology sources:</span>
+            <div class="btn tib-btn-info" 
+                matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
+                matTooltipPosition="right"></div>
+            
+            <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
+                <div style="font-size: 14px;"
+                    *ngFor="let datasource of datasources; let i=index"
+                    [ngClass]="{'greyout': datasource.disabled == true}">
+                    
+                    <input 
+                        type="checkbox" 
+                        formArrayName="selectedSources" 
+                        [value]="datasource.value" 
+                        [checked]="datasource.checked == true" 
+                        [disabled]="datasource.disabled == true"
+                        (change)="onCheckboxChange($event)" />
+                    
+                    {{datasource.name}}
+                    
+                </div>
+            </form>
+            <div style="margin-top:15px">
+                <button type="submit" class="btn btn-tib" (click)="terminologySearch()">Run service</button>
+                <button type="button" class="btn btn-tib-secondary" (click)="clearAll()">Reset</button>
+            </div>
+            
+            
+        </div>
+    </mat-tab>
+    <!-- ********************** Entity Recognition ********************* -->
+    <mat-tab label="Entity recognition">
+        <div style="margin: 5px;">
+            <br>
+            <label for="textToAnnotate">Type the text you want to run entity recognition on (single words or whole sentences): </label>
+            <div class="btn tib-btn-info" 
+                matTooltip="Use Entity recognition to map as many words as possible, of your input text, to entities from the datasources. If you want to search for a single term, that is described by your text, choose 'Terminology search' above"
+                matTooltipPosition="right"
+                matTooltipSize="12px"></div>
+            <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"></textarea>
+            <span style="font-size: 14px;" >Select terminology sources:</span>
+            <div class="btn tib-btn-info" 
+                matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
+                matTooltipPosition="right"></div>
+            
+            <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
+                <div style="font-size: 14px;"
+                    *ngFor="let datasource of datasources; let i=index"
+                    [ngClass]="{'greyout': datasource.disabled == true}">
+                    
+                    <input 
+                        type="checkbox" 
+                        formArrayName="selectedSources" 
+                        [value]="datasource.value" 
+                        [checked]="datasource.checked == true" 
+                        [disabled]="datasource.disabled == true"
+                        (change)="onCheckboxChange($event)" />
+                    
+                    {{datasource.name}}
+                    
+                </div>
+            </form>
+            <div style="margin-top:15px">
+                <button type="submit" class="btn btn-tib" (click)="entityRecognition()">Run service</button>
+                <button type="button" class="btn btn-tib-secondary" (click)="clearAll()">Reset</button>
+            </div>
+            
+            
+        </div>
+    </mat-tab>
+
+     <!-- ********************** Integration ********************* -->
+    <mat-tab label="Integration">
+        <br>
+        <div style="margin: 5px;">
+            <b>ANTELOPE</b> can be used in various ways. You may:<br>
+            <ul style="margin-top: 10px;">
+                <li>Use this website directly for your search</li>
+                <li><a href="#embedd">Embedd</a> the ANTILOPE search form in your website</li>
+                <li>Connect to our <a href="#api">RESTful API</a></li>
+            </ul>
+        </div>
+        <br>
+        <div id="embedd">
+            <h3>Embedding via iFrame</h3>
+            <div>Copy the code below and place it on your website or web-based software.
+                This will display the <b>ANTELOPE</b> frontend component within your site.
+                <br/><br/>
+                <pre>
+    <code>&lt;iframe 
+        src=&quot;http://localhost:9000/api/annotation/entities/selectcomponent&quot; 
+        height=&quot;600&quot; width=&quot;800&quot; name=&quot;antelope&quot; id=&quot;antelope-iframe&quot; sandbox=&quot;allow-scripts&quot;&gt;
+    &lt;/iframe&gt;</code>
+                </pre>
+                You may send search requests to the component from your own site. 
+                After your users select entities within the <b>ANTELOPE</b> component, the results are available in your site for further use.
+                For detailled documentation of embedding <b>ANTELOPE</b> see <a href="">here</a>.
+                 
+            </div>
+        </div>
+        <br><br>
+        <div id="api">
+            <h3>RESTful API</h3>
+            <p>You can use the full functionality of this website via our API. <br>
+                have a look at the <a href="/v3/api-docs/openapi" target="_blank">API docs</a>
+            </p>
+        </div>
+    </mat-tab>
+</mat-tab-group>
+<p id="msg">{{msg}}<p><p id="err" class="error">{{err}}<p>
+
+<!-- ********************** Results ********************* -->    
+<div [hidden]="!showResultContainer" style="position:relative">
+    <h4>Results</h4>
+    <mat-tab-group style='min-height:1000px'>
+        <mat-tab label="Graph" style="font-size:10px !important;">
+            Use the mousewheel to zoom in/out. Use drag and drop to move the graph.
+            <jhi-graph-tidytree></jhi-graph-tidytree>
+        </mat-tab>
+        <mat-tab label="JSON">
+            <button style="margin:5px;margin-left:157px;" class="btn btn-tib" [cdkCopyToClipboard]="annotation | json">Copy</button>
+            <button class="btn btn-tib" (click)="saveJson()">Download</button>
+            <pre><p style="font-size:11px;">{{ annotation | json}}</p></pre>
+        </mat-tab>
+        <mat-tab label="Table">
+            <button style="margin:5px;margin-left:339px;" class="btn btn-tib" (click)="saveTableCSV()">CSV</button>
+            <button class="btn btn-tib" (click)="saveTableXLS()">EXCEL</button>
+            <table class="table table-striped" #result_table>
+                <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th>Entity label</th>
+                      <th>ID</th>
+                      <th>URI</th>
+                      <th>Classes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entity of annotation.entities">
+                    <td>{{ entity.source }}</td>
+                    <td>{{ entity.label }}</td>
+                    <td>{{ entity.id }}</td>
+                    <td><a href='{{ entity.URI }}' target="_blank">{{ entity.URI }}</a></td>
+                    <td>n.n.</td>
+                  </tr>
+                </tbody>
+              </table>
+        </mat-tab>
+    </mat-tab-group>
 </div>
-<jhi-graph-tidytree></jhi-graph-tidytree>

@@ -25,7 +25,7 @@ public class HierarchyFetcherIconclass implements Runnable{
     public void run() {
         try {
             
-            String actNotationName = (this.notationToProcess).get("notationName").toString();
+            String actNotationName = (this.notationToProcess).get("label").toString();
             String url = (this.notationToProcess).get("URI").toString();
                             
             // fetch detail of act notation
