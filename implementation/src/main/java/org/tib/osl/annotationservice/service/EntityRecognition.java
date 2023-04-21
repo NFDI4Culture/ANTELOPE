@@ -57,21 +57,26 @@ public class EntityRecognition {
             HttpPost post = new HttpPost(new URI(url));
             post.addHeader("content-type", "application/json");
 
+            // escape spccial chars in request body
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("text", actText);
+            String payload = jsonObject.toString();
+
             StringBuilder json = new StringBuilder();
             json.append("{");     
             json.append("\"text\":\""+actText+"\"");
             json.append("}");
 
-            log.debug(json.toString());
+            log.debug(payload);
             // send a JSON data
-            post.setEntity(new StringEntity(json.toString()));
+            post.setEntity(new StringEntity(payload));
             
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(post)) {
 
                 resultStr = EntityUtils.toString(response.getEntity());
                 
-                // log.debug( result.toString() );
+                log.debug( resultStr.toString() );
                 JSONObject resultJson = new JSONObject( resultStr );  
                 JSONObject normalizedResultJson = new JSONObject();
                 String[] resultArrKeys = new String[]{"entities_wikidata", "entities_dbpedia"};

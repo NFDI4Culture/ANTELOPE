@@ -44,7 +44,6 @@ public class AnnotationService implements AnnotationApiDelegate {
     @Override
     public ResponseEntity<String> getEntitiesSelectComponent(){
                
-        List<String> entitiesToSearch = Arrays.asList( new String[]{"test"} );
         String[] entitiesToSelect = new String[]{};
 
         try {
@@ -104,8 +103,6 @@ public class AnnotationService implements AnnotationApiDelegate {
         if( wikidata != null || wikidataDbpedia != null || iconclass != null) {
             useAllSources = false;
         }
-
-
 
         // get Entity Recognition from Falcon API
         List<String> falconResults;
