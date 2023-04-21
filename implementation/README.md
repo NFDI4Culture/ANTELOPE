@@ -13,9 +13,11 @@ In the example, the function displays the selected entity data using a  tag 'sel
 See schema graph: src/main/examples/webpage/integrationConcept.svg
 
 ## CI/CD
-use the ./src/main/docker/Dockerfile to build a container image of the application:
+use the ./src/main/docker/Dockerfile_PROD or ../Dockerfile_TEST to build a container image of the application:
 The dockerfile is capable to push the image into the annotationService container registry. See Dockerfile comments for further instructions
-docker build - < src/Dockmain/docker/Dockerfile
+docker build - < src/main/docker/Dockerfile_PROD
+docker build - < src/main/docker/Dockerfile_TEST
+
 
 start the application via docker:
 docker-compose -f src/main/docker/app.yml up
