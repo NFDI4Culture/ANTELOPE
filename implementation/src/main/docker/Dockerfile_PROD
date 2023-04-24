@@ -11,7 +11,7 @@ WORKDIR /tib-dev/annotationService
 RUN git checkout main
 WORKDIR /tib-dev/annotationService/implementation
 #RUN rm -R node_modules
-RUN npm ci
+RUN npm ci --quiet
 
 
 
