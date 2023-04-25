@@ -8,6 +8,8 @@ build_prod:
     DOCKER_HOST: "tcp://docker:2375"
     # Instruct Docker not to start over TLS.
     DOCKER_TLS_CERTDIR: ""
+    # Improve performance with overlayfs.
+    DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   script:
