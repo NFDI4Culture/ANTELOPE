@@ -1,4 +1,3 @@
-
 build_prod:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -10,7 +9,7 @@ build_prod:
     - docker version
     - cd implementation/src/main/docker
     - printf "\nRUN ./mvnw --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile_PROD
-    - docker build -f Dockerfile_PROD -t annotation_services_builder .
+    - docker build -q -f Dockerfile_PROD -t annotation_services_builder .
 
 
 build_test:
