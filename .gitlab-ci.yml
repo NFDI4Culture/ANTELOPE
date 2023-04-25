@@ -3,6 +3,11 @@ build_prod:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   stage: deploy
   image: docker:stable
+  variables:
+    # Instruct Testcontainers to use the daemon of DinD, use port 2735 for non-tls connections.
+    DOCKER_HOST: "tcp://docker:2375"
+    # Instruct Docker not to start over TLS.
+    DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
   script:
