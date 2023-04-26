@@ -1,34 +1,28 @@
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: "tcp://docker:2375"
+
+services:
+  - name: docker:dind
+    # explicitly disable tls to avoid docker startup interruption
+    command: ["--tls=false"]
+
 build_prod:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   stage: deploy
   image: docker:stable
-  variables:
-    # Instruct Testcontainers to use the daemon of DinD, use port 2735 for non-tls connections.
-    DOCKER_HOST: "tcp://docker:2375"
-    # Instruct Docker not to start over TLS.
-    DOCKER_TLS_CERTDIR: ""
-    # Improve performance with overlayfs.
-    DOCKER_DRIVER: overlay2
-  services:
-    - name: docker:dind
-      # explicitly disable tls to avoid docker startup interruption
-      command: ["--tls=false"]
-
   script:
     - docker version
     - cd implementation/src/main/docker
     - printf "\nRUN ./mvnw --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile_PROD
     - docker build -q -f Dockerfile_PROD -t annotation_services_builder .
 
-
 build_test:
   rules:
     - if: $CI_COMMIT_BRANCH == "test"
   stage: deploy
   image: docker:stable
-  services:
-    - docker:dind
   script:
     - docker version
     - cd implementation/src/main/docker
