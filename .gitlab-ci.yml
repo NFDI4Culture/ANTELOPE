@@ -1,6 +1,7 @@
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
 
 services:
   - name: docker:dind
@@ -11,13 +12,19 @@ build_prod:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   stage: deploy
-  image: docker:stable
+  image: jhipster/jhipster
   script:
-    - export login=$(echo -n "$CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD" | base64)
-    - docker version
-    - cd implementation/src/main/docker
-    - printf "\nRUN ./mvnw --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile_PROD
-    - docker build -q -f Dockerfile_PROD -t annotation_services_builder .
+    - cd /tib-dev
+    - su
+    - mkdir annotationService
+    - git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
+    - cd /tib-dev/annotationService
+    - git checkout main
+    - cd /tib-dev/annotationService/implementation
+    - npm ci --quiet
+
+    - ./mvnw --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD
+    #- docker build -q -f Dockerfile_PROD -t annotation_services_builder .
 
 build_test:
   rules:
