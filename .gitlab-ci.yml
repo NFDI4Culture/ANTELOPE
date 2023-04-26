@@ -14,9 +14,9 @@ build_prod:
   stage: deploy
   image: jhipster/jhipster
   script:
+    - su
     - mkdir /tib-dev
     - cd /tib-dev
-    - su
     - mkdir annotationService
     - git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
     - cd /tib-dev/annotationService
