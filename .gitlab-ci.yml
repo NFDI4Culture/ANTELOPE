@@ -14,14 +14,13 @@ build_prod:
   stage: deploy
   image: jhipster/jhipster
   script:
-    - su
-    - mkdir /tib-dev
-    - cd /tib-dev
+    - mkdir tib-dev
+    - cd tib-dev
     - mkdir annotationService
     - git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
-    - cd /tib-dev/annotationService
+    - cd annotationService
     - git checkout main
-    - cd /tib-dev/annotationService/implementation
+    - cd implementation
     - npm ci --quiet
 
     - ./mvnw --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD
