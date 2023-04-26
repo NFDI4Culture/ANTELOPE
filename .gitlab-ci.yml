@@ -13,6 +13,7 @@ build_prod:
   stage: deploy
   image: docker:stable
   script:
+    - export login=$(echo -n "$CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD" | base64)
     - docker version
     - cd implementation/src/main/docker
     - printf "\nRUN ./mvnw --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile_PROD
