@@ -1,27 +1,48 @@
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+
+services:
+  - name: docker:dind
+    # explicitly disable tls to avoid docker startup interruption
+    command: ["--tls=false"]
 
 build_prod:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   stage: deploy
-  image: docker:stable
-  services:
-    - docker:dind
+  image: jhipster/jhipster
   script:
-    - docker version
-    - cd implementation/src/main/docker
-    - printf "\nRUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile_PROD
-    - docker build -f Dockerfile_PROD -t annotation_services_builder .
-
+    - mkdir tib-dev
+    - cd tib-dev
+    - mkdir annotationService
+    # get latest project code from branch 'main'
+    - git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
+    - cd annotationService
+    - git checkout main
+    - cd implementation
+    # build project
+    - npm ci --quiet
+    # package docker container and push to gitlab container registry (PROD)
+    - ./mvnw --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD
 
 build_test:
   rules:
     - if: $CI_COMMIT_BRANCH == "test"
   stage: deploy
-  image: docker:stable
-  services:
-    - docker:dind
+  image: jhipster/jhipster
   script:
-    - docker version
-    - cd implementation/src/main/docker
-    - printf "\nRUN ./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/test:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD" >> Dockerfile_TEST
-    - docker build -f Dockerfile_TEST -t annotation_services_builder .
+    - mkdir tib-dev
+    - cd tib-dev
+    - mkdir annotationService
+    # get latest project code from branch 'main'
+    - git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
+    - cd annotationService
+    - git checkout test
+    - cd implementation
+    # build project
+    - npm ci --quiet
+    # package docker container and push to gitlab container registry (TEST)
+    - ./mvnw --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/test:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD
+
