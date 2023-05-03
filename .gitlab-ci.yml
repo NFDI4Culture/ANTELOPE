@@ -39,7 +39,7 @@ build_test:
     # get latest project code from branch 'main'
     - git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
     - cd annotationService
-    - git checkout main
+    - git checkout test
     - cd implementation
     # build project
     - npm ci --quiet
