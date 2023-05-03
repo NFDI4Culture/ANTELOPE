@@ -86,7 +86,13 @@ git pull
 git merge <DEV_BRANCH>
 
 ### deploy on test server
+# push changes to git, gitlab will rebuild the docker container automatically
+git push 
 
+-check for progress on: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/jobs
+-check for rebuild container on https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/container_registry/4057458
+-start deploy job "deploy TEST-annotationservice" in gitlab deploy project: https://git.tib.eu/nfdi4culture/annotation_service-deploy/-/pipelines/49416
+-check functionality: http://nfdi4cultureann11.test.service.tib.eu:8080/ (only accessible from tib internal network)
 
 ### merge test branch (TEST) into main branch (PROD)
 git checkout main
