@@ -25,7 +25,6 @@ docker-compose -f src/main/docker/app.yml up
 development environment
 If you want to have a docker image for development purposes, use the ./src/main/docker/Dockerfile but remove the line for building the image
 
-
 ## Project Structure
 
 Node is required for generation and recommended for development. `package.json` is always generated for a better development experience with prettier, commit hooks, scripts and so on.
@@ -73,6 +72,32 @@ specifying a newer version in [package.json](package.json). You can also run `np
 Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
 
 The `npm run` command will list all of the scripts available to run for this project.
+
+## Dev and deployment cycle
+
+### generate one branch per issue
+git checkout main
+git checkout -b issue<ISSUE_NR>_<BRANCHNAME>
+
+### merge branch to test
+git checkout test
+git fetch
+git pull
+git merge <DEV_BRANCH>
+
+### deploy on test server
+
+
+### merge test branch (TEST) into main branch (PROD)
+git checkout main
+git fetch
+git pull
+git merge test
+
+### deploy on prod server
+
+### delete dev branch
+
 
 ### PWA Support
 
