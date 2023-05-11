@@ -61,37 +61,78 @@ public class HierarchyFetcherOLS extends HierarchyFetcher{
             result = EntityUtils.toString(response.getEntity());
             JSONObject json = new JSONObject(result);
             
-            JSONArray jsonFetchResultArr = json.getJSONObject("_embedded").optJSONArray("terms");
+            JSONArray entitiesJsonArr = json.getJSONObject("_embedded").optJSONArray("terms");
             JSONArray resultArr = new JSONArray();
-            for( int i=0; i<jsonFetchResultArr.length(); i++){ 
-                JSONObject j = jsonFetchResultArr.getJSONObject(i);
-                String actNodeName = entityLabel;
-                String actNodeUri = entityUrl;
-                String actSuperClassUri = "";
-                String actSuperClassName = "superClassName";
-
-                // embedd respone data into falcon json format
-                JSONObject obj = new JSONObject();
-                obj.put("class", actNodeUri);
-                obj.put("superclass", actSuperClassUri);
-                obj.put("classLabel", actNodeName);
-                obj.put("superclassLabel", actSuperClassName);
-                // add json object to result json array
-                resultArr.put(obj);
-                log.debug("iconclass result fetched sucessfully");
+            for( int i=0; i<entitiesJsonArr.length(); i++){ 
+                JSONObject entity = entitiesJsonArr.getJSONObject(i);
+                getParentClasses( entity, resultArr );
             }
-
-            
             
             super.entitiesToProcess.put("label", entityLabel);
 
             resultsByEntity.put(entitiesToProcess.toString(), resultArr.toString());
             log.debug("ols result fetched sucessfully");
-        } catch ( Exception e) {
+        }catch ( Exception e) {
             log.error( "unable to receive ols Classes for '"+super.entitiesToProcess.toString()+"' error: "+e.getMessage() );
-            log.error(url);
+            
             e.printStackTrace();
         }
+       
+        
+    }
+
+    private void getParentClasses(JSONObject entity, JSONArray result) {
+        
+        String actNodeName = entity.getString("label");
+        String actNodeUri = entity.getString("iri");
+        Boolean actNodeIsRoot = entity.getBoolean("is_root");
+        String actNodeParentsUrl = entity.getJSONObject("_links").getJSONObject("hierarchicalParents").getString("href");
+
+        // break call (recursion end)
+        if( actNodeIsRoot ) {
+            return;
+        }
+
+        // get parents
+        HttpGet get = null;
+        try {
+            get = new HttpGet(new URI(actNodeParentsUrl));
+        } catch (Exception e) {
+            log.error( "unable init ols url error: "+e.getMessage() );
+        }
+        String parentsResult = null;
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+            CloseableHttpResponse response = httpClient.execute(get)) {
+
+            parentsResult = EntityUtils.toString(response.getEntity());
+            JSONObject json = new JSONObject(parentsResult);
+            
+            JSONArray parentsArr = json.getJSONObject("_embedded").optJSONArray("terms");
+            for( int i=0; i<parentsArr.length(); i++){ 
+                JSONObject actParent = parentsArr.getJSONObject(i);
+                String actParentName = actParent.getString("label");
+                String actParentUri = actParent.getString("iri");
+               
+                // create a new json object to add to results
+                JSONObject obj = new JSONObject();
+                obj.put("class", actNodeUri);
+                obj.put("superclass", actParentUri);
+                obj.put("classLabel", actNodeName);
+                obj.put("superclassLabel", actParentName);
+                // add json object to result json array
+                result.put(obj);
+                
+                // recursive call to get parents for actParent
+                getParentClasses(actParent, result);
+            }
+        } catch ( Exception e) {
+            log.error( "unable to receive ols Classes for '"+super.entitiesToProcess.toString()+"' error: "+e.getMessage() );
+            
+            e.printStackTrace();
+        }
+
+        
+        
         
     }
     
