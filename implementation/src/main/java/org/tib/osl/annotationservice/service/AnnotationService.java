@@ -77,7 +77,7 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean iconclass) {
         List<String> requestBody = new ArrayList<String>();
         requestBody.add(searchText);
-        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass);
+        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, true);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean wikidata,
     Boolean wikidataDbpedia,
     Boolean iconclass) {
-        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass);
+        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, true);
     }
 
 
@@ -94,7 +94,8 @@ public class AnnotationService implements AnnotationApiDelegate {
     SearchMode searchMode,
     Boolean wikidata,
     Boolean wikidataDbpedia,
-    Boolean iconclass) {
+    Boolean iconclass,
+    Boolean ols) {
         System.out.println("test");
         // decide which datasources to use
         // if no parameter is given, all datasources are used
@@ -135,7 +136,20 @@ public class AnnotationService implements AnnotationApiDelegate {
             iconclassNotations = new ArrayList<>();
         }
 
-       
+       // get Entities from Iconclass
+       List<String> olsResults;
+       if( useAllSources || (ols != null && ols) ){
+           try {
+            olsResults = EntityRecognition.getOLSResults(requestBody, null);
+               System.out.println( "Tib Terminology service (OLS) Results:"+olsResults );
+           } catch (Exception e) {
+               e.printStackTrace();
+               return new ResponseEntity<>("Failed to request tib terminology service (OLS) API", HttpStatus.INTERNAL_SERVER_ERROR);
+           }
+       } else {
+        olsResults = new ArrayList<>();
+       }
+
         // init executorService for parallel fetching of results
         ExecutorService executor = Executors.newFixedThreadPool(10);
 
@@ -143,6 +157,8 @@ public class AnnotationService implements AnnotationApiDelegate {
         Future<Map<String, String>> wikidataResultsByEntity = null;
         Future<Map<String, String>> dbpediaResultsByEntity = null;
         Future<Map<String, String>> iconclassResultsByNotation = null;
+        Future<Map<String, String>> olsResultsByEntity = null;
+        
 
         // get all superclasses for the falcon entities from wikidata
         try {
@@ -193,7 +209,27 @@ public class AnnotationService implements AnnotationApiDelegate {
             return new ResponseEntity<>("Failed to request Iconclass API", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        while( !wikidataResultsByEntity.isDone() || !dbpediaResultsByEntity.isDone() || !iconclassResultsByNotation.isDone()) {
+        // get all superclasses for the ols entities from ols
+           try {
+            Callable<Map<String, String>> olsCall = new Callable<>() {
+
+                @Override
+                public Map<String, String> call() throws Exception {
+                    //return null;
+                   return EntityRecognition.getOlsSuperClasses(olsResults);
+                }
+            };
+            olsResultsByEntity = executor.submit(olsCall);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to request ols API", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        while( 
+            !wikidataResultsByEntity.isDone() 
+        || !dbpediaResultsByEntity.isDone() 
+        || !iconclassResultsByNotation.isDone()
+        || !olsResultsByEntity.isDone() ) {
             log.debug("wait for completion");
             try {
                 Thread.sleep(250);
@@ -208,7 +244,14 @@ public class AnnotationService implements AnnotationApiDelegate {
         // build hierarchy
         JSONObject finalResult = null;
         try {
-            finalResult = EntityRecognition.combineResults(falconResults, wikidataResultsByEntity.get(), dbpediaResultsByEntity.get(), iconclassNotations, iconclassResultsByNotation.get());
+            finalResult = EntityRecognition.combineResults(
+                falconResults, 
+                wikidataResultsByEntity.get(), 
+                dbpediaResultsByEntity.get(), 
+                iconclassNotations, 
+                iconclassResultsByNotation.get(),
+                olsResults,
+                olsResultsByEntity.get());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Failed to build category tree", HttpStatus.INTERNAL_SERVER_ERROR);

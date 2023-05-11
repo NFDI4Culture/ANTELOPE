@@ -255,13 +255,13 @@ public class TreeBuilder {
         List<JSONObject> hierarchyEntriesOfStartNode = new ArrayList<>();
         for( Object o : hierarchyEntries ) {
             JSONObject j = (JSONObject)o;
-            System.out.println(j.toString());
+            //System.out.println(j.toString());
             String actNodeName = j.getString("classLabel");
             String actNodeUri = j.getString("class");
             String actSuperClassUri = j.getString("superclass");
             String actSuperClassName = j.getString("superclassLabel");
             if( actNodeUri.equals(startNodeUri) ) {
-                System.out.println("found child entry: "+actNodeName+" ("+actNodeUri+") --> "+actSuperClassName+" ("+actSuperClassUri+")");
+                //System.out.println("found child entry: "+actNodeName+" ("+actNodeUri+") --> "+actSuperClassName+" ("+actSuperClassUri+")");
                 hierarchyEntriesOfStartNode.add( j );
             }
         }
@@ -272,11 +272,11 @@ public class TreeBuilder {
             String actClassUri = j.getString("class");
             String actSuperClassUri = j.getString("superclass");
             String actSuperClassName = j.getString("superclassLabel");
-            System.out.println("get subtree for startNode: "+actSuperClassName+" ("+actSuperClassUri+")");
+            //System.out.println("get subtree for startNode: "+actSuperClassName+" ("+actSuperClassUri+")");
             actId++;
 
             // handle reflexivity: check if class and superclass are not equal to avoid infinite recursion(circle) 
-            System.out.println("check for equality: "+actClassUri+" and "+actSuperClassUri);
+           //System.out.println("check for equality: "+actClassUri+" and "+actSuperClassUri);
             if( actClassUri.equals( actSuperClassUri ) ) {
                 log.info("act node is equal to superclass node. skip!");
                 continue;
