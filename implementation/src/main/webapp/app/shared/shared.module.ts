@@ -19,10 +19,11 @@ import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.compon
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MaterialModule } from "./material/material.module";
 import {ClipboardModule} from '@angular/cdk/clipboard'; 
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
-  imports: [SharedLibsModule, LoadingBarModule, MaterialModule, ClipboardModule],
+  imports: [SharedLibsModule, LoadingBarModule, MaterialModule, ClipboardModule, NgSelectModule],
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,

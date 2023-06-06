@@ -1,5 +1,6 @@
 package org.tib.osl.annotationservice.service;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,12 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.context.Context;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,23 +76,60 @@ public class AnnotationService implements AnnotationApiDelegate {
     }
 
     @Override
-    public ResponseEntity<String> getTerminology(String searchText, 
+    public ResponseEntity<String> getTerminology(
+    String searchText, 
     Boolean wikidata,
     Boolean wikidataDbpedia,
-    Boolean iconclass) {
+    Boolean iconclass,
+    Boolean ts4tib,
+    String ts4tib_collection,
+    String ts4tib_ontology
+    ) {
         List<String> requestBody = new ArrayList<String>();
         requestBody.add(searchText);
-        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, true);
+        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, ts4tib);
     }
 
     @Override
     public ResponseEntity<String> getEntities(List<String> requestBody, 
     Boolean wikidata,
     Boolean wikidataDbpedia,
-    Boolean iconclass) {
-        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, true);
+    Boolean iconclass,
+    Boolean ts4tib,
+    String ts4tib_collection,
+    String ts4tib_ontology
+    ) {
+        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib);
     }
 
+    @Override
+    public ResponseEntity<String> getParameterTs4tibCollection () {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            JSONArray resultArr = new JSONArray();
+            HttpGet request = new HttpGet(new URI("https://service.tib.eu/ts4tib/api/ontologies/schemavalues?schema=collection"));
+            request.addHeader("content-type", "application/json");
+            CloseableHttpResponse response = httpClient.execute(request);
+            String ts4tibResponse = EntityUtils.toString(response.getEntity());
+            JSONArray collectionObjs = new JSONObject( ts4tibResponse ).getJSONObject("_embedded").getJSONArray("strings");
+            for( int i=0; i<collectionObjs.length(); i++) {
+                JSONObject actCollectionObj = collectionObjs.getJSONObject(i);
+                resultArr.put(actCollectionObj.getString("content"));
+            }
+            JSONObject result = new JSONObject();
+            result.put("collections", resultArr);
+            String responseString = result.toString(0);
+            log.info(responseString);
+            return new ResponseEntity<String>(responseString, HttpStatus.OK);
+            
+        } catch ( Exception e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> getParameterTs4tibOntology (String collection) {
+        return new ResponseEntity<String>("{\"ontologies\":[\"abcd\"]}", HttpStatus.OK);
+    }
 
     public ResponseEntity<String> search(
     List<String> requestBody, 
@@ -94,13 +137,13 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean wikidata,
     Boolean wikidataDbpedia,
     Boolean iconclass,
-    Boolean ols) {
+    Boolean ts4tib) {
         System.out.println("test");
         // decide which datasources to use
         // if no parameter is given, all datasources are used
         boolean useAllSources = true;
 
-        if( wikidata != null || wikidataDbpedia != null || iconclass != null) {
+        if( wikidata != null || wikidataDbpedia != null || iconclass != null || ts4tib != null) {
             useAllSources = false;
         }
 
@@ -137,7 +180,7 @@ public class AnnotationService implements AnnotationApiDelegate {
 
        // get Entities from Iconclass
        List<String> olsResults;
-       if( useAllSources || (ols != null && ols) ){
+       if( useAllSources || (ts4tib != null && ts4tib) ){
            try {
             olsResults = EntityRecognition.getOLSResults(requestBody, null);
                System.out.println( "Tib Terminology service (OLS) Results:"+olsResults );

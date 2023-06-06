@@ -1,4 +1,4 @@
-import { Component,ElementRef } from '@angular/core';
+import { Component,ElementRef, Injectable, SimpleChanges } from '@angular/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
 //import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
@@ -8,6 +8,8 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 //import { MatTab } from '@angular/material/tabs';
 //import { MatTooltipModule } from '@angular/material/tooltip';
 //import { MatTooltip } from '@angular/material/tooltip';
+import { HttpClient } from '@angular/common/http';
+
 import * as XLSX from 'xlsx';
 
 const EXCEL_EXTENSION = '.xlsx';
@@ -28,6 +30,15 @@ type AnnotationResponse = {
   hierarchy: HierarchyTree;
 };
 
+// data model of the RESTful annotationService API result
+type ts4tibCollectionsResponse = {
+  collections: [];
+};
+
+type ts4tibOntologiesResponse = {
+  ontologies: [];
+};
+
 // data model for initialising the d3 tree graph
 type HierarchyTree = {
   id: string;
@@ -42,11 +53,20 @@ type HierarchyTree = {
   styleUrls: ['./annotation-service-ui.component.scss']
 })
 
+@Injectable()
 export class AnnotationServiceUIComponent {
   loader = this.loadingBar.useRef();
   textToAnnotate = new FormControl('');
+  ts4tibOntologies = [
+    {name: 'abcd', collection: 'c1'},
+    {name: 'obo', collection: 'c1'},
+    {name: 'obo', collection: 'c2'},
+  ]
+
   initArray:FormControl[] = [];
+  initArrayCollections:FormControl[] = [];
   selectedSources = new FormArray(this.initArray);
+  selectedTs4tibOntologies= [{name: 'All'}];
   msg = "";
   err = "";
   showResultContainer = false;
@@ -60,9 +80,11 @@ export class AnnotationServiceUIComponent {
   datasources: Array<any> = [
     { name: 'WIKIDATA', value: 'wikidata', checked: false, disabled: true },
     { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false},
-    { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false }
+    { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false },
+    { name: 'TIB Terminology Service (ts4tib)', value: 'ts4tib', checked: true, disabled: false}
   ];
-  selectedItems = [];
+  
+
   dropdownSettings = {};
   
   public annotation: AnnotationResponse = {entities:[], relations:[], hierarchy:{} as unknown as HierarchyTree};
@@ -71,7 +93,8 @@ export class AnnotationServiceUIComponent {
   private graph!: GraphTidytreeComponent;
   
   // init a custom loadingbar to show progress while waiting for the annotationService result and creating the d3 graph
-  constructor(private loadingBar: LoadingBarService, fb: FormBuilder) {
+  constructor(private loadingBar: LoadingBarService, fb: FormBuilder, public http: HttpClient) {
+    // init datasource checkboxes
     const initialSources = new FormArray(this.initArray)
       this.datasources.forEach((element) => {
         if( element.checked ) {   
@@ -83,10 +106,15 @@ export class AnnotationServiceUIComponent {
     this.sourcesForm = fb.group({
       selectedSources:  initialSources
     });
-
     this.selectedSources = initialSources
+    
+    
+     
   }
-
+  ngOnInit() {
+    this.getTs4tibCollections();
+    this.getTs4tibOntologies();
+  }
   startLoading():void {
     this.loadingBar.useRef().start();
   }
@@ -125,6 +153,43 @@ export class AnnotationServiceUIComponent {
 
   getStringValue(value: any): string {
     return String(value);
+  }
+
+  getTs4tibCollections() {
+    let url = 'api/annotation/parameterOptions/ts4tib_collection';
+    return this.http.get<ts4tibCollectionsResponse>(url);
+  }
+    
+  
+
+  compareOntologies = (item:any, selected:any) => {
+    if (selected.collection && item.collection) {
+        return item.collection === selected.collection;
+    }
+    if (item.name && selected.name) {
+        return item.name === selected.name;
+    }
+    return false;
+};
+
+  async getTs4tibOntologies(): Promise<void> {
+    let url = 'api/annotation/parameterOptions/ts4tib_ontology';
+    
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`);
+    } 
+
+    // get response and save
+    const result = (await response.json()) as ts4tibOntologiesResponse;
+    //this.ts4tibOntologiesList = result.ontologies;
+    
   }
 
   async terminologySearch(): Promise<void> {
