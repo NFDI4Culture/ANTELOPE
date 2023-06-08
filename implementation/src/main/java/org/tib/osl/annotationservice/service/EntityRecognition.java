@@ -183,7 +183,7 @@ public class EntityRecognition {
      * @return 
      * @throws Exception
      */
-    protected static List<String> getOLSResults( List<String> requestText, String collectionId) throws Exception {
+    protected static List<String> getTs4TibResults( List<String> requestText, String ontologyList) throws Exception {
         List<String> results = new ArrayList<>();
         String baseUrl = "https://service.tib.eu/ts4tib/api/";
         
@@ -191,7 +191,13 @@ public class EntityRecognition {
         for( String actText : requestText) {
             String result = "";
             String encodedText = URLEncoder.encode(actText, StandardCharsets.UTF_8);
-            HttpGet request = new HttpGet(new URI( baseUrl + "search?q=" + encodedText + "&obsoletes=false&local=false&rows=10&format=json"));
+            String ontologies = "";
+            String collections = "";
+            if( ontologyList != null ) {
+                ontologies = "&ontology="+URLEncoder.encode(ontologyList, StandardCharsets.UTF_8);;
+            }
+            
+            HttpGet request = new HttpGet(new URI( baseUrl + "search?q=" + encodedText + "&obsoletes=false&local=false&rows=10&format=json"+ontologies));
             request.addHeader("content-type", "application/json");
             
                 // init json objects to fill with results

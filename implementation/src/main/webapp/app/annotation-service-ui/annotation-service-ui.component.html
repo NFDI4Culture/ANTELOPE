@@ -45,15 +45,19 @@
                 </mat-form-field>
 
             -->
-                <ng-select [items]="ts4tibOntologies"
+                <ng-select class="tib-select"
+                        [items]="ts4tibOntologies"
                         bindLabel="name"
+                        bindValue="id"
                         groupBy="collection"
                         [multiple]="true"
                         [closeOnSelect]="false"
                         [selectableGroup]="true"
                         [selectableGroupAsModel]="false"
                         [compareWith]="compareOntologies"
-                        [(ngModel)]="selectedTs4tibOntologies">
+                        [(ngModel)]="selectedTs4tibOntologies"
+                        [virtualScroll]="true"
+                        appendTo="body">
                     <ng-template ng-optgroup-tmp let-item="item">
                         {{item.collection || 'Unnamed group'}}
                     </ng-template>

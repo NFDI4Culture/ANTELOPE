@@ -67,3 +67,17 @@ body {
   ::ng-deep .mat-tooltip {
     font-size: 14px;
   }
+
+  
+
+
+  ::ng-deep div.ng-value { 
+    background-color: #d6dbe0 !important;   
+    color: #555 !important;   
+  }
+  ::ng-deep span.ng-star-inserted { 
+    color: #555 !important;   
+  }
+
+
+  

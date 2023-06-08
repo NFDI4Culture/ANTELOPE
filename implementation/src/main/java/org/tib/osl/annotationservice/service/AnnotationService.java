@@ -2,8 +2,11 @@ package org.tib.osl.annotationservice.service;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -87,7 +90,7 @@ public class AnnotationService implements AnnotationApiDelegate {
     ) {
         List<String> requestBody = new ArrayList<String>();
         requestBody.add(searchText);
-        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, ts4tib);
+        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology);
     }
 
     @Override
@@ -99,7 +102,7 @@ public class AnnotationService implements AnnotationApiDelegate {
     String ts4tib_collection,
     String ts4tib_ontology
     ) {
-        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib);
+        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology);
     }
 
     @Override
@@ -126,9 +129,41 @@ public class AnnotationService implements AnnotationApiDelegate {
         }
     }
 
+   
     @Override
     public ResponseEntity<String> getParameterTs4tibOntology (String collection) {
-        return new ResponseEntity<String>("{\"ontologies\":[\"abcd\"]}", HttpStatus.OK);
+        
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            JSONArray resultArr = new JSONArray();
+            HttpGet request = new HttpGet(new URI("https://service.tib.eu/ts4tib/api/ontologies?size=1000"));
+            request.addHeader("content-type", "application/json");
+            CloseableHttpResponse response = httpClient.execute(request);
+            String ts4tibResponse = EntityUtils.toString(response.getEntity());
+            JSONArray ontologyObjs = new JSONObject( ts4tibResponse ).getJSONObject("_embedded").getJSONArray("ontologies");
+            for( int i=0; i<ontologyObjs.length(); i++) {
+                JSONObject actOntologyObj = ontologyObjs.getJSONObject(i);
+                String ontoId = actOntologyObj.optString("ontologyId");
+                String ontoLabel = actOntologyObj.getJSONObject("config").optString("title");
+                JSONObject ontoCollectionsObj = actOntologyObj.getJSONObject("config").getJSONArray("classifications").optJSONObject(0);
+                JSONArray ontoCollections = new JSONArray();
+                if( ontoCollectionsObj != null) {
+                    ontoCollections = ontoCollectionsObj.optJSONArray("collection");
+                }
+                JSONObject resultOntoObj = new JSONObject();
+                resultOntoObj.put("paramValue", ontoId);
+                resultOntoObj.put("label", ontoLabel);
+                resultOntoObj.put("collections", ontoCollections);
+                resultArr.put(resultOntoObj);
+            }
+            JSONObject result = new JSONObject();
+            result.put("ontologies", resultArr);
+            String responseString = result.toString(0);
+            log.info(responseString);
+            return new ResponseEntity<String>(responseString, HttpStatus.OK);
+            
+        } catch ( Exception e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<String> search(
@@ -137,8 +172,10 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean wikidata,
     Boolean wikidataDbpedia,
     Boolean iconclass,
-    Boolean ts4tib) {
-        System.out.println("test");
+    Boolean ts4tib,
+    String ts4tibOntology
+    ) {
+        
         // decide which datasources to use
         // if no parameter is given, all datasources are used
         boolean useAllSources = true;
@@ -182,7 +219,7 @@ public class AnnotationService implements AnnotationApiDelegate {
        List<String> olsResults;
        if( useAllSources || (ts4tib != null && ts4tib) ){
            try {
-            olsResults = EntityRecognition.getOLSResults(requestBody, null);
+            olsResults = EntityRecognition.getTs4TibResults(requestBody, ts4tibOntology);
                System.out.println( "Tib Terminology service (OLS) Results:"+olsResults );
            } catch (Exception e) {
                e.printStackTrace();
