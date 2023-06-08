@@ -1,4 +1,4 @@
-import { Component,ElementRef } from '@angular/core';
+import { Component,ElementRef, Injectable, SimpleChanges } from '@angular/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
 //import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
@@ -8,6 +8,8 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 //import { MatTab } from '@angular/material/tabs';
 //import { MatTooltipModule } from '@angular/material/tooltip';
 //import { MatTooltip } from '@angular/material/tooltip';
+import { HttpClient } from '@angular/common/http';
+
 import * as XLSX from 'xlsx';
 
 const EXCEL_EXTENSION = '.xlsx';
@@ -18,7 +20,6 @@ interface ENTITIES {
   label: string;
   source: string;
   classes: string
-
 }
 
 // data model of the RESTful annotationService API result
@@ -26,6 +27,21 @@ type AnnotationResponse = {
   entities: ENTITIES[];
   relations: [];
   hierarchy: HierarchyTree;
+};
+
+// data model of the RESTful annotationService API result
+type ts4tibCollectionsResponse = {
+  collections: [];
+};
+
+type ts4tibOntologiesResponse = {
+  ontologies: [
+    {
+    collections: string[];
+    label: string;
+    paramValue: string;
+    }
+  ]
 };
 
 // data model for initialising the d3 tree graph
@@ -42,14 +58,23 @@ type HierarchyTree = {
   styleUrls: ['./annotation-service-ui.component.scss']
 })
 
+@Injectable()
 export class AnnotationServiceUIComponent {
   loader = this.loadingBar.useRef();
   textToAnnotate = new FormControl('');
+  ts4tibOntologies = [
+    {id: "NONE", name:"loading ontologies...", collection:"-"}
+   
+  ]
+
   initArray:FormControl[] = [];
+  initArrayCollections:FormControl[] = [];
   selectedSources = new FormArray(this.initArray);
+  selectedTs4tibOntologies= [];//[{name: 'All'}];
   msg = "";
   err = "";
   showResultContainer = false;
+  showTs4tibOntologySelect = false;
   
   @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
   
@@ -60,9 +85,11 @@ export class AnnotationServiceUIComponent {
   datasources: Array<any> = [
     { name: 'WIKIDATA', value: 'wikidata', checked: false, disabled: true },
     { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false},
-    { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false }
+    { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false },
+    { name: 'TIB Terminology Service', value: 'ts4tib', checked: false, disabled: false}
   ];
-  selectedItems = [];
+  
+
   dropdownSettings = {};
   
   public annotation: AnnotationResponse = {entities:[], relations:[], hierarchy:{} as unknown as HierarchyTree};
@@ -71,7 +98,8 @@ export class AnnotationServiceUIComponent {
   private graph!: GraphTidytreeComponent;
   
   // init a custom loadingbar to show progress while waiting for the annotationService result and creating the d3 graph
-  constructor(private loadingBar: LoadingBarService, fb: FormBuilder) {
+  constructor(private loadingBar: LoadingBarService, fb: FormBuilder, public http: HttpClient) {
+    // init datasource checkboxes
     const initialSources = new FormArray(this.initArray)
       this.datasources.forEach((element) => {
         if( element.checked ) {   
@@ -83,10 +111,15 @@ export class AnnotationServiceUIComponent {
     this.sourcesForm = fb.group({
       selectedSources:  initialSources
     });
-
     this.selectedSources = initialSources
+    
+    
+     
   }
-
+  ngOnInit() {
+    //const ts4tibCollections = this.getTs4tibCollections().subscribe;
+    this.getTs4tibOntologies();
+  }
   startLoading():void {
     this.loadingBar.useRef().start();
   }
@@ -104,7 +137,9 @@ export class AnnotationServiceUIComponent {
         this.datasources[1].disabled = true;
       } else if( event.target.value === 'wikidata_dbpedia'){
         this.datasources[0].disabled = true;
-      } 
+      } else if( event.target.value === 'ts4tib'){
+        this.showTs4tibOntologySelect = true;
+      }
       
     } else {
       const index = selectedSources.controls.findIndex(x => x.value === event.target.value);
@@ -113,7 +148,9 @@ export class AnnotationServiceUIComponent {
         this.datasources[1].disabled = false;
       } else if( event.target.value === 'wikidata_dbpedia'){
         this.datasources[0].disabled = false;
-      } 
+      } else if( event.target.value === 'ts4tib'){
+        this.showTs4tibOntologySelect = false;
+      }
     }
   }
 
@@ -125,6 +162,59 @@ export class AnnotationServiceUIComponent {
 
   getStringValue(value: any): string {
     return String(value);
+  }
+
+  getTs4tibCollections() {
+    let url = 'api/annotation/parameterOptions/ts4tib_collection';
+    return this.http.get<ts4tibCollectionsResponse>(url);
+  }
+    
+  
+
+  compareOntologies = (item:any, selected:any) => {
+    if (selected.collection && item.collection) {
+        return item.collection === selected.collection;
+    }
+    if (item.name && selected.name) {
+        return item.name === selected.name;
+    }
+    return false;
+};
+
+  async getTs4tibOntologies(): Promise<void> {
+    let url = 'api/annotation/parameterOptions/ts4tib_ontology';
+    
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`);
+    } 
+
+    // get response and save
+    const ontologiesResponse = (await response.json()) as ts4tibOntologiesResponse;
+    let result = []
+    
+    for( var i=0; i<ontologiesResponse.ontologies.length; i++) {
+      const actOntoEntry = ontologiesResponse.ontologies[i];
+     
+
+      if( !actOntoEntry.collections || actOntoEntry.collections.length == 0) {
+        result.push( {id: actOntoEntry.paramValue, name: actOntoEntry.label+" ("+actOntoEntry.paramValue+")", collection: "none"} );
+      } else {
+        for( var x=0; x<actOntoEntry.collections.length; x++) {
+          const actCollection = actOntoEntry.collections[x];
+          result.push( {id: actOntoEntry.paramValue,  name: actOntoEntry.label+" ("+actOntoEntry.paramValue+")", collection: actCollection} );
+        }
+      }
+
+    }
+    this.ts4tibOntologies = result;
+    
   }
 
   async terminologySearch(): Promise<void> {
@@ -154,9 +244,19 @@ export class AnnotationServiceUIComponent {
       let url = 'api/annotation/'+endpoint+'?';
       
       // add datasource parameters (optional) to url e.g. wikidata=true, based on the checkbox formgroup
+      var ts4tibSelected = false;
       this.selectedSources.controls.forEach((element:FormControl) => {
         url += this.getStringValue(element.value)+"=true&";  
+        if(element.value === "ts4tib") {
+          ts4tibSelected = true;
+        }
       });
+
+      //if ts4Tib is selected as a datasource, add selected ontologies as parameters
+      if( ts4tibSelected && this.selectedTs4tibOntologies) {
+        url += "ts4tib_ontology="+this.selectedTs4tibOntologies.join()+"&";
+        
+      }
         
       let response;
       if( endpoint === "terminology") {

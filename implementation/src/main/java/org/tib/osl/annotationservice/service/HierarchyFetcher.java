@@ -5,10 +5,10 @@ import org.json.JSONObject;
 
 public abstract class HierarchyFetcher implements Runnable {
     protected Map<String, String> resultsByEntity;
-    protected JSONObject falconResultsToProcess;
+    protected JSONObject entitiesToProcess;
 
-    public HierarchyFetcher(Map<String, String> resultContainer, JSONObject falconResultsToProcess) {
+    public HierarchyFetcher(Map<String, String> resultContainer, JSONObject entitiesToProcess) {
         resultsByEntity = resultContainer;
-        this.falconResultsToProcess = falconResultsToProcess;
+        this.entitiesToProcess = entitiesToProcess;
     }    
 }

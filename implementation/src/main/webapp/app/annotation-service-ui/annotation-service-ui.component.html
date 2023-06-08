@@ -31,9 +31,34 @@
                     
                     {{datasource.name}}
                     
+                    
                 </div>
             </form>
-            <div style="margin-top:15px">
+            <span *ngIf="showTs4tibOntologySelect == true">Select Ontologies (optional):</span>
+            <ng-select class="tib-select"
+                *ngIf="showTs4tibOntologySelect == true"
+                [items]="ts4tibOntologies"
+                bindLabel="name"
+                bindValue="id"
+                groupBy="collection"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                [selectableGroup]="true"
+                [selectableGroupAsModel]="false"
+                [compareWith]="compareOntologies"
+                [(ngModel)]="selectedTs4tibOntologies"
+                [virtualScroll]="true"
+                appendTo="body">
+                <ng-template ng-optgroup-tmp let-item="item">
+                    {{item.collection || 'Unnamed group'}}
+                </ng-template>
+            </ng-select>
+               
+
+                
+           
+            
+                <div style="margin-top:15px">
                 <button type="submit" class="btn btn-tib" (click)="terminologySearch()">Run service</button>
                 <button type="button" class="btn btn-tib-secondary" (click)="clearAll()">Reset</button>
             </div>
@@ -72,7 +97,11 @@
                     {{datasource.name}}
                     
                 </div>
+            
             </form>
+           
+      
+        
             <div style="margin-top:15px">
                 <button type="submit" class="btn btn-tib" (click)="entityRecognition()">Run service</button>
                 <button type="button" class="btn btn-tib-secondary" (click)="clearAll()">Reset</button>

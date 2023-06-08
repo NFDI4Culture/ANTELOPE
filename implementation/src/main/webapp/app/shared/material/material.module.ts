@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTabsModule} from '@angular/material/tabs';
+import { MatTooltipModule} from '@angular/material/tooltip';
+import { MatInputModule} from '@angular/material/input';
+import { MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -9,10 +11,15 @@ import {MatTooltipModule} from '@angular/material/tooltip';
   imports: [
     CommonModule,
     MatTabsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatInputModule,
+    MatSelectModule
   ],
   exports: [
     MatTabsModule, 
-    MatTooltipModule]
+    MatTooltipModule,
+    MatInputModule,
+    MatSelectModule
+  ]
 })
 export class MaterialModule { }
