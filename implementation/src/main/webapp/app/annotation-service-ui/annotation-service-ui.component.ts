@@ -74,6 +74,7 @@ export class AnnotationServiceUIComponent {
   msg = "";
   err = "";
   showResultContainer = false;
+  showTs4tibOntologySelect = false;
   
   @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
   
@@ -85,7 +86,7 @@ export class AnnotationServiceUIComponent {
     { name: 'WIKIDATA', value: 'wikidata', checked: false, disabled: true },
     { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false},
     { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false },
-    { name: 'TIB Terminology Service', value: 'ts4tib', checked: true, disabled: false}
+    { name: 'TIB Terminology Service', value: 'ts4tib', checked: false, disabled: false}
   ];
   
 
@@ -136,7 +137,9 @@ export class AnnotationServiceUIComponent {
         this.datasources[1].disabled = true;
       } else if( event.target.value === 'wikidata_dbpedia'){
         this.datasources[0].disabled = true;
-      } 
+      } else if( event.target.value === 'ts4tib'){
+        this.showTs4tibOntologySelect = true;
+      }
       
     } else {
       const index = selectedSources.controls.findIndex(x => x.value === event.target.value);
@@ -145,7 +148,9 @@ export class AnnotationServiceUIComponent {
         this.datasources[1].disabled = false;
       } else if( event.target.value === 'wikidata_dbpedia'){
         this.datasources[0].disabled = false;
-      } 
+      } else if( event.target.value === 'ts4tib'){
+        this.showTs4tibOntologySelect = false;
+      }
     }
   }
 

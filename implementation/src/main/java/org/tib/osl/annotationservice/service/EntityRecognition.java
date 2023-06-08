@@ -196,7 +196,7 @@ public class EntityRecognition {
                 ontologies = "&ontology="+URLEncoder.encode(ontologyList, StandardCharsets.UTF_8);;
             }
             
-            HttpGet request = new HttpGet(new URI( baseUrl + "search?q=" + encodedText + "&obsoletes=false&local=false&rows=10&format=json"+ontologies));
+            HttpGet request = new HttpGet(new URI( baseUrl + "search?q=" + encodedText + "&obsoletes=false&local=false&rows=50&format=json"+ontologies));
             request.addHeader("content-type", "application/json");
             
                 // init json objects to fill with results
@@ -215,7 +215,7 @@ public class EntityRecognition {
                 // for each responded entity for the act requestText: fetch details and combine all the results in a json object
                 for( int i=0; i<resultArr.length(); i++) {
                     JSONObject actEntityObj = (JSONObject)resultArr.get(i);
-                    String actEntityId = actEntityObj.getString("obo_id");
+                    String actEntityId = actEntityObj.optString("obo_id");
                     String actEntityType = actEntityObj.getString("type");
                     String actEntityIRI = actEntityObj.getString("iri");
                     String actEntityName = actEntityObj.getString("label");
