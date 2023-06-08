@@ -192,7 +192,6 @@ public class EntityRecognition {
             String result = "";
             String encodedText = URLEncoder.encode(actText, StandardCharsets.UTF_8);
             String ontologies = "";
-            String collections = "";
             if( ontologyList != null ) {
                 ontologies = "&ontology="+URLEncoder.encode(ontologyList, StandardCharsets.UTF_8);;
             }
@@ -209,7 +208,7 @@ public class EntityRecognition {
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
                 result = EntityUtils.toString(response.getEntity());
-                log.debug( result.toString() );
+                //log.debug( result.toString() );
                 JSONObject actJsonResult = new JSONObject( result );
                 JSONArray resultArr = actJsonResult.getJSONObject("response").getJSONArray("docs"); 
                 

@@ -199,11 +199,11 @@ export class AnnotationServiceUIComponent {
      
 
       if( !actOntoEntry.collections || actOntoEntry.collections.length == 0) {
-        result.push( {id: actOntoEntry.paramValue, name: actOntoEntry.label, collection: "none"} );
+        result.push( {id: actOntoEntry.paramValue, name: actOntoEntry.label+" ("+actOntoEntry.paramValue+")", collection: "none"} );
       } else {
         for( var x=0; x<actOntoEntry.collections.length; x++) {
           const actCollection = actOntoEntry.collections[x];
-          result.push( {id: actOntoEntry.paramValue,  name: actOntoEntry.label, collection: actCollection} );
+          result.push( {id: actOntoEntry.paramValue,  name: actOntoEntry.label+" ("+actOntoEntry.paramValue+")", collection: actCollection} );
         }
       }
 

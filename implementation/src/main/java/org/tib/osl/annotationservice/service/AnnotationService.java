@@ -179,7 +179,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         // decide which datasources to use
         // if no parameter is given, all datasources are used
         boolean useAllSources = true;
-
+        
         if( wikidata != null || wikidataDbpedia != null || iconclass != null || ts4tib != null) {
             useAllSources = false;
         }
