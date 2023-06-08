@@ -91,6 +91,9 @@ git merge <DEV_BRANCH>
 git push 
  
 -check for progress on: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/jobs
+if job creation fails, you may build and publish locally.
+uncomment the line, beginning with "RUN ./mvnw package", insert your gitlab username and password. then run "docker build - < src/main/docker/Dockerfile_TEST"
+
 -check for rebuild container on https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/container_registry/4057458
 -start deploy job "deploy TEST-annotationservice" in gitlab deploy project: https://git.tib.eu/nfdi4culture/annotation_service-deploy/-/pipelines/49416
 -check functionality: http://nfdi4cultureann11.test.service.tib.eu:8080/ (only accessible from tib internal network)
