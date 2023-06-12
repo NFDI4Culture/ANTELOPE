@@ -4,7 +4,7 @@ import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.compon
 // import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
-import { HttpClient } from '@angular/common/http';
+
 
 import * as XLSX from 'xlsx';
 
@@ -26,19 +26,16 @@ type AnnotationResponse = {
 };
 
 // data model of the RESTful annotationService API result
-/*type ts4tibCollectionsResponse = {
+/* type ts4tibCollectionsResponse = {
   collections: [];
-};*/
+}; */
 
-type ts4tibOntologiesResponse = {
-  ontologies: [
+type ts4tibOntology = 
     {
-    collections: string[];
+    collections?: string[];
     label: string;
     paramValue: string;
-    }
-  ]
-};
+    };
 
 // data model for initialising the d3 tree graph
 type HierarchyTree = {
@@ -94,7 +91,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   private graph!: GraphTidytreeComponent;
   
   // init a custom loadingbar to show progress while waiting for the annotationService result and creating the d3 graph
-  constructor(private loadingBar: LoadingBarService, fb: FormBuilder  , public http: HttpClient ) {
+  constructor(private loadingBar: LoadingBarService, fb: FormBuilder   ) {
     // init datasource checkboxes
     const initialSources = new FormArray(this.initArray)
       this.datasources.forEach((element) => {
@@ -160,7 +157,7 @@ export class AnnotationServiceUIComponent implements OnInit{
     return String(value);
   }
 
-  /*getTs4tibCollections():any {
+  /* getTs4tibCollections():any {
     const url = 'api/annotation/parameterOptions/ts4tib_collection';
     return this.http.get<ts4tibCollectionsResponse>(url);
   }*/
@@ -196,15 +193,15 @@ export class AnnotationServiceUIComponent implements OnInit{
     } 
 
     // get response and save
-    const ontologiesResponse = (await response.json()) as ts4tibOntologiesResponse;
+    const ontologiesResponse = await response.json();
     const result = []
     
     for( let i=0; i<ontologiesResponse.ontologies.length; i++) {
-      const actOntoEntry = ontologiesResponse.ontologies[i];
+      const actOntoEntry = ontologiesResponse.ontologies[i] as ts4tibOntology;
      
 
       if( !actOntoEntry.collections ) {
-        result.push( {id: actOntoEntry.paramValue, name: actOntoEntry.label+" ("+actOntoEntry.paramValue+")", collection: "none"} );
+        result.push( {id: actOntoEntry.paramValue, name: actOntoEntry.label +" ("+actOntoEntry.paramValue+")", collection: "none"} );
       } else {
         for( let x=0; x<actOntoEntry.collections.length; x++) {
           const actCollection = actOntoEntry.collections[x];

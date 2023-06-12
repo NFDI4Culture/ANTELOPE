@@ -79,16 +79,16 @@ The `npm run` command will list all of the scripts available to run for this pro
 git checkout main
 git checkout -b issue<ISSUE_NR>_<BRANCHNAME>
 
+### develop
+do your development. When the functionality is implemented, check the building under Production circumstances. this will check for styleguide etc. and will save you a lot of later debugging of possible failing gitlab build jobs
+
+./mvnw package -Pprod verify jib:build 
+
 ### merge branch to test
 git checkout test
 git fetch
 git pull
 git merge <DEV_BRANCH>
-
-### develop
-do your development. When the functionality is implemented, check the building under Production circumstances. this will check for styleguide etc. and will save you a lot of later debugging of possible failing gitlab build jobs
-
-./mvnw package -Pprod verify jib:build 
 
 ### deploy on test server
 
