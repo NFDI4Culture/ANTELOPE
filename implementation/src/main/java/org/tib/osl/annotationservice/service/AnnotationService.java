@@ -2,11 +2,8 @@ package org.tib.osl.annotationservice.service;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -138,8 +135,14 @@ public class AnnotationService implements AnnotationApiDelegate {
             HttpGet request = new HttpGet(new URI("https://service.tib.eu/ts4tib/api/ontologies?size=1000"));
             request.addHeader("content-type", "application/json");
             CloseableHttpResponse response = httpClient.execute(request);
+            if (response != null && response.getStatusLine() != null) {
+                if (response.getStatusLine().getStatusCode() != 200) {
+                    return new ResponseEntity<String>("Tib terminology service is unavailable", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
             String ts4tibResponse = EntityUtils.toString(response.getEntity());
-            JSONArray ontologyObjs = new JSONObject( ts4tibResponse ).getJSONObject("_embedded").getJSONArray("ontologies");
+            log.debug(ts4tibResponse);
+            JSONArray ontologyObjs = new JSONObject( ts4tibResponse ).optJSONObject("_embedded").optJSONArray("ontologies");
             for( int i=0; i<ontologyObjs.length(); i++) {
                 JSONObject actOntologyObj = ontologyObjs.getJSONObject(i);
                 String ontoId = actOntologyObj.optString("ontologyId");
@@ -162,7 +165,9 @@ public class AnnotationService implements AnnotationApiDelegate {
             return new ResponseEntity<String>(responseString, HttpStatus.OK);
             
         } catch ( Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            
         }
     }
 
