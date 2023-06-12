@@ -85,6 +85,11 @@ git fetch
 git pull
 git merge <DEV_BRANCH>
 
+### develop
+do your development. When the functionality is implemented, check the building under Production circumstances. this will check for styleguide etc. and will save you a lot of later debugging of possible failing gitlab build jobs
+
+./mvnw package -Pprod verify jib:build 
+
 ### deploy on test server
 
 # push changes to git, gitlab will rebuild the docker container automatically

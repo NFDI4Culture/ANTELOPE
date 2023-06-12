@@ -1,10 +1,10 @@
-import { Component,ElementRef, Injectable } from '@angular/core';
+import { Component,ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
 // import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
-// import { HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import * as XLSX from 'xlsx';
 
@@ -26,9 +26,9 @@ type AnnotationResponse = {
 };
 
 // data model of the RESTful annotationService API result
-type ts4tibCollectionsResponse = {
+/*type ts4tibCollectionsResponse = {
   collections: [];
-};
+};*/
 
 type ts4tibOntologiesResponse = {
   ontologies: [
@@ -54,8 +54,8 @@ type HierarchyTree = {
   styleUrls: ['./annotation-service-ui.component.scss']
 })
 
-@Injectable()
-export class AnnotationServiceUIComponent {
+
+export class AnnotationServiceUIComponent implements OnInit{
   loader = this.loadingBar.useRef();
   textToAnnotate = new FormControl('');
   ts4tibOntologies = [
@@ -94,7 +94,7 @@ export class AnnotationServiceUIComponent {
   private graph!: GraphTidytreeComponent;
   
   // init a custom loadingbar to show progress while waiting for the annotationService result and creating the d3 graph
-  constructor(private loadingBar: LoadingBarService, fb: FormBuilder /* , public http: HttpClient */) {
+  constructor(private loadingBar: LoadingBarService, fb: FormBuilder  , public http: HttpClient ) {
     // init datasource checkboxes
     const initialSources = new FormArray(this.initArray)
       this.datasources.forEach((element) => {
@@ -109,7 +109,11 @@ export class AnnotationServiceUIComponent {
     });
     this.selectedSources = initialSources
     // const ts4tibCollections = this.getTs4tibCollections().subscribe;
-    this.getTs4tibOntologies();    
+     
+  }
+
+  ngOnInit():any {
+    this.getTs4tibOntologies();
   }
 
   startLoading():void {
@@ -160,8 +164,6 @@ export class AnnotationServiceUIComponent {
     const url = 'api/annotation/parameterOptions/ts4tib_collection';
     return this.http.get<ts4tibCollectionsResponse>(url);
   }*/
-    
-  
 
   compareOntologies = (item:any, selected:any):any => {
     if (selected.collection && item.collection) {
@@ -201,7 +203,7 @@ export class AnnotationServiceUIComponent {
       const actOntoEntry = ontologiesResponse.ontologies[i];
      
 
-      if( actOntoEntry.collections.length === 0 ) {
+      if( !actOntoEntry.collections ) {
         result.push( {id: actOntoEntry.paramValue, name: actOntoEntry.label+" ("+actOntoEntry.paramValue+")", collection: "none"} );
       } else {
         for( let x=0; x<actOntoEntry.collections.length; x++) {
@@ -212,12 +214,7 @@ export class AnnotationServiceUIComponent {
 
     }
     this.ts4tibOntologies = result;
-    this.ts4tibOntologies = [
-      {id: "NONE", name:"test", collection:"-"}
-     
-    ]
-    
-  }
+  } 
 
   async terminologySearch(): Promise<void> {
     return this.callAnnotationService("terminology");
