@@ -225,10 +225,10 @@ public class AnnotationService implements AnnotationApiDelegate {
        if( useAllSources || (ts4tib != null && ts4tib) ){
            try {
             olsResults = EntityRecognition.getTs4TibResults(requestBody, ts4tibOntology);
-               System.out.println( "Tib Terminology service (OLS) Results:"+olsResults );
+               System.out.println( "Tib Terminology service (TS4TIB) Results:"+olsResults );
            } catch (Exception e) {
                e.printStackTrace();
-               return new ResponseEntity<>("Failed to request tib terminology service (OLS) API", HttpStatus.INTERNAL_SERVER_ERROR);
+               return new ResponseEntity<>("Failed to request tib terminology service (TS4TIB) API", HttpStatus.INTERNAL_SERVER_ERROR);
            }
        } else {
         olsResults = new ArrayList<>();

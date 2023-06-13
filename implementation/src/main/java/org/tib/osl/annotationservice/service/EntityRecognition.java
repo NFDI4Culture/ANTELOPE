@@ -219,13 +219,14 @@ public class EntityRecognition {
                     String actEntityType = actEntityObj.getString("type");
                     String actEntityIRI = actEntityObj.getString("iri");
                     String actEntityName = actEntityObj.getString("label");
+                    String actOntology = actEntityObj.getString("ontology_prefix");
 
                     // embedd respone data into falcon json format
                     JSONObject obj = new JSONObject();
                     obj.put("id", actEntityId);
                     obj.put("URI", actEntityIRI);
                     obj.put("label", actEntityName);
-                    obj.put("source", "ols");
+                    obj.put("source", actOntology);
                     obj.put("type", actEntityType);
                     // add json object to result json array
                     arr.put(obj);
@@ -509,8 +510,28 @@ public class EntityRecognition {
 
          // build hierarchy from ols and add to root node
          if( !olsResultsByEntity.isEmpty() ) {
-            JSONObject olsHierarchy = TreeBuilder.buildCategoryTree( olsResultsByEntity , 100000, "OLS", "https://service.tib.eu/ts4tib", "label", "URI");
-            resultHierarchy.getJSONArray("children").put(olsHierarchy);
+            // split ts4tib results by source (ontology)
+            Map<String, Map<String,String>> olsResultsByEntityBySource = new HashMap<>();
+            for (Map.Entry<String, String> entry : olsResultsByEntity.entrySet()) {
+                JSONObject actEntity = new JSONObject(entry.getKey());
+                String source = actEntity.getString("source");
+                
+		        if( !olsResultsByEntityBySource.containsKey( source ) ){
+                    olsResultsByEntityBySource.put(source, new HashMap<>());
+                }
+			    Map<String, String> targetMap = olsResultsByEntityBySource.get(source);
+                targetMap.put(entry.getKey(), entry.getValue());
+		    }
+            
+            int rootNodeId = 100000;
+            for( String actSource : olsResultsByEntityBySource.keySet()) {
+                Map<String, String> actOlsResultsByEntity = olsResultsByEntityBySource.get(actSource);
+                String actSourceUri = "https://terminology.tib.eu/ts/ontologies/"+actSource;
+                JSONObject olsHierarchy = TreeBuilder.buildCategoryTree( actOlsResultsByEntity , rootNodeId, actSource, actSourceUri, "label", "URI");
+                resultHierarchy.getJSONArray("children").put(olsHierarchy);
+                rootNodeId = rootNodeId * 10;
+            }
+            
         }
 
         finalResult.put( "hierarchy", resultHierarchy );

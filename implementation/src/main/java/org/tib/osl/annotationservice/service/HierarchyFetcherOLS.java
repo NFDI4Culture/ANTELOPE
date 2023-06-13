@@ -60,7 +60,7 @@ public class HierarchyFetcherOLS extends HierarchyFetcher{
 
             result = EntityUtils.toString(response.getEntity());
             JSONObject json = new JSONObject(result);
-            
+            log.debug(json.toString());
             JSONArray entitiesJsonArr = json.getJSONObject("_embedded").optJSONArray("terms");
             JSONArray resultArr = new JSONArray();
             for( int i=0; i<entitiesJsonArr.length(); i++){ 
