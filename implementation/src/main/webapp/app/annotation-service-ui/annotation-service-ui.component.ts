@@ -170,7 +170,15 @@ export class AnnotationServiceUIComponent implements OnInit{
         return item.name === selected.name;
     }
     return false;
-};
+  };
+
+  public ngSearchts4tibOntologies = (searchTerm: string, item: any) => {
+    if (item.collection) {
+      return item.collection.toLowerCase().indexOf(searchTerm) > -1 || item.name.toLowerCase().indexOf(searchTerm) > -1;
+    } else {
+      return item.name.toLowerCase().indexOf(searchTerm) > -1;
+    }
+  }
 
    async getTs4tibOntologies(): Promise<void> {
     const url = 'api/annotation/parameterOptions/ts4tib_ontology';
