@@ -79,7 +79,12 @@ public class EntityRecognition {
                 log.debug( resultStr.toString() );
                 JSONObject resultJson = new JSONObject( resultStr );  
                 JSONObject normalizedResultJson = new JSONObject();
-                String[] resultArrKeys = new String[]{"entities_wikidata", "entities_dbpedia"};
+                String[] resultArrKeys = null;
+                if( useDbpedia ) {
+                    resultArrKeys = new String[]{"entities_wikidata", "entities_dbpedia"}; 
+                } else {
+                    resultArrKeys = new String[]{"entities_wikidata"}; 
+                }
                 for( String actResultArrKey : resultArrKeys) {
                     JSONArray entities = resultJson.getJSONArray(actResultArrKey);
                     JSONArray normalizedEntities = new JSONArray();
