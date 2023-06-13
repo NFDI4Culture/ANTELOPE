@@ -172,7 +172,7 @@ export class AnnotationServiceUIComponent implements OnInit{
     return false;
   };
 
-  public ngSearchts4tibOntologies = (searchTerm: string, item: any) => {
+  public ngSearchts4tibOntologies = (searchTerm: string, item: any):boolean => {
     if (item.collection) {
       return item.collection.toLowerCase().indexOf(searchTerm) > -1 || item.name.toLowerCase().indexOf(searchTerm) > -1;
     } else {
