@@ -201,8 +201,11 @@ export class AnnotationServiceUIComponent implements OnInit{
      
 
       if( !actOntoEntry.collections ) {
-        result.push( {id: actOntoEntry.paramValue, name: actOntoEntry.label +" ("+actOntoEntry.paramValue+")", collection: "none"} );
+        result.push( {id: actOntoEntry.paramValue, name: actOntoEntry.label +" ("+actOntoEntry.paramValue+")", collection: ""} );
       } else {
+        if( actOntoEntry.collections.length === 0 ) {
+          result.push( {id: actOntoEntry.paramValue, name: actOntoEntry.label +" ("+actOntoEntry.paramValue+")", collection: ""} );
+        }
         for( let x=0; x<actOntoEntry.collections.length; x++) {
           const actCollection = actOntoEntry.collections[x];
           result.push( {id: actOntoEntry.paramValue,  name: actOntoEntry.label+" ("+actOntoEntry.paramValue+")", collection: actCollection} );

@@ -141,7 +141,7 @@ public class AnnotationService implements AnnotationApiDelegate {
                 }
             }
             String ts4tibResponse = EntityUtils.toString(response.getEntity());
-            log.debug(ts4tibResponse);
+            //log.debug(ts4tibResponse);
             JSONArray ontologyObjs = new JSONObject( ts4tibResponse ).optJSONObject("_embedded").optJSONArray("ontologies");
             for( int i=0; i<ontologyObjs.length(); i++) {
                 JSONObject actOntologyObj = ontologyObjs.getJSONObject(i);
@@ -161,7 +161,7 @@ public class AnnotationService implements AnnotationApiDelegate {
             JSONObject result = new JSONObject();
             result.put("ontologies", resultArr);
             String responseString = result.toString(0);
-            log.info(responseString);
+            //log.info(responseString);
             return new ResponseEntity<String>(responseString, HttpStatus.OK);
             
         } catch ( Exception e) {

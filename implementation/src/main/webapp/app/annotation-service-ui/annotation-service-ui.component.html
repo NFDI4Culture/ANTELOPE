@@ -41,6 +41,7 @@
                 bindLabel="name"
                 bindValue="id"
                 groupBy="collection"
+                orderBy="collection"
                 [multiple]="true"
                 [closeOnSelect]="false"
                 [selectableGroup]="true"
@@ -50,7 +51,7 @@
                 [virtualScroll]="true"
                 appendTo="body">
                 <ng-template ng-optgroup-tmp let-item="item">
-                    {{item.collection || 'Unnamed group'}}
+                    {{item.collection || '8 - Other'}}
                 </ng-template>
             </ng-select>
                
