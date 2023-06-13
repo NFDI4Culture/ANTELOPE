@@ -1,26 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
 
 type NodeData = {x:number, y:number, parentId: string};
-
-type WikiDataClass = {
-  type: string; 
-  value: string; // e.g uri
-};
-
-type WikiDataClassLabel = {
-  "xml:lang": string; // language
-  type: string; 
-  value: string; // classname
-}
-
-/*type WikiDataHierarchy = {
-  class: WikiDataClass;
-  classLabel: WikiDataClassLabel;
-  superclass: WikiDataClass
-  superclassLabel: WikiDataClassLabel;
-}*/
 
 type HierarchyTree = {
   id: string;

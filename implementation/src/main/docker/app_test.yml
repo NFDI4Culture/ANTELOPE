@@ -3,6 +3,7 @@ version: '3.8'
 services:
   annotationservice-app:
     image: registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/test:latest
+    pull_policy: always
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs

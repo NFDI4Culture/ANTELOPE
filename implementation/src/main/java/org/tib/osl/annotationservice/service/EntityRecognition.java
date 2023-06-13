@@ -79,7 +79,12 @@ public class EntityRecognition {
                 log.debug( resultStr.toString() );
                 JSONObject resultJson = new JSONObject( resultStr );  
                 JSONObject normalizedResultJson = new JSONObject();
-                String[] resultArrKeys = new String[]{"entities_wikidata", "entities_dbpedia"};
+                String[] resultArrKeys = null;
+                if( useDbpedia ) {
+                    resultArrKeys = new String[]{"entities_wikidata", "entities_dbpedia"}; 
+                } else {
+                    resultArrKeys = new String[]{"entities_wikidata"}; 
+                }
                 for( String actResultArrKey : resultArrKeys) {
                     JSONArray entities = resultJson.getJSONArray(actResultArrKey);
                     JSONArray normalizedEntities = new JSONArray();
@@ -172,37 +177,71 @@ public class EntityRecognition {
             }
             iconclassResults.add( jsonResult.toString() );
         }
-
-        // now make a call to the iconclass api to get more data about the entities (notations) found
-        // see https://iconclass.org/docs#/default/api_search_api_search_get
         
-        // uri build for method 'json' respond with null for some entities, e.g for "47I41( 9q5243)"
-        /*
-        String result = "";
-        String uri = "https://iconclass.org/json?";
-        for( String actNotation : notationsFound){
-            uri += "notation="+actNotation+"&";
-        }
-
-        log.debug("call:"+uri);
-        HttpGet request = new HttpGet(new URI(uri));
-        request.addHeader("content-type", "application/json");
-        
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-            CloseableHttpResponse response = httpClient.execute(request)) {
-
-            result = EntityUtils.toString(response.getEntity());
-            log.debug( result.toString() );
-            JSONObject actJsonResult = new JSONObject( result );
-            JSONArray resultArr = actJsonResult.getJSONArray("result"); 
-            for( Object obj : resultArr){
-                iconclassResults.add( obj.toString() );
-            }
-        }*/
-        
-
         System.out.println("iconclassResults:"+iconclassResults);
         return iconclassResults;
+    }
+
+/**
+     * connects to the tib terminology service web API and retrieve results for every text in requestText
+     * @param requestText list of texts, used for entity recognition 
+     * @return 
+     * @throws Exception
+     */
+    protected static List<String> getTs4TibResults( List<String> requestText, String ontologyList) throws Exception {
+        List<String> results = new ArrayList<>();
+        String baseUrl = "https://service.tib.eu/ts4tib/api/";
+        
+        // init connection 
+        for( String actText : requestText) {
+            String result = "";
+            String encodedText = URLEncoder.encode(actText, StandardCharsets.UTF_8);
+            String ontologies = "";
+            if( ontologyList != null ) {
+                ontologies = "&ontology="+URLEncoder.encode(ontologyList, StandardCharsets.UTF_8);;
+            }
+            
+            HttpGet request = new HttpGet(new URI( baseUrl + "search?q=" + encodedText + "&obsoletes=false&local=false&rows=50&format=json"+ontologies));
+            request.addHeader("content-type", "application/json");
+            
+                // init json objects to fill with results
+            JSONObject jsonResult = new JSONObject();
+            JSONArray arr = new JSONArray();
+            jsonResult.put("entities_ols", arr);
+
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
+                result = EntityUtils.toString(response.getEntity());
+                //log.debug( result.toString() );
+                JSONObject actJsonResult = new JSONObject( result );
+                JSONArray resultArr = actJsonResult.getJSONObject("response").getJSONArray("docs"); 
+                
+                // for each responded entity for the act requestText: fetch details and combine all the results in a json object
+                for( int i=0; i<resultArr.length(); i++) {
+                    JSONObject actEntityObj = (JSONObject)resultArr.get(i);
+                    String actEntityId = actEntityObj.optString("obo_id");
+                    String actEntityType = actEntityObj.getString("type");
+                    String actEntityIRI = actEntityObj.getString("iri");
+                    String actEntityName = actEntityObj.getString("label");
+                    String actOntology = actEntityObj.getString("ontology_prefix");
+
+                    // embedd respone data into falcon json format
+                    JSONObject obj = new JSONObject();
+                    obj.put("id", actEntityId);
+                    obj.put("URI", actEntityIRI);
+                    obj.put("label", actEntityName);
+                    obj.put("source", actOntology);
+                    obj.put("type", actEntityType);
+                    // add json object to result json array
+                    arr.put(obj);
+                    
+                }
+            }
+            results.add( jsonResult.toString() );
+            
+        }
+        return results;
     }
 
     /**
@@ -304,7 +343,7 @@ public class EntityRecognition {
      * @throws Exception
      */
     
-    public static Map<String, String> geIconclassSuperClasses( List<String> iconclassResults ) throws Exception {
+     public static Map<String, String> geIconclassSuperClasses( List<String> iconclassResults ) throws Exception {
         Map<String, String> resultsByEntity = new HashMap<>();
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         List<Future<?>> futures = new ArrayList<Future<?>>();
@@ -334,6 +373,45 @@ public class EntityRecognition {
         return resultsByEntity;
     }
 
+         /**
+     * connecting the osl web api. get all superclasses for every recognized entity within the Result parameter List
+     * @param results Every element contains a json object in ols specific format. one json object per requested entity
+     * @return map of ols results, grouped by entity name in ols specific json format
+     * @throws Exception
+     */
+    
+     public static Map<String, String> getOlsSuperClasses( List<String> olsResults ) throws Exception {
+        Map<String, String> resultsByEntity = new HashMap<>();
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        List<Future<?>> futures = new ArrayList<Future<?>>();
+        try {
+            // get superclass triples from iconclass for each notation that was given (get class tree)
+            for( String actResults : olsResults) {
+                JSONObject obj = new JSONObject(actResults);
+                JSONArray entities = obj.getJSONArray("entities_ols");
+                for( Object actEntity : entities) {
+                    HierarchyFetcherOLS fetcher = new HierarchyFetcherOLS(resultsByEntity, (JSONObject)actEntity);
+                    Future<?> actFuture = executorService.submit(fetcher);
+                    futures.add(actFuture);
+                }
+            } 
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.err.println( "error in getOLSSuperClasses:" + e.getMessage() );
+        }
+       
+         // wait for http requests to terminate
+         while( !futures.stream().allMatch(f -> f.isDone())) {
+            log.debug("wait for completion of ols fetching");
+            Thread.sleep(200);
+        }
+        executorService.shutdown();
+        
+        return resultsByEntity;
+    }
+
+
+
 
     /**
      * combine results from falcon and its sources and build a category tree datastructure. 
@@ -348,7 +426,9 @@ public class EntityRecognition {
             Map<String,String> wikidataResultsByEntity, 
             Map<String,String> dbpediaResultsByEntity,
             List<String> iconclassResults,
-            Map<String,String> iconclassResultsByEntity) throws Exception {
+            Map<String,String> iconclassResultsByEntity,
+            List<String> olsResults,
+            Map<String,String> olsResultsByEntity)throws Exception {
     
        //wikidataResultsByEntity.putAll(dbpediaResultsByEntity);
 
@@ -392,12 +472,19 @@ public class EntityRecognition {
         }
         finalResult.put("relations", relationsArr);
 
-        // ========== section notations =============
+        // ========== section iconclass notations =============
         // add all notations from iconclass
         for (String actIconclassResult : iconclassResults){
             JSONObject actJson = new JSONObject( actIconclassResult );
             entitiesArr.putAll( actJson.optJSONArray("notations_iconclass"));
         }
+
+        // ========== section OLS =================
+        for (String actEntity : olsResults){
+            JSONObject actJson = new JSONObject( actEntity );
+            entitiesArr.putAll( actJson.optJSONArray("entities_ols"));
+        }
+
         finalResult.put("entities", entitiesArr);
         
         // ========== section hierarchy ===============
@@ -424,6 +511,32 @@ public class EntityRecognition {
         if( !iconclassResultsByEntity.isEmpty() ) {
             JSONObject icHierarchy = TreeBuilder.buildCategoryTree( iconclassResultsByEntity , 10000, "Iconclass", "http://iconclass.org", "label", "URI");
             resultHierarchy.getJSONArray("children").put(icHierarchy);
+        }
+
+         // build hierarchy from ols and add to root node
+         if( !olsResultsByEntity.isEmpty() ) {
+            // split ts4tib results by source (ontology)
+            Map<String, Map<String,String>> olsResultsByEntityBySource = new HashMap<>();
+            for (Map.Entry<String, String> entry : olsResultsByEntity.entrySet()) {
+                JSONObject actEntity = new JSONObject(entry.getKey());
+                String source = actEntity.getString("source");
+                
+		        if( !olsResultsByEntityBySource.containsKey( source ) ){
+                    olsResultsByEntityBySource.put(source, new HashMap<>());
+                }
+			    Map<String, String> targetMap = olsResultsByEntityBySource.get(source);
+                targetMap.put(entry.getKey(), entry.getValue());
+		    }
+            
+            int rootNodeId = 100000;
+            for( String actSource : olsResultsByEntityBySource.keySet()) {
+                Map<String, String> actOlsResultsByEntity = olsResultsByEntityBySource.get(actSource);
+                String actSourceUri = "https://terminology.tib.eu/ts/ontologies/"+actSource;
+                JSONObject olsHierarchy = TreeBuilder.buildCategoryTree( actOlsResultsByEntity , rootNodeId, actSource, actSourceUri, "label", "URI");
+                resultHierarchy.getJSONArray("children").put(olsHierarchy);
+                rootNodeId = rootNodeId * 10;
+            }
+            
         }
 
         finalResult.put( "hierarchy", resultHierarchy );

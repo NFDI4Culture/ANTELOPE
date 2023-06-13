@@ -31,7 +31,7 @@ public class HierarchyFetcherDBpedia extends HierarchyFetcher{
     public void run() {
         
         //String entityLabel = ((JSONArray)actEntity).get(0).toString();
-        String url = (super.falconResultsToProcess).get("URI").toString();
+        String url = (super.entitiesToProcess).get("URI").toString();
         String[] urlParts = url.replace(">", "").split("/");
         String objId = urlParts[ urlParts.length-1 ];
 
@@ -76,18 +76,18 @@ public class HierarchyFetcherDBpedia extends HierarchyFetcher{
                 obj.put("superclassLabel", actSuperClassName);
                 // add json object to result json array
                 resultArr.put(obj);
-                log.debug("iconclass result fetched sucessfully");
+                log.debug("dbpedia result fetched sucessfully");
             }
 
             
             String entityLabel = objId;
             
-            falconResultsToProcess.put("label", entityLabel);
+            entitiesToProcess.put("label", entityLabel);
 
-            resultsByEntity.put(falconResultsToProcess.toString(), resultArr.toString());
+            resultsByEntity.put(entitiesToProcess.toString(), resultArr.toString());
             log.debug("dbpedia result fetched sucessfully");
         } catch ( Exception e) {
-            log.warn( "unable to receive dbPedia Classes for '"+super.falconResultsToProcess.toString()+"' error: "+e.getMessage() );
+            log.warn( "unable to receive dbPedia Classes for '"+super.entitiesToProcess.toString()+"' error: "+e.getMessage() );
         }
         
     }
