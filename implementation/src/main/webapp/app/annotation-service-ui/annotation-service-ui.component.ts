@@ -76,10 +76,10 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   // init, which datasources should be preselected in the checkbox group
   datasources: Array<any> = [
-    { name: 'WIKIDATA', value: 'wikidata', checked: false, disabled: true },
-    { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false},
-    { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false },
-    { name: 'TIB Terminology Service', value: 'ts4tib', checked: false, disabled: false}
+    { name: 'WIKIDATA', value: 'wikidata', checked: false, disabled: true, shownTS: true, shownER: true },
+    { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false, shownTS: true, shownER: true},
+    { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false , shownTS: true, shownER: false},
+    { name: 'TIB Terminology Service', value: 'ts4tib', checked: false, disabled: false, shownTS: true, shownER: false}
   ];
   
 
@@ -229,6 +229,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   }
 
   async entityRecognition(): Promise<void> {
+    
     return this.callAnnotationService("entities");
   }
 
@@ -255,7 +256,12 @@ export class AnnotationServiceUIComponent implements OnInit{
       let ts4tibSelected;
       ts4tibSelected = false;
       this.selectedSources.controls.forEach((element:FormControl) => {
-        url += this.getStringValue(element.value)+"=true&";  
+        // check, if this datasource is valid for the endpoint, if valid and checked, add it as a url parameter
+        if(
+          ( endpoint === "entities" && this.datasources.find((i:any) => i.value === element.value).shownER === true) ||
+          ( endpoint === "terminology" && this.datasources.find((i:any) => i.value === element.value).shownTS === true)) {
+            url += this.getStringValue(element.value)+"=true&";  
+        }
         if(element.value === "ts4tib") {
           ts4tibSelected = true;
         }
@@ -279,9 +285,9 @@ export class AnnotationServiceUIComponent implements OnInit{
         });
         
       } else {
-        console.log(this.textToAnnotate.value?.split("."));
+        
         const body = JSON.stringify(
-          //this.textToAnnotate.value?.split(".") // to split sentences (may fail with terms like "alan M. turing" !)
+          // this.textToAnnotate.value?.split(".") // to split sentences (may fail with terms like "alan M. turing" !)
           [this.textToAnnotate.value]
           );
 

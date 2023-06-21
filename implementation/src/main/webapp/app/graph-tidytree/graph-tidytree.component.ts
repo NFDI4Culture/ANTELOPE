@@ -34,10 +34,10 @@ export class GraphTidytreeComponent {
       label(d:any):string {
         if(d.data.name !== undefined) {
           
-          if(d.data.name.length < 20) {
+          if(d.data.name.length < 24) {
             return d.data.name as string;
           } else {
-            return d.data.name.substring(0,16) as string +"[..]";
+            return d.data.name.substring(0,20) as string +"[..]";
           }
         } else {
           return "label" ;
@@ -104,8 +104,8 @@ export class GraphTidytreeComponent {
       const L:string[]|null = descendants.map((d:any) => label(d));
 
       // Compute the layout.
-      const dx = 13;
-      const dy = width / (root.height + padding);
+      const dx = 15; // vertikaler abstand der nodes
+      const dy = width / (root.height + padding) + 75;
       tree<NodeData>().nodeSize([dx, dy])(root);
 
       // Center the tree.

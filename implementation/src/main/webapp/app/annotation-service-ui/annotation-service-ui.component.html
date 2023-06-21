@@ -21,15 +21,17 @@
                     *ngFor="let datasource of datasources; let i=index"
                     [ngClass]="{'greyout': datasource.disabled == true}">
                     
-                    <input 
-                        type="checkbox" 
-                        formArrayName="selectedSources" 
-                        [value]="datasource.value" 
-                        [checked]="datasource.checked == true" 
-                        [disabled]="datasource.disabled == true"
-                        (change)="onCheckboxChange($event)" />
-                    
-                    {{datasource.name}}
+                    <div *ngIf="datasource.shownTS == true">
+                        <input 
+                            type="checkbox" 
+                            formArrayName="selectedSources" 
+                            [value]="datasource.value" 
+                            [checked]="datasource.checked == true" 
+                            [disabled]="datasource.disabled == true"
+                            (change)="onCheckboxChange($event)" />
+                        
+                        {{datasource.name}}
+                    </div>
                     
                     
                 </div>
@@ -86,18 +88,20 @@
             <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
                 <div style="font-size: 14px;"
                     *ngFor="let datasource of datasources; let i=index"
-                    [ngClass]="{'greyout': datasource.disabled == true}">
+                    [ngClass]="{'greyout': datasource.disabled == true}" >
                     
-                    <input 
-                        type="checkbox" 
-                        formArrayName="selectedSources" 
-                        [value]="datasource.value" 
-                        [checked]="datasource.checked == true" 
-                        [disabled]="datasource.disabled == true"
-                        (change)="onCheckboxChange($event)" />
                     
-                    {{datasource.name}}
-                    
+                    <div *ngIf="datasource.shownER == true">
+                        <input 
+                            type="checkbox" 
+                            formArrayName="selectedSources" 
+                            [value]="datasource.value" 
+                            [checked]="datasource.checked == true" 
+                            [disabled]="datasource.disabled == true"
+                            (change)="onCheckboxChange($event)" />
+                        
+                        {{datasource.name}}
+                    </div>
                 </div>
             
             </form>
