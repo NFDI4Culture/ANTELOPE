@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,27 +50,27 @@ public class EntityRecognition {
         }
         // init connection to falcon api
         for( String actText : requestText) {
+            ByteBuffer buffer = StandardCharsets.UTF_8.encode(actText); 
+
+            actText = StandardCharsets.ISO_8859_1.decode(buffer).toString();
+
+
             String resultStr = "";
             String url = "https://labs.tib.eu/falcon/falcon2/api?mode="+mode+"&k=10";
             if( useDbpedia ){
                 url += "&db=1";
             }
             HttpPost post = new HttpPost(new URI(url));
-            post.addHeader("content-type", "application/json");
+            post.addHeader("content-type", "application/json; charset=UTF-8");
 
             // escape spccial chars in request body
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("text", actText);
             String payload = jsonObject.toString();
 
-            StringBuilder json = new StringBuilder();
-            json.append("{");     
-            json.append("\"text\":\""+actText+"\"");
-            json.append("}");
-
             log.debug(payload);
             // send a JSON data
-            post.setEntity(new StringEntity(payload));
+            post.setEntity(new StringEntity(payload, "UTF-8"));
             
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(post)) {
@@ -86,6 +87,9 @@ public class EntityRecognition {
                     resultArrKeys = new String[]{"entities_wikidata"}; 
                 }
                 for( String actResultArrKey : resultArrKeys) {
+                    if( !resultJson.has(actResultArrKey)) {
+                        continue;
+                    }
                     JSONArray entities = resultJson.getJSONArray(actResultArrKey);
                     JSONArray normalizedEntities = new JSONArray();
                     java.util.Iterator<Object> iterator = entities.iterator();

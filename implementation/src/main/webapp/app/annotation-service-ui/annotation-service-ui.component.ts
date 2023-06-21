@@ -246,7 +246,8 @@ export class AnnotationServiceUIComponent implements OnInit{
     // start the loading bar
     this.loader.start();
     try {
-
+      // force utf 8 encoding of text
+      
       // url of the annotationService api (restful service with json payload)
       let url = 'api/annotation/'+endpoint+'?';
       
@@ -278,8 +279,9 @@ export class AnnotationServiceUIComponent implements OnInit{
         });
         
       } else {
-
+        console.log(this.textToAnnotate.value?.split("."));
         const body = JSON.stringify(
+          //this.textToAnnotate.value?.split(".") // to split sentences (may fail with terms like "alan M. turing" !)
           [this.textToAnnotate.value]
           );
 
