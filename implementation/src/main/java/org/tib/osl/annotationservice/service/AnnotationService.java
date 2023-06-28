@@ -82,12 +82,14 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean wikidataDbpedia,
     Boolean iconclass,
     Boolean ts4tib,
+    Boolean lobidGnd,
     String ts4tib_collection,
     String ts4tib_ontology
+    
     ) {
         List<String> requestBody = new ArrayList<String>();
         requestBody.add(searchText);
-        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology);
+        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, lobidGnd);
     }
 
     @Override
@@ -98,8 +100,9 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean ts4tib,
     String ts4tib_collection,
     String ts4tib_ontology
+    
     ) {
-        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology);
+        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, false);
     }
 
     @Override
@@ -177,15 +180,16 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean wikidata,
     Boolean wikidataDbpedia,
     Boolean iconclass,
-    Boolean ts4tib,
-    String ts4tibOntology
+    Boolean ts4tib, 
+    String ts4tibOntology,
+    Boolean lobidGnd
     ) {
         
         // decide which datasources to use
         // if no parameter is given, all datasources are used
         boolean useAllSources = true;
         
-        if( wikidata != null || wikidataDbpedia != null || iconclass != null || ts4tib != null) {
+        if (wikidata != null || wikidataDbpedia != null || iconclass != null || ts4tib != null || lobidGnd != null) {
             useAllSources = false;
         }
 
@@ -220,7 +224,7 @@ public class AnnotationService implements AnnotationApiDelegate {
             iconclassNotations = new ArrayList<>();
         }
 
-       // get Entities from Iconclass
+       // get Entities from tib terminology service 
        List<String> olsResults;
        if( useAllSources || (ts4tib != null && ts4tib) ){
            try {
@@ -234,6 +238,20 @@ public class AnnotationService implements AnnotationApiDelegate {
         olsResults = new ArrayList<>();
        }
 
+       // Get Entities from Lobid GND
+        List<String> gndResults;
+        if (useAllSources || (lobidGnd != null && lobidGnd)) {
+            try {
+                gndResults = EntityRecognition.getLobidGndResults(requestBody);
+                //System.out.println("Lobid GND Results: " + gndResults);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseEntity<>("Failed to request Lobid GND API", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            gndResults = new ArrayList<>();
+        }
+
         // init executorService for parallel fetching of results
         ExecutorService executor = Executors.newFixedThreadPool(10);
 
@@ -242,7 +260,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         Future<Map<String, String>> dbpediaResultsByEntity = null;
         Future<Map<String, String>> iconclassResultsByNotation = null;
         Future<Map<String, String>> olsResultsByEntity = null;
-        
+        Future<Map<String, String>> gndResultsByEntity = null;
 
         // get all superclasses for the falcon entities from wikidata
         try {
@@ -309,11 +327,29 @@ public class AnnotationService implements AnnotationApiDelegate {
             return new ResponseEntity<>("Failed to request ols API", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        // get all superclasses for the gnd entities from lobid
+           try {
+            Callable<Map<String, String>> lobidGndCall = new Callable<>() {
+
+                @Override
+                public Map<String, String> call() throws Exception {
+                    //return null;
+                   return EntityRecognition.getLobidGndSuperClasses(gndResults);
+                }
+            };
+            gndResultsByEntity = executor.submit(lobidGndCall);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to request lobid gnd API", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
         while( 
             !wikidataResultsByEntity.isDone() 
         || !dbpediaResultsByEntity.isDone() 
         || !iconclassResultsByNotation.isDone()
-        || !olsResultsByEntity.isDone() ) {
+        || !olsResultsByEntity.isDone()
+        || !gndResultsByEntity.isDone()) {
             log.debug("wait for completion");
             try {
                 Thread.sleep(250);
@@ -335,7 +371,9 @@ public class AnnotationService implements AnnotationApiDelegate {
                 iconclassNotations, 
                 iconclassResultsByNotation.get(),
                 olsResults,
-                olsResultsByEntity.get());
+                olsResultsByEntity.get(),
+                gndResults,
+                gndResultsByEntity.get());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Failed to build category tree", HttpStatus.INTERNAL_SERVER_ERROR);

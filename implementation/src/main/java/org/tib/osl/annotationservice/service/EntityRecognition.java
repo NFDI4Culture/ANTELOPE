@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -248,6 +249,56 @@ public class EntityRecognition {
         return results;
     }
 
+    protected static List<String> getLobidGndResults(List<String> requestText) throws Exception {
+    List<String> results = new ArrayList<>();
+    String baseUrl = "https://lobid.org/gnd/search?q=";
+
+    for (String actText : requestText) {
+        String result = "";
+
+        // Encode the search text
+        String encodedText = URLEncoder.encode(actText, StandardCharsets.UTF_8);
+
+        // Create the API request URL
+        String requestUrl = baseUrl + encodedText + "&format=json";
+
+        HttpGet request = new HttpGet(new URI(requestUrl));
+        request.addHeader("content-type", "application/json");
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpClient.execute(request)) {
+
+            result = EntityUtils.toString(response.getEntity());
+            JSONObject jsonResult = new JSONObject(result);
+            JSONArray entitiesArray = jsonResult.getJSONArray("member");
+
+            // Extract the required fields from the response
+            JSONArray extractedEntities = new JSONArray();
+            for (int i = 0; i < entitiesArray.length(); i++) {
+                JSONObject actEntityObj = entitiesArray.getJSONObject(i);
+                //System.out.println( actEntityObj.toString() );
+                String actEntityId = actEntityObj.getString("gndIdentifier");
+                String actEntityUri = actEntityObj.getString("id");
+                //String actEntityType = actEntityObj.getString("type");
+                String actEntityName = actEntityObj.getString("preferredName");
+
+
+                JSONObject extractedEntity = new JSONObject();
+                extractedEntity.put("id", actEntityId);
+                extractedEntity.put("URI", actEntityUri);
+                extractedEntity.put("label", actEntityName);
+                extractedEntity.put("name", actEntityName);
+                extractedEntity.put("obj", actEntityObj);
+
+                extractedEntities.put(extractedEntity);
+            }
+
+            results.add(extractedEntities.toString());
+        }
+    }
+    return results;
+}
+
     /**
      * connecting the wikidata sparql web api. get all superclasses for every recognized entity within the falconResult parameter List
      * @param falconResults Every element contains a json object in falcon specific format. one json object per requested entity
@@ -377,6 +428,37 @@ public class EntityRecognition {
         return resultsByEntity;
     }
 
+    public static Map<String, String> getLobidGndSuperClasses(List<String> lobidGndResults) throws Exception {
+    Map<String, String> resultsByEntity = new ConcurrentHashMap<>();
+    ExecutorService executorService = Executors.newFixedThreadPool(10);
+    List<Future<?>> futures = new ArrayList<Future<?>>();
+
+    try {
+        // Get superclass triples from Lobid-GND for each entity in the results
+        for (String actResults : lobidGndResults) {
+            JSONArray entities = new JSONArray(actResults);
+            for( Object actEntity : entities) {
+                HierarchyFetcherLobidGND fetcher = new HierarchyFetcherLobidGND(resultsByEntity, (JSONObject)actEntity);
+                Future<?> actFuture = executorService.submit(fetcher);
+                futures.add(actFuture);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.err.println("Error in getLobidGndSuperClasses: " + e.getMessage());
+    }
+
+    // Wait for HTTP requests to terminate
+    while (!futures.stream().allMatch(f -> f.isDone())) {
+        log.debug("Waiting for completion of Lobid-GND fetching");
+        Thread.sleep(200);
+    }
+
+    executorService.shutdown();
+
+    return resultsByEntity;
+}
+
          /**
      * connecting the osl web api. get all superclasses for every recognized entity within the Result parameter List
      * @param results Every element contains a json object in ols specific format. one json object per requested entity
@@ -432,7 +514,10 @@ public class EntityRecognition {
             List<String> iconclassResults,
             Map<String,String> iconclassResultsByEntity,
             List<String> olsResults,
-            Map<String,String> olsResultsByEntity)throws Exception {
+            Map<String,String> olsResultsByEntity,
+            List<String> gndResults,
+            Map<String,String> gndResultsByEntity
+            )throws Exception {
     
        //wikidataResultsByEntity.putAll(dbpediaResultsByEntity);
 
@@ -489,6 +574,11 @@ public class EntityRecognition {
             entitiesArr.putAll( actJson.optJSONArray("entities_ols"));
         }
 
+        // ========== section GND =================
+        for (String actEntity : gndResults){
+            entitiesArr.putAll( new JSONArray(actEntity));
+        }
+
         finalResult.put("entities", entitiesArr);
         
         // ========== section hierarchy ===============
@@ -517,6 +607,12 @@ public class EntityRecognition {
             resultHierarchy.getJSONArray("children").put(icHierarchy);
         }
 
+        // build hierarchy from gnd and add to root node
+        if( !gndResultsByEntity.isEmpty() ) {
+            JSONObject gndHierarchy = TreeBuilder.buildCategoryTree( gndResultsByEntity , 100000, "GND", "http://gnd.network", "label", "URI");
+            resultHierarchy.getJSONArray("children").put(gndHierarchy);
+        }
+
          // build hierarchy from ols and add to root node
          if( !olsResultsByEntity.isEmpty() ) {
             // split ts4tib results by source (ontology)
@@ -532,7 +628,7 @@ public class EntityRecognition {
                 targetMap.put(entry.getKey(), entry.getValue());
 		    }
             
-            int rootNodeId = 100000;
+            int rootNodeId = 1000000;
             for( String actSource : olsResultsByEntityBySource.keySet()) {
                 Map<String, String> actOlsResultsByEntity = olsResultsByEntityBySource.get(actSource);
                 String actSourceUri = "https://terminology.tib.eu/ts/ontologies/"+actSource;

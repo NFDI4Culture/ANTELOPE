@@ -79,7 +79,9 @@ export class AnnotationServiceUIComponent implements OnInit{
     { name: 'WIKIDATA', value: 'wikidata', checked: false, disabled: true, shownTS: true, shownER: true },
     { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false, shownTS: true, shownER: true},
     { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false , shownTS: true, shownER: false},
+    { name: 'GND (Gemeinsame Normdatei)', value: 'gnd', checked: false, disabled: false, shownTS: true, shownER: false},
     { name: 'TIB Terminology Service', value: 'ts4tib', checked: false, disabled: false, shownTS: true, shownER: false}
+
   ];
   
 
