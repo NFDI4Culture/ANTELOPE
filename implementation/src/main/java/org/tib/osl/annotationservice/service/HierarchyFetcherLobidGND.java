@@ -60,42 +60,66 @@ public class HierarchyFetcherLobidGND extends HierarchyFetcher{
             }
         }
         if (!isSubjectHeading) {
-            log.debug( "skip GND entity, no subject heading" );
-           //return;
+            // log.debug( "skip GND entity, no subject heading" );
+            //return;
         }
         String entityId = entity.getString("gndIdentifier");
         String entityLabel = entity.getString("preferredName");
+        //if( entitylabel == preferredNameForTheSubjectHeading)
         String entityUrl = entity.getString("id");
 
         JSONArray parentEntitiesJsonArr = new JSONArray();
+        if ( entity.has( "broaderTerm" )) {
+            parentEntitiesJsonArr.putAll(entity.optJSONArray("broaderTerm"));
+        }
+        
         if ( entity.has( "broaderTermGeneral" )) {
             parentEntitiesJsonArr.putAll(entity.optJSONArray("broaderTermGeneral"));
         }
+
+        if ( entity.has( "broaderTermInstantial" )) {
+            parentEntitiesJsonArr.putAll(entity.optJSONArray("broaderTermInstantial"));
+        }
+
+        if ( entity.has( "broaderTermGeneric" )) {
+            parentEntitiesJsonArr.putAll(entity.optJSONArray("broaderTermGeneric"));
+        }
+
+        if ( entity.has( "broaderTermPartitive" )) {
+            parentEntitiesJsonArr.putAll(entity.optJSONArray("broaderTermPartitive"));
+        }
         
+        if ( entity.has( "broaderTermWithMoreThanOneElement" )) {
+            parentEntitiesJsonArr.putAll(entity.optJSONArray("broaderTermWithMoreThanOneElement"));
+        }
+
         if ( entity.has( "topic" )) {
-            //parentEntitiesJsonArr.putAll(entity.optJSONArray("topic"));
+            parentEntitiesJsonArr.putAll(entity.optJSONArray("topic"));
         }
 
-        if( parentEntitiesJsonArr.isEmpty() ) {
-            // if no subjectHeadings as parents found, we are seraching for subjectCategory and add them
+        if ( entity.has( "type" )) {
+           // parentEntitiesJsonArr.putAll(entity.optJSONArray("type"));
+        }
 
-            if ( entity.has( "gndSubjectCategory" )) { 
-                JSONArray parentCategories = entity.optJSONArray("gndSubjectCategory");
-                for(int i = 0; i< parentCategories.length(); i++) {
-                    JSONObject actParentCategory = parentCategories.getJSONObject(i);
-                    JSONObject obj = new JSONObject();
-                    obj.put("class", entityUrl);
-                    obj.put("superclass", actParentCategory.getString("id"));
-                    obj.put("classLabel", entityLabel);
-                    obj.put("superclassLabel", actParentCategory.getString("label"));
-                    result.put(obj);
-                }
-                
+        // add subjectCategory as superclass node (but don't further evolve it as SCs have no further hiearchy)
+        if ( entity.has( "gndSubjectCategory" )) { 
+            JSONArray parentCategories = entity.optJSONArray("gndSubjectCategory");
+            for(int i = 0; i< parentCategories.length(); i++) {
+                JSONObject actParentCategory = parentCategories.getJSONObject(i);
+                JSONObject obj = new JSONObject();
+                obj.put("class", entityUrl);
+                obj.put("superclass", actParentCategory.getString("id"));
+                obj.put("classLabel", isSubjectHeading ? "SH:" + entityLabel : entityLabel);
+                obj.put("superclassLabel", "SC:" + actParentCategory.getString("label"));
+                result.put(obj);
             }
+            
         }
+      
         
         
         for( int i=0; i<parentEntitiesJsonArr.length(); i++){ 
+            log.debug(parentEntitiesJsonArr.get(i).toString());
             JSONObject actParent = parentEntitiesJsonArr.getJSONObject(i);
             String url = actParent.getString("id");
             String[] urlParts = url.split("/");
@@ -113,7 +137,18 @@ public class HierarchyFetcherLobidGND extends HierarchyFetcher{
 
                 String responseStr = EntityUtils.toString(response.getEntity());
                 JSONObject actParentEntity = new JSONObject(responseStr);
-                log.debug(actParentEntity.toString());
+                // log.debug(actParentEntity.toString());
+
+                boolean isActParentSubjectHeading = false;
+                JSONArray parentEntityTypes = actParentEntity.optJSONArray("type");
+                if( parentEntityTypes != null) {
+                    for( int j = 0; j< parentEntityTypes.length(); j++) {
+                        String actType = parentEntityTypes.getString(j);
+                        if( actType.contains("SubjectHeading") ) {
+                            isActParentSubjectHeading = true;
+                        }
+                    }
+                }
                 String parentEnitityType = ""; // super.entitiesToProcess.getString("type");
                 String parentEntityId = actParentEntity.getString("gndIdentifier");
                 String parentEntityLabel = actParentEntity.getString("preferredName");
@@ -123,8 +158,8 @@ public class HierarchyFetcherLobidGND extends HierarchyFetcher{
                 JSONObject obj = new JSONObject();
                 obj.put("class", entityUrl);
                 obj.put("superclass", parentEntityUrl);
-                obj.put("classLabel", entityLabel);
-                obj.put("superclassLabel", parentEntityLabel);
+                obj.put("classLabel", isSubjectHeading ? "SH:" + entityLabel : entityLabel);
+                obj.put("superclassLabel", isActParentSubjectHeading ? "SH:" + parentEntityLabel : parentEntityLabel);
 
                 // add json object to result json array
                 result.put(obj);

@@ -251,7 +251,7 @@ public class EntityRecognition {
 
     protected static List<String> getLobidGndResults(List<String> requestText) throws Exception {
     List<String> results = new ArrayList<>();
-    String baseUrl = "https://lobid.org/gnd/search?q=";
+    String baseUrl = "https://lobid.org/gnd/search?q=preferredName:";
 
     for (String actText : requestText) {
         String result = "";
@@ -260,7 +260,7 @@ public class EntityRecognition {
         String encodedText = URLEncoder.encode(actText, StandardCharsets.UTF_8);
 
         // Create the API request URL
-        String requestUrl = baseUrl + encodedText + "&format=json";
+        String requestUrl = baseUrl + encodedText + "%20OR%20variantName:" + encodedText + "%20OR%20preferredNameForTheSubjectHeading:"+ encodedText +"&format=json&size=50";
 
         HttpGet request = new HttpGet(new URI(requestUrl));
         request.addHeader("content-type", "application/json");
