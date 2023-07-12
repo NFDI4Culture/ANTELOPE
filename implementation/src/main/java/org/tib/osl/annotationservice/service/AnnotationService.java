@@ -84,12 +84,12 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean ts4tib,
     Boolean lobidGnd,
     String ts4tib_collection,
-    String ts4tib_ontology
-    
+    String ts4tib_ontology,
+    Boolean allowDuplicates
     ) {
         List<String> requestBody = new ArrayList<String>();
         requestBody.add(searchText);
-        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, lobidGnd);
+        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, lobidGnd, allowDuplicates);
     }
 
     @Override
@@ -99,10 +99,10 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean iconclass,
     Boolean ts4tib,
     String ts4tib_collection,
-    String ts4tib_ontology
-    
+    String ts4tib_ontology,
+    Boolean allowDuplicates
     ) {
-        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, false);
+        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, false, allowDuplicates);
     }
 
     @Override
@@ -182,7 +182,8 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean iconclass,
     Boolean ts4tib, 
     String ts4tibOntology,
-    Boolean lobidGnd
+    Boolean lobidGnd,
+    boolean allowDuplicates
     ) {
         
         // decide which datasources to use
@@ -373,7 +374,9 @@ public class AnnotationService implements AnnotationApiDelegate {
                 olsResults,
                 olsResultsByEntity.get(),
                 gndResults,
-                gndResultsByEntity.get());
+                gndResultsByEntity.get(),
+                allowDuplicates
+                );
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Failed to build category tree", HttpStatus.INTERNAL_SERVER_ERROR);

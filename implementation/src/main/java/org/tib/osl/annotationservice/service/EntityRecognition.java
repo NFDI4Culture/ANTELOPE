@@ -516,7 +516,8 @@ public class EntityRecognition {
             List<String> olsResults,
             Map<String,String> olsResultsByEntity,
             List<String> gndResults,
-            Map<String,String> gndResultsByEntity
+            Map<String,String> gndResultsByEntity,
+            boolean allowDuplicates
             )throws Exception {
     
        //wikidataResultsByEntity.putAll(dbpediaResultsByEntity);
@@ -588,28 +589,28 @@ public class EntityRecognition {
         resultHierarchy.put("name", "results");
         resultHierarchy.put("link", "");
         resultHierarchy.put("children", new JSONArray());
-
+        
         // build hierarchy from Wikidata and add to root node
         if( !wikidataResultsByEntity.isEmpty() ) {
-            JSONObject wdHierarchy = TreeBuilder.buildCategoryTree( wikidataResultsByEntity , 1, "Wikidata", "http://wikidata.org", "label", "URI");
+            JSONObject wdHierarchy = TreeBuilder.buildCategoryTree( wikidataResultsByEntity , 1, "Wikidata", "http://wikidata.org", "label", "URI", allowDuplicates);
             resultHierarchy.getJSONArray("children").put(wdHierarchy);
         }
 
         // build hierarchy from dbPedia and add to root node
         if( !dbpediaResultsByEntity.isEmpty() ) {
-            JSONObject dpHierarchy = TreeBuilder.buildCategoryTree( dbpediaResultsByEntity , 1000, "DBpedia", "http://dbpedia.org", "label", "URI");
+            JSONObject dpHierarchy = TreeBuilder.buildCategoryTree( dbpediaResultsByEntity , 1000, "DBpedia", "http://dbpedia.org", "label", "URI", allowDuplicates);
             resultHierarchy.getJSONArray("children").put(dpHierarchy);
         }
 
         // build hierarchy from iconclass and add to root node
         if( !iconclassResultsByEntity.isEmpty() ) {
-            JSONObject icHierarchy = TreeBuilder.buildCategoryTree( iconclassResultsByEntity , 10000, "Iconclass", "http://iconclass.org", "label", "URI");
+            JSONObject icHierarchy = TreeBuilder.buildCategoryTree( iconclassResultsByEntity , 10000, "Iconclass", "http://iconclass.org", "label", "URI", allowDuplicates);
             resultHierarchy.getJSONArray("children").put(icHierarchy);
         }
 
         // build hierarchy from gnd and add to root node
         if( !gndResultsByEntity.isEmpty() ) {
-            JSONObject gndHierarchy = TreeBuilder.buildCategoryTree( gndResultsByEntity , 100000, "GND", "http://gnd.network", "label", "URI");
+            JSONObject gndHierarchy = TreeBuilder.buildCategoryTree( gndResultsByEntity , 100000, "GND", "http://gnd.network", "label", "URI", allowDuplicates);
             resultHierarchy.getJSONArray("children").put(gndHierarchy);
         }
 
@@ -632,7 +633,7 @@ public class EntityRecognition {
             for( String actSource : olsResultsByEntityBySource.keySet()) {
                 Map<String, String> actOlsResultsByEntity = olsResultsByEntityBySource.get(actSource);
                 String actSourceUri = "https://terminology.tib.eu/ts/ontologies/"+actSource;
-                JSONObject olsHierarchy = TreeBuilder.buildCategoryTree( actOlsResultsByEntity , rootNodeId, actSource, actSourceUri, "label", "URI");
+                JSONObject olsHierarchy = TreeBuilder.buildCategoryTree( actOlsResultsByEntity , rootNodeId, actSource, actSourceUri, "label", "URI", allowDuplicates);
                 resultHierarchy.getJSONArray("children").put(olsHierarchy);
                 rootNodeId = rootNodeId * 10;
             }

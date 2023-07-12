@@ -120,6 +120,11 @@ paths:
           schema:
             type: string
           description: Optional parameter to restrict search within the TIB terminology service to one or more specific ontologies. More than one ontology can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
+        - in: query
+          name: allowDuplicates
+          schema:
+            type: boolean
+          description: if 'true', the hierarchy graph is allowed to contain superclasses multiple times (in different branches). This will show more complete results but the graph will be bigger and might contain the same information multiple times
           
           
       responses:
@@ -173,7 +178,13 @@ paths:
           name: ts4tib_ontology
           schema:
             type: string
-          description: Optional parameter to restrict search within the TIB terminology service to one or more specific ontologies. More than one ontology can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'  
+          description: Optional parameter to restrict search within the TIB terminology service to one or more specific ontologies. More than one ontology can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true' 
+        - in: query
+          name: allowDuplicates
+          schema:
+            type: boolean
+          description: if 'true', the hierarchy graph is allowed to contain superclasses multiple times (in different branches). This will show more complete results but the graph will be bigger and might contain the same information multiple times
+          
       requestBody:
         description: Json array of text samples to annotate
         required: true

@@ -32,10 +32,18 @@
                         
                         {{datasource.name}}
                     </div>
+
                     
                     
                 </div>
             </form>
+            <input 
+                type="checkbox" 
+                [(ngModel)]="allowDuplicates"
+                [value]="allowDuplicates" 
+                [checked]=false
+                />Allow duplicates
+
             <span *ngIf="showTs4tibOntologySelect == true">Select Ontologies (optional):</span>
             <ng-select class="tib-select"
                 *ngIf="showTs4tibOntologySelect == true"

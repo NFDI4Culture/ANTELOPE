@@ -22,9 +22,10 @@ public class TreeBuilder {
      * take the result of a NER (named entity recognition) process and create a hierarchy tree from it.
      * expects the json result format by entity according to the falcon2 resultset
      * @param wikidataResultsByEntity
+     * @param allowDuplicates set true to allow the occurence of an entities superclass multiple times within the hierarchy tree.
      * @return
      */
-    public static JSONObject buildCategoryTree(Map<String,String> nerResultsByEntity, int rootNodeId, String rootNodeName, String rootNodeLink, String keyOfEntityNameInJson, String keyOfEntityUrlInJson) {
+    public static JSONObject buildCategoryTree(Map<String,String> nerResultsByEntity, int rootNodeId, String rootNodeName, String rootNodeLink, String keyOfEntityNameInJson, String keyOfEntityUrlInJson, boolean allowDuplicates) {
 
         Map<String, JSONArray> hierarchyMap = new TreeMap<>(); // key: entity, result: a childClass -> Superclass entry
         Set<String> childClasses = new HashSet<>();
@@ -49,11 +50,12 @@ public class TreeBuilder {
         // add Entries for root Childclasses (connect to common "root" node)
         insertRootNode(rootClasses, nerResultsByEntity, hierarchyMap, rootNodeName, rootNodeLink, keyOfEntityNameInJson, keyOfEntityUrlInJson);
 
-        // eliminate duplicates
+        // eliminate duplicates (process every entity only once. this doesnt affect if an entity can occur multiple times within the hierarchy tree)
         eliminateDuplicates(hierarchyMap);
-
+        
+        
         //now all links are created in tabular format. create hierarchy in json tree format
-        JSONObject result = createTreeStructureFromEntityToSuperclass( hierarchyMap, rootNodeId, rootNodeName, rootNodeLink, keyOfEntityNameInJson, keyOfEntityUrlInJson );
+        JSONObject result = createTreeStructureFromEntityToSuperclass( hierarchyMap, rootNodeId, rootNodeName, rootNodeLink, keyOfEntityNameInJson, keyOfEntityUrlInJson, allowDuplicates );
         return result;
     }
 /*
@@ -205,7 +207,7 @@ public class TreeBuilder {
         ]
         }
      */
-    private static JSONObject createTreeStructureFromEntityToSuperclass(Map<String, JSONArray> hierarchyMap, int rootId, String rootNodeName, String rootNodeLink, String keyOfEntityNameInJson, String keyOfEntityUrlInJson) {
+    private static JSONObject createTreeStructureFromEntityToSuperclass(Map<String, JSONArray> hierarchyMap, int rootId, String rootNodeName, String rootNodeLink, String keyOfEntityNameInJson, String keyOfEntityUrlInJson, boolean allowDuplicates ) {
         
         JSONObject rootNode = new JSONObject();
         rootNode.put("id", rootId);
@@ -233,21 +235,21 @@ public class TreeBuilder {
 
             rootNode.getJSONArray("children").put(childNode);
 
-            startId += 10000; // define a wide id range for each entity class tree
+            startId += 1000; // define a wide id range for each entity class tree
         }
 
         for( Object o : rootNode.getJSONArray("children")) {
             JSONObject actChild = (JSONObject)o;
-            addChildTree(rootNode, actChild, newHierarchyMap.get(actChild.getString("name")));
+            addChildTree(rootNode, rootNode.getString("link"), actChild, newHierarchyMap.get(actChild.getString("name")), allowDuplicates);
         }
         
         return rootNode;
     }
 
-    private static void addChildTree(JSONObject parentTree, JSONObject startNode, JSONArray hierarchyEntries) {
+    private static void addChildTree(JSONObject parentTree, String parentBranch, JSONObject startNode, JSONArray hierarchyEntries, boolean allowDuplicates) {
         int actId = startNode.getInt("id");
         String startNodeUri = startNode.getString("link");
-        
+        log.debug(parentBranch);
         
         System.out.println( "call getTree() for startNode: "+startNodeUri );
         //System.out.println( hierarchyEntries );
@@ -289,13 +291,25 @@ public class TreeBuilder {
             childNode.put("link", actSuperClassUri);
             childNode.put("children", new JSONArray());
             
-            // check if the act ChildNode uri already exist in the parent tree (if so, dont add the child)
-            String childAlreadyExistSequence = "\"link\":\""+actSuperClassUri+"\"";
-            //System.out.println( childAlreadyExistSequence );
-            if( !parentTree.toString().contains( childAlreadyExistSequence )) {
+            boolean skipNode = false;
+            // check if child occurs in same branch (that would lead to infinite loop)
+
+            if( allowDuplicates && parentBranch.contains( actSuperClassUri ) ){
+                skipNode = true;
+            } else if( !allowDuplicates){
+                // check if the act ChildNode uri already exist in the parent tree (if so, dont add the child)
+                String childAlreadyExistSequence = "\"link\":\""+actSuperClassUri+"\"";
+                if( parentTree.toString().contains( childAlreadyExistSequence ) ){
+                    skipNode = true;
+                }
+
+            }            //System.out.println( childAlreadyExistSequence );
+
+            if( !skipNode ) {
                 log.debug("put "+childNode.get("name")+" as child of "+startNode.getString("name"));
                 startNode.getJSONArray("children").put(childNode);
-                addChildTree( parentTree, childNode, hierarchyEntries );
+                parentBranch += "-->"+actClassUri;
+                addChildTree( parentTree, parentBranch, childNode, hierarchyEntries, allowDuplicates );
                 
             } else {
                 System.out.println( "Child already exist, skip: "+actSuperClassName+" - "+actSuperClassUri );
