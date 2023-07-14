@@ -536,8 +536,30 @@ public class EntityRecognition {
             
             String[] keysToProcess = new String[] {"entities_wikidata", "entities_dbpedia"};
             for( String actKey : keysToProcess) { 
+                // falcon doesnt return the entity label correctly, (only the search term). get the label from own query results
+                Map<String,String> actResultsByEntity = wikidataResultsByEntity;
+                if( actKey == "entities_dbpedia"){
+                    actResultsByEntity = dbpediaResultsByEntity;
+                }
                 if( actFalconJson.optJSONArray(actKey) != null) {
-                    falconEntities.putAll( actFalconJson.optJSONArray(actKey) );
+                    JSONArray actEntitiesList = actFalconJson.optJSONArray(actKey);
+                    for (int i = 0; i < actEntitiesList.length(); i++){
+                        JSONObject actEntity = actEntitiesList.getJSONObject(i);
+                        //if( actResultsByEntity.containsKey(keysToProcess))
+                        for( String actResultStr : actResultsByEntity.keySet() ){
+                            JSONObject actResultObj = new JSONObject(actResultStr);
+                            log.debug(actResultObj.getString("URI")+""+ actEntity.getString("URI") );
+                           
+
+                            if( actResultObj.getString("URI").equals( actEntity.getString("URI"))){
+                                log.debug("match");
+                                actEntity.put("label", actResultObj.getString("label")); 
+                                falconEntities.put(actEntity);
+                            }
+                        }
+                        
+                    }                     
+                    //falconEntities.putAll(actEntitiesList);
                 }
             }
 
