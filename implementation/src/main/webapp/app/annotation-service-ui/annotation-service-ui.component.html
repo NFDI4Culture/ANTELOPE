@@ -37,12 +37,34 @@
                     
                 </div>
             </form>
-            <input 
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <b>Settings</b>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Open to change detail settings
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <input 
+                type="text" 
+                [(ngModel)]="resultLimit"
+                [value]="resultLimit" 
+                />Max. count of results per source
+                <br/>
+                <input 
                 type="checkbox" 
                 [(ngModel)]="allowDuplicates"
                 [value]="allowDuplicates" 
                 [checked]=false
                 />Allow duplicates
+                <div class="btn tib-btn-info" 
+                matTooltip="If set, the result hierarchy graph may contain the same class multiple times (in different branches). This will give you a more complete view of the original results but may show the same information multiple times.
+                Every class will still be shown only once per branch in the hierarchy tree to avoid circles (circles are possible in graphs but not in trees like taxonomies)"
+                matTooltipPosition="right"></div>
+
+              </mat-expansion-panel>
+            
 
             <span *ngIf="showTs4tibOntologySelect == true">Select Ontologies (optional):</span>
             <ng-select class="tib-select"

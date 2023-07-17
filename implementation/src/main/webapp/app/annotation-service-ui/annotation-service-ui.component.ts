@@ -69,6 +69,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   showResultContainer = false;
   showTs4tibOntologySelect = false;
   allowDuplicates = false;
+  resultLimit = 20; // service parameter. number of results, fetched per datasource
   
   @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
   
