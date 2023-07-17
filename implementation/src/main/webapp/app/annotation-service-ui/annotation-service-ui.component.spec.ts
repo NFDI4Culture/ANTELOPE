@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+
 
 import { AnnotationServiceUIComponent } from './annotation-service-ui.component';
 
@@ -9,7 +9,7 @@ describe('AnnotationServiceUIComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ ReactiveFormsModule ],
+      imports: [  ],
       declarations: [ AnnotationServiceUIComponent ]
     })
     .compileComponents();
