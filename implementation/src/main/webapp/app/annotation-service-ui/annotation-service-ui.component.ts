@@ -254,7 +254,7 @@ export class AnnotationServiceUIComponent implements OnInit{
       // force utf 8 encoding of text
       
       // url of the annotationService api (restful service with json payload)
-      let url = 'api/annotation/'+endpoint+'?allowDuplicates='+this.allowDuplicates+'&';
+      let url = 'api/annotation/' + endpoint + '?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
       
       // add datasource parameters (optional) to url e.g. wikidata=true, based on the checkbox formgroup
       let ts4tibSelected;
