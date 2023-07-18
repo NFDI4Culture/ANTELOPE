@@ -11,7 +11,7 @@
                 matTooltipPosition="right"
                 matTooltipSize="12px"></div>
             <input type="text" id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"/>
-            <span style="font-size: 14px;" >Select terminology sources:</span>
+            <span class="subheading" >Select terminology sources:</span>
             <div class="btn tib-btn-info" 
                 matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
                 matTooltipPosition="right"></div>
@@ -37,34 +37,6 @@
                     
                 </div>
             </form>
-            <mat-expansion-panel class="mat-elevation-z1">
-                <mat-expansion-panel-header>
-                  <mat-panel-title plass="headline">
-                    Settings
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    Open to change detail settings
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <!-- <input 
-                type="text" 
-                [(ngModel)]="resultLimit"
-                [value]="resultLimit" 
-                />Max. count of results per source
-                <br/>-->
-                <input 
-                type="checkbox" 
-                [(ngModel)]="allowDuplicates"
-                [value]="allowDuplicates" 
-                [checked]=false
-                /> Allow duplicates
-                <div class="btn tib-btn-info" 
-                matTooltip="If set, the result hierarchy graph may contain the same class multiple times (in different branches). This will give you a more complete view of the original results but may show the same information multiple times.
-                Every class will still be shown only once per branch in the hierarchy tree to avoid circles (circles are possible in graphs but not in trees like taxonomies)"
-                matTooltipPosition="right"></div>
-
-              </mat-expansion-panel>
-            
 
             <span *ngIf="showTs4tibOntologySelect == true">Select Ontologies (optional):</span>
             <ng-select class="tib-select"
@@ -87,8 +59,18 @@
                     {{item.collection || '8 - Other'}}
                 </ng-template>
             </ng-select>
-               
-
+            
+            <span class="subheading">Settings:</span><br/>   
+            <input 
+            type="checkbox" 
+            [(ngModel)]="allowDuplicates"
+            [value]="allowDuplicates" 
+            [checked]=false
+            /> <span style="font-size: 14px;">Allow class duplicates</span>
+            <div class="btn tib-btn-info" 
+            matTooltip="If set, the result hierarchy graph may contain the same class multiple times (in different branches). This will give you a more complete view of the original results but may show the same information multiple times.
+            Every class will still be shown only once per branch in the hierarchy tree to avoid circles (circles are possible in graphs but not in trees like taxonomies)"
+            matTooltipPosition="right"></div>
                 
            
             
@@ -110,7 +92,7 @@
                 matTooltipPosition="right"
                 matTooltipSize="12px"></div>
             <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"></textarea>
-            <span style="font-size: 14px;" >Select terminology sources:</span>
+            <span class="subheading" >Select terminology sources:</span>
             <div class="btn tib-btn-info" 
                 matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
                 matTooltipPosition="right"></div>
@@ -136,7 +118,17 @@
             
             </form>
            
-      
+            <span class="subheading" >Settings:</span><br/>   
+            <input 
+            type="checkbox" 
+            [(ngModel)]="allowDuplicates"
+            [value]="allowDuplicates" 
+            [checked]=false
+            /> <span style="font-size: 14px;">Allow class duplicates</span>
+            <div class="btn tib-btn-info" 
+            matTooltip="If set, the result hierarchy graph may contain the same class multiple times (in different branches). This will give you a more complete view of the original results but may show the same information multiple times.
+            Every class will still be shown only once per branch in the hierarchy tree to avoid circles (circles are possible in graphs but not in trees like taxonomies)"
+            matTooltipPosition="right"></div>
         
             <div style="margin-top:15px">
                 <button type="submit" class="btn btn-tib" (click)="entityRecognition()">Run service</button>
