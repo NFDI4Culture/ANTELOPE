@@ -1,0 +1,12 @@
+<div>
+  <h4>{{ selected?.name }}</h4>
+  <span>{{ selected?.id }}</span>
+</div>
+<p>
+  {{ selected?.description }}
+</p>
+<img src="{{ selected?.imageUrl }}" *ngIf="selected?.imageUrl">
+<div>
+  <button type="button" class="btn-tib btn-tib--slim btn-tib--primary btn-tib--i-add" (click)="copyId()">COPY ID</button>
+  <button type="button" class="btn-tib btn-tib--slim btn-tib--secondary btn-tib--i-arrow" (click)="view()">VIEW</button>
+</div>

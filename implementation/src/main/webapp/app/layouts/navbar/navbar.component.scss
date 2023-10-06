@@ -6,6 +6,13 @@
 Navbar
 ========================================================================== */
 
+:host {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
 .navbar-version {
   font-size: 0.65em;
   color: $navbar-dark-color;
@@ -17,15 +24,15 @@ Navbar
 }
 
 .navbar {
-  padding: 0.2rem 1rem;
+  padding: 2rem 1rem;
+  background: transparent;
+  color: var(--color-fg-gray);
+  font-size: 1rem;
+
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
     background-color: $dark;
-  }
-
-  a.nav-link {
-    font-weight: 400;
   }
 
   .navbar-toggler {
@@ -33,16 +40,33 @@ Navbar
       color: $navbar-dark-hover-color;
     }
   }
+
+  span, a {
+    color: inherit;
+    font-size: var(--font-size-s);
+    font-weight: 200;
+    text-transform: none;
+  }
+  a {
+    padding: 0;
+    margin: 0 1.5rem;
+  }
 }
 
-/* ==========================================================================
-Logo styles
-========================================================================== */
-.logo-img {
-  height: 45px;
-  width: 45px;
-  display: inline-block;
-  vertical-align: middle;
-  background: url('../../../content/images/antelope.png') no-repeat center center;
-  background-size: contain;
+.dropdown-menu {
+  border-color: var(--color-contrast);
+
+  .dropdown-item {
+    margin: 0;
+    padding: 0.25rem 0.75rem;
+
+    &:hover {
+      background-color: var(--color-bg-gray);
+    }
+
+    &.active {
+      background-color: inherit !important;
+      font-weight: 400;
+    }
+  }
 }

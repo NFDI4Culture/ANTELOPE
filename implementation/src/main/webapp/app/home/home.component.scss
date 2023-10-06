@@ -2,12 +2,64 @@
 Main page styles
 ========================================================================== */
 
+:host > .row {
+  overflow-x: hidden;
+}
+
+.col-md-3 {
+  padding: 0;
+}
+
+.logo-wrapper.collapsed {
+  margin-top: 2rem;
+
+  .logo {
+    &-l {
+      display: none;
+    }
+    &-s {
+      display: block;
+    }
+  }
+}
+
+.logo-wrapper {
+  align-content: center;
+  margin-top: 7.5rem;
+  text-align: center;
+}
 .logo {
-  display: inline-block;
-  width: 347px;
-  height: 200px;
-  background: url('../../content/images/logo_antelope.png') no-repeat center top;
-  background-size: contain;
+  display: block;
+  margin: auto;
+  margin-bottom: 3rem;
+
+  &-l {
+    height: 4rem;
+  }
+  &-s {
+    display: none;
+    height: 2rem;
+  }
+}
+
+p {
+  margin: auto;
+  margin-bottom: 3rem;
+  color: var(--color-fg-gray);
+  font-size: var(--font-size-l);
+}
+
+.collapsed {
+  .logo-l {
+    display: none;
+  }
+  .logo-s {
+    display: block;
+  }
+
+  p {
+    display: none;
+  }
 }
 
 
@@ -18,7 +70,16 @@ Main page styles
   only screen and (min-resolution: 192dpi),
   only screen and (min-resolution: 2dppx) {
   .logo {
-    background: url('../../content/images/logo_antelope.png') no-repeat center top;
-    background-size: contain;
+    &-l {
+      height: 8rem;
+    }
+    &-s {
+      height: 4rem;
+    }
   }
+}
+
+jhi-annotation-service-ui {
+  display: block;
+  margin-bottom: 2rem;
 }

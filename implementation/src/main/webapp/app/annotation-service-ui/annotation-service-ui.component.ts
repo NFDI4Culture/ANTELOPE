@@ -8,6 +8,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 
 import * as XLSX from 'xlsx';
 
+
 const EXCEL_EXTENSION = '.xlsx';
 
 interface ENTITIES {
@@ -50,8 +51,6 @@ type HierarchyTree = {
   templateUrl: './annotation-service-ui.component.html',
   styleUrls: ['./annotation-service-ui.component.scss']
 })
-
-
 export class AnnotationServiceUIComponent implements OnInit{
   loader = this.loadingBar.useRef();
   textToAnnotate = new FormControl('');
@@ -70,6 +69,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   showTs4tibOntologySelect = false;
   allowDuplicates = false;
   resultLimit = 20; // service parameter. number of results, fetched per datasource
+  resultCount = 0;
   
   @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
   
@@ -86,7 +86,6 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   ];
   
-
   dropdownSettings = {};
   
   public annotation: AnnotationResponse = {entities:[], relations:[], hierarchy:{} as unknown as HierarchyTree};
@@ -95,7 +94,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   private graph!: GraphTidytreeComponent;
   
   // init a custom loadingbar to show progress while waiting for the annotationService result and creating the d3 graph
-  constructor(private loadingBar: LoadingBarService, fb: FormBuilder   ) {
+  constructor(private loadingBar: LoadingBarService, fb: FormBuilder, private elRef: ElementRef) {
     // init datasource checkboxes
     const initialSources = new FormArray(this.initArray)
       this.datasources.forEach((element) => {
@@ -226,15 +225,21 @@ export class AnnotationServiceUIComponent implements OnInit{
 
     }
     this.ts4tibOntologies = result;
-  } 
+  }
 
   async terminologySearch(): Promise<void> {
     return this.callAnnotationService("terminology");
   }
 
   async entityRecognition(): Promise<void> {
-    
     return this.callAnnotationService("entities");
+  }
+
+  toggleSettings(): void {
+    document.querySelector("jhi-sidebar#settings")?.dispatchEvent(new CustomEvent("toggle"));
+
+    this.elRef.nativeElement.querySelector(".btn-settings")
+    .classList.toggle("active");
   }
 
   // start the annotation process when user submit the request form
@@ -316,11 +321,14 @@ export class AnnotationServiceUIComponent implements OnInit{
       // display as string
       // this.msg = JSON.stringify(result, null, 4);
       this.annotation = result;
-      // console.log(result);
-      
+
+      this.resultCount = this.annotation.hierarchy.children
+      .reduce((a, c: { children: unknown[] }) => {
+        return a + c.children.length;
+      }, 0);
+
       // finish loading bar
       this.loader.complete();
-      
 
       if( result.entities.length > 0) {
         this.msg = "";
@@ -328,7 +336,8 @@ export class AnnotationServiceUIComponent implements OnInit{
         // update graph
         this.graph.clear();
         this.graph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
-
+        
+        document.dispatchEvent(new CustomEvent("collapse"));
       } else {
         this.msg = "No Results found";
         this.showResultContainer = false;
@@ -358,8 +367,11 @@ export class AnnotationServiceUIComponent implements OnInit{
     this.loader.stop();
     this.loader.set(0);
     this.showResultContainer = false;
-  }
 
+    document.dispatchEvent(new CustomEvent("deselect-node", {
+      bubbles: false
+    }));
+  }
 
   saveJson():void{
     this.writeContents(JSON.stringify(this.annotation, null, 2), 'antelope_result'+'.json', 'text/plain');

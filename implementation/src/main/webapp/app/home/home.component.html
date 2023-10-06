@@ -1,16 +1,24 @@
 <div class="row">
   <div class="col-md-3">
-    
+    <jhi-sidebar class="swipe-left" id="settings">
+      <h4>Your Settings</h4>
+      <button type="button" class="btn-tib btn-tib--primary">Apply</button>
+    </jhi-sidebar>
   </div>
-
   <div class="col-md-6">
-    <div style="align-content: center;text-align: center;">
-      <br><br>
-      <span class="logo img-fluid rounded"></span>
-      <p class="lead">Antelope is a free, open source service to support your data annotation. <br>It offers terminology search, entity recognition, and easy integration into your projects.</p>
+    <div class="logo-wrapper">
+      <img class="logo logo-l" src="../../content/images/logo_antelope.png">
+      <img class="logo logo-s" src="../../content/images/antelope.png">
+      <p class="lead">
+        Antelope is a powerful free, open source service for easy data annotation: terminology search; entity linking; and integration with research data management systems.
+      </p>
     </div>
     <br>
     <jhi-annotation-service-ui></jhi-annotation-service-ui>
   </div>
- <div class="col-md-3"></div>
+  <div class="col-md-3">
+    <jhi-sidebar class="swipe-right" id="selection">
+      ...
+    </jhi-sidebar>
+  </div>
 </div>
