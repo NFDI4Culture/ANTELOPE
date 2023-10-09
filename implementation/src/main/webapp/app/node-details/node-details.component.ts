@@ -21,12 +21,12 @@ export class NodeDetailsComponent {
   public selected?: INode;
 
   constructor(private elRef: ElementRef) {
-    document.addEventListener("select-node", (data: any) => {
+    this.elRef.nativeElement.addEventListener("select-node", (data: any) => {
       this.selected = data.detail;
 
       this.elRef.nativeElement.classList.add("active");
     });
-    document.addEventListener("deselect-node", () => {
+    this.elRef.nativeElement.addEventListener("deselect-node", () => {
       this.elRef.nativeElement.classList.remove("active");
     });
   }

@@ -154,15 +154,17 @@ export class GraphTidytreeComponent {
     //.attr("target", linkTarget)
     .attr("data-id", 3);
 
-    /* document.dispatchEvent(new CustomEvent("select-node", {
-      detail: {
-          name: "ABC",
-          link: d.link,
-          id: "Q2399120",
-          description: "Lorem ipsum"
-      },
-      bubbles: false
-    })); */
+    node.on("click", (_, d: any) => {
+      document.querySelector("jhi-node-details")?.dispatchEvent(new CustomEvent("select-node", {
+        detail: {
+            name: d.name,
+            link: d.link,
+            id: d.id,
+            description: d.link
+        },
+        bubbles: false
+      }));
+    });
 
     // CIRCLE
     node.append("circle")
