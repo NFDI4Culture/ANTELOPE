@@ -157,10 +157,10 @@ export class GraphTidytreeComponent {
     node.on("click", (_, d: any) => {
       document.querySelector("jhi-node-details")?.dispatchEvent(new CustomEvent("select-node", {
         detail: {
-            name: d.name,
-            link: d.link,
-            id: d.id,
-            description: d.link
+            name: d.data.name,
+            link: d.data.link,
+            id: d.data.id,
+            description: d.data.link
         },
         bubbles: false
       }));
