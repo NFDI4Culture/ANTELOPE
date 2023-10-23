@@ -14,7 +14,7 @@
                 </div>
             </label>
             <textarea type="text" id="textToAnnotate" [formControl]="textToAnnotate" placeholder="e.g. ‘Mona Lisa’ or ‘The Mona Lisa painting’"></textarea>
-            <span class="subheading" >Select terminology sources:</span>
+            <span class="subheading" >Select terminology sources</span>
             <div class="tib-btn-info" 
                 matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
                 matTooltipPosition="right"></div>
@@ -38,7 +38,7 @@
                 </div>
             </form>
 
-            <span *ngIf="showTs4tibOntologySelect == true">Select Ontologies (optional):</span>
+            <span *ngIf="showTs4tibOntologySelect == true">Select Ontologies (optional)</span>
             <ng-select class="tib-select"
                 *ngIf="showTs4tibOntologySelect == true"
                 [items]="ts4tibOntologies"
@@ -60,7 +60,7 @@
                 </ng-template>
             </ng-select>
             
-            <span class="subheading">Settings:</span><br/>   
+            <span class="subheading">Settings</span><br/>   
             <input 
             type="checkbox" 
             [(ngModel)]="allowDuplicates"
@@ -73,7 +73,7 @@
             matTooltipPosition="right"></div>
            
             <div class="btn-list">
-                <button type="button" class="btn-tib btn-settings" (click)="toggleSettings()"></button>
+                <!-- <button type="button" class="btn-tib btn-settings" (click)="toggleSettings()"></button> --><div style="width: 7.25rem;"></div>
                 <button type="submit" class="btn-tib btn-tib--primary" (click)="terminologySearch()">Search</button>
                 <button type="button" class="btn-tib btn-tib--secondary" (click)="clearAll()">Reset</button>
             </div>
@@ -128,7 +128,7 @@
             matTooltipPosition="right"></div>
             
             <div class="btn-list">
-                <button type="button" class="btn-tib btn-settings" (click)="toggleSettings()"></button>
+                <!-- <button type="button" class="btn-tib btn-settings" (click)="toggleSettings()"></button> --><div style="width: 7.25rem;"></div>
                 <button type="submit" class="btn-tib btn-tib--primary" (click)="entityRecognition()">Search</button>
                 <button type="button" class="btn-tib btn-tib--secondary" (click)="clearAll()">Reset</button>
             </div>
@@ -230,5 +230,3 @@
     <br><br>
     <br><br>
 </div>
-
-<jhi-node-details></jhi-node-details>

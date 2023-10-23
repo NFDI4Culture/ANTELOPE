@@ -3,6 +3,7 @@
 This application was generated using JHipster 7.9.3, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.9.3](https://www.jhipster.tech/documentation-archive/v7.9.3).
 
 ## Integration in other websites
+
 To integrate the annotationService into another website, use the integration html code found in src/main/examples/webpage/index.html.
 This will integrate the annotationService within an iframe on the website, as well as some javascript code to handle data exchange.
 The example gets Text from a user via a textfield and sends it to the annotationService for entity mapping via the iframe (function 'queryEntities()').

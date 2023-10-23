@@ -7,6 +7,17 @@ body {
     font-family: Roboto;
 }
 
+form.ng-select-container {
+  max-width: 300px;
+}
+form + .ng-star-inserted {
+  display: inline-block;
+  color: inherit;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 0.5em !important;
+}
+
 .tib-btn-info {
     height: 22px;
     align-items: center;
@@ -89,9 +100,10 @@ body {
   }
 
   .subheading {
-    font-size: 14px;
+    display: inline-block;
+    margin-top: 0.5em;
+    margin-bottom: 0.25em;
     font-weight: bold;
-    color:#555;
   }
 
 p, a, span {
@@ -244,4 +256,8 @@ textarea {
   .results-container .mat-tab-body {
     padding: 2rem 0;
   }
+}
+
+input[type="checkbox"] {
+  margin: 0.5em;
 }

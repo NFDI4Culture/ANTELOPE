@@ -150,21 +150,9 @@ export class GraphTidytreeComponent {
     .data(root.descendants())
     .join("a")
     .attr("transform", (d: any) => `translate(${d.y as string},${d.x as string})`)
-    //.attr("xlink:href", (d: any) => link(d.data, d))
-    //.attr("target", linkTarget)
+    .attr("xlink:href", (d: any) => link(d.data, d))
+    .attr("target", linkTarget)
     .attr("data-id", 3);
-
-    node.on("click", (_, d: any) => {
-      document.querySelector("jhi-node-details")?.dispatchEvent(new CustomEvent("select-node", {
-        detail: {
-            name: d.data.name,
-            link: d.data.link,
-            id: d.data.id,
-            description: d.data.link
-        },
-        bubbles: false
-      }));
-    });
 
     // CIRCLE
     node.append("circle")

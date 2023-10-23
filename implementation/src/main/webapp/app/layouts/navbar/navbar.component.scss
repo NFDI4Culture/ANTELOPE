@@ -11,6 +11,11 @@ Navbar
   top: 0;
   width: 100%;
   z-index: 100;
+  pointer-events: none;
+
+  a {
+    pointer-events: auto !important;
+  }
 }
 
 .navbar-version {
