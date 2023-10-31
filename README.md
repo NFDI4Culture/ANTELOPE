@@ -30,7 +30,7 @@ Contributors to this project: Kolja Bailly, Paul Duchesne and Lozana Rossenova
 ## License
 MIT License
 
-Copyright (c) 2022 Opel Science Lab, TIB Hannover
+Copyright (c) 2022 Open Science Lab, TIB Hannover
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
