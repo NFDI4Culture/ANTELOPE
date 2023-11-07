@@ -89,6 +89,25 @@ body {
     color: #777  !important ;
   }
 
+  ::ng-deep .entity {
+    border: 1px solid #777;
+    border-radius: 3px;
+  }
+
+  ::ng-deep .entity span{
+    font-weight: bold;
+    font-size: small;
+  }
+
+  ::ng-deep .mat-slider-track-fill { 
+    background-color: #f9cd0e !important;
+  }
+
+  ::ng-deep .mat-slider-thumb{ 
+    background-color: #f9cd0e !important;
+  }
+
+
   .subheading {
     font-size: 14px;
     font-weight: bold;

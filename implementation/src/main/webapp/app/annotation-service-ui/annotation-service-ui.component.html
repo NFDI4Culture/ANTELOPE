@@ -83,15 +83,28 @@
         </div>
     </mat-tab>
     <!-- ********************** Entity Recognition ********************* -->
-    <mat-tab label="Entity recognition">
+    <mat-tab label="Entity linking">
         <div style="margin: 5px;">
             <br>
-            <label for="textToAnnotate">Type the text you want to run entity recognition on (single words or whole sentences): </label>
+            <label for="textToAnnotate">Type the text you want to run entity linking on (single words or whole sentences): </label>
             <div class="btn tib-btn-info" 
                 matTooltip="Use Entity recognition to map as many words as possible, of your input text, to entities from the datasources. If you want to search for a single term, that is described by your text, choose 'Terminology search' above"
                 matTooltipPosition="right"
                 matTooltipSize="12px"></div>
             <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"></textarea>
+            <label for="user_dict">Insert custom dictionary: </label>
+            <div class="btn tib-btn-info" 
+                matTooltip="Use the json format, to define a list of synonyms for every entity id: {'entity_id':['entity1_label1', 'entity1_label2']}"
+                matTooltipPosition="right"
+                matTooltipSize="12px"></div>
+            <textarea id="el_user_dict" class="form-control" [formControl]="el_user_dict" style="margin:2px"></textarea>
+            Similarity radius: wide<mat-slider min="0.01" max="0.99" step="-0.1" value="0.6" discrete [displayWith]="el_similarity_label" [(ngModel)]="el_threshold">
+                <input matSliderThumb>
+              </mat-slider>narrow
+              <div class="btn tib-btn-info" 
+                matTooltip="As lower the threshold is, as more words are linked but as lower the semantical equality can be"
+                matTooltipPosition="right"
+                matTooltipSize="12px"></div><br>
             <span class="subheading" >Select terminology sources:</span>
             <div class="btn tib-btn-info" 
                 matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
@@ -185,6 +198,7 @@
     <mat-tab-group style='min-height:1000px'>
         <mat-tab label="Graph" style="font-size:10px !important;">
             Use the mousewheel to zoom in/out. Use drag and drop to move the graph.
+            <div [innerHTML]="el_result.html"></div>
             <jhi-graph-tidytree></jhi-graph-tidytree>
         </mat-tab>
         <mat-tab label="JSON">

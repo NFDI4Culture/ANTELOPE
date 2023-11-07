@@ -25,7 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.tib.osl.annotationservice.service.api.dto.EntityLinkingRequest;
 import org.tib.osl.annotationservice.web.api.AnnotationApiDelegate;
 
 
@@ -93,7 +93,7 @@ public class AnnotationService implements AnnotationApiDelegate {
     }
 
     @Override
-    public ResponseEntity<String> getEntities(List<String> requestBody, 
+    public ResponseEntity<String> getEntities(String requestBody, 
     Boolean wikidata,
     Boolean wikidataDbpedia,
     Boolean iconclass,
@@ -102,7 +102,15 @@ public class AnnotationService implements AnnotationApiDelegate {
     String ts4tib_ontology,
     Boolean allowDuplicates
     ) {
-        return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, false, allowDuplicates);
+
+        //return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, false, allowDuplicates);
+        try {
+            return this.vecner_call(new JSONObject(requestBody), null, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, allowDuplicates, false);
+ 
+        } catch ( Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
@@ -386,6 +394,30 @@ public class AnnotationService implements AnnotationApiDelegate {
         // return result
         return new ResponseEntity<String>( finalResult.toString(), HttpStatus.OK );
     }
+
+
+public ResponseEntity<String> vecner_call(
+    JSONObject requestBody, 
+    SearchMode searchMode,
+    Boolean wikidata,
+    Boolean wikidataDbpedia,
+    Boolean iconclass,
+    Boolean ts4tib, 
+    String ts4tibOntology,
+    Boolean lobidGnd,
+    boolean allowDuplicates
+    ) throws Exception {
+        //JSONObject finalResult = null;
+        JSONObject dict = requestBody.getJSONObject("dict");
+        if( dict.isEmpty()) {
+            dict = EntityRecognition.getIconclassDict();
+        }
+        String text = requestBody.getString("text");
+        Double threshold = requestBody.getDouble("threshold");
+        JSONArray result = EntityRecognition.getVecnerResults(text, dict, threshold);
+
+        return new ResponseEntity<String>( result.get(0).toString(), HttpStatus.OK );
+    }
+
+
 }
-
-

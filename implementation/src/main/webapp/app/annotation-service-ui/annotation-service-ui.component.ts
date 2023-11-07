@@ -5,7 +5,6 @@ import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.compon
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 
-
 import * as XLSX from 'xlsx';
 
 const EXCEL_EXTENSION = '.xlsx';
@@ -23,6 +22,12 @@ type AnnotationResponse = {
   entities: ENTITIES[];
   relations: [];
   hierarchy: HierarchyTree;
+};
+
+// data model of the RESTful Vecner entity linking API result
+type VecnerResponse = {
+  json: string;
+  html: string;
 };
 
 // data model of the RESTful annotationService API result
@@ -55,6 +60,8 @@ type HierarchyTree = {
 export class AnnotationServiceUIComponent implements OnInit{
   loader = this.loadingBar.useRef();
   textToAnnotate = new FormControl('');
+  el_user_dict = new FormControl('{"food": ["vegetable"]}');
+  el_threshold = 0.6;
   ts4tibOntologies = [
     {id: "NONE", name:"loading ontologies...", collection:"-"}
    
@@ -66,6 +73,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   selectedTs4tibOntologies= [];// [{name: 'All'}];
   msg = "";
   err = "";
+  
   showResultContainer = false;
   showTs4tibOntologySelect = false;
   allowDuplicates = false;
@@ -73,14 +81,18 @@ export class AnnotationServiceUIComponent implements OnInit{
   
   @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
   
+  el_similarity_label(value: number): string {
+    return value + '';
+  }
+
   // create a FormGroup to select the datasources checkboxes state
   sourcesForm: FormGroup;
 
   // init, which datasources should be preselected in the checkbox group
   datasources: Array<any> = [
-    { name: 'WIKIDATA', value: 'wikidata', checked: false, disabled: true, shownTS: true, shownER: true },
-    { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false, shownTS: true, shownER: true},
-    { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false , shownTS: true, shownER: false},
+    { name: 'WIKIDATA', value: 'wikidata', checked: false, disabled: true, shownTS: true, shownER: false },
+    { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false, shownTS: true, shownER: false},
+    { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false , shownTS: true, shownER: true},
     { name: 'GND (Gemeinsame Normdatei)', value: 'gnd', checked: false, disabled: false, shownTS: true, shownER: false},
     { name: 'TIB Terminology Service', value: 'ts4tib', checked: false, disabled: false, shownTS: true, shownER: false}
 
@@ -90,6 +102,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   dropdownSettings = {};
   
   public annotation: AnnotationResponse = {entities:[], relations:[], hierarchy:{} as unknown as HierarchyTree};
+  public el_result: VecnerResponse = {json:'', html:''};
   
   @ViewChild(GraphTidytreeComponent)
   private graph!: GraphTidytreeComponent;
@@ -233,8 +246,139 @@ export class AnnotationServiceUIComponent implements OnInit{
   }
 
   async entityRecognition(): Promise<void> {
-    
-    return this.callAnnotationService("entities");
+    // call the java backend service (falcon)
+    //return this.callAnnotationService("entities");
+
+    // call the python rest service (VecNER)
+    this.callVecnerServiceViaBackend();
+    //return this.callVecnerServiceDirect();
+  }
+
+  async callVecnerServiceViaBackend():Promise<void>{
+    this.err = "";
+    this.msg = "";
+    this.graph.clear();
+    this.showResultContainer = false;
+
+    if( this.textToAnnotate.value === "") {
+      this.err = 'Search text cannot be empty';
+      return;
+    }
+    // start the loading bar
+    this.loader.start();
+    try {
+      // force utf 8 encoding of text
+      
+      // url of the annotationService api (restful service with json payload)
+      let url = 'api/annotation/entities?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
+        
+      let response;
+     
+      let user_dict = {}
+      if(this.el_user_dict.value) {
+        user_dict = JSON.parse(this.el_user_dict.value as string);
+      }
+      const body = JSON.stringify({text:this.textToAnnotate.value, dict:user_dict, threshold:this.el_threshold} );
+
+      response = await fetch(url, {
+        method: "POST",
+        body,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      } 
+
+      // get response and save
+      const result = (await response.json()) ;
+      
+      // display as string
+      // this.msg = JSON.stringify(result, null, 4);
+      //this.annotation = '';
+      this.el_result = result as VecnerResponse;
+      this.annotation = result;
+      // console.log(result);
+      
+      // finish loading bar
+      this.loader.complete();
+
+      this.msg =  "";
+      
+      this.showResultContainer = true;
+
+
+    } catch (error) {
+      if (error instanceof Error) {
+        this.err = error.message;
+        this.loader.stop();
+        this.loader.set(0);
+      } else {
+        this.err = 'An unexpected error occurred';
+      }
+    }
+
+  }
+
+  async callVecnerServiceDirect():Promise<void> {
+    this.err = "";
+    this.msg = "";
+    this.graph.clear();
+    this.showResultContainer = false;
+    if( this.textToAnnotate.value === "") {
+      this.err = 'Search text cannot be empty';
+      return;
+    }
+    // start the loading bar
+    this.loader.start();
+
+    try {
+      let url = 'http://localhost:5000/entitylinking';
+      const body = JSON.stringify( {'text':this.textToAnnotate.value, dict: {'food':['food','burger']} } );
+      let response = await fetch(url, {
+        method: "POST",
+        body,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      } 
+
+      // get response and save
+      const result = (await response.json()) ;
+      
+      // display as string
+      // this.msg = JSON.stringify(result, null, 4);
+      //this.annotation = '';
+      this.el_result = result as VecnerResponse;
+      this.annotation = result;
+      // console.log(result);
+      
+      // finish loading bar
+      this.loader.complete();
+
+      this.msg =  "";
+      
+      this.showResultContainer = true;
+
+    } catch (error) {
+      if (error instanceof Error) {
+
+        this.err = error.message;
+        console.log(error.stack);
+        
+        this.loader.stop();
+        this.loader.set(0);
+      } else {
+        this.err = 'An unexpected error occurred';
+      }
+    }
   }
 
   // start the annotation process when user submit the request form
@@ -290,7 +434,7 @@ export class AnnotationServiceUIComponent implements OnInit{
         
       } else {
         
-        const body = JSON.stringify(
+          const body = JSON.stringify(
           // this.textToAnnotate.value?.split(".") // to split sentences (may fail with terms like "alan M. turing" !)
           [this.textToAnnotate.value]
           );

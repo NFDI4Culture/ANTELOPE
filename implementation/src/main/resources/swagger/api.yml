@@ -1,20 +1,24 @@
+---
 openapi: 3.0.1
 info:
   title: annotationService
   version: 0.0.1
 servers:
-  - url: http://localhost:8080/api
-    description: Development server
-  - url: https://localhost:8080/api
-    description: Development server with TLS Profile
+- url: http://localhost:8080/api
+  description: Development server
+- url: https://localhost:8080/api
+  description: Development server with TLS Profile
+security:
+- jwt: []
+- basic: []
 paths:
   /annotation/status:
     get:
       summary: get the current status of the service
-      description: ''
+      description: ""
       operationId: getStatus
       responses:
-        '200':
+        "200":
           description: Service is running
           content:
             text/plain:
@@ -23,217 +27,257 @@ paths:
                 example: OK
         default:
           description: Unexpected error
-          
   /annotation/parameterOptions/ts4tib_collection:
     get:
-      summary: >-
-        get valid parameter options for the parameter 'ts4tib_collection'
-      description: >-
-        retrieves actual collection names from the tib terminology service
+      summary: get valid parameter options for the parameter 'ts4tib_collection'
+      description: retrieves actual collection names from the tib terminology service
       operationId: getParameterTs4tibCollection
       responses:
-        '200':
+        "200":
           description: Parameter options for ts4tib_collection
           content:
             application/json:
               schema:
-                type: string  
-                
+                type: string
         default:
           description: error in retrieving valid parameter options for parameter 'ts4tib'
-          
   /annotation/parameterOptions/ts4tib_ontology:
     get:
-      summary: >-
-        get valid parameter options for the parameter 'ts4tib_ontology'
-      description: >-
-        retrieves actual ontology names from the tib terminology service
+      summary: get valid parameter options for the parameter 'ts4tib_ontology'
+      description: retrieves actual ontology names from the tib terminology service
       operationId: getParameterTs4tibOntology
       parameters:
-        - in: query
-          name: collection
-          required: false
-          schema:
-            type: string
-          description: name of a collection. use '/annotation/getValidParameterOptions/ts4tib_collection' to get valid names. use multiple names seperated by comma.
+      - name: collection
+        in: query
+        description: name of a collection. use '/annotation/getValidParameterOptions/ts4tib_collection' to get valid names. use multiple names seperated by comma.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
-        '200':
+        "200":
           description: Parameter options for ts4tib_ontology
           content:
             application/json:
               schema:
-                type: string  
+                type: string
         default:
-          description: error in retrieving valid parameter options 
-          
+          description: error in retrieving valid parameter options
   /annotation/terminology:
     get:
-      summary: >-
-        retrieves a text and delivers a list of all recognized entities and
-        relations within the specified datasources as well as the
-        corresponding class hierachy tree
-      description: >-
-        Uses the specified datasources to retrieve entities and relations.
-        Adds the category hierarchy graph for these entities and relations.
+      summary: retrieves a text and delivers a list of all recognized entities and relations within the specified datasources as well as the corresponding class hierachy tree
+      description: Uses the specified datasources to retrieve entities and relations. Adds the category hierarchy graph for these entities and relations.
       operationId: getTerminology
-
       parameters:
-        - in: query
-          name: searchtext
-          required: true
-          schema:
-            type: string
-          description: text that contains or describes the wanted entity/terminology
-        - in: query
-          name: wikidata
-          required: false
-          schema:
-            type: boolean
-          description: Optional parameter to include or exclude entities from wikidata
-        - in: query
-          name: wikidata_dbpedia
-          schema:
-            type: boolean
-          description: Optional parameter to include or exclude entities from dbpedia
-        - in: query
-          name: iconclass
-          schema:
-            type: boolean
-          description: Optional parameter to include or exclude entities(notations) from iconclass
-        - in: query
-          name: ts4tib
-          schema:
-            type: boolean
-          description: Optional parameter to include or exclude entities(notations) from ols terminology service TIB Hannove
-        - in: query
-          name: gnd
-          schema:
-            type: boolean
-          description: Optional parameter to include or exclude entities from GND subjectClasses and SubjectHeadings  
-        - in: query
-          name: ts4tib_collection
-          schema:
-            type: string
-          description: Optional parameter to restrict search within the TIB terminology service to one or more ontology collections. More than one collection can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
-        - in: query
-          name: ts4tib_ontology
-          schema:
-            type: string
-          description: Optional parameter to restrict search within the TIB terminology service to one or more specific ontologies. More than one ontology can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
-        - in: query
-          name: allowDuplicates
-          schema:
-            type: boolean
-          description: if 'true', the hierarchy graph is allowed to contain superclasses multiple times (in different branches). This will show more complete results but the graph will be bigger and might contain the same information multiple times
-          
-          
+      - name: searchtext
+        in: query
+        description: text that contains or describes the wanted entity/terminology
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: wikidata
+        in: query
+        description: Optional parameter to include or exclude entities from wikidata
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: wikidata_dbpedia
+        in: query
+        description: Optional parameter to include or exclude entities from dbpedia
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: iconclass
+        in: query
+        description: Optional parameter to include or exclude entities(notations) from iconclass
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: ts4tib
+        in: query
+        description: Optional parameter to include or exclude entities(notations) from ols terminology service TIB Hannove
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: gnd
+        in: query
+        description: Optional parameter to include or exclude entities from GND subjectClasses and SubjectHeadings
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: ts4tib_collection
+        in: query
+        description: Optional parameter to restrict search within the TIB terminology service to one or more ontology collections. More than one collection can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ts4tib_ontology
+        in: query
+        description: Optional parameter to restrict search within the TIB terminology service to one or more specific ontologies. More than one ontology can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: allowDuplicates
+        in: query
+        description: "if 'true', the hierarchy graph is allowed to contain superclasses multiple times (in different branches). This will show more complete results but the graph will be bigger and might contain the same information multiple times"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
       responses:
-        '200':
+        "200":
           description: Annotations of the given searchtext
           content:
             application/json:
               schema:
-                type: string  
+                type: string
         default:
-          description: Generic error response          
-          
+          description: Generic error response
   /annotation/entities:
     post:
-      summary: >-
-        retrieves a text and delivers a list of all recognized entities and
-        relations within the specified datasources as well as the
-        corresponding class hierachy tree
-      description: >-
-        Uses the specified datasources to retrieve entities and relations.
-        Adds the category hierarchy graph for these entities and relations.
-      operationId: getEntities 
+      summary: retrieves a text and delivers a list of all recognized entities and relations within the specified datasources as well as the corresponding class hierachy tree
+      description: Uses the specified datasources to retrieve entities and relations. Adds the category hierarchy graph for these entities and relations.
+      operationId: getEntities
       parameters:
-        - in: query
-          name: wikidata
-          required: false
-          schema:
-            type: boolean
-          description: Optional parameter to include or exclude entities from wikidata
-        - in: query
-          name: wikidata_dbpedia
-          schema:
-            type: boolean
-          description: Optional parameter to include or exclude entities from dbpedia
-        - in: query
-          name: iconclass
-          schema:
-            type: boolean
-          description: Optional parameter to include or exclude entities(notations) from iconclass
-        - in: query
-          name: ts4tib
-          schema:
-            type: boolean
-          description: Optional parameter to include or exclude entities(notations) from ols terminology service TIB Hannove
-        - in: query
-          name: ts4tib_collection
-          schema:
-            type: string
-          description: Optional parameter to restrict search within the TIB terminology service to one or more ontology collections. More than one collection can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
-        - in: query
-          name: ts4tib_ontology
-          schema:
-            type: string
-          description: Optional parameter to restrict search within the TIB terminology service to one or more specific ontologies. More than one ontology can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true' 
-        - in: query
-          name: allowDuplicates
-          schema:
-            type: boolean
-          description: if 'true', the hierarchy graph is allowed to contain superclasses multiple times (in different branches). This will show more complete results but the graph will be bigger and might contain the same information multiple times
-          
+      - name: wikidata
+        in: query
+        description: Optional parameter to include or exclude entities from wikidata
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: wikidata_dbpedia
+        in: query
+        description: Optional parameter to include or exclude entities from dbpedia
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: iconclass
+        in: query
+        description: Optional parameter to include or exclude entities(notations) from iconclass
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: ts4tib
+        in: query
+        description: Optional parameter to include or exclude entities(notations) from ols terminology service TIB Hannove
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: ts4tib_collection
+        in: query
+        description: Optional parameter to restrict search within the TIB terminology service to one or more ontology collections. More than one collection can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ts4tib_ontology
+        in: query
+        description: Optional parameter to restrict search within the TIB terminology service to one or more specific ontologies. More than one ontology can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: allowDuplicates
+        in: query
+        description: "if 'true', the hierarchy graph is allowed to contain superclasses multiple times (in different branches). This will show more complete results but the graph will be bigger and might contain the same information multiple times"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
       requestBody:
         description: Json array of text samples to annotate
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TextArray'
+              type: string
+        required: true
       responses:
-        '200':
+        "200":
           description: Annotations of the given post parameters
           content:
             application/json:
               schema:
-                type: string  
-                # $ref: '#/components/schemas/TextAnnotation'
+                type: string
         default:
           description: Generic error response
-          
   /annotation/entities/selectcomponent:
     get:
-      summary: >-
-        get a html selectbox for all found entities according to the delivered text
-      description: >-
-        retrieves a text and delivers a html page, containing an interactive 
-        selectbox of all recognized entities within the specified datasources. 
-        The selectpage can be embedded via the <iframe> tag into other websites
-      operationId: getEntitiesSelectComponent 
+      summary: get a html selectbox for all found entities according to the delivered text
+      description: "retrieves a text and delivers a html page, containing an interactive  selectbox of all recognized entities within the specified datasources.  The selectpage can be embedded via the <iframe> tag into other websites"
+      operationId: getEntitiesSelectComponent
       responses:
-        '200':
+        "200":
           description: a rendered html selectbox
           content:
             text/html:
               schema:
                 type: string
-                example: <select>
-                          <option value="entity1">entity1</option>
-                          <option value="entity2">entity2</option>
-                         </select>
+                example: <select> <option value="entity1">entity1</option> <option value="entity2">entity2</option> </select>
         default:
           description: Unexpected error
-
 components:
   schemas:
+    dictionary:
+      type: object
+      additionalProperties:
+        type: string
+      description: map of entity labels and synonyms
+      example:
+        food:
+        - food
+        - burger
+        - pasta
+        - pizza
+        flavor:
+        - flavor
+        - delicious
+        - tasty
     TextArray:
-        type: array
-        items:
-          type: string
-          example: 'Single entity name or fulltext'
-          
+      type: array
+      items:
+        type: string
+        example: The burger was delicious
+    EntityLinkingRequest:
+      type: object
+      properties:
+        text:
+          $ref: '#/components/schemas/TextArray'
+        dict:
+          $ref: '#/components/schemas/dictionary'
+        threshold:
+          type: number
+          description: wanted similarity score for linkings. 0-1 default:0.6
+          example: 0.6
+      description: Entity linking input format
     TextAnnotation:
       properties:
         entities:
@@ -242,23 +286,21 @@ components:
             type: array
             items:
               type: string
-              example: ['Entity label', 'Wikidata URL']
-              
+              example: "[\"Entity label\",\"Wikidata URL\"]"
         relations:
           type: array
           items:
             type: array
             items:
               type: string
-              example: ['Relation label', 'Wikidata URL']
+              example: "[\"Relation label\",\"Wikidata URL\"]"
         hierarchy:
           type: array
           items:
             type: array
             items:
               type: string
-              example: ['Subclass label', 'Parentclass label']
-
+              example: "[\"Subclass label\",\"Parentclass label\"]"
   securitySchemes:
     jwt:
       type: http
@@ -269,7 +311,3 @@ components:
       type: http
       description: Basic Authentication
       scheme: basic
-security:
-  - jwt: []
-  - basic: []
-
