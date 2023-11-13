@@ -213,8 +213,6 @@ textarea {
 
 ::ng-deep {
   .disable {
-    pointer-events: none;
-
     .mat-ink-bar {
       background-color: var(--color-bg-gray) !important;
     }
