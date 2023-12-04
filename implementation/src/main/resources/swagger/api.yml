@@ -27,6 +27,21 @@ paths:
                 example: OK
         default:
           description: Unexpected error
+  /annotation/parameterOptions/imagemodels:
+    get:
+      summary: get list of available model names (iart plugins) as parameter value for /annotation/entities/image
+      operationId: getParameterImageModels
+      responses:
+        "200":
+          description: a list of entities depending on the choosen plugin
+          content:
+            application/json:
+              schema:
+                type: string
+                example: plugin1, plugin2
+        default:
+          description: Unexpected error
+
   /annotation/parameterOptions/ts4tib_collection:
     get:
       summary: get valid parameter options for the parameter 'ts4tib_collection'
@@ -151,11 +166,11 @@ paths:
                 type: string
         default:
           description: Generic error response
-  /annotation/entities:
+  /annotation/entitylinking/text:
     post:
       summary: retrieves a text and delivers a list of all recognized entities and relations within the specified datasources as well as the corresponding class hierachy tree
       description: Uses the specified datasources to retrieve entities and relations. Adds the category hierarchy graph for these entities and relations.
-      operationId: getEntities
+      operationId: getTextEntities
       parameters:
       - name: wikidata
         in: query
@@ -218,7 +233,7 @@ paths:
         content:
           application/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/TextEntityLinkingRequest'
         required: true
       responses:
         "200":
@@ -229,6 +244,41 @@ paths:
                 type: string
         default:
           description: Generic error response
+  
+  /annotation/entitylinking/image:
+    post:
+      summary: test call for iart integration
+      operationId: getImageEntities
+      parameters:
+      - name: model
+        in: query
+        description: name of a iart plugin, valid parameters can be get via /annotation/parameterOptions/imagemodels
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      requestBody:
+        description: image to process
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: a list of entities depending on the choosen plugin
+          content:
+            text/html:
+              schema:
+                type: string
+        default:
+          description: Unexpected error
+ 
+
   /annotation/entities/selectcomponent:
     get:
       summary: get a html selectbox for all found entities according to the delivered text
@@ -246,61 +296,71 @@ paths:
           description: Unexpected error
 components:
   schemas:
-    dictionary:
-      type: object
-      additionalProperties:
-        type: string
-      description: map of entity labels and synonyms
-      example:
-        food:
-        - food
-        - burger
-        - pasta
-        - pizza
-        flavor:
-        - flavor
-        - delicious
-        - tasty
+    
     TextArray:
       type: array
       items:
         type: string
-        example: The burger was delicious
-    EntityLinkingRequest:
+        description: a example phrase or label
+    
+    SimpleDictionary:
+      type: object
+      additionalProperties: 
+        $ref: '#/components/schemas/TextArray'
+           
+      description: map of entity ids (key) and list of labels for that entity (value)
+      example:
+        e1_food:
+        - food
+        - burger
+        - pasta
+        - pizza
+        e2_flavor:
+        - flavor
+        - delicious
+        - tasty
+    
+    FullDictionary:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          label: 
+            type: string
+            description: main label of the entity
+          patterns:
+            $ref: '#/components/schemas/TextArray'
+            description: list of words/phrases/synonyms representing the entity
+          kb_id:
+            type: string
+            description: unique id of the entity
+          kb_url:
+            type: string
+            description: link to the entity (will be linked in html visualization of entity linking result)
+        
+    TextEntityLinkingRequest:
       type: object
       properties:
         text:
+          type: string
+        dictionaryType:
+          type: string
+          enum:
+            - ListOfWords
+            - SimpleDictionary
+            - FullDictionary
+        listOfWords:
           $ref: '#/components/schemas/TextArray'
-        dict:
-          $ref: '#/components/schemas/dictionary'
+        simpleDictionary:
+          $ref: '#/components/schemas/SimpleDictionary'
+        fullDictionary:
+          $ref: '#/components/schemas/FullDictionary'
         threshold:
           type: number
           description: wanted similarity score for linkings. 0-1 default:0.6
           example: 0.6
       description: Entity linking input format
-    TextAnnotation:
-      properties:
-        entities:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-              example: "[\"Entity label\",\"Wikidata URL\"]"
-        relations:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-              example: "[\"Relation label\",\"Wikidata URL\"]"
-        hierarchy:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-              example: "[\"Subclass label\",\"Parentclass label\"]"
+
   securitySchemes:
     jwt:
       type: http

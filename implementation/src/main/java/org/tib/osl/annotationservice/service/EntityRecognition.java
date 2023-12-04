@@ -10,7 +10,6 @@ import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +31,9 @@ import org.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.tib.osl.annotationservice.service.AnnotationService.SearchMode;
+import org.tib.osl.annotationservice.service.api.dto.FullDictionaryValue;
+
 
 public class EntityRecognition {
     private static Logger log = LoggerFactory.getLogger(EntityRecognition.class);
@@ -670,60 +670,35 @@ public class EntityRecognition {
         return finalResult;
     }
 
-    public static JSONObject getIconclassDict() throws Exception{
+    public static Map<String,FullDictionaryValue> getIconclassDict() throws Exception{
         
        
-        JSONObject result = new JSONObject();
+        Map<String,FullDictionaryValue> result = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/dict/iconclass/kw_en_keys.txt"))) {
             String line;
+            int i = 0;
             while ((line = br.readLine()) != null) {
+                FullDictionaryValue actResultEntry = new FullDictionaryValue();
                 String[] values = line.split("[|]");
-                System.out.println(values.toString());
-                String entity_id = values[1] + "("+values[0]+")";
-                JSONArray labels = new JSONArray();
-                labels.put(values[1]);
-                result.put(entity_id, labels );
+                //System.out.println(values.toString());
+                String entity_id = values[0];
+                List<String> labels = new ArrayList<>();
+                labels.add(values[1]);
+                
+                actResultEntry.setKbId(values[0]);
+                actResultEntry.setLabel(values[1]);
+                actResultEntry.setPatterns(labels);
+                actResultEntry.setKbUrl("http://iconclass.org/"+values[0]);
+                result.put(entity_id, actResultEntry );
+                i++;
+                if( i > 10){
+                    break;
+                }
             }
         }
-        //String json = "{'service': ['rude']}";
-        //JSONObject result = new JSONObject(json);
         return result;
     }
 
-    public static JSONArray getVecnerResults(String text, JSONObject dict, Double threshold) throws Exception {
-
-        JSONArray results = new JSONArray();
-        String url = "http://localhost:5000/entitylinking";
-
-        
-        String resultStr = "";
-        
-        HttpPost post = new HttpPost(new URI(url));
-        post.addHeader("content-type", "application/json; charset=UTF-8");
-
-        // escape spccial chars in request body
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("text", text);
-        jsonObject.put("dict", dict);
-        jsonObject.put("threshold", threshold);
-        String payload = jsonObject.toString();
-
-        log.debug(payload);
-        // send a JSON data
-        post.setEntity(new StringEntity(payload, "UTF-8"));
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-            CloseableHttpResponse response = httpClient.execute(post)) {
-
-            resultStr = EntityUtils.toString(response.getEntity());
-            
-            log.debug( resultStr.toString() );
-            JSONObject resultJson = new JSONObject( resultStr );  
-            
-
-            results.put(resultJson);
-        }
-        
-        return results;
-    }
+    
    
 }

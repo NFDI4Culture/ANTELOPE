@@ -4,6 +4,7 @@ import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.compon
 // import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { HttpClient } from '@angular/common/http';
 
 import * as XLSX from 'xlsx';
 
@@ -42,6 +43,12 @@ type ts4tibOntology =
     paramValue: string;
     };
 
+type iartImageModel = 
+    {
+    name: string;
+    type: string;
+    };
+
 // data model for initialising the d3 tree graph
 type HierarchyTree = {
   id: string;
@@ -64,13 +71,18 @@ export class AnnotationServiceUIComponent implements OnInit{
   el_threshold = 0.6;
   ts4tibOntologies = [
     {id: "NONE", name:"loading ontologies...", collection:"-"}
-   
+  ]
+  iartImageModels = [
+    {name:"loading image models...", type:"-"}
   ]
 
   initArray:FormControl[] = [];
   initArrayCollections:FormControl[] = [];
   selectedSources = new FormArray(this.initArray);
   selectedTs4tibOntologies= [];// [{name: 'All'}];
+  selectedIartImageModels = "KaggleResnetClassifier";
+  imageUrl : string | null = "content/images/landscape.jpg";
+  selectedFile: File | null = null;
   msg = "";
   err = "";
   
@@ -103,12 +115,13 @@ export class AnnotationServiceUIComponent implements OnInit{
   
   public annotation: AnnotationResponse = {entities:[], relations:[], hierarchy:{} as unknown as HierarchyTree};
   public el_result: VecnerResponse = {json:'', html:''};
+  public iart_result : String = "";
   
   @ViewChild(GraphTidytreeComponent)
   private graph!: GraphTidytreeComponent;
   
   // init a custom loadingbar to show progress while waiting for the annotationService result and creating the d3 graph
-  constructor(private loadingBar: LoadingBarService, fb: FormBuilder   ) {
+  constructor(private loadingBar: LoadingBarService, fb: FormBuilder ,private http: HttpClient  ) {
     // init datasource checkboxes
     const initialSources = new FormArray(this.initArray)
       this.datasources.forEach((element) => {
@@ -128,6 +141,8 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   ngOnInit():any {
     this.getTs4tibOntologies();
+    this.getIartImageModels();
+    this.setDefaultFile();
   }
 
   startLoading():void {
@@ -137,6 +152,30 @@ export class AnnotationServiceUIComponent implements OnInit{
   stopLoading():void
   {
     this.loadingBar.useRef().complete();
+  }
+
+  setDefaultFile() {
+    console.log( 'test' )
+    // Create a default file object
+    const defaultImageBytes = this.convertDataURIToBinary('content/images/landscape.jpg');
+    const defaultFile = new File([defaultImageBytes], 'content/images/landscape.jpg', { type: 'image/jpg' });
+
+    // Assign the default file to selectedFile
+    console.log('default')
+    console.log(defaultFile)
+    this.selectedFile = defaultFile;
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    this.selectedFile = file;
+
+    // Display a preview of the selected image
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imageUrl = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   onCheckboxChange(event: any): void {  
@@ -241,6 +280,29 @@ export class AnnotationServiceUIComponent implements OnInit{
     this.ts4tibOntologies = result;
   } 
 
+  async getIartImageModels(): Promise<void> {
+   const url = 'api/annotation/parameterOptions/imagemodels';
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    });
+    if (!response.ok) {
+     //add warning message
+     
+    } 
+    //console.log(response);
+    // get response and save
+    const responsejson = await response.json();
+    //console.log(responsejson);
+    
+    this.iartImageModels = responsejson.models;
+    console.log("valid iart models:");
+    console.log(this.iartImageModels);
+  }
+
   async terminologySearch(): Promise<void> {
     return this.callAnnotationService("terminology");
   }
@@ -253,6 +315,43 @@ export class AnnotationServiceUIComponent implements OnInit{
     this.callVecnerServiceViaBackend();
     //return this.callVecnerServiceDirect();
   }
+
+  async imageEL(): Promise<void> {
+    this.loader.start();
+    console.log( this.selectedFile);
+    const url = 'api/annotation/entitylinking/image?model='+this.selectedIartImageModels;
+    
+    /*const response = await fetch(url, {
+      method: "GET",
+    });
+    if (!response.ok) {
+    } 
+    console.log("image el:")
+    console.log(response);
+    this.iart_result = await response.json();*/
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('image', this.selectedFile);
+
+      const requestOptions: RequestInit = {
+        method: "POST",
+        body: formData
+      };
+    
+      await fetch(url, requestOptions)
+        .then(response => response.json())
+        .then(result => this.iart_result = result)
+        .catch(error => this.iart_result = "error")
+    }
+    
+    // finish loading bar
+    this.loader.complete();
+
+    this.msg =  "";
+    
+    this.showResultContainer = true;
+  }
+
 
   async callVecnerServiceViaBackend():Promise<void>{
     this.err = "";
@@ -270,15 +369,20 @@ export class AnnotationServiceUIComponent implements OnInit{
       // force utf 8 encoding of text
       
       // url of the annotationService api (restful service with json payload)
-      let url = 'api/annotation/entities?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
+      let url = 'api/annotation/entitylinking/text?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
         
       let response;
      
       let user_dict = {}
+      var dictType = "FullDictionary";
+      var simpledict;
       if(this.el_user_dict.value) {
         user_dict = JSON.parse(this.el_user_dict.value as string);
+        dictType = "SimpleDictionary";
+        simpledict = user_dict;
       }
-      const body = JSON.stringify({text:this.textToAnnotate.value, dict:user_dict, threshold:this.el_threshold} );
+      
+      const body = JSON.stringify({text:this.textToAnnotate.value, simpleDictionary:simpledict, dictionaryType: dictType, threshold:this.el_threshold} );
 
       response = await fetch(url, {
         method: "POST",
@@ -406,7 +510,7 @@ export class AnnotationServiceUIComponent implements OnInit{
       this.selectedSources.controls.forEach((element:FormControl) => {
         // check, if this datasource is valid for the endpoint, if valid and checked, add it as a url parameter
         if(
-          ( endpoint === "entities" && this.datasources.find((i:any) => i.value === element.value).shownER === true) ||
+          ( endpoint === "entitylinking" && this.datasources.find((i:any) => i.value === element.value).shownER === true) ||
           ( endpoint === "terminology" && this.datasources.find((i:any) => i.value === element.value).shownTS === true)) {
             url += this.getStringValue(element.value)+"=true&";  
         }
@@ -551,5 +655,15 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   }
 
-  
+  // Helper function to convert Data URI to binary data
+  convertDataURIToBinary(dataURI: string): Uint8Array {
+    const base64Index = dataURI.indexOf(';base64,') + ';base64,'.length;
+    const base64 = dataURI.substring(base64Index);
+    const raw = atob(base64);
+    const binaryString = new Array(raw.length);
+    for (let i = 0; i < raw.length; i++) {
+      binaryString[i] = raw.charCodeAt(i);
+    }
+    return new Uint8Array(binaryString);
+  }
 }

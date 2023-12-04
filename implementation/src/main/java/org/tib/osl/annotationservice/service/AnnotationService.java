@@ -13,6 +13,7 @@ import java.util.Locale;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.context.Context;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tib.osl.annotationservice.service.api.dto.EntityLinkingRequest;
+import org.tib.osl.annotationservice.service.api.dto.TextEntityLinkingRequest;
+import org.tib.osl.annotationservice.service.api.dto.TextEntityLinkingRequest.DictionaryTypeEnum;
 import org.tib.osl.annotationservice.web.api.AnnotationApiDelegate;
+
+import iart.client.*;
+
+import com.google.gson.Gson;  
+import org.apache.commons.io.IOUtils;
+import java.util.Base64;
 
 
 @Service
@@ -93,7 +101,7 @@ public class AnnotationService implements AnnotationApiDelegate {
     }
 
     @Override
-    public ResponseEntity<String> getEntities(String requestBody, 
+    public ResponseEntity<String> getTextEntities(TextEntityLinkingRequest request, 
     Boolean wikidata,
     Boolean wikidataDbpedia,
     Boolean iconclass,
@@ -103,12 +111,68 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean allowDuplicates
     ) {
 
-        //return search(requestBody, SearchMode.ENITTY_RECOGNITION, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, false, allowDuplicates);
         try {
-            return this.vecner_call(new JSONObject(requestBody), null, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, allowDuplicates, false);
- 
+        
+            if( request.getListOfWords() == null && request.getSimpleDictionary() == null && request.getFullDictionary() == null) {
+                request.setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
+                request.setFullDictionary( EntityRecognition.getIconclassDict());
+            }
+            //System.out.println(request.toString());
+            JSONObject el_results = VecnerClient.callEntityLinking(request);
+            
+            return new ResponseEntity<String>( el_results.toString(), HttpStatus.OK );
+
         } catch ( Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> getImageEntities(String model, MultipartFile image) {
+        if( model == null) {
+            model = "KaggleResnetClassifier";
+        }
+        try {
+            JSONArray resultArr = new JSONArray();
+            System.out.println(image);
+            byte[] bytes = IOUtils.toByteArray(image.getInputStream());
+            String base64imageString = Base64.getEncoder().encodeToString(bytes);
+            List<iart.client.PluginResult> response = iArtClient.analyze(model, base64imageString);
+            
+            
+            String responseString = new Gson().toJson(response);
+            return new ResponseEntity<String>(responseString, HttpStatus.OK);
+
+        } catch ( Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> getParameterImageModels() {
+        try {
+            JSONArray resultArr = new JSONArray();
+            
+            List<PluginInfo> response = iArtClient.getPluginList();
+            System.out.println(response);
+            for (PluginInfo pluginInfo : response) {
+                JSONObject o = new JSONObject();
+                o.put("name", pluginInfo.getName());
+                o.put("type", pluginInfo.getType()); 
+                resultArr.put(o);
+            }
+            JSONObject resultObj = new JSONObject();
+            resultObj.put("models", resultArr);
+            String responseString = resultObj.toString(0);
+            //String responseString = new Gson().toJson(response);
+
+            //log.info(responseString);
+            
+            return new ResponseEntity<String>(responseString, HttpStatus.OK);
+            
+        } catch ( Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -129,7 +193,7 @@ public class AnnotationService implements AnnotationApiDelegate {
             JSONObject result = new JSONObject();
             result.put("collections", resultArr);
             String responseString = result.toString(0);
-            log.info(responseString);
+            //log.info(responseString);
             return new ResponseEntity<String>(responseString, HttpStatus.OK);
             
         } catch ( Exception e) {
@@ -395,29 +459,9 @@ public class AnnotationService implements AnnotationApiDelegate {
         return new ResponseEntity<String>( finalResult.toString(), HttpStatus.OK );
     }
 
+ 
 
-public ResponseEntity<String> vecner_call(
-    JSONObject requestBody, 
-    SearchMode searchMode,
-    Boolean wikidata,
-    Boolean wikidataDbpedia,
-    Boolean iconclass,
-    Boolean ts4tib, 
-    String ts4tibOntology,
-    Boolean lobidGnd,
-    boolean allowDuplicates
-    ) throws Exception {
-        //JSONObject finalResult = null;
-        JSONObject dict = requestBody.getJSONObject("dict");
-        if( dict.isEmpty()) {
-            dict = EntityRecognition.getIconclassDict();
-        }
-        String text = requestBody.getString("text");
-        Double threshold = requestBody.getDouble("threshold");
-        JSONArray result = EntityRecognition.getVecnerResults(text, dict, threshold);
 
-        return new ResponseEntity<String>( result.get(0).toString(), HttpStatus.OK );
-    }
 
 
 }

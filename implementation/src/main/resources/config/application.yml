@@ -177,12 +177,17 @@ spring:
   output:
     ansi:
       console-available: true
+  servlet:
+    multipart:
+      max-file-size: 10MB # Set the maximum file size for each file
+      max-request-size: 10MB # Set the maximum request size (sum of all files)
 
 server:
   servlet:
     session:
       cookie:
         http-only: true
+
 
 springdoc:
   show-actuator: true
@@ -235,3 +240,5 @@ jhipster:
 # ===================================================================
 
 # application:
+
+   

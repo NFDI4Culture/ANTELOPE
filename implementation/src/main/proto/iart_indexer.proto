@@ -1,0 +1,370 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "iart.client";
+
+// python -m grpc_tools.protoc -I../web --python_out=. --grpc_python_out=.
+// ../web/tunnel.proto python -m grpc_tools.protoc -I../backend --python_out=.
+// --grpc_python_out=. ../backend/tunnel.proto create json stringds
+
+package iart.indexer;
+
+service Indexer {
+  rpc list_plugins(ListPluginsRequest) returns (ListPluginsReply) {}
+  rpc status(StatusRequest) returns (StatusReply) {}
+  rpc build_suggester(SuggesterRequest) returns (SuggesterReply) {}
+
+  rpc search(SearchRequest) returns (SearchReply) {}
+  rpc list_search_result(ListSearchResultRequest)
+      returns (ListSearchResultReply) {}
+
+  rpc aggregate(AggregateRequest) returns (AggregateReply) {}
+
+  rpc suggest(SuggestRequest) returns (SuggestReply) {}
+
+  rpc analyze(AnalyzeRequest) returns (AnalyzeReply) {}
+
+  rpc build_indexer(BuildIndexerRequest) returns (BuildIndexerReply) {}
+  rpc build_feature_cache(BuildFeatureCacheRequest)
+      returns (BuildFeatureCacheReply) {}
+
+  rpc indexing(stream IndexingRequest) returns (stream IndexingReply) {}
+
+  rpc dump(DumpRequest) returns (stream DumpReply) {}
+  rpc load(stream LoadRequest) returns (stream LoadReply) {}
+
+  // entry services
+  rpc get(GetRequest) returns (GetReply) {}
+  rpc delete (DeleteRequest) returns (DeleteReply) {}
+  // collection services
+  rpc collection_delete(CollectionDeleteRequest)
+      returns (CollectionDeleteReply) {}
+  rpc collection_list(CollectionListRequest) returns (CollectionListReply) {}
+}
+
+message Collection {
+  string id = 1;
+  string name = 2;
+  bool is_public = 3;
+}
+
+message PluginRun {
+  string name = 1;
+  float weight = 2;
+}
+
+message RoI {
+  float x = 1;
+  float y = 2;
+  float width = 3;
+  float height = 4;
+}
+
+message ValueField {
+  string key = 1;
+
+  oneof value {
+    string string_val = 2;
+    int32 int_val = 3;
+    float float_val = 4;
+  }
+}
+
+message Image {
+  string id = 1;
+  oneof image {
+    string path = 2;
+    bytes encoded = 3;
+  }
+  RoI roi = 4;
+  repeated ValueField meta = 5;
+  repeated ValueField origin = 6;
+
+  Collection collection = 7;
+}
+
+message PluginConfig {
+  string name = 1;
+  string default = 2;
+  string type = 3;
+  string state = 4;
+}
+
+message Concept {
+  string concept = 1;
+  string type = 2;
+  float prob = 3;
+}
+
+message ClassifierResult {
+  string plugin = 1;
+  repeated Concept concepts = 2;
+}
+
+// TODO maybe move this to feature list
+message FeatureResult {
+  string plugin = 1;
+  string type = 2;
+  string binary = 3;
+  repeated float feature = 4;
+}
+
+message PluginResult {
+  string plugin = 1;
+  string type = 2;
+  string version = 3;
+  oneof result {
+    ClassifierResult classifier = 4;
+    FeatureResult feature = 5;
+  }
+}
+
+message ImageResult {
+  Image image = 1;
+  repeated PluginResult results = 2;
+}
+
+message IndexingResult { repeated ImageResult results = 1; }
+
+message PluginInfo {
+  string name = 1;
+  string type = 2;
+  repeated PluginConfig settings = 3;
+}
+
+message ListPluginsRequest {}
+message ListPluginsReply { repeated PluginInfo plugins = 1; }
+
+message StatusRequest { string id = 1; }
+message StatusReply {
+  string status = 1;
+  oneof result { IndexingResult indexing = 2; }
+  // Tensor video = 3;
+}
+
+message SuggesterRequest { repeated string field_names = 1; }
+message SuggesterReply { string id = 1; }
+
+// Search Request
+message FeatureSearchTerm {
+  repeated PluginRun plugins = 1;
+  Image image = 2;
+
+  enum Flag {
+    POSITIVE = 0;
+    NEGATIVE = 1;
+  }
+  Flag flag = 3;
+}
+
+message TextSearchTerm {
+  string query = 1;
+  string field = 2;
+
+  enum Flag {
+    MUST = 0;
+    SHOULD = 1;
+    NOT = 2;
+  }
+
+  Flag flag = 3;
+}
+
+message ImageTextSearchTerm {
+  repeated PluginRun plugins = 1;
+  string query = 2;
+
+  enum Flag {
+    POSITIVE = 0;
+    NEGATIVE = 1;
+  }
+  Flag flag = 3;
+}
+
+message NumberSearchTerm {
+
+  string field = 1;
+
+  oneof query {
+    string string_query = 2;
+    int32 int_query = 3;
+    float float_query = 4;
+  }
+
+  enum Relation {
+    EQ = 0;
+    GREATER = 1;
+    GREATER_EQ = 2;
+    LESS_EQ = 3;
+    LESS = 4;
+  }
+
+  Relation relation = 5;
+
+  enum Flag {
+    MUST = 0;
+    SHOULD = 1;
+    NOT = 2;
+  }
+
+  Flag flag = 6;
+}
+
+message SearchTerm {
+  oneof term {
+    TextSearchTerm text = 1;
+    NumberSearchTerm number = 2;
+    ImageTextSearchTerm image_text = 3;
+    FeatureSearchTerm feature = 4;
+  }
+}
+
+message AggregateRequest {
+  repeated string fields = 1;
+  int32 size = 2;
+  bool use_query = 3;
+}
+
+message SearchRequest {
+  repeated SearchTerm terms = 1;
+
+  enum Sorting {
+    SORTING_DEFAULT = 0;
+    SORTING_CLASSIFIER = 1;
+    SORTING_FEATURE = 2;
+    SORTING_RANDOM = 3;
+    SORTING_RANDOM_FEATURE = 4;
+    SORTING_RANDOM_CLUSTER = 5;
+  }
+
+  enum Mapping {
+    MAPPING_DEFAULT = 0;
+    MAPPING_UMAP = 1;
+  }
+
+  enum Clustering {
+    CLUSTERING_DEFAULT = 0;
+    CLUSTERING_GM = 1;
+    CLUSTERING_KMEANS = 2;
+    CLUSTERING_AGGLOMERATIVE = 3;
+  }
+
+  Sorting sorting = 2;
+  Mapping mapping = 3;
+
+  AggregateRequest aggregate = 4;
+  string random_seed = 5;
+
+  enum Extra { EXTRA_FEATURES = 0; }
+
+  repeated Extra extras = 6;
+
+  repeated ValueField mapping_options = 7;
+
+  Clustering clustering = 8;
+  repeated ValueField clustering_options = 9;
+  repeated string collections = 10;
+  bool include_default_collection = 11;
+  repeated string ids = 12;
+}
+
+message SearchReply { string id = 1; }
+
+message SearchResultEntry {
+  string id = 1;
+  repeated ValueField meta = 2;
+  repeated ValueField origin = 3;
+  repeated ClassifierResult classifier = 4;
+  repeated FeatureResult feature = 5;
+  repeated float coordinates = 6;
+  int64 cluster = 7;
+  float distance = 8;
+  Collection collection = 9;
+  bool padded = 10;
+}
+
+message AggregateResult {
+  string field_name = 1;
+  repeated ValueField entries = 2;
+}
+
+message ListSearchResultRequest { string id = 1; }
+message ListSearchResultReply {
+  repeated SearchResultEntry entries = 1;
+  repeated AggregateResult aggregate = 2;
+}
+
+message SuggestGroup {
+  string group = 1;
+  repeated string suggestions = 2;
+}
+
+message SuggestRequest { string query = 1; }
+message SuggestReply { repeated SuggestGroup groups = 1; }
+
+message BuildIndexerRequest {
+  bool rebuild = 1;
+  repeated string collections = 2;
+}
+message BuildIndexerReply {}
+
+message BuildFeatureCacheRequest {}
+message BuildFeatureCacheReply {}
+
+message DumpRequest { string origin = 1; }
+message DumpReply { bytes entry = 1; }
+
+message LoadRequest { bytes entry = 1; }
+message LoadReply {
+  string status = 1;
+  string id = 2;
+}
+
+message IndexingRequest {
+  // PluginRun plugins = 1;
+  Image image = 1;
+  // bool update_database = 3;
+}
+
+message IndexingReply {
+  string status = 1;
+  string id = 2;
+}
+
+// message AggregateRequest {
+//   string type = 1;
+//   string part = 2;
+//   string field_name = 3;
+//   int32 size = 4;
+// }
+
+message AggregateReply { repeated ValueField field = 1; }
+
+message GetRequest { string id = 1; }
+message GetReply {
+  string id = 1;
+  repeated ValueField meta = 2;
+  repeated ValueField origin = 3;
+  repeated ClassifierResult classifier = 4;
+  repeated FeatureResult feature = 5;
+  Collection collection = 7;
+}
+
+message DeleteRequest { string id = 1; }
+message DeleteReply {}
+
+message CollectionDeleteRequest { string id = 1; }
+message CollectionDeleteReply {
+  repeated string collections = 1;
+  repeated string ids = 2;
+}
+
+message CollectionListRequest {}
+message CollectionListReply { repeated Collection collections = 1; }
+
+message AnalyzeRequest {
+  bytes image = 1;
+  repeated string plugin_names = 2;
+}
+message AnalyzeReply {
+  repeated PluginResult results = 1;
+}

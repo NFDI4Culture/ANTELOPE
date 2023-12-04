@@ -82,8 +82,8 @@
             
         </div>
     </mat-tab>
-    <!-- ********************** Entity Recognition ********************* -->
-    <mat-tab label="Entity linking">
+    <!-- ********************** Text EL ********************* -->
+    <mat-tab label="Text entities">
         <div style="margin: 5px;">
             <br>
             <label for="textToAnnotate">Type the text you want to run entity linking on (single words or whole sentences): </label>
@@ -151,6 +151,44 @@
             
         </div>
     </mat-tab>
+    <!-- ********************** Image EL ********************* -->
+    <mat-tab label="Image entities">
+        <div style="margin: 5px;">
+            <br>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*"><br>
+            <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image">
+            <br>
+            <span class="subheading" >Select image processing model:</span>
+            <div class="btn tib-btn-info" 
+                matTooltip="Please select the model you want to compute"
+                matTooltipPosition="right"></div>
+            <ng-select class="imagemodel-select"
+                [items]="iartImageModels"
+                bindLabel="name"
+                bindValue="name"
+                groupBy="type"
+                orderBy="type"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [selectableGroup]="false"
+                [selectableGroupAsModel]="false"
+                [(ngModel)]="selectedIartImageModels"
+                [virtualScroll]="true"
+                appendTo="body">
+                <ng-template ng-optgroup-tmp let-item="item">
+                    {{item.type || ' '}}
+                </ng-template>
+            </ng-select>
+        
+            <div style="margin-top:15px">
+                <button type="submit" class="btn btn-tib" (click)="imageEL()">Run service</button>
+                <button type="button" class="btn btn-tib-secondary" (click)="clearAll()">Reset</button>
+            </div>
+            
+            
+        </div>
+    </mat-tab>
+
 
      <!-- ********************** Integration ********************* -->
     <mat-tab label="Integration">
@@ -195,6 +233,8 @@
 <!-- ********************** Results ********************* -->    
 <div [hidden]="!showResultContainer" style="position:relative">
     <h4>Results</h4>
+    <pre><p style="font-size:11px;">{{ iart_result | json}}</p></pre>
+    
     <mat-tab-group style='min-height:1000px'>
         <mat-tab label="Graph" style="font-size:10px !important;">
             Use the mousewheel to zoom in/out. Use drag and drop to move the graph.
