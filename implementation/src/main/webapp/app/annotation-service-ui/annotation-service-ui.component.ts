@@ -28,7 +28,7 @@ type AnnotationResponse = {
 // data model of the RESTful Vecner entity linking API result
 type VecnerResponse = {
   json: string;
-  html: string;
+  html: String;
 };
 
 // data model of the RESTful annotationService API result
@@ -66,8 +66,17 @@ type HierarchyTree = {
 
 export class AnnotationServiceUIComponent implements OnInit{
   loader = this.loadingBar.useRef();
-  textToAnnotate = new FormControl('');
-  el_user_dict = new FormControl('{"food": ["vegetable"]}');
+  textToAnnotate = new FormControl('Vincent van Gogh was a dutch post-impressionist painter');
+  el_user_dict_examples = [
+    '"michelangelo", "van gogh"',
+    '{"artist": ["michelangelo","van gogh"]}',
+    '{"entity1": {"label":"artist", "patterns":["michelangelo", "van gogh"], "kb_id":"entity1", "kb_url":"entity1_url"}}'
+  ];
+  el_user_dict_list = new FormControl(this.el_user_dict_examples[0]);
+  el_user_dict_simple = new FormControl(this.el_user_dict_examples[1]);
+  el_user_dict_full = new FormControl(this.el_user_dict_examples[2]);
+  selectedUserDictTabIndex = 0;
+  selectedDictSourceTabIndex = 0;
   el_threshold = 0.6;
   ts4tibOntologies = [
     {id: "NONE", name:"loading ontologies...", collection:"-"}
@@ -281,18 +290,20 @@ export class AnnotationServiceUIComponent implements OnInit{
   } 
 
   async getIartImageModels(): Promise<void> {
-   const url = 'api/annotation/parameterOptions/imagemodels';
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
-    if (!response.ok) {
-     //add warning message
-     
-    } 
+    
+      const url = 'api/annotation/parameterOptions/imagemodels';
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+      if (!response.ok) {
+       //add warning message
+       console.error("unable to fetch image models from iart api")
+       return;
+      } 
     //console.log(response);
     // get response and save
     const responsejson = await response.json();
@@ -321,14 +332,6 @@ export class AnnotationServiceUIComponent implements OnInit{
     console.log( this.selectedFile);
     const url = 'api/annotation/entitylinking/image?model='+this.selectedIartImageModels;
     
-    /*const response = await fetch(url, {
-      method: "GET",
-    });
-    if (!response.ok) {
-    } 
-    console.log("image el:")
-    console.log(response);
-    this.iart_result = await response.json();*/
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('image', this.selectedFile);
@@ -353,6 +356,21 @@ export class AnnotationServiceUIComponent implements OnInit{
   }
 
 
+  public dictSourceTabChange(index:number|null)
+  {
+    if( index != null){
+      this.selectedDictSourceTabIndex = index;
+    }
+  } 
+
+  public userDictTabChange(index:number|null)
+  {
+    if( index != null){
+      this.selectedUserDictTabIndex = index;
+    }
+  } 
+
+
   async callVecnerServiceViaBackend():Promise<void>{
     this.err = "";
     this.msg = "";
@@ -366,7 +384,6 @@ export class AnnotationServiceUIComponent implements OnInit{
     // start the loading bar
     this.loader.start();
     try {
-      // force utf 8 encoding of text
       
       // url of the annotationService api (restful service with json payload)
       let url = 'api/annotation/entitylinking/text?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
@@ -374,16 +391,29 @@ export class AnnotationServiceUIComponent implements OnInit{
       let response;
      
       let user_dict = {}
-      var dictType = "FullDictionary";
-      var simpledict;
-      if(this.el_user_dict.value) {
-        user_dict = JSON.parse(this.el_user_dict.value as string);
-        dictType = "SimpleDictionary";
-        simpledict = user_dict;
-      }
+      var request_body;
       
-      const body = JSON.stringify({text:this.textToAnnotate.value, simpleDictionary:simpledict, dictionaryType: dictType, threshold:this.el_threshold} );
-
+      if( this.selectedDictSourceTabIndex == 1) {
+        if(this.selectedUserDictTabIndex == 2 && this.el_user_dict_full.value) {
+          user_dict = JSON.parse(this.el_user_dict_full.value as string);
+          request_body = JSON.stringify({text:this.textToAnnotate.value, fullDictionary:user_dict, dictionaryType: "FullDictionary", threshold:this.el_threshold} );
+          console.log("full");
+        } else if(this.selectedUserDictTabIndex == 1 && this.el_user_dict_simple.value) {
+          user_dict = JSON.parse(this.el_user_dict_simple.value as string);
+          request_body = JSON.stringify({text:this.textToAnnotate.value, simpleDictionary:user_dict, dictionaryType: "SimpleDictionary", threshold:this.el_threshold} );
+          console.log("simple");
+        } else if(this.selectedUserDictTabIndex == 0 && this.el_user_dict_list.value) {
+          user_dict = JSON.parse("["+this.el_user_dict_list.value as string+"]");
+          request_body = JSON.stringify({text:this.textToAnnotate.value, listOfWords:user_dict, dictionaryType: "ListOfWords", threshold:this.el_threshold} );
+          console.log("list");
+        } 
+      } else {
+        console.log("predefined dict");
+        // TODO: add dict        
+        request_body = JSON.stringify({text:this.textToAnnotate.value, threshold:this.el_threshold} );
+      }
+      const body = request_body;
+      console.log(body);
       response = await fetch(url, {
         method: "POST",
         body,
@@ -404,8 +434,10 @@ export class AnnotationServiceUIComponent implements OnInit{
       // this.msg = JSON.stringify(result, null, 4);
       //this.annotation = '';
       this.el_result = result as VecnerResponse;
+      // set link target to new tab for html result
+      this.el_result.html = this.el_result.html.replace(/href/g, 'target="_blank" href')
       this.annotation = result;
-      // console.log(result);
+      console.log(result);
       
       // finish loading bar
       this.loader.complete();
@@ -657,12 +689,13 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   // Helper function to convert Data URI to binary data
   convertDataURIToBinary(dataURI: string): Uint8Array {
-    const base64Index = dataURI.indexOf(';base64,') + ';base64,'.length;
-    const base64 = dataURI.substring(base64Index);
-    const raw = atob(base64);
-    const binaryString = new Array(raw.length);
-    for (let i = 0; i < raw.length; i++) {
-      binaryString[i] = raw.charCodeAt(i);
+    //dataURI = btoa(dataURI);
+    //const base64Index = dataURI.indexOf(';base64,') + ';base64,'.length;
+    //const base64 = dataURI.substring(base64Index);
+    //const raw = atob(base64);
+    const binaryString = new Array(dataURI.length);
+    for (let i = 0; i < dataURI.length; i++) {
+      binaryString[i] = dataURI.charCodeAt(i);
     }
     return new Uint8Array(binaryString);
   }

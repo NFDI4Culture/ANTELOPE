@@ -104,6 +104,44 @@
                 <scope>import</scope>
             </dependency>
             <!-- jhipster-needle-maven-add-dependency-management -->
+
+        <!-- to solve dependency convergence errors for iArt grpc client code generation start-->
+
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>checker-qual</artifactId>
+                <version>3.14.0</version> 
+            </dependency>
+            <!-- Resolve protobuf-java versions -->
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>3.24.0</version> <!-- or another version that satisfies both dependencies -->
+            </dependency>
+
+            <!-- Resolve error_prone_annotations versions -->
+            <dependency>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_annotations</artifactId>
+                <version>2.20.0</version> <!-- or another version that satisfies all dependencies -->
+            </dependency>
+
+            <!-- Resolve servo-core versions -->
+            <dependency>
+                <groupId>com.netflix.servo</groupId>
+                <artifactId>servo-core</artifactId>
+                <version>0.12.21</version> <!-- or another version that satisfies all dependencies -->
+            </dependency>
+
+            <!-- Resolve apiguardian-api versions -->
+            <dependency>
+                <groupId>org.apiguardian</groupId>
+                <artifactId>apiguardian-api</artifactId>
+                <version>1.1.2</version> <!-- or another version that satisfies all dependencies -->
+            </dependency>
+
+        <!-- to solve dependency convergence errors for iArt grpc client code generation start-->
+
         </dependencies>
     </dependencyManagement>
 
@@ -148,6 +186,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.15.0</version>
+</dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
@@ -322,15 +366,81 @@
          <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20220320</version>
+            <version>20231013</version>
+          <!--  <version>20220320</version> -->
         </dependency>
 
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>   
+
+        <!-- for iArt grpc client generation start-->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty-shaded</artifactId>
+            <version>1.59.0</version>
+            <scope>runtime</scope>
+            </dependency>
+            <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>1.59.0</version>
+            </dependency>
+            <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>1.59.0</version>
+            </dependency>
+            <!-- necessary for Java 9+ -->
+            <dependency> 
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>annotations-api</artifactId>
+            <version>6.0.53</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+  <!-- for iArt grpc client generation end-->
 
     </dependencies>
 
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
+
+ <!-- for iArt grpc client generation start-->
+ <extensions>
+    <extension>
+      <groupId>kr.motd.maven</groupId>
+      <artifactId>os-maven-plugin</artifactId>
+      <version>1.7.1</version>
+    </extension>
+  </extensions> 
+ <!-- iArt grpc client generation end-->
+
         <plugins>
+          
+ <!-- for iArt grpc client generation start-->
+            <plugin>
+            <groupId>org.xolstice.maven.plugins</groupId>
+            <artifactId>protobuf-maven-plugin</artifactId>
+            <version>0.6.1</version>
+            <configuration>
+                <protocArtifact>com.google.protobuf:protoc:3.24.0:exe:${os.detected.classifier}</protocArtifact>
+                <pluginId>grpc-java</pluginId>
+                <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.59.0:exe:${os.detected.classifier}</pluginArtifact>
+            </configuration>
+            <executions>
+                <execution>
+                <goals>
+                    <goal>compile</goal>
+                    <goal>compile-custom</goal>
+                </goals>
+                </execution>
+            </executions>
+            </plugin>
+        <!-- iArt grpc client generation end-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -398,6 +508,28 @@
                 -->
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <!-- a hint for IDE's to add the java sources to the classpath -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                <execution>
+                    <id>01-add-generated-sources</id>
+                    <phase>generate-sources</phase>
+                    <goals>
+                    <goal>add-source</goal>
+                    </goals>
+                    <configuration>
+                    <sources>
+                        <source>${project.build.directory}/generated-sources/openapi/src/main/java/</source>
+                        <source>${project.build.directory}/generated-sources/protobuf/java/iart/client/</source>
+                        <source>${project.build.directory}/generated-sources/protobuf/grpc-java/iart/client/</source>
+                    </sources>
+                    </configuration>
+                </execution>
+                </executions>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
         </plugins>
@@ -1071,6 +1203,7 @@
                                 <dependency>
                                     <groupId>com.h2database</groupId>
                                     <artifactId>h2</artifactId>
+                                    <version>latest-version</version>
                                 </dependency>
                             </dependencies>
                         </plugin>

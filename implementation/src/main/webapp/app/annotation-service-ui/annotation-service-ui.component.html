@@ -92,12 +92,46 @@
                 matTooltipPosition="right"
                 matTooltipSize="12px"></div>
             <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"></textarea>
-            <label for="user_dict">Insert custom dictionary: </label>
+            <span class="subheading">Select dictionary: </span>
             <div class="btn tib-btn-info" 
-                matTooltip="Use the json format, to define a list of synonyms for every entity id: {'entity_id':['entity1_label1', 'entity1_label2']}"
+                matTooltip="Choose an existing dictionary from the 'predefined' section or define your own dictionary in the 'custom' section"
                 matTooltipPosition="right"
                 matTooltipSize="12px"></div>
-            <textarea id="el_user_dict" class="form-control" [formControl]="el_user_dict" style="margin:2px"></textarea>
+                <mat-tab-group #dictsourceTab dynamicHeight preserveContent (selectedTabChange)="dictSourceTabChange(dictsourceTab.selectedIndex)">
+                    <mat-tab label="Predefined">
+                        <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
+                            <div style="font-size: 14px;"
+                                *ngFor="let datasource of datasources; let i=index"
+                                [ngClass]="{'greyout': datasource.disabled == true}" >
+                                <div *ngIf="datasource.shownER == true">
+                                    <input 
+                                        type="checkbox" 
+                                        formArrayName="selectedSources" 
+                                        [value]="datasource.value" 
+                                        [checked]="datasource.checked == true" 
+                                        [disabled]="datasource.disabled == true"
+                                        (change)="onCheckboxChange($event)" />
+                                    {{datasource.name}}
+                                </div>
+                            </div>
+                        </form>
+                    </mat-tab>
+                    <mat-tab label="Custom">
+                        <mat-tab-group #userdictTab dynamicHeight preserveContent (selectedTabChange)="userDictTabChange(userdictTab.selectedIndex)">
+                            <mat-tab label="List of entities">
+                                <textarea id="el_user_dict_list" class="form-control" [formControl]="el_user_dict_list" style="margin:2px" hint="test"></textarea>
+                            </mat-tab>
+                            <mat-tab label="Simple dictionary">
+                                <textarea id="el_user_dict_simple" class="form-control" [formControl]="el_user_dict_simple" style="margin:2px"></textarea>
+                            </mat-tab>
+                            <mat-tab label="Extended dictionary">
+                                <textarea id="el_user_dict_full" class="form-control" [formControl]="el_user_dict_full" style="margin:2px"></textarea>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </mat-tab>
+                </mat-tab-group>
+            
+            <br><span class="subheading" >Settings:</span><br/>   
             Similarity radius: wide<mat-slider min="0.01" max="0.99" step="-0.1" value="0.6" discrete [displayWith]="el_similarity_label" [(ngModel)]="el_threshold">
                 <input matSliderThumb>
               </mat-slider>narrow
@@ -105,33 +139,6 @@
                 matTooltip="As lower the threshold is, as more words are linked but as lower the semantical equality can be"
                 matTooltipPosition="right"
                 matTooltipSize="12px"></div><br>
-            <span class="subheading" >Select terminology sources:</span>
-            <div class="btn tib-btn-info" 
-                matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
-                matTooltipPosition="right"></div>
-            
-            <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
-                <div style="font-size: 14px;"
-                    *ngFor="let datasource of datasources; let i=index"
-                    [ngClass]="{'greyout': datasource.disabled == true}" >
-                    
-                    
-                    <div *ngIf="datasource.shownER == true">
-                        <input 
-                            type="checkbox" 
-                            formArrayName="selectedSources" 
-                            [value]="datasource.value" 
-                            [checked]="datasource.checked == true" 
-                            [disabled]="datasource.disabled == true"
-                            (change)="onCheckboxChange($event)" />
-                        
-                        {{datasource.name}}
-                    </div>
-                </div>
-            
-            </form>
-           
-            <span class="subheading" >Settings:</span><br/>   
             <input 
             type="checkbox" 
             [(ngModel)]="allowDuplicates"

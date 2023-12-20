@@ -117,7 +117,7 @@ public class AnnotationService implements AnnotationApiDelegate {
                 request.setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
                 request.setFullDictionary( EntityRecognition.getIconclassDict());
             }
-            //System.out.println(request.toString());
+            System.out.println(request.toString());
             JSONObject el_results = VecnerClient.callEntityLinking(request);
             
             return new ResponseEntity<String>( el_results.toString(), HttpStatus.OK );
