@@ -133,45 +133,7 @@
                 <button type="button" class="btn-tib btn-tib--secondary" (click)="clearAll()">Reset</button>
             </div>
         </div>
-    </mat-tab>
-
-     <!-- ********************** Integration ********************* -->
-    <mat-tab label="Integration">
-        <br>
-        <div *ngIf="!showResultContainer">
-            <b>ANTELOPE</b> can be used in various ways. You may:<br>
-            <ul style="margin-top: 10px;">
-                <li>Use this website directly for your search</li>
-                <li><a href="#embedd">Embedd</a> the ANTELOPE search form in your website</li>
-                <li>Connect to our <a href="#api">RESTful API</a></li>
-            </ul>
-        </div>
-        <br>
-        <div id="embedd">
-            <h3>Embedding via iFrame</h3>
-            <div>Copy the code below and place it on your website or web-based software.
-                This will display the <b>ANTELOPE</b> frontend component within your site.
-                <br/><br/>
-                <pre>
-    <code>&lt;iframe 
-        src=&quot;http://localhost:9000/api/annotation/entities/selectcomponent&quot; 
-        height=&quot;600&quot; width=&quot;800&quot; name=&quot;antelope&quot; id=&quot;antelope-iframe&quot; sandbox=&quot;allow-scripts&quot;&gt;
-    &lt;/iframe&gt;</code>
-                </pre>
-                You may send search requests to the component from your own site. 
-                After your users select entities within the <b>ANTELOPE</b> component, the results are available in your site for further use.
-                For detailled documentation of embedding <b>ANTELOPE</b> see <a href="">here</a>.
-                 
-            </div>
-        </div>
-        <br><br>
-        <div id="api">
-            <h3>RESTful API</h3>
-            <p>You can use the full functionality of this website via our API. <br>
-                have a look at the <a href="/v3/api-docs/openapi" target="_blank">API docs</a>
-            </p>
-        </div>
-    </mat-tab>
+    </mat-tab>w
 </mat-tab-group>
 
 <p id="msg" class="error">{{msg}}</p>
@@ -230,3 +192,5 @@
     <br><br>
     <br><br>
 </div>
+
+<jhi-annotationservice-result-selectcomponent></jhi-annotationservice-result-selectcomponent>

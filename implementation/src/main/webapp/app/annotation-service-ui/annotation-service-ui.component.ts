@@ -316,7 +316,7 @@ export class AnnotationServiceUIComponent implements OnInit{
       } 
 
       // get response and save
-      const result = (await response.json()) as AnnotationResponse;
+      const result = (await response.json()) as AnnotationResponse; // TODO: Add type {class, instance}
       
       // display as string
       // this.msg = JSON.stringify(result, null, 4);

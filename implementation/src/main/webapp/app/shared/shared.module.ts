@@ -13,6 +13,7 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { FilterComponent } from './filter/filter.component';
+import { OverlayComponent } from 'app/overlay/overlay.component';
 import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotation-service-ui.component';
 import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
@@ -37,6 +38,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
+    OverlayComponent,
     AnnotationServiceUIComponent,
     AnnotationserviceResultSelectcomponentComponent,
     GraphTidytreeComponent
@@ -55,6 +57,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
+    OverlayComponent,
     AnnotationServiceUIComponent,
     AnnotationserviceResultSelectcomponentComponent,
     GraphTidytreeComponent,

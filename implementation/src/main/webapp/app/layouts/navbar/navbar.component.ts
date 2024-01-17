@@ -72,4 +72,8 @@ export class NavbarComponent implements OnInit {
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
+
+  toggleIntegrationOverlay(): void {
+    document.querySelector("jhi-overlay#integration")?.dispatchEvent(new CustomEvent("toggle"));
+  }
 }

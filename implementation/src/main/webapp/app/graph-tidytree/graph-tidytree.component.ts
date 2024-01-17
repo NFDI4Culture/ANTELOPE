@@ -18,7 +18,17 @@ type HierarchyTree = {
 })
 export class GraphTidytreeComponent {
 
+  private static lastSelected: {
+    circle: HTMLElement|undefined;
+    innerCircle: HTMLElement|undefined;
+    text: HTMLElement|undefined;
+  }
   // tree:SVGSVGElement|null = null;
+
+  public static markCopied() {
+    if(GraphTidytreeComponent.lastSelected.innerCircle)
+      GraphTidytreeComponent.lastSelected.innerCircle.style.fill = "white";
+  }
 
   clear(): void {
     const svg = d3.select("#tree");
@@ -29,6 +39,7 @@ export class GraphTidytreeComponent {
     let preparedData = {};
 
     preparedData = data;
+    
     const helpFunctions = {
       label(d: any): string {
         if (d.data.name !== undefined) {
@@ -67,13 +78,13 @@ export class GraphTidytreeComponent {
     linkTarget = "_blank", // the target attribute for links (if any)
     width = 640, // outer width, in pixels
     height = 1200, // outer height, in pixels
-    r = 4, // radius of nodes
+    r = 7, // radius of nodes
     padding = 1, // horizontal padding for first and last column
     fill = "black", // fill for nodes
     fillOpacity = null, // fill opacity for nodes
-    stroke = "#333", // stroke for links
-    strokeWidth = 1.5, // stroke width for links
-    strokeOpacity = 0.2, // stroke opacity for links
+    stroke = "#000", // stroke for links
+    strokeWidth = 0.75, // stroke width for links
+    strokeOpacity = 0.25, // stroke opacity for links
     strokeLinejoin = null, // stroke line join for links
     strokeLinecap = null, // stroke line cap for links
     halo = "#fff", // color of label halo 
@@ -95,7 +106,7 @@ export class GraphTidytreeComponent {
     const L: string[] | null = descendants.map((d: any) => label(d));
 
     // Compute the layout.
-    const dx = 15; // vertikaler abstand der nodes
+    const dx = 25; // vertikaler abstand der nodes
     const dy = width / (root.height + padding) + 75;
     tree<NodeData>().nodeSize([dx, dy])(root);
 
@@ -150,43 +161,77 @@ export class GraphTidytreeComponent {
     .data(root.descendants())
     .join("a")
     .attr("transform", (d: any) => `translate(${d.y as string},${d.x as string})`)
-    .attr("xlink:href", (d: any) => link(d.data, d))
-    .attr("target", linkTarget)
+    //.attr("xlink:href", (d: any) => link(d.data, d))
+    //.attr("target", linkTarget)
     .attr("data-id", 3);
-
-    // CIRCLE
-    node.append("circle")
-    .attr("fill", "#f9cd0e")
-    .attr("stroke", "black")
-    .attr("stroke-width", "1.25px")
-    .attr("r", r);
 
     //TITLE
     node.append("title")
     .text((d: any) => title(d.data, d));
 
-    // TEXT BACKGROUND
+    // BACKGROUND
     node.append("rect")
     .attr("rx", 5)
     .attr("ry", 5)
-    .attr("x", function (d: any) { return this.getBBox().x + 5; })
-    .attr("y", function (d: any, i: any) { return this.getBBox().y - 8 })
-    .attr("width", function (d: any, i: any) { return this.getBBox().width + (L[i].length * 6); })
-    .attr("height", function (d: any) { return 14; })
+    .attr("x", function (d: any) { return this.getBBox().x - 8; })
+    .attr("y", function (d: any, i: any) { return this.getBBox().y - 10 })
+    .attr("width", function (d: any, i: any) { return L[i].length * 7 + 20; })
+    .attr("height", function (d: any) { return 20; })
     .style("fill", "#FFFFFF");
+
+    // CIRCLE
+    node.append("circle")
+    .attr("fill", "#f9cd0e")
+    .attr("stroke", "#f9cd0e")
+    .attr("stroke-width", "1.25")
+    .attr("r", r);
+
+    // INNER CIRCLE
+    node.append("circle")
+    .attr("fill", "#f9cd0e")
+    .attr("r", r / 2);
 
     // TEXT
     node.append("text")
-    .attr("dy", "0.32em")
-    .attr("x", (d: any) => 6)
+    .attr("dy", "0.38em")
+    .attr("x", (d: any) => 15)
     .attr("text-anchor", (d: any) => "start")
     .attr("paint-order", "stroke")
-    .attr("fill", "none")
-    .attr("stroke", stroke)
-    .attr("stroke-width", "")
-    .attr("stroke-opacity", "0.8")
+    .attr("fill", stroke)
+    .attr("stroke", "#00000000")
+    .attr("stroke-width", "0.25")
+    .attr("stroke-opacity", "1.0")
     .text((d: any, i: any) => L[i])
 
+    // INTERACTION
+    node.on("click", (e: Event, d: any) => {
+      const node = (e.target as HTMLElement).parentNode;
+      const circle = node?.children[2] as HTMLElement;
+      const innerCircle = node?.children[3] as HTMLElement;
+      const text = node?.children[4] as HTMLElement;
+
+      if(GraphTidytreeComponent.lastSelected?.circle)
+        GraphTidytreeComponent.lastSelected.circle.style.stroke = "#f9cd0e";
+      if(GraphTidytreeComponent.lastSelected?.text)
+        GraphTidytreeComponent.lastSelected.text.style.stroke = "#00000000";
+      GraphTidytreeComponent.lastSelected = { circle, innerCircle, text };
+      circle.style.stroke = "black";
+      text.style.stroke = "black";
+
+      document.querySelector("jhi-annotationservice-result-selectcomponent")?.dispatchEvent(new CustomEvent("select-node", {
+        detail: {
+            name: d.data.name,
+            link: d.data.link,
+            id: d.data.id,
+            clickPos: {
+              x: d.x, y: d.y
+            },
+            description: d.data.link
+        },
+        bubbles: false
+      }));
+    });
+    
     const zoom = d3.zoom<SVGSVGElement, unknown>()
     .extent([[0, 0], [width, height]])
     //.translateExtent([[-0.5*height,-0.5*width],[0.5*height,0.5*height]])

@@ -1,0 +1,71 @@
+/* ==========================================================================
+Overlay
+========================================================================== */
+
+:host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    z-index: 200;
+    transition: all 400ms;
+    opacity: 0.0;
+    pointer-events: none;
+
+    &.active {
+      opacity: 1.0;
+      pointer-events: auto;
+
+      .overlay {
+        transform: translateY(0);
+      }
+    }
+  
+    &::before {
+      content: "";
+      position: fixed;
+      display: block;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      opacity: 0.2;
+      z-index: -1;
+    }
+  
+    .overlay {
+      position: relative;
+      margin: auto;
+      margin-top: 4rem;
+      margin-bottom: 4rem;
+      padding: 2rem;
+      max-width: 920px;
+      background-color: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 0 0.5rem -0.125rem rgba(0, 0, 0, 0.2);
+      transition: inherit;
+      transform: translateY(5rem);
+
+      p {
+        margin-bottom: 1em !important;
+        max-width: 50em;
+      }
+
+      .close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 2rem;
+        background-color: transparent;
+        color: var(--color-secondary);
+        border: none;
+
+        &:hover {
+          filter: brightness(0.8);
+        }
+      }
+    }
+}
