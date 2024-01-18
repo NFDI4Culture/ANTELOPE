@@ -8,13 +8,13 @@ import { doc } from 'prettier';
 })
 export class OverlayComponent {
 
-  private isOpen: boolean = false;
+  private isOpen = false;
 
   constructor(private elRef: ElementRef) {
     this.elRef.nativeElement.addEventListener("toggle", () => this.toggle());
   }
 
-  public toggle() {
+  public toggle(): void {
     this.isOpen = !this.isOpen;
 
     document.body.style.overflow = this.isOpen ? "hidden" : "auto";

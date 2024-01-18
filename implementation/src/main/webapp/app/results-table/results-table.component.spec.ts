@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GraphTidytreeComponent } from './graph-tidytree.component';
+import { ResultsTableComponent } from './results-table.component';
 
-describe('GraphTidytreeComponent', () => {
-  let component: GraphTidytreeComponent;
-  let fixture: ComponentFixture<GraphTidytreeComponent>;
+describe('ResultsTableComponent', () => {
+  let component: ResultsTableComponent;
+  let fixture: ComponentFixture<ResultsTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GraphTidytreeComponent ]
+      declarations: [ ResultsTableComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GraphTidytreeComponent);
+    fixture = TestBed.createComponent(ResultsTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

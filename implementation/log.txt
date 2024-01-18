@@ -301,7 +301,7 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO]    10:1   warning  Expected space or tab after '//' in comment  spaced-comment
 [INFO]   139:48  warning  'method' is defined but never used           @typescript-eslint/no-unused-vars
 [INFO] 
-[INFO] /home/kolja/git/annotationService/implementation/src/main/webapp/app/graph-tidytree/graph-tidytree.component.ts
+[INFO] /home/kolja/git/annotationService/implementation/src/main/webapp/app/results-graph-tidytree/results-graph-tidytree.component.ts
 [INFO]     1:21   warning  'OnInit' is defined but never used                   @typescript-eslint/no-unused-vars
 [INFO]     7:6    warning  'WikiDataClass' is defined but never used            @typescript-eslint/no-unused-vars
 [INFO]    12:6    warning  'WikiDataClassLabel' is defined but never used       @typescript-eslint/no-unused-vars
@@ -453,9 +453,9 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO]       at renderChildComponents (node_modules/@angular/core/fesm2020/core.mjs:11773:9)
 [INFO] 
 [INFO]     console.error
-[INFO]       NG0304: 'jhi-graph-tidytree' is not a known element (used in the 'AnnotationServiceUIComponent' component template):
-[INFO]       1. If 'jhi-graph-tidytree' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
-[INFO]       2. If 'jhi-graph-tidytree' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+[INFO]       NG0304: 'jhi-results-graph-tidytree' is not a known element (used in the 'AnnotationServiceUIComponent' component template):
+[INFO]       1. If 'jhi-results-graph-tidytree' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+[INFO]       2. If 'jhi-results-graph-tidytree' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
 [INFO] 
 [INFO]       at validateElementIsKnown (node_modules/@angular/core/fesm2020/core.mjs:7412:25)
 [INFO]       at elementStartFirstCreatePass (node_modules/@angular/core/fesm2020/core.mjs:15234:9)
@@ -537,7 +537,7 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO] PASS src/main/webapp/app/admin/user-management/update/user-management-update.component.spec.ts (485 MB heap size)
 [INFO] PASS src/main/webapp/app/shared/alert/alert.component.spec.ts (565 MB heap size)
 [INFO] PASS src/main/webapp/app/shared/auth/has-any-authority.directive.spec.ts (527 MB heap size)
-[INFO] PASS src/main/webapp/app/graph-tidytree/graph-tidytree.component.spec.ts (507 MB heap size)
+[INFO] PASS src/main/webapp/app/results-graph-tidytree/results-graph-tidytree.component.spec.ts (507 MB heap size)
 [INFO] PASS src/main/webapp/app/core/util/parse-links.service.spec.ts (562 MB heap size)
 [INFO] PASS src/main/webapp/app/account/password/password.service.spec.ts (601 MB heap size)
 [INFO] PASS src/main/webapp/app/account/register/register.component.spec.ts (544 MB heap size)
@@ -674,9 +674,9 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO]  app/entities/user                                        |   96.66 |    33.33 |    87.5 |   96.15 |                   
 [INFO]   user.model.ts                                           |     100 |      100 |     100 |     100 |                   
 [INFO]   user.service.ts                                         |   96.15 |    33.33 |   83.33 |   95.65 | 23                
-[INFO]  app/graph-tidytree                                       |    6.75 |        0 |       0 |    5.88 |                   
-[INFO]   graph-tidytree.component.html                           |     100 |      100 |     100 |     100 |                   
-[INFO]   graph-tidytree.component.ts                             |    5.47 |        0 |       0 |    4.47 | 42-229            
+[INFO]  app/results-graph-tidytree                                       |    6.75 |        0 |       0 |    5.88 |                   
+[INFO]   results-graph-tidytree.component.html                           |     100 |      100 |     100 |     100 |                   
+[INFO]   results-graph-tidytree.component.ts                             |    5.47 |        0 |       0 |    4.47 | 42-229            
 [INFO]  app/home                                                 |     100 |      100 |     100 |     100 |                   
 [INFO]   home.component.html                                     |     100 |      100 |     100 |     100 |                   
 [INFO]   home.component.ts                                       |     100 |      100 |     100 |     100 |                   
@@ -943,7 +943,7 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO]    10:1   warning  Expected space or tab after '//' in comment  spaced-comment
 [INFO]   139:48  warning  'method' is defined but never used           @typescript-eslint/no-unused-vars
 [INFO] 
-[INFO] /home/kolja/git/annotationService/implementation/src/main/webapp/app/graph-tidytree/graph-tidytree.component.ts
+[INFO] /home/kolja/git/annotationService/implementation/src/main/webapp/app/results-graph-tidytree/results-graph-tidytree.component.ts
 [INFO]     1:21   warning  'OnInit' is defined but never used                   @typescript-eslint/no-unused-vars
 [INFO]     7:6    warning  'WikiDataClass' is defined but never used            @typescript-eslint/no-unused-vars
 [INFO]    12:6    warning  'WikiDataClassLabel' is defined but never used       @typescript-eslint/no-unused-vars
@@ -1095,9 +1095,9 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO]       at renderChildComponents (node_modules/@angular/core/fesm2020/core.mjs:11773:9)
 [INFO] 
 [INFO]     console.error
-[INFO]       NG0304: 'jhi-graph-tidytree' is not a known element (used in the 'AnnotationServiceUIComponent' component template):
-[INFO]       1. If 'jhi-graph-tidytree' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
-[INFO]       2. If 'jhi-graph-tidytree' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+[INFO]       NG0304: 'jhi-results-graph-tidytree' is not a known element (used in the 'AnnotationServiceUIComponent' component template):
+[INFO]       1. If 'jhi-results-graph-tidytree' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+[INFO]       2. If 'jhi-results-graph-tidytree' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
 [INFO] 
 [INFO]       at validateElementIsKnown (node_modules/@angular/core/fesm2020/core.mjs:7412:25)
 [INFO]       at elementStartFirstCreatePass (node_modules/@angular/core/fesm2020/core.mjs:15234:9)
@@ -1167,7 +1167,7 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO] 
 [INFO] PASS src/main/webapp/app/admin/user-management/list/user-management.component.spec.ts (376 MB heap size)
 [INFO] PASS src/main/webapp/app/admin/user-management/delete/user-management-delete-dialog.component.spec.ts (349 MB heap size)
-[INFO] PASS src/main/webapp/app/graph-tidytree/graph-tidytree.component.spec.ts (350 MB heap size)
+[INFO] PASS src/main/webapp/app/results-graph-tidytree/results-graph-tidytree.component.spec.ts (350 MB heap size)
 [INFO] PASS src/main/webapp/app/layouts/navbar/navbar.component.spec.ts (397 MB heap size)
 [INFO] PASS src/main/webapp/app/admin/health/health.component.spec.ts (397 MB heap size)
 [INFO] PASS src/main/webapp/app/admin/health/modal/health-modal.component.spec.ts (432 MB heap size)
@@ -1316,9 +1316,9 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO]  app/entities/user                                        |   96.66 |    33.33 |    87.5 |   96.15 |                   
 [INFO]   user.model.ts                                           |     100 |      100 |     100 |     100 |                   
 [INFO]   user.service.ts                                         |   96.15 |    33.33 |   83.33 |   95.65 | 23                
-[INFO]  app/graph-tidytree                                       |    6.75 |        0 |       0 |    5.88 |                   
-[INFO]   graph-tidytree.component.html                           |     100 |      100 |     100 |     100 |                   
-[INFO]   graph-tidytree.component.ts                             |    5.47 |        0 |       0 |    4.47 | 42-229            
+[INFO]  app/results-graph-tidytree                                       |    6.75 |        0 |       0 |    5.88 |                   
+[INFO]   results-graph-tidytree.component.html                           |     100 |      100 |     100 |     100 |                   
+[INFO]   results-graph-tidytree.component.ts                             |    5.47 |        0 |       0 |    4.47 | 42-229            
 [INFO]  app/home                                                 |     100 |      100 |     100 |     100 |                   
 [INFO]   home.component.html                                     |     100 |      100 |     100 |     100 |                   
 [INFO]   home.component.ts                                       |     100 |      100 |     100 |     100 |                   

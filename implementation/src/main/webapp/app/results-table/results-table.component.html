@@ -1,0 +1,19 @@
+<ol #result_table>
+    <li *ngFor="let entity of entities">
+        <div class="flex">
+            <div>
+                <div>
+                    <h4>{{ entity?.label }}</h4>
+                    <span>{{ entity?.id }}</span>
+                </div>
+                <p>
+                    {{ entity?.description }}
+                </p>
+            </div>
+            <div>
+                <button type="button" class="btn-tib btn-tib--slim btn-tib--primary btn-tib--i-add" (click)="copyId(entity.id)">COPY ID</button>
+                <button type="button" class="btn-tib btn-tib--slim btn-tib--secondary btn-tib--i-arrow" (click)="view(entity.URI)">VIEW</button>
+            </div>
+        </div>
+    </li>
+</ol>

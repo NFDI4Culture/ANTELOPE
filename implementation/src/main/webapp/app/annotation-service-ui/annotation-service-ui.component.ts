@@ -1,6 +1,7 @@
 import { Component,ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
-import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
+import { ResultsGraphTidytreeComponent } from 'app/results-graph-tidytree/results-graph-tidytree.component';
+import { ResultsTableComponent } from 'app/results-table/results-table.component'
 // import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
@@ -17,7 +18,7 @@ interface ENTITIES {
   label: string;
   source: string;
   classes: string
-}
+} // TODO: Shared types
 
 // data model of the RESTful annotationService API result
 type AnnotationResponse = {
@@ -83,15 +84,16 @@ export class AnnotationServiceUIComponent implements OnInit{
     { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false , shownTS: true, shownER: false},
     { name: 'GND (Gemeinsame Normdatei)', value: 'gnd', checked: false, disabled: false, shownTS: true, shownER: false},
     { name: 'TIB Terminology Service', value: 'ts4tib', checked: false, disabled: false, shownTS: true, shownER: false}
-
   ];
   
   dropdownSettings = {};
   
   public annotation: AnnotationResponse = {entities:[], relations:[], hierarchy:{} as unknown as HierarchyTree};
   
-  @ViewChild(GraphTidytreeComponent)
-  private graph!: GraphTidytreeComponent;
+  @ViewChild(ResultsGraphTidytreeComponent)
+  private graph!: ResultsGraphTidytreeComponent;
+  @ViewChild(ResultsTableComponent)
+  private table!: ResultsTableComponent;
   
   // init a custom loadingbar to show progress while waiting for the annotationService result and creating the d3 graph
   constructor(private loadingBar: LoadingBarService, fb: FormBuilder, private elRef: ElementRef) {
@@ -323,9 +325,7 @@ export class AnnotationServiceUIComponent implements OnInit{
       this.annotation = result;
 
       this.resultCount = this.annotation.hierarchy.children
-      .reduce((a, c: { children: unknown[] }) => {
-        return a + c.children.length;
-      }, 0);
+      .reduce((a, c: { children: unknown[] }) => a + c.children.length, 0);
 
       // finish loading bar
       this.loader.complete();
@@ -336,6 +336,7 @@ export class AnnotationServiceUIComponent implements OnInit{
         // update graph
         this.graph.clear();
         this.graph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
+        this.table.createTableFromWikiDataHierarchy(this.annotation.entities);
         
         document.dispatchEvent(new CustomEvent("collapse"));
       } else {
@@ -368,7 +369,8 @@ export class AnnotationServiceUIComponent implements OnInit{
     this.loader.set(0);
     this.showResultContainer = false;
 
-    document.dispatchEvent(new CustomEvent("deselect-node", {
+    document.querySelector("jhi-annotationservice-result-selectcomponent")
+    ?.dispatchEvent(new CustomEvent("deselect-node", {
       bubbles: false
     }));
   }
@@ -414,9 +416,14 @@ export class AnnotationServiceUIComponent implements OnInit{
     XLSX.utils.book_append_sheet(workbook, ws, 'Sheet1');
     const csvOutput: string = XLSX.utils.sheet_to_csv(ws);
     // save to file
-    this.writeContents(csvOutput, fileName, 'text/csv')
-    
+    this.writeContents(csvOutput, fileName, 'text/csv');
+  }
 
+  public onTabChanged(): void {
+    document.querySelector("jhi-annotationservice-result-selectcomponent")
+    ?.dispatchEvent(new CustomEvent("deselect-node", {
+      bubbles: false
+    }));
   }
 
   

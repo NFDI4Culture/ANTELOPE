@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
 
@@ -11,12 +11,14 @@ type HierarchyTree = {
   children: [];
 }
 
+const TRANSPARENT = "#00000000";
+
 @Component({
-  selector: 'jhi-graph-tidytree',
-  templateUrl: './graph-tidytree.component.html',
-  styleUrls: ['./graph-tidytree.component.scss']
+  selector: 'jhi-results-graph-tidytree',
+  templateUrl: './results-graph-tidytree.component.html',
+  styleUrls: ['./results-graph-tidytree.component.scss']
 })
-export class GraphTidytreeComponent {
+export class ResultsGraphTidytreeComponent {
 
   private static lastSelected: {
     circle: HTMLElement|undefined;
@@ -25,9 +27,12 @@ export class GraphTidytreeComponent {
   }
   // tree:SVGSVGElement|null = null;
 
-  public static markCopied() {
-    if(GraphTidytreeComponent.lastSelected.innerCircle)
-      GraphTidytreeComponent.lastSelected.innerCircle.style.fill = "white";
+  constructor(private elRef: ElementRef) {}
+  
+  public static markCopied(): void {
+    if(ResultsGraphTidytreeComponent.lastSelected.innerCircle) {
+      ResultsGraphTidytreeComponent.lastSelected.innerCircle.style.fill = "white";
+    }
   }
 
   clear(): void {
@@ -66,7 +71,7 @@ export class GraphTidytreeComponent {
   // Released under the ISC license.
   // https://observablehq.com/@d3/tree
   createTree(data: any, { // data is either tabular (array of objects) or hierarchy (nested objects)
-    //path, // as an alternative to id and parentId, returns an array identifier, imputing internal nodes
+    // path, // as an alternative to id and parentId, returns an array identifier, imputing internal nodes
     id = Array.isArray(data) ? (d: d3.HierarchyNode<NodeData>) => d.id : null, // if tabular data, given a d in data, returns a unique identifier (string)
     parentId = Array.isArray(data) ? (d: d3.HierarchyNode<NodeData>) => d.parent?.id : null, // if tabular data, given a node d, returns its parent’s identifier
     children = (d: any): Iterable<any> | null | undefined => d !== undefined ? d.children as Iterable<any> : [], // if hierarchical data, given a d in data, returns its children
@@ -75,20 +80,17 @@ export class GraphTidytreeComponent {
     label = (d: any): string => "label", // given a node d, returns the display name
     title = (d: any, n: any): string => "title", // given a node d, returns its hover text
     link = (d: any, n: any): string => "link", // given a node d, its link (if any)
-    linkTarget = "_blank", // the target attribute for links (if any)
     width = 640, // outer width, in pixels
     height = 1200, // outer height, in pixels
-    r = 7, // radius of nodes
+    r = 10, // radius of nodes
     padding = 1, // horizontal padding for first and last column
-    fill = "black", // fill for nodes
-    fillOpacity = null, // fill opacity for nodes
-    stroke = "#000", // stroke for links
+    fillBackground = "#F9CD0E",
+    fillForeground = "white",
+    stroke = "black", // stroke for links,
     strokeWidth = 0.75, // stroke width for links
     strokeOpacity = 0.25, // stroke opacity for links
     strokeLinejoin = null, // stroke line join for links
     strokeLinecap = null, // stroke line cap for links
-    halo = "#fff", // color of label halo 
-    haloWidth = 5, // padding around the labels
   }): void {
     // If id and parentId options are specified, or the path option, use d3.stratify
     // to convert tabular data to a hierarchy; otherwise we assume that the data is
@@ -103,11 +105,18 @@ export class GraphTidytreeComponent {
 
     // Compute labels and titles.
     const descendants = root.descendants();
-    const L: string[] | null = descendants.map((d: any) => label(d));
+    const L: {
+      label: string;
+      depth: number;
+    }[] | null = descendants
+    .map((d: any) => ({
+      label: label(d),
+      depth: d.depth
+    }));
 
     // Compute the layout.
-    const dx = 25; // vertikaler abstand der nodes
-    const dy = width / (root.height + padding) + 75;
+    const dx = 30; // Vertical margin between nodes
+    const dy = [...L].sort((a, b) => b.label.length - a.label.length)[0].label.length * 12 + 30;
     tree<NodeData>().nodeSize([dx, dy])(root);
 
     // Center the tree.
@@ -119,8 +128,8 @@ export class GraphTidytreeComponent {
     });
 
     // Compute the default height.
-    //if (!height) {height = x1 - x0 + dx * 2;}
-    //if (!width) {width = x1 - x0 + dx * 2;}
+    // if (!height) {height = x1 - x0 + dx * 2;}
+    // if (!width) {width = x1 - x0 + dx * 2;}
     height = x1 - x0 + dx * 2;
     width = x1 - x0 + dy * 2;
     const linkGenerator = d3.linkHorizontal()
@@ -130,16 +139,23 @@ export class GraphTidytreeComponent {
     .x((d: any) => d.x as number)
     .y((d: any) => d.y as number); */
 
+    const levels: number = (Object.entries([...L].reduce((a, b) => {
+      a[b.depth] = a[b.depth] + 1; 
+      return a;
+    }, {} as { [key: string]: number; }))
+    .sort((a, b) => a[1] - b[1])
+    .pop() ?? [null, 0])[1];
+
     // SVG
     const svg = d3.select("#tree")
     .attr("viewBox", [-dy * padding, x0 - dx, width, height])
-    //.attr("viewBox", [x1-dy , x0 - dx, width, height])
-    //.attr("viewBow", [0,0, width, height])
+    // .attr("viewBox", [x1-dy , x0 - dx, width, height])
+    // .attr("viewBow", [0,0, width, height])
     .attr("width", "100%")
     .attr("height", height)
     .attr("style", "position: relative ; min-height: 600px; min-width: 600px; max-width: 100%; height: auto; height: intrinsic; margin: 10px; margin-bottom:150px; z-index:100")
     .attr("font-family", "sans-serif")
-    .attr("font-size", 11);
+    .attr("font-size", "1rem");
 
     // GRAPH
     const g = svg.append("g")
@@ -161,11 +177,11 @@ export class GraphTidytreeComponent {
     .data(root.descendants())
     .join("a")
     .attr("transform", (d: any) => `translate(${d.y as string},${d.x as string})`)
-    //.attr("xlink:href", (d: any) => link(d.data, d))
-    //.attr("target", linkTarget)
+    // .attr("xlink:href", (d: any) => link(d.data, d))
+    // .attr("target", linkTarget)
     .attr("data-id", 3);
 
-    //TITLE
+    // TITLE
     node.append("title")
     .text((d: any) => title(d.data, d));
 
@@ -173,59 +189,59 @@ export class GraphTidytreeComponent {
     node.append("rect")
     .attr("rx", 5)
     .attr("ry", 5)
-    .attr("x", function (d: any) { return this.getBBox().x - 8; })
-    .attr("y", function (d: any, i: any) { return this.getBBox().y - 10 })
-    .attr("width", function (d: any, i: any) { return L[i].length * 7 + 20; })
-    .attr("height", function (d: any) { return 20; })
-    .style("fill", "#FFFFFF");
+    .attr("x", function () { return this.getBBox().x - 8; })
+    .attr("y", function () { return this.getBBox().y - 15 })
+    .attr("width", function (_, i: any) { return L[i].label.length * 12 + 5; })
+    .attr("height", 30)
+    .style("fill", fillForeground);
 
     // CIRCLE
     node.append("circle")
-    .attr("fill", "#f9cd0e")
-    .attr("stroke", "#f9cd0e")
+    .attr("fill", fillBackground)
+    .attr("stroke", fillBackground)
     .attr("stroke-width", "1.25")
     .attr("r", r);
 
     // INNER CIRCLE
     node.append("circle")
-    .attr("fill", "#f9cd0e")
+    .attr("fill", fillBackground)
     .attr("r", r / 2);
 
     // TEXT
     node.append("text")
     .attr("dy", "0.38em")
-    .attr("x", (d: any) => 15)
-    .attr("text-anchor", (d: any) => "start")
+    .attr("x", 20)
+    .attr("text-anchor", "start")
     .attr("paint-order", "stroke")
     .attr("fill", stroke)
-    .attr("stroke", "#00000000")
+    .attr("stroke", TRANSPARENT)
     .attr("stroke-width", "0.25")
     .attr("stroke-opacity", "1.0")
-    .text((d: any, i: any) => L[i])
+    .text((d: any, i: any) => L[i].label)
 
     // INTERACTION
     node.on("click", (e: Event, d: any) => {
-      const node = (e.target as HTMLElement).parentNode;
-      const circle = node?.children[2] as HTMLElement;
-      const innerCircle = node?.children[3] as HTMLElement;
-      const text = node?.children[4] as HTMLElement;
+      const targetNode = (e.target as HTMLElement).parentNode;
+      const circle = targetNode?.children[2] as HTMLElement;
+      const innerCircle = targetNode?.children[3] as HTMLElement;
+      const text = targetNode?.children[4] as HTMLElement;
 
-      if(GraphTidytreeComponent.lastSelected?.circle)
-        GraphTidytreeComponent.lastSelected.circle.style.stroke = "#f9cd0e";
-      if(GraphTidytreeComponent.lastSelected?.text)
-        GraphTidytreeComponent.lastSelected.text.style.stroke = "#00000000";
-      GraphTidytreeComponent.lastSelected = { circle, innerCircle, text };
+      if(ResultsGraphTidytreeComponent.lastSelected.circle) {
+        ResultsGraphTidytreeComponent.lastSelected.circle.style.stroke = fillBackground;
+      }
+      if(ResultsGraphTidytreeComponent.lastSelected.text) {
+        ResultsGraphTidytreeComponent.lastSelected.text.style.stroke = TRANSPARENT;
+      }
+      ResultsGraphTidytreeComponent.lastSelected = { circle, innerCircle, text };
       circle.style.stroke = "black";
       text.style.stroke = "black";
 
-      document.querySelector("jhi-annotationservice-result-selectcomponent")?.dispatchEvent(new CustomEvent("select-node", {
+      document.querySelector("jhi-annotationservice-result-selectcomponent")
+      ?.dispatchEvent(new CustomEvent("select-node", {
         detail: {
-            name: d.data.name,
+            name: d.data.name ?? d.data.label,
             link: d.data.link,
             id: d.data.id,
-            clickPos: {
-              x: d.x, y: d.y
-            },
             description: d.data.link
         },
         bubbles: false
@@ -234,15 +250,24 @@ export class GraphTidytreeComponent {
     
     const zoom = d3.zoom<SVGSVGElement, unknown>()
     .extent([[0, 0], [width, height]])
-    //.translateExtent([[-0.5*height,-0.5*width],[0.5*height,0.5*height]])
+    //  .translateExtent([[-0.5*height,-0.5*width],[0.5*height,0.5*height]])
     .scaleExtent([-8, 8])
     .on("zoom", ({ transform }) => {
+      document.body.style.overflow = "hidden";
+      const gElBounds = this.elRef.nativeElement.children[0].children[0].getBoundingClientRect();
+      transform.k = Math.max(Math.min(transform.k, 1 + Math.pow(levels * 0.2, 2)), 1 - Math.min(Math.log(levels * 0.5), 0.5));                                                      // MAX, MIN ZOOM
+      // transform.x = Math.min(Math.max(transform.x, this.elRef.nativeElement.offsetWidth - (gElBounds.width + (2 * dy) - 20)), 20);    // MAX, MIN X
+      // transform.y = Math.min(Math.max(transform.y, this.elRef.nativeElement.offsetHeight - (gElBounds.height - 20)), 20);  // MAX, MIN Y
       g.attr("transform", transform);
-      svg.attr("height", height * transform.k)
+      // svg.attr("height", height * transform.k)
       // resize viewbox e.g. if we zoom in, the graph gets larger and we want still to see it when scrolling down
-      .attr("viewBox", [-dy * padding, x0 - dx, width, height * 1.1 * transform.k])
+      // .attr("viewBox", [-dy * padding, x0 - dx, width, height * transform.k * 1.05])
+    })
+    .on("end", () => {
+      document.body.style.overflow = "auto";
     }) as any;
 
     svg.call(zoom);
   }
+
 }

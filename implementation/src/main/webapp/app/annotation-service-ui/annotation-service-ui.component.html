@@ -149,36 +149,22 @@
         </div>
     </div>
     <span class="results-label">{{ resultCount }} results in {{ selectedSources.length }} terminology sources</span>
-    <mat-tab-group>
+    <mat-tab-group (selectedTabChange)="onTabChanged()">
         <mat-tab label="Graph">
             <div class="tib-btn-info" 
-                matTooltip="Use the mousewheel to zoom in/out. Use drag and drop to move the graph."
+                matTooltip="The graph view shows the results in a hierarchy. Roll the mouse wheel to zoom. Hold left mouse button to move the graph."
                 matTooltipPosition="right"
                 matTooltipSize="12px">
             </div>
-            <jhi-graph-tidytree></jhi-graph-tidytree>
+            <jhi-results-graph-tidytree></jhi-results-graph-tidytree>
         </mat-tab>
         <mat-tab label="Table">
-            <table class="table table-striped" #result_table>
-                <thead>
-                    <tr>
-                      <th>Source</th>
-                      <th>Entity label</th>
-                      <th>ID</th>
-                      <th>URI</th>
-                      <th>Classes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let entity of annotation.entities">
-                    <td>{{ entity.source }}</td>
-                    <td>{{ entity.label }}</td>
-                    <td>{{ entity.id }}</td>
-                    <td><a href='{{ entity.URI }}' target="_blank">{{ entity.URI }}</a></td>
-                    <td>n.n.</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="tib-btn-info" 
+                matTooltip="The table. view shows the results with details as a list."
+                matTooltipPosition="right"
+                matTooltipSize="12px">
+            </div>
+            <jhi-results-table></jhi-results-table>
         </mat-tab>
         <!-- <mat-tab label="JSON">
             <button style="margin:5px;margin-left:157px;" class="btn-tib btn-tib--primary" [cdkCopyToClipboard]="annotation | json">Copy</button>
