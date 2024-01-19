@@ -1,5 +1,6 @@
 import { Component, ElementRef } from '@angular/core';
-import { ResultsGraphTidytreeComponent } from 'app/results-graph-tidytree/results-graph-tidytree.component';
+import { AnnotationServiceSelectionComponent } from 'app/annotation-service-selection/annotation-service-selection.component';
+
 
 type Entity = {
   id : string;
@@ -27,8 +28,10 @@ export class ResultsTableComponent {
     this.entities = data;
   }
 
-  public async copyId(id: string): Promise<void> {
-    await navigator.clipboard.writeText(id.toString());
+  public async copyId(entity: Entity): Promise<void> {
+    await navigator.clipboard.writeText(entity.id.toString());
+
+    AnnotationServiceSelectionComponent.select(entity);
 
     // TODO: Table copied UI feedback (reflection)
   }

@@ -2,6 +2,8 @@ import { Component, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
 
+const MAX_LABEL_LENGTH = 24;
+
 type NodeData = { x: number, y: number, parentId: string };
 
 type HierarchyTree = {
@@ -24,13 +26,13 @@ export class ResultsGraphTidytreeComponent {
     circle: HTMLElement|undefined;
     innerCircle: HTMLElement|undefined;
     text: HTMLElement|undefined;
-  }
-  // tree:SVGSVGElement|null = null;
+  };
 
   constructor(private elRef: ElementRef) {}
   
   public static markCopied(): void {
-    if(ResultsGraphTidytreeComponent.lastSelected.innerCircle) {
+    if(ResultsGraphTidytreeComponent.lastSelected
+    && ResultsGraphTidytreeComponent.lastSelected.innerCircle) {
       ResultsGraphTidytreeComponent.lastSelected.innerCircle.style.fill = "white";
     }
   }
@@ -49,10 +51,10 @@ export class ResultsGraphTidytreeComponent {
       label(d: any): string {
         if (d.data.name !== undefined) {
 
-          if (d.data.name.length < 24) {
+          if (d.data.name.length < MAX_LABEL_LENGTH) {
             return d.data.name as string;
           } else {
-            return d.data.name.substring(0, 20) as string + "[..]";
+            return d.data.name.substring(0, MAX_LABEL_LENGTH - 4) as string + "[..]";
           }
         } else {
           return "label";
@@ -84,7 +86,9 @@ export class ResultsGraphTidytreeComponent {
     height = 1200, // outer height, in pixels
     r = 10, // radius of nodes
     padding = 1, // horizontal padding for first and last column
-    fillBackground = "#F9CD0E",
+    fillBackgroundClass = "#F9CD0E",
+    fillBackgroundInstance = "#18A0FB",
+    fillBackgroundSource = "#C4C4C4",
     fillForeground = "white",
     stroke = "black", // stroke for links,
     strokeWidth = 0.75, // stroke width for links
@@ -116,7 +120,7 @@ export class ResultsGraphTidytreeComponent {
 
     // Compute the layout.
     const dx = 30; // Vertical margin between nodes
-    const dy = [...L].sort((a, b) => b.label.length - a.label.length)[0].label.length * 12 + 30;
+    const dy = [...L].sort((a, b) => b.label.length - a.label.length)[0].label.length * 42 * 1.125;
     tree<NodeData>().nodeSize([dx, dy])(root);
 
     // Center the tree.
@@ -139,8 +143,10 @@ export class ResultsGraphTidytreeComponent {
     .x((d: any) => d.x as number)
     .y((d: any) => d.y as number); */
 
-    const levels: number = (Object.entries([...L].reduce((a, b) => {
-      a[b.depth] = a[b.depth] + 1; 
+    const levelsH: number = [...L].map(l => l.depth)
+    .sort((a, b) => b - a)[0];
+    const levelsV: number = (Object.entries([...L].reduce((a, b) => {
+      a[b.depth] = (a[b.depth] ?? 0) + 1; 
       return a;
     }, {} as { [key: string]: number; }))
     .sort((a, b) => a[1] - b[1])
@@ -191,20 +197,33 @@ export class ResultsGraphTidytreeComponent {
     .attr("ry", 5)
     .attr("x", function () { return this.getBBox().x - 8; })
     .attr("y", function () { return this.getBBox().y - 15 })
-    .attr("width", function (_, i: any) { return L[i].label.length * 12 + 5; })
+    .attr("width", function (_, i: any) { return L[i].label.length * 14; })
     .attr("height", 30)
     .style("fill", fillForeground);
 
+    const getFill = (_: any, i: number) => {
+      switch(L[i].depth) {
+        case 0:
+          return fillBackgroundSource;
+        case 1:
+          return fillBackgroundSource;
+        case 2:
+          return fillBackgroundInstance;
+        default:
+          return fillBackgroundClass
+      }
+    };
+
     // CIRCLE
     node.append("circle")
-    .attr("fill", fillBackground)
-    .attr("stroke", fillBackground)
+    .attr("fill", getFill)
+    .attr("stroke", getFill)
     .attr("stroke-width", "1.25")
     .attr("r", r);
 
     // INNER CIRCLE
     node.append("circle")
-    .attr("fill", fillBackground)
+    .attr("fill", getFill)
     .attr("r", r / 2);
 
     // TEXT
@@ -221,26 +240,31 @@ export class ResultsGraphTidytreeComponent {
 
     // INTERACTION
     node.on("click", (e: Event, d: any) => {
+      if(d.depth < 2) return;
+      
       const targetNode = (e.target as HTMLElement).parentNode;
       const circle = targetNode?.children[2] as HTMLElement;
       const innerCircle = targetNode?.children[3] as HTMLElement;
       const text = targetNode?.children[4] as HTMLElement;
 
-      if(ResultsGraphTidytreeComponent.lastSelected.circle) {
-        ResultsGraphTidytreeComponent.lastSelected.circle.style.stroke = fillBackground;
+      if(ResultsGraphTidytreeComponent.lastSelected
+      && ResultsGraphTidytreeComponent.lastSelected.circle) {
+        ResultsGraphTidytreeComponent.lastSelected.circle.style.stroke
+        = ResultsGraphTidytreeComponent.lastSelected.circle.getAttribute("fill") ?? "";
       }
-      if(ResultsGraphTidytreeComponent.lastSelected.text) {
+      if(ResultsGraphTidytreeComponent.lastSelected
+      && ResultsGraphTidytreeComponent.lastSelected.text) {
         ResultsGraphTidytreeComponent.lastSelected.text.style.stroke = TRANSPARENT;
       }
       ResultsGraphTidytreeComponent.lastSelected = { circle, innerCircle, text };
       circle.style.stroke = "black";
       text.style.stroke = "black";
 
-      document.querySelector("jhi-annotationservice-result-selectcomponent")
+      document.querySelector("jhi-annotation-service-result-selectcomponent")
       ?.dispatchEvent(new CustomEvent("select-node", {
         detail: {
-            name: d.data.name ?? d.data.label,
-            link: d.data.link,
+            label: d.data.name ?? d.data.label,
+            URI: d.data.link,
             id: d.data.id,
             description: d.data.link
         },
@@ -248,20 +272,19 @@ export class ResultsGraphTidytreeComponent {
       }));
     });
     
+    const zoomPadding = 150;
     const zoom = d3.zoom<SVGSVGElement, unknown>()
-    .extent([[0, 0], [width, height]])
-    //  .translateExtent([[-0.5*height,-0.5*width],[0.5*height,0.5*height]])
-    .scaleExtent([-8, 8])
+    .scaleExtent([1.0 - Math.min(levelsV / 50, 0.35), levelsV / 5])
+    .extent([
+      [-zoomPadding, -zoomPadding],
+      [((dy + 8) * levelsH) + zoomPadding, (dy * levelsV) + zoomPadding]
+    ])
     .on("zoom", ({ transform }) => {
       document.body.style.overflow = "hidden";
-      const gElBounds = this.elRef.nativeElement.children[0].children[0].getBoundingClientRect();
-      transform.k = Math.max(Math.min(transform.k, 1 + Math.pow(levels * 0.2, 2)), 1 - Math.min(Math.log(levels * 0.5), 0.5));                                                      // MAX, MIN ZOOM
-      // transform.x = Math.min(Math.max(transform.x, this.elRef.nativeElement.offsetWidth - (gElBounds.width + (2 * dy) - 20)), 20);    // MAX, MIN X
-      // transform.y = Math.min(Math.max(transform.y, this.elRef.nativeElement.offsetHeight - (gElBounds.height - 20)), 20);  // MAX, MIN Y
       g.attr("transform", transform);
-      // svg.attr("height", height * transform.k)
+      svg.attr("height", height * transform.k * 2)
       // resize viewbox e.g. if we zoom in, the graph gets larger and we want still to see it when scrolling down
-      // .attr("viewBox", [-dy * padding, x0 - dx, width, height * transform.k * 1.05])
+      //.attr("viewBox", [-dy * padding, x0 - dx, width, height * transform.k * 1.05])
     })
     .on("end", () => {
       document.body.style.overflow = "auto";

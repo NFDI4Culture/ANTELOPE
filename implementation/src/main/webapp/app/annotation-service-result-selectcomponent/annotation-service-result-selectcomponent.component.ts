@@ -1,30 +1,32 @@
 import { Component, ElementRef } from '@angular/core';
+import { AnnotationServiceSelectionComponent } from 'app/annotation-service-selection/annotation-service-selection.component';
 import { ResultsGraphTidytreeComponent } from 'app/results-graph-tidytree/results-graph-tidytree.component';
 
 
-interface INode {
-  name: string;
+interface Entity {
+  label: string;
   id: string;
-  link: string;
-
+  URI: string;
+  source: string;
+  classes: string;
+  
   description?: string;
   imageUrl?: string;
 }
 
 
 @Component({
-  selector: 'jhi-annotationservice-result-selectcomponent',
-  templateUrl: './annotationservice-result-selectcomponent.component.html',
-  styleUrls: ['./annotationservice-result-selectcomponent.component.scss']
+  selector: 'jhi-annotation-service-result-selectcomponent',
+  templateUrl: './annotation-service-result-selectcomponent.component.html',
+  styleUrls: ['./annotation-service-result-selectcomponent.component.scss']
 })
-export class AnnotationserviceResultSelectcomponentComponent {
+export class AnnotationServiceResultSelectcomponentComponent {
 
   private static targetOffsetPx = 25;
 
-  public selected?: INode;
+  public selected?: Entity;
 
   private graphElement: HTMLElement|null|undefined;
-
 
   constructor(private elRef: ElementRef) {
     window.addEventListener("resize", () => this.adjustPosition());
@@ -43,15 +45,21 @@ export class AnnotationserviceResultSelectcomponentComponent {
   }
 
   public async copyId(): Promise<void> {
-    await navigator.clipboard.writeText(this.selected?.id.toString() ?? "");
+    if(!this.selected) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(this.selected.id.toString() ?? "");
 
     ResultsGraphTidytreeComponent.markCopied();
+
+    AnnotationServiceSelectionComponent.select(this.selected);
   }
 
   public view(): void {
     if(!this.selected) { return };
     // TODO
-    window.open(this.selected.link, "_blank");
+    window.open(this.selected.URI, "_blank");
   }
 
   private adjustPosition(): void {
@@ -60,10 +68,10 @@ export class AnnotationserviceResultSelectcomponentComponent {
     }
     
     const graphPosition = this.graphElement?.getBoundingClientRect();
-    const x = Math.max(AnnotationserviceResultSelectcomponentComponent.targetOffsetPx,
+    const x = Math.max(AnnotationServiceResultSelectcomponentComponent.targetOffsetPx,
               (graphPosition?.left ?? 0)
-              - this.elRef.nativeElement.offsetWidth - AnnotationserviceResultSelectcomponentComponent.targetOffsetPx);
-    const y = Math.max(AnnotationserviceResultSelectcomponentComponent.targetOffsetPx * 3,
+              - this.elRef.nativeElement.offsetWidth - AnnotationServiceResultSelectcomponentComponent.targetOffsetPx);
+    const y = Math.max(AnnotationServiceResultSelectcomponentComponent.targetOffsetPx * 3,
               (graphPosition?.top ?? 0));
 
     this.elRef.nativeElement.style.left = `${x}px`;

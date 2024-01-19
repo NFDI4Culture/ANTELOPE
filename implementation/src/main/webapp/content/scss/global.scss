@@ -269,10 +269,12 @@ p {
   max-width: calc(10 * 5ch); // optimum paragraph width is ~ 10 words (mean word length 5 chars)
 }
 
-.btn-tib {
+.btn-annotationservice {
+  cursor: pointer;
   padding: 0.625rem 2rem;
   font-size: var(--font-size-s);
   font-weight: 600;
+  text-decoration: none;
   text-transform: uppercase;
   border: none;
   border-radius: 0.35rem;
@@ -293,6 +295,11 @@ p {
 
   &--slim {
     padding: 0.35rem 0.95rem;
+  }
+
+  &.disabled, &[disabled] {
+    pointer-events: none;
+    filter: saturate(0.3);
   }
 
   @mixin icon($file) {

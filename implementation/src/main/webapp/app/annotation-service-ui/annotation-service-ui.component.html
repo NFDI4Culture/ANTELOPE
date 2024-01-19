@@ -6,7 +6,7 @@
         <div *ngIf="!showResultContainer">
             <br>
             <label for="textToAnnotate">
-                <span>Type the term you want to search for (single word or phrase):</span>
+                <span jhiTranslate="home.service.typehintph">Type the term you want to search for (single word or phrase):</span>
                 <div class="tib-btn-info" 
                     matTooltip="Terminology search is used to search for a term in a controlled vocabulary. The annotation service will propose entities, that are best matching the whole provided phrase. If you want to receive all contained entities within your phrase, choose 'Entity recognition' above"
                     matTooltipPosition="right"
@@ -14,7 +14,7 @@
                 </div>
             </label>
             <textarea type="text" id="textToAnnotate" [formControl]="textToAnnotate" placeholder="e.g. ‘Mona Lisa’ or ‘The Mona Lisa painting’"></textarea>
-            <span class="subheading" >Select terminology sources</span>
+            <span class="subheading" jhiTranslate="home.service.selectsources">Select terminology sources</span>
             <div class="tib-btn-info" 
                 matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
                 matTooltipPosition="right"></div>
@@ -38,7 +38,7 @@
                 </div>
             </form>
 
-            <span *ngIf="showTs4tibOntologySelect == true">Select Ontologies (optional)</span>
+            <span *ngIf="showTs4tibOntologySelect == true" jhiTranslate="home.service.selectontologies">Select Ontologies (optional)</span>
             <ng-select class="tib-select"
                 *ngIf="showTs4tibOntologySelect == true"
                 [items]="ts4tibOntologies"
@@ -60,22 +60,22 @@
                 </ng-template>
             </ng-select>
             
-            <span class="subheading">Settings</span><br/>   
+            <span class="subheading" jhiTranslate="home.service.settings">Settings</span><br/>   
             <input 
             type="checkbox" 
             [(ngModel)]="allowDuplicates"
             [value]="allowDuplicates" 
             [checked]=false
-            /> <span style="font-size: 14px;">Allow class duplicates</span>
+            /> <span style="font-size: 14px;" jhiTranslate="home.service.allowclassduplicates">Allow class duplicates</span>
             <div class="tib-btn-info" 
             matTooltip="If set, the result hierarchy graph may contain the same class multiple times (in different branches). This will give you a more complete view of the original results but may show the same information multiple times.
             Every class will still be shown only once per branch in the hierarchy tree to avoid circles (circles are possible in graphs but not in trees like taxonomies)"
             matTooltipPosition="right"></div>
            
             <div class="btn-list">
-                <!-- <button type="button" class="btn-tib btn-settings" (click)="toggleSettings()"></button> --><div style="width: 7.25rem;"></div>
-                <button type="submit" class="btn-tib btn-tib--primary" (click)="terminologySearch()">Search</button>
-                <button type="button" class="btn-tib btn-tib--secondary" (click)="clearAll()">Reset</button>
+                <!-- <button type="button" class="btn-annotationservice btn-settings" (click)="toggleSettings()"></button> --><div style="width: 7.25rem;"></div>
+                <button type="submit" class="btn-annotationservice btn-annotationservice--primary" (click)="terminologySearch()" jhiTranslate="home.service.search">Search</button>
+                <button type="button" class="btn-annotationservice btn-annotationservice--secondary" (click)="clearAll()" jhiTranslate="home.service.reset">Reset</button>
             </div>
         </div>
     </mat-tab>
@@ -84,7 +84,7 @@
         <div *ngIf="!showResultContainer">
             <br>
             <label for="textToAnnotate">
-                <span>Type the text you want to run entity recognition on (single words or whole sentences):</span>
+                <span jhiTranslate="home.service.typehinter">Type the text you want to run entity recognition on (single words or whole sentences):</span>
                 <div class="tib-btn-info" 
                     matTooltip="Use Entity linking to map as many words as possible, of your input text, to entities from the datasources. If you want to search for a single term, that is described by your text, choose 'Terminology search' above"
                     matTooltipPosition="right"
@@ -110,30 +110,29 @@
                             [checked]="datasource.checked == true" 
                             [disabled]="datasource.disabled == true"
                             (change)="onCheckboxChange($event)" />
-                        
                         {{datasource.name}}
                     </div>
                 </div>
             </form>
-            <span class="subheading" >Settings:</span><br/>   
+            <span class="subheading" jhiTranslate="home.service.settings">Settings</span><br/>   
             <input 
             type="checkbox" 
             [(ngModel)]="allowDuplicates"
             [value]="allowDuplicates" 
             [checked]=false
-            /> <span style="font-size: 14px;">Allow class duplicates</span>
+            /> <span style="font-size: 14px;" jhiTranslate="home.service.allowclassduplicates">Allow class duplicates</span>
             <div class="tib-btn-info" 
             matTooltip="If set, the result hierarchy graph may contain the same class multiple times (in different branches). This will give you a more complete view of the original results but may show the same information multiple times.
             Every class will still be shown only once per branch in the hierarchy tree to avoid circles (circles are possible in graphs but not in trees like taxonomies)"
             matTooltipPosition="right"></div>
             
             <div class="btn-list">
-                <!-- <button type="button" class="btn-tib btn-settings" (click)="toggleSettings()"></button> --><div style="width: 7.25rem;"></div>
-                <button type="submit" class="btn-tib btn-tib--primary" (click)="entityRecognition()">Search</button>
-                <button type="button" class="btn-tib btn-tib--secondary" (click)="clearAll()">Reset</button>
+                <!-- <button type="button" class="btn-annotationservice btn-settings" (click)="toggleSettings()"></button> --><div style="width: 7.25rem;"></div>
+                <button type="submit" class="btn-annotationservice btn-annotationservice--primary" (click)="entityRecognition()" jhiTranslate="home.service.search">Search</button>
+                <button type="button" class="btn-annotationservice btn-annotationservice--secondary" (click)="clearAll()" jhiTranslate="home.service.reset">Reset</button>
             </div>
         </div>
-    </mat-tab>w
+    </mat-tab>
 </mat-tab-group>
 
 <p id="msg" class="error">{{msg}}</p>
@@ -144,11 +143,11 @@
     <div class="search-collapsed">
         <span>{{ textToAnnotate.value }}</span>
         <div class="search-collapsed-buttons">
-            <!--<button type="button" class="btn-tib btn-settings" (click)="toggleSettings()"></button>-->
-            <button type="button" class="btn-tib btn-tib--secondary" (click)="clearAll()">Change</button>
+            <!--<button type="button" class="btn-annotationservice btn-settings" (click)="toggleSettings()"></button>-->
+            <button type="button" class="btn-annotationservice btn-annotationservice--secondary" (click)="clearAll()" jhiTranslate="home.service.change">Change</button>
         </div>
     </div>
-    <span class="results-label">{{ resultCount }} results in {{ selectedSources.length }} terminology sources</span>
+    <span class="results-label">{{ resultCount }} <span jhiTranslate="home.service.resultsin">results in</span> {{ selectedSources.length }} <span jhiTranslate="home.service.terminologysources">terminology sources</span></span>
     <mat-tab-group (selectedTabChange)="onTabChanged()">
         <mat-tab label="Graph">
             <div class="tib-btn-info" 
@@ -167,8 +166,8 @@
             <jhi-results-table></jhi-results-table>
         </mat-tab>
         <!-- <mat-tab label="JSON">
-            <button style="margin:5px;margin-left:157px;" class="btn-tib btn-tib--primary" [cdkCopyToClipboard]="annotation | json">Copy</button>
-            <button class="btn-tib btn-tib--primary" (click)="saveJson()">Download</button>
+            <button style="margin:5px;margin-left:157px;" class="btn-annotationservice btn-annotationservice--primary" [cdkCopyToClipboard]="annotation | json">Copy</button>
+            <button class="btn-annotationservice btn-annotationservice--primary" (click)="saveJson()">Download</button>
             <pre><p style="font-size:11px;">{{ annotation | json}}</p></pre>
         </mat-tab> -->
     </mat-tab-group>
@@ -179,4 +178,6 @@
     <br><br>
 </div>
 
-<jhi-annotationservice-result-selectcomponent></jhi-annotationservice-result-selectcomponent>
+<jhi-annotation-service-selection spacer-id="sidebar-selection-spacer"></jhi-annotation-service-selection>
+
+<jhi-annotation-service-result-selectcomponent></jhi-annotation-service-result-selectcomponent>

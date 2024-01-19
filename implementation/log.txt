@@ -550,7 +550,7 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO] PASS src/main/webapp/app/shared/alert/alert-error.component.spec.ts (725 MB heap size)
 [INFO] PASS src/main/webapp/app/core/auth/auth-jwt.service.spec.ts (670 MB heap size)
 [INFO] PASS src/main/webapp/app/shared/pagination/item-count.component.spec.ts (759 MB heap size)
-[INFO] PASS src/main/webapp/app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component.spec.ts (700 MB heap size)
+[INFO] PASS src/main/webapp/app/annotation-service-result-selectcomponent/annotation-service-result-selectcomponent.component.spec.ts (700 MB heap size)
 [INFO] PASS src/main/webapp/app/layouts/profiles/page-ribbon.component.spec.ts (732 MB heap size)
 [INFO] PASS src/main/webapp/app/admin/logs/logs.service.spec.ts (788 MB heap size)
 [INFO] PASS src/main/webapp/app/shared/filter/filter.model.spec.ts (769 MB heap size)
@@ -645,9 +645,9 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO]  app/annotation-service-ui                                |   26.36 |     5.88 |   10.52 |   25.92 |                   
 [INFO]   annotation-service-ui.component.html                    |     100 |      100 |     100 |     100 |                   
 [INFO]   annotation-service-ui.component.ts                      |   25.68 |     5.88 |   10.52 |   25.23 | 91-286            
-[INFO]  app/annotationservice-result-selectcomponent             |     100 |      100 |     100 |     100 |                   
-[INFO]   annotationservice-result-selectcomponent.component.html |     100 |      100 |     100 |     100 |                   
-[INFO]   annotationservice-result-selectcomponent.component.ts   |     100 |      100 |     100 |     100 |                   
+[INFO]  app/annotation-service-result-selectcomponent             |     100 |      100 |     100 |     100 |                   
+[INFO]   annotation-service-result-selectcomponent.component.html |     100 |      100 |     100 |     100 |                   
+[INFO]   annotation-service-result-selectcomponent.component.ts   |     100 |      100 |     100 |     100 |                   
 [INFO]  app/config                                               |   95.65 |      100 |      75 |   95.65 |                   
 [INFO]   authority.constants.ts                                  |     100 |      100 |     100 |     100 |                   
 [INFO]   error.constants.ts                                      |     100 |      100 |     100 |     100 |                   
@@ -1201,7 +1201,7 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO] PASS src/main/webapp/app/admin/metrics/metrics.component.spec.ts (767 MB heap size)
 [INFO] PASS src/main/webapp/app/layouts/profiles/page-ribbon.component.spec.ts (799 MB heap size)
 [INFO] PASS src/main/webapp/app/admin/user-management/detail/user-management-detail.component.spec.ts (844 MB heap size)
-[INFO] PASS src/main/webapp/app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component.spec.ts (830 MB heap size)
+[INFO] PASS src/main/webapp/app/annotation-service-result-selectcomponent/annotation-service-result-selectcomponent.component.spec.ts (830 MB heap size)
 [INFO] PASS src/main/webapp/app/admin/metrics/metrics.service.spec.ts (692 MB heap size)
 [INFO] PASS src/main/webapp/app/core/util/event-manager.service.spec.ts (696 MB heap size)
 [INFO] PASS src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts (731 MB heap size)
@@ -1287,9 +1287,9 @@ Failed while enforcing releasability. See above detailed error message.
 [INFO]  app/annotation-service-ui                                |   26.36 |     5.88 |   10.52 |   25.92 |                   
 [INFO]   annotation-service-ui.component.html                    |     100 |      100 |     100 |     100 |                   
 [INFO]   annotation-service-ui.component.ts                      |   25.68 |     5.88 |   10.52 |   25.23 | 91-286            
-[INFO]  app/annotationservice-result-selectcomponent             |     100 |      100 |     100 |     100 |                   
-[INFO]   annotationservice-result-selectcomponent.component.html |     100 |      100 |     100 |     100 |                   
-[INFO]   annotationservice-result-selectcomponent.component.ts   |     100 |      100 |     100 |     100 |                   
+[INFO]  app/annotation-service-result-selectcomponent             |     100 |      100 |     100 |     100 |                   
+[INFO]   annotation-service-result-selectcomponent.component.html |     100 |      100 |     100 |     100 |                   
+[INFO]   annotation-service-result-selectcomponent.component.ts   |     100 |      100 |     100 |     100 |                   
 [INFO]  app/config                                               |   95.65 |      100 |      75 |   95.65 |                   
 [INFO]   authority.constants.ts                                  |     100 |      100 |     100 |     100 |                   
 [INFO]   error.constants.ts                                      |     100 |      100 |     100 |     100 |                   

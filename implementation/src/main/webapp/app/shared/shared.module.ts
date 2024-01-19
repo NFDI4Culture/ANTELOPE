@@ -15,7 +15,8 @@ import { ItemCountComponent } from './pagination/item-count.component';
 import { FilterComponent } from './filter/filter.component';
 import { OverlayComponent } from 'app/overlay/overlay.component';
 import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotation-service-ui.component';
-import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
+import { AnnotationServiceResultSelectcomponentComponent } from 'app/annotation-service-result-selectcomponent/annotation-service-result-selectcomponent.component';
+import { AnnotationServiceSelectionComponent } from 'app/annotation-service-selection/annotation-service-selection.component';
 import { ResultsGraphTidytreeComponent } from 'app/results-graph-tidytree/results-graph-tidytree.component';
 import { ResultsTableComponent } from 'app/results-table/results-table.component';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
@@ -41,7 +42,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FilterComponent,
     OverlayComponent,
     AnnotationServiceUIComponent,
-    AnnotationserviceResultSelectcomponentComponent,
+    AnnotationServiceResultSelectcomponentComponent,
+    AnnotationServiceSelectionComponent,
     ResultsGraphTidytreeComponent,
     ResultsTableComponent
   ],
@@ -61,7 +63,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FilterComponent,
     OverlayComponent,
     AnnotationServiceUIComponent,
-    AnnotationserviceResultSelectcomponentComponent,
+    AnnotationServiceResultSelectcomponentComponent,
+    AnnotationServiceSelectionComponent,
     ResultsGraphTidytreeComponent,
     ResultsTableComponent,
     MaterialModule,

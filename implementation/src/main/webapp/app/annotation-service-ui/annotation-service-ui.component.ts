@@ -2,7 +2,7 @@ import { Component,ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { ResultsGraphTidytreeComponent } from 'app/results-graph-tidytree/results-graph-tidytree.component';
 import { ResultsTableComponent } from 'app/results-table/results-table.component'
-// import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
+// import { AnnotationServiceResultSelectcomponentComponent } from 'app/annotation-service-result-selectcomponent/annotation-service-result-selectcomponent.component';
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 
@@ -266,7 +266,7 @@ export class AnnotationServiceUIComponent implements OnInit{
       // add datasource parameters (optional) to url e.g. wikidata=true, based on the checkbox formgroup
       let ts4tibSelected;
       ts4tibSelected = false;
-      this.selectedSources.controls.forEach((element:FormControl) => {
+      this.selectedSources.controls.forEach((element: FormControl) => {
         // check, if this datasource is valid for the endpoint, if valid and checked, add it as a url parameter
         if(
           ( endpoint === "entities" && this.datasources.find((i:any) => i.value === element.value).shownER === true) ||
@@ -299,7 +299,7 @@ export class AnnotationServiceUIComponent implements OnInit{
         
         const body = JSON.stringify(
           // this.textToAnnotate.value?.split(".") // to split sentences (may fail with terms like "alan M. turing" !)
-          [this.textToAnnotate.value]
+          [this.textToAnnotate.value?.trim()]
           );
 
           response = await fetch(url, {
@@ -369,7 +369,7 @@ export class AnnotationServiceUIComponent implements OnInit{
     this.loader.set(0);
     this.showResultContainer = false;
 
-    document.querySelector("jhi-annotationservice-result-selectcomponent")
+    document.querySelector("jhi-annotation-service-result-selectcomponent")
     ?.dispatchEvent(new CustomEvent("deselect-node", {
       bubbles: false
     }));
@@ -420,7 +420,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   }
 
   public onTabChanged(): void {
-    document.querySelector("jhi-annotationservice-result-selectcomponent")
+    document.querySelector("jhi-annotation-service-result-selectcomponent")
     ?.dispatchEvent(new CustomEvent("deselect-node", {
       bubbles: false
     }));

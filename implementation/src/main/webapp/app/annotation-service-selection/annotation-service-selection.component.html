@@ -1,0 +1,25 @@
+<span class="indicator" (click)="toggle()" jhiTranslate="home.sidebar.title">Your Selection</span>
+<aside class="bar container">
+    <div class="row">
+        <strong class="subheading" jhiTranslate="home.sidebar.selectedentities">Selected Entities</strong>
+        <span *ngIf="entities.size == 0" class="error" jhiTranslate="home.sidebar.selectionempty">You did not yet select any entities</span>
+        <ul class="list" *ngFor="let entity of entities">
+            <li>
+                <div>
+                    <strong>{{ entity?.label }}</strong>
+                    <span>{{ entity?.id }}</span>
+                </div>
+                <button type="button" class="btn-annotationservice btn-list-remove" (click)="deselectEntity(entity)">-</button>
+            </li>
+        </ul>
+        <div>
+            <button type="button" class="btn-annotationservice btn-annotationservice--secondary btn-deselect" jhiTranslate="home.sidebar.deselectall"  (click)="deselectAll()">Deselect All</button>
+        </div>
+        <hr>
+        <strong class="subheading" jhiTranslate="home.sidebar.export">Export Selection</strong>
+        <div class="btn-list">
+            <button type="submit" class="btn-annotationservice btn-annotationservice--primary" [disabled]="entities.size == 0" (click)="exportJSON()" jhiTranslate="home.sidebar.exportjson">JSON</button>
+            <button type="button" class="btn-annotationservice btn-annotationservice--primary" [disabled]="entities.size == 0" (click)="exportCSV()" jhiTranslate="home.sidebar.exportcsv">CSV</button>
+        </div>
+    </div>
+</aside>
