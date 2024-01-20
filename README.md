@@ -11,10 +11,10 @@ Report from preparatory user research workshop with the NFDI community: https://
 
 ## Service architecture
 
-V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/blob/main/AnnotationService_SystemArch_2022_05_23.png
+V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/blob/main/annotation-service-architecture.png
 
 ## Screenshot of tool interface
-V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/blob/main/2022_11_30_AnnotationService_screenshot.png 
+V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/blob/main/annotation-service-screenshot.png 
 
 ## Inspiration sources for UI solutions:
 1) solution as a plugin: https://youtu.be/FvU6O23Ozyc

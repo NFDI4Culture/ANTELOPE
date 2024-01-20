@@ -49,8 +49,8 @@ export class AnnotationServiceResultSelectcomponentComponent {
       return;
     }
 
-    await navigator.clipboard.writeText(this.selected.id.toString() ?? "");
-
+    await navigator.clipboard.writeText(this.selected.id.toString());
+    
     ResultsGraphTidytreeComponent.markCopied();
 
     AnnotationServiceSelectionComponent.select(this.selected);

@@ -1,25 +1,15 @@
 {
-  "name": "AnnotationService",
-  "short_name": "AnnotationService",
+  "name": "Antelope",
+  "short_name": "Antelope",
   "icons": [
     {
-      "src": "./content/images/jhipster_family_member_2_head-192.png",
-      "sizes": "192x192",
+      "src": "./favicon-128x128.png",
+      "sizes": "128x128",
       "type": "image/png"
     },
     {
-      "src": "./content/images/jhipster_family_member_2_head-256.png",
+      "src": "./favicon-256x256.png",
       "sizes": "256x256",
-      "type": "image/png"
-    },
-    {
-      "src": "./content/images/jhipster_family_member_2_head-384.png",
-      "sizes": "384x384",
-      "type": "image/png"
-    },
-    {
-      "src": "./content/images/jhipster_family_member_2_head-512.png",
-      "sizes": "512x512",
       "type": "image/png"
     }
   ],

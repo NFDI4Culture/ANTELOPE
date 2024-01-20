@@ -23,16 +23,15 @@ const TRANSPARENT = "#00000000";
 export class ResultsGraphTidytreeComponent {
 
   private static lastSelected: {
-    circle: HTMLElement|undefined;
-    innerCircle: HTMLElement|undefined;
-    text: HTMLElement|undefined;
-  };
+    circle: HTMLElement;
+    innerCircle: HTMLElement;
+    text: HTMLElement;
+  }|null;
 
   constructor(private elRef: ElementRef) {}
   
   public static markCopied(): void {
-    if(ResultsGraphTidytreeComponent.lastSelected
-    && ResultsGraphTidytreeComponent.lastSelected.innerCircle) {
+    if(ResultsGraphTidytreeComponent.lastSelected) {
       ResultsGraphTidytreeComponent.lastSelected.innerCircle.style.fill = "white";
     }
   }
@@ -120,7 +119,7 @@ export class ResultsGraphTidytreeComponent {
 
     // Compute the layout.
     const dx = 30; // Vertical margin between nodes
-    const dy = [...L].sort((a, b) => b.label.length - a.label.length)[0].label.length * 42 * 1.125;
+    const dy = [...L].sort((a, b) => b.label.length - a.label.length)[0].label.length * 12 * 1.125;
     tree<NodeData>().nodeSize([dx, dy])(root);
 
     // Center the tree.
@@ -146,7 +145,7 @@ export class ResultsGraphTidytreeComponent {
     const levelsH: number = [...L].map(l => l.depth)
     .sort((a, b) => b - a)[0];
     const levelsV: number = (Object.entries([...L].reduce((a, b) => {
-      a[b.depth] = (a[b.depth] ?? 0) + 1; 
+      a[b.depth] = (isNaN(a[b.depth]) ? 0 : a[b.depth]) + 1; 
       return a;
     }, {} as { [key: string]: number; }))
     .sort((a, b) => a[1] - b[1])
@@ -201,7 +200,7 @@ export class ResultsGraphTidytreeComponent {
     .attr("height", 30)
     .style("fill", fillForeground);
 
-    const getFill = (_: any, i: number) => {
+    const getFill = (_: any, i: number): string => {
       switch(L[i].depth) {
         case 0:
           return fillBackgroundSource;
@@ -240,20 +239,18 @@ export class ResultsGraphTidytreeComponent {
 
     // INTERACTION
     node.on("click", (e: Event, d: any) => {
-      if(d.depth < 2) return;
+      if(d.depth < 2) {return;}
       
       const targetNode = (e.target as HTMLElement).parentNode;
       const circle = targetNode?.children[2] as HTMLElement;
       const innerCircle = targetNode?.children[3] as HTMLElement;
       const text = targetNode?.children[4] as HTMLElement;
 
-      if(ResultsGraphTidytreeComponent.lastSelected
-      && ResultsGraphTidytreeComponent.lastSelected.circle) {
+      if(ResultsGraphTidytreeComponent.lastSelected) {
         ResultsGraphTidytreeComponent.lastSelected.circle.style.stroke
         = ResultsGraphTidytreeComponent.lastSelected.circle.getAttribute("fill") ?? "";
       }
-      if(ResultsGraphTidytreeComponent.lastSelected
-      && ResultsGraphTidytreeComponent.lastSelected.text) {
+      if(ResultsGraphTidytreeComponent.lastSelected) {
         ResultsGraphTidytreeComponent.lastSelected.text.style.stroke = TRANSPARENT;
       }
       ResultsGraphTidytreeComponent.lastSelected = { circle, innerCircle, text };
@@ -284,7 +281,7 @@ export class ResultsGraphTidytreeComponent {
       g.attr("transform", transform);
       svg.attr("height", height * transform.k * 2)
       // resize viewbox e.g. if we zoom in, the graph gets larger and we want still to see it when scrolling down
-      //.attr("viewBox", [-dy * padding, x0 - dx, width, height * transform.k * 1.05])
+      // .attr("viewBox", [-dy * padding, x0 - dx, width, height * transform.k * 1.05])
     })
     .on("end", () => {
       document.body.style.overflow = "auto";

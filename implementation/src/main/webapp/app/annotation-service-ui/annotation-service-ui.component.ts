@@ -323,7 +323,7 @@ export class AnnotationServiceUIComponent implements OnInit{
       // display as string
       // this.msg = JSON.stringify(result, null, 4);
       this.annotation = result;
-
+      console.log(this.annotation)
       this.resultCount = this.annotation.hierarchy.children
       .reduce((a, c: { children: unknown[] }) => a + c.children.length, 0);
 

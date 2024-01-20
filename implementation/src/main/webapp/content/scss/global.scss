@@ -278,6 +278,7 @@ p {
   text-transform: uppercase;
   border: none;
   border-radius: 0.35rem;
+  white-space: nowrap;
   transition: all 400ms;
 
   &:hover {

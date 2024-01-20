@@ -18,6 +18,13 @@ type Entity = {
 })
 export class AnnotationServiceSelectionComponent implements OnInit {
 
+  public entities: Set<Entity> = new Set();
+
+  private isActive = false;
+  private spacer?: HTMLElement;
+
+  constructor(private elRef: ElementRef) { }
+
   static select(entity: Entity): void {
     document.querySelector("jhi-annotation-service-selection")
     ?.dispatchEvent(new CustomEvent("select-entity", {
@@ -26,19 +33,12 @@ export class AnnotationServiceSelectionComponent implements OnInit {
     }));
   }
 
-  public entities: Set<Entity> = new Set();
-
-  private isActive = false;
-  private spacer?: HTMLElement;
-
-  constructor(private elRef: ElementRef) { }
-
   ngOnInit(): void {
     window.addEventListener("scroll", () => this.updateVisibility());
     this.updateVisibility();
 
     this.spacer = document.querySelector(`#${
-      this.elRef.nativeElement.getAttribute("spacer-id")
+      String(this.elRef.nativeElement.getAttribute("spacer-id"))
     }`) as HTMLElement;
 
     this.elRef.nativeElement.addEventListener("select-entity", (data: any) => {
@@ -98,7 +98,9 @@ export class AnnotationServiceSelectionComponent implements OnInit {
   }
 
   private updateVisibility(): void {
-    (this.isActive || (window.scrollY > (document.querySelector("jhi-navbar") as HTMLElement).offsetHeight))
+    const navbar = document.querySelector("jhi-navbar") as HTMLElement|undefined;
+    const offset: number = navbar ? navbar.offsetHeight : 50;
+    (this.isActive || (window.scrollY > offset))
     ? this.elRef.nativeElement.classList.add("show")
     : this.elRef.nativeElement.classList.remove("show");
   }
@@ -110,7 +112,6 @@ export class AnnotationServiceSelectionComponent implements OnInit {
     }`);
     downloadAnchor.setAttribute("download", `${fileName}.${fileExtension.toLowerCase()}`);
     document.body.appendChild(downloadAnchor);
-    console.log(downloadAnchor)
     setTimeout(() => {
       downloadAnchor.click();
       
