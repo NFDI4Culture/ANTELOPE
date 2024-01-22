@@ -1,4 +1,7 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { AnnotationServiceSelectionComponent } from 'app/annotation-service-selection/annotation-service-selection.component';
+import { EntitySelectService } from 'app/core/entity-select/entity-select.service';
+import { IEntity } from 'app/interfaces/IEntity';
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
 
@@ -18,24 +21,35 @@ const TRANSPARENT = "#00000000";
 @Component({
   selector: 'jhi-results-graph-tidytree',
   templateUrl: './results-graph-tidytree.component.html',
-  styleUrls: ['./results-graph-tidytree.component.scss']
+  styleUrls: ['./results-graph-tidytree.component.scss'],
+  providers: [ EntitySelectService ]
 })
-export class ResultsGraphTidytreeComponent {
+export class ResultsGraphTidytreeComponent implements OnInit {
 
-  private static lastSelected: {
-    circle: HTMLElement;
-    innerCircle: HTMLElement;
-    text: HTMLElement;
-  }|null;
+  constructor(private elRef: ElementRef) { }
 
-  constructor(private elRef: ElementRef) {}
-  
-  public static markCopied(): void {
-    if(ResultsGraphTidytreeComponent.lastSelected) {
-      ResultsGraphTidytreeComponent.lastSelected.innerCircle.style.fill = "white";
-    }
+  public static markCopied(): void { }
+
+  ngOnInit(): void {
+    const getNodeChildren = (dataId: string): HTMLElement[] => {
+      return this.elRef.nativeElement
+      .querySelector(`#${this.getNodeId(dataId)}`)!
+      .children;
+    };
+    EntitySelectService.on("select", (entity: IEntity) => {
+      getNodeChildren(entity.id)[2].style.stroke = "black";
+    });
+    EntitySelectService.on("unselect", (entity: IEntity) => {
+      getNodeChildren(entity.id)[2].style.stroke = TRANSPARENT;
+    });
+    EntitySelectService.on("copy", (entity: IEntity) => {
+      getNodeChildren(entity.id)[3].style.fill = "white";
+    });
+    EntitySelectService.on("uncopy", (entity: IEntity) => {
+      getNodeChildren(entity.id)[3].style.fill = TRANSPARENT;
+    });
   }
-
+  
   clear(): void {
     const svg = d3.select("#tree");
     svg.selectAll("*").remove();
@@ -181,6 +195,7 @@ export class ResultsGraphTidytreeComponent {
     .selectAll("a")
     .data(root.descendants())
     .join("a")
+    .attr("id", (d: any) => this.getNodeId(d.data.id))
     .attr("transform", (d: any) => `translate(${d.y as string},${d.x as string})`)
     // .attr("xlink:href", (d: any) => link(d.data, d))
     // .attr("target", linkTarget)
@@ -216,7 +231,7 @@ export class ResultsGraphTidytreeComponent {
     // CIRCLE
     node.append("circle")
     .attr("fill", getFill)
-    .attr("stroke", getFill)
+    .attr("stroke", TRANSPARENT)
     .attr("stroke-width", "1.25")
     .attr("r", r);
 
@@ -235,38 +250,19 @@ export class ResultsGraphTidytreeComponent {
     .attr("stroke", TRANSPARENT)
     .attr("stroke-width", "0.25")
     .attr("stroke-opacity", "1.0")
-    .text((d: any, i: any) => L[i].label)
+    .text((_, i: any) => L[i].label)
 
     // INTERACTION
-    node.on("click", (e: Event, d: any) => {
-      if(d.depth < 2) {return;}
-      
-      const targetNode = (e.target as HTMLElement).parentNode;
-      const circle = targetNode?.children[2] as HTMLElement;
-      const innerCircle = targetNode?.children[3] as HTMLElement;
-      const text = targetNode?.children[4] as HTMLElement;
-
-      if(ResultsGraphTidytreeComponent.lastSelected) {
-        ResultsGraphTidytreeComponent.lastSelected.circle.style.stroke
-        = ResultsGraphTidytreeComponent.lastSelected.circle.getAttribute("fill") ?? "";
-      }
-      if(ResultsGraphTidytreeComponent.lastSelected) {
-        ResultsGraphTidytreeComponent.lastSelected.text.style.stroke = TRANSPARENT;
-      }
-      ResultsGraphTidytreeComponent.lastSelected = { circle, innerCircle, text };
-      circle.style.stroke = "black";
-      text.style.stroke = "black";
-
-      document.querySelector("jhi-annotation-service-result-selectcomponent")
-      ?.dispatchEvent(new CustomEvent("select-node", {
-        detail: {
-            label: d.data.name ?? d.data.label,
-            URI: d.data.link,
-            id: d.data.id,
-            description: d.data.link
-        },
-        bubbles: false
-      }));
+    node.on("click", (_, d: any) => {
+      (d.depth >= 2)
+      && EntitySelectService.select({
+        label: label(d),
+        id: d.data.id,
+        URI: d.data.link,
+        description: d.data.description,
+        source: d.data.source,
+        classes: d.data.classes
+      });
     });
     
     const zoomPadding = 150;
@@ -288,6 +284,10 @@ export class ResultsGraphTidytreeComponent {
     }) as any;
 
     svg.call(zoom);
+  }
+
+  private getNodeId(entityId: string): string {
+    return `node--${entityId}`;
   }
 
 }

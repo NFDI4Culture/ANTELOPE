@@ -1,65 +1,54 @@
 import { Component, ElementRef } from '@angular/core';
-import { AnnotationServiceSelectionComponent } from 'app/annotation-service-selection/annotation-service-selection.component';
-import { ResultsGraphTidytreeComponent } from 'app/results-graph-tidytree/results-graph-tidytree.component';
-
-
-interface Entity {
-  label: string;
-  id: string;
-  URI: string;
-  source: string;
-  classes: string;
-  
-  description?: string;
-  imageUrl?: string;
-}
+import { EntitySelectService } from 'app/core/entity-select/entity-select.service';
+import { IEntity } from 'app/interfaces/IEntity';
 
 
 @Component({
   selector: 'jhi-annotation-service-result-selectcomponent',
   templateUrl: './annotation-service-result-selectcomponent.component.html',
-  styleUrls: ['./annotation-service-result-selectcomponent.component.scss']
+  styleUrls: ['./annotation-service-result-selectcomponent.component.scss'],
+  providers:  [ EntitySelectService ]
 })
 export class AnnotationServiceResultSelectcomponentComponent {
 
   private static targetOffsetPx = 25;
 
-  public selected?: Entity;
-
+  public selectedEntity: IEntity|null = null;
+  
   private graphElement: HTMLElement|null|undefined;
 
   constructor(private elRef: ElementRef) {
     window.addEventListener("resize", () => this.adjustPosition());
     window.addEventListener("scroll", () => this.adjustPosition());
     
-    this.elRef.nativeElement.addEventListener("select-node", (data: any) => {
-      this.selected = data?.detail;
+    EntitySelectService.on("select", (entity: IEntity) => {
+      this.selectedEntity = entity;
 
       this.elRef.nativeElement.classList.add("active");
 
       setTimeout(() => this.adjustPosition(), 0);
     });
-    this.elRef.nativeElement.addEventListener("deselect-node", () => {
+    EntitySelectService.on("unselect", () => {
+      this.selectedEntity = null;
+
       this.elRef.nativeElement.classList.remove("active");
     });
   }
 
   public async copyId(): Promise<void> {
-    if(!this.selected) {
+    if(!this.selectedEntity) {
       return;
     }
 
-    await navigator.clipboard.writeText(this.selected.id.toString());
+    await navigator.clipboard.writeText(this.selectedEntity.id.toString());
     
-    ResultsGraphTidytreeComponent.markCopied();
-
-    AnnotationServiceSelectionComponent.select(this.selected);
+    EntitySelectService.copy(this.selectedEntity);
   }
 
   public view(): void {
-    if(!this.selected) { return };
+    if(!this.selectedEntity) { return };
     // TODO
-    window.open(this.selected.URI, "_blank");
+    window.open(this.selectedEntity.URI, "_blank");
   }
 
   private adjustPosition(): void {

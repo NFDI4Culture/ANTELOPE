@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "ANTELOPE: Annotation, Terminology Lookup and Personalization",
+    "title": "Antelope: Annotation, Terminology Lookup and Personalization",
     "subtitle": "Це ваша домашня сторінка",
     "logged": {
       "message": "Ви ввійшли як користувач \"{{username}}\"."
@@ -53,7 +53,7 @@
   "sidebar": {
     "title": "Ваш вибір",
     "selectedentities": "Вибрані організації",
-    "deselectall": "Зніміть виділення з усіх",
+    "unselectall": "Зніміть виділення з усіх",
     "export": "Експортувати вибірку",
     "exportjson": "JSON",
     "exportcsv": "CSV",

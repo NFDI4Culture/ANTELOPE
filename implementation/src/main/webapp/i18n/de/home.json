@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "ANTELOPE: Annotation, Terminology Lookup and Personalization",
+    "title": "Antelope: Annotation, Terminology Lookup and Personalization",
     "subtitle": "Dies ist Ihre Hauptseite",
     "logged": {
       "message": "Sie sind als Benutzer \"{{username}}\" angemeldet."
@@ -53,7 +53,7 @@
   "sidebar": {
     "title": "Ihre Auswahl",
     "selectedentities": "Ausgewählte Entitäten",
-    "deselectall": "Alle abwählen",
+    "unselectall": "Alle abwählen",
     "export": "Auswahl Exportieren",
     "exportjson": "JSON",
     "exportcsv": "CSV",

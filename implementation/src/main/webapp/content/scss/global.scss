@@ -269,6 +269,12 @@ p {
   max-width: calc(10 * 5ch); // optimum paragraph width is ~ 10 words (mean word length 5 chars)
 }
 
+.mat-tab-body:not(.mat-tab-body-active) {
+  opacity: 0.0;
+  pointer-events: none;
+  transition: opacity 200ms;
+}
+
 .btn-annotationservice {
   cursor: pointer;
   padding: 0.625rem 2rem;

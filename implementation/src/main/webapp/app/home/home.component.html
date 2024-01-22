@@ -1,46 +1,40 @@
-<div class="row">
-  <div class="col-md-3" id="sidebar-selection-spacer"></div>
-  <div class="col-md-6">
-    <div class="logo-wrapper">
-      <img class="logo logo-l" src="../../content/images/logo_antelope.png">
-      <img class="logo logo-s" src="../../content/images/antelope.png">
-      <p class="lead" jhiTranslate="home.info">
-        Antelope is a powerful free, open source service for easy data annotation: terminology search; entity linking; and integration with research data management systems.
-      </p>
-    </div>
-    <br>
-    <jhi-annotation-service-ui></jhi-annotation-service-ui>
-    <jhi-overlay id="integration">
-      <h2 jhiTranslate="home.integration.title">Integration</h2>
-      <p jhiTranslate="home.integration.paragraph0_0">
-        <b>ANTELOPE</b> can be used in various ways. You may:
-      </p>
-      <ul>
-          <li jhiTranslate="home.integration.list0_0_0">Use this website directly for your search</li>
-          <li><a jhiTranslate="home.integration.link0_0" href="#embedd">Embed</a> <span jhiTranslate="home.integration.list0_0_1">the antelope search form in your website</span></li>
-          <li><span jhiTranslate="home.integration.list0_0_2">Connect to our</span> <a jhiTranslate="home.integration.link0_1" href="#api">RESTful API</a></li>
-      </ul>
-      <h3 jhiTranslate="home.integration.headline1">Via iFrame</h3>
-      <p jhiTranslate="home.integration.paragraph1_0">
-        Copy the code below and place it on your website or web-based software.
-        This will display the Antelope frontend component within your site.
-      </p>
-      <pre>
-        <code>
-          &lt;iframe 
-          src=&quot;http://localhost:9000/api/annotation/entities/selectcomponent&quot; 
-          height=&quot;600&quot; width=&quot;800&quot; name=&quot;antelope&quot; id=&quot;antelope-iframe&quot; sandbox=&quot;allow-scripts&quot;&gt;
-          &lt;/iframe&gt;
-        </code>
-      </pre>
-      <p>
-        <span jhiTranslate="home.integration.paragraph1_1"></span> <a jhiTranslate="home.integration.link1_0" href="#">here</a>.
-      </p>
-      <h3 jhiTranslate="home.integration.headline2">RESTful API</h3>
-      <p>
-        <span jhiTranslate="home.integration.paragraph2_0">You can use the full functionality of this website via our API.Have a look at the</span> <a jhiTranslate="home.integration.link2_0" href="/v3/api-docs/openapi" target="_blank">API docs</a>
-      </p>
-    </jhi-overlay>
-  </div>
-  <div class="col-md-3"></div>
+<div class="logo-wrapper">
+  <img class="logo logo-l" src="../../content/images/logo_antelope.png">
+  <img class="logo logo-s" src="../../content/images/antelope.png">
+  <p class="lead" jhiTranslate="home.info">
+    Antelope is a powerful free, open source service for easy data annotation: terminology search; entity linking; and integration with research data management systems.
+  </p>
 </div>
+<br>
+<jhi-annotation-service-ui></jhi-annotation-service-ui>
+<jhi-overlay id="integration">
+  <h2 jhiTranslate="home.integration.title">Integration</h2>
+  <p jhiTranslate="home.integration.paragraph0_0">
+    <b>Antelope</b> can be used in various ways. You may:
+  </p>
+  <ul>
+      <li jhiTranslate="home.integration.list0_0_0">Use this website directly for your search</li>
+      <li><a jhiTranslate="home.integration.link0_0" href="#embedd">Embed</a> <span jhiTranslate="home.integration.list0_0_1">the antelope search form in your website</span></li>
+      <li><span jhiTranslate="home.integration.list0_0_2">Connect to our</span> <a jhiTranslate="home.integration.link0_1" href="#api">RESTful API</a></li>
+  </ul>
+  <h3 jhiTranslate="home.integration.headline1">Via iFrame</h3>
+  <p jhiTranslate="home.integration.paragraph1_0">
+    Copy the code below and place it on your website or web-based software.
+    This will display the Antelope frontend component within your site.
+  </p>
+  <pre>
+    <code>
+      &lt;iframe 
+      src=&quot;http://localhost:9000/api/annotation/entities/selectcomponent&quot; 
+      height=&quot;600&quot; width=&quot;800&quot; name=&quot;antelope&quot; id=&quot;antelope-iframe&quot; sandbox=&quot;allow-scripts&quot;&gt;
+      &lt;/iframe&gt;
+    </code>
+  </pre>
+  <p>
+    <span jhiTranslate="home.integration.paragraph1_1"></span> <a jhiTranslate="home.integration.link1_0" href="#">here</a>.
+  </p>
+  <h3 jhiTranslate="home.integration.headline2">RESTful API</h3>
+  <p>
+    <span jhiTranslate="home.integration.paragraph2_0">You can use the full functionality of this website via our API.Have a look at the</span> <a jhiTranslate="home.integration.link2_0" href="/v3/api-docs/openapi" target="_blank">API docs</a>
+  </p>
+</jhi-overlay>

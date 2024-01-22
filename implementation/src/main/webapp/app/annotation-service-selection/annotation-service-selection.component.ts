@@ -1,49 +1,51 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
+import { EntitySelectService } from 'app/core/entity-select/entity-select.service';
+import { IEntity } from 'app/interfaces/IEntity';
 
-type Entity = {
-  id : string;
-  URI: string;
-  label: string;
-  source: string;
-  classes: string
-
-  description?: string;
-  imageUrl?: string;
-}
 
 @Component({
   selector: 'jhi-annotation-service-selection',
   templateUrl: './annotation-service-selection.component.html',
-  styleUrls: ['./annotation-service-selection.component.scss']
+  styleUrls: ['./annotation-service-selection.component.scss'],
+  providers:  [ EntitySelectService ]
 })
 export class AnnotationServiceSelectionComponent implements OnInit {
 
-  public entities: Set<Entity> = new Set();
+  public entities: Set<IEntity> = new Set();
 
   private isActive = false;
-  private spacer?: HTMLElement;
+  private spacers: {
+    el: HTMLElement;
+    whenInactive: string;
+    whenActive: string;
+  }[] = [];
 
   constructor(private elRef: ElementRef) { }
-
-  static select(entity: Entity): void {
-    document.querySelector("jhi-annotation-service-selection")
-    ?.dispatchEvent(new CustomEvent("select-entity", {
-      detail: entity,
-      bubbles: false
-    }));
-  }
 
   ngOnInit(): void {
     window.addEventListener("scroll", () => this.updateVisibility());
     this.updateVisibility();
 
-    this.spacer = document.querySelector(`#${
-      String(this.elRef.nativeElement.getAttribute("spacer-id"))
-    }`) as HTMLElement;
+    this.spacers = Array.from(document.querySelectorAll<HTMLElement>("*[sidebar-selection-space]"))
+    .map((el: HTMLElement) => {
+      const attr: string[] = (el.getAttribute("sidebar-selection-space") ?? "").split("-");
+      return {
+        el,
 
-    this.elRef.nativeElement.addEventListener("select-entity", (data: any) => {
-      (this.select(data.detail) && !this.isActive)
+        whenInactive: attr[0],
+        whenActive: attr[1]
+      };
+    });
+
+    EntitySelectService.on("copy", (entity: IEntity) => {
+      (this.select(entity) && !this.isActive)
       && this.elRef.nativeElement.querySelector(".indicator").classList.add("notify");
+    });
+
+    document.addEventListener("collapse", () => {
+      this.entities.forEach((entity: IEntity) => {
+        EntitySelectService.copy(entity);
+      });
     });
   }
 
@@ -55,14 +57,11 @@ export class AnnotationServiceSelectionComponent implements OnInit {
     
     this.updateVisibility();
 
-    if(!this.spacer) {
-      return;
-    }
-    if(this.isActive) {
-      this.spacer.style.width = `${12.5}%`;
-    } else {
-      this.spacer.style.removeProperty("width");
-    }
+    this.spacers
+    .forEach((spacer) => {
+      spacer.el.classList.add(`col-md-${this.isActive ? spacer.whenActive : spacer.whenInactive}`);
+      spacer.el.classList.remove(`col-md-${this.isActive ? spacer.whenInactive : spacer.whenActive}`);
+    });
   }
 
   exportJSON(): void {
@@ -74,21 +73,23 @@ export class AnnotationServiceSelectionComponent implements OnInit {
       Object.keys(Array.from(this.entities)[0]).join(",").trim()
     }\n${
       Array.from(this.entities)
-      .map((e: Entity) => Object.values(e).join(",").trim())
+      .map((e: IEntity) => Object.values(e).join(",").trim())
       .join("\n")
     }`.trim());
   }
 
-  deselectEntity(entity: Entity): void {
+  unselectEntity(entity: IEntity): void {
     this.entities.delete(entity);
+
+    EntitySelectService.uncopy(entity);
   }
 
-  deselectAll(): void {
-    this.entities.clear();
+  unselectAll(): void {
+    this.entities.forEach((entitiy: IEntity) => this.unselectEntity(entitiy));
   }
 
-  private select(entity: Entity): boolean {
-    if(this.entities.has(entity)) {
+  private select(entity: IEntity): boolean {
+    if(Array.from(this.entities).map((entity: IEntity) => entity.id).includes(entity.id)) {
       return false;
     }
 

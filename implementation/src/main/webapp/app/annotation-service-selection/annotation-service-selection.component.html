@@ -3,17 +3,18 @@
     <div class="row">
         <strong class="subheading" jhiTranslate="home.sidebar.selectedentities">Selected Entities</strong>
         <span *ngIf="entities.size == 0" class="error" jhiTranslate="home.sidebar.selectionempty">You did not yet select any entities</span>
-        <ul class="list" *ngFor="let entity of entities">
-            <li>
+        <ul class="list">
+            <li *ngFor="let entity of entities">
                 <div>
+                    <div class="node" [ngClass]="entity?.isInstance ? 'node--instance' : 'node--class'"></div>
                     <strong>{{ entity?.label }}</strong>
                     <span>{{ entity?.id }}</span>
                 </div>
-                <button type="button" class="btn-annotationservice btn-list-remove" (click)="deselectEntity(entity)">-</button>
+                <button type="button" class="btn-annotationservice btn-list-remove" (click)="unselectEntity(entity)">-</button>
             </li>
         </ul>
         <div>
-            <button type="button" class="btn-annotationservice btn-annotationservice--secondary btn-deselect" jhiTranslate="home.sidebar.deselectall"  (click)="deselectAll()">Deselect All</button>
+            <button type="button" class="btn-annotationservice btn-annotationservice--secondary btn-unselect" jhiTranslate="home.sidebar.unselectall"  (click)="unselectAll()">unselect All</button>
         </div>
         <hr>
         <strong class="subheading" jhiTranslate="home.sidebar.export">Export Selection</strong>

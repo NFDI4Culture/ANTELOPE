@@ -37,7 +37,7 @@
     display: flex;
     align-items: center;
     margin: 2rem;
-    margin-right: 3.25rem;
+    margin-right: 3.75rem;
     width: fit-content;
     font-size: 0.9em;
     transform: translateX(1rem);
@@ -93,7 +93,7 @@
     .btn-list-remove {
         padding: 0 0.5em;
     }
-    .btn-deselect {
+    .btn-unselect {
         display: block;
         margin: auto;
         margin-top: 2em;
@@ -102,12 +102,25 @@
 
     .list {
         li {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
+            &, & > div {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .node {
+                display: block;
+                width: 0.9em;
+                height: 0.9em;
+                background-color: white;
+                border: 0.225em solid var(--color-primary);
+                border-radius: 100%;
+            }
 
             strong {
+                margin: 0;
+                margin-left: 0.5em;
                 font-weight: normal;
             }
             span {

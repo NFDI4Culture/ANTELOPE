@@ -1,11 +1,11 @@
 <div>
-    <h4>{{ selected?.label }}</h4>
-    <span>{{ selected?.id }}</span>
+    <h4>{{ selectedEntity?.label }}</h4>
+    <span>{{ selectedEntity?.id }}</span>
 </div>
 <p>
-    {{ selected?.description }}
+    {{ selectedEntity?.description }}
 </p>
-<img src="{{ selected?.imageUrl }}" *ngIf="selected?.imageUrl">
+<img src="{{ selectedEntity?.imageUrl }}" *ngIf="selectedEntity?.imageUrl">
 <div>
     <button type="button" class="btn-annotationservice btn-annotationservice--slim btn-annotationservice--primary btn-annotationservice--i-add" (click)="copyId()" jhiTranslate="home.node.copyid">COPY ID</button>
     <button type="button" class="btn-annotationservice btn-annotationservice--slim btn-annotationservice--secondary btn-annotationservice--i-arrow" (click)="view()" jhiTranslate="home.node.view">VIEW</button>

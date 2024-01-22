@@ -1,28 +1,20 @@
-import { Component,ElementRef, OnInit } from '@angular/core';
+import { Component,ElementRef, OnInit, ViewChild } from '@angular/core';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
+import * as XLSX from 'xlsx';
+
 import { ResultsGraphTidytreeComponent } from 'app/results-graph-tidytree/results-graph-tidytree.component';
 import { ResultsTableComponent } from 'app/results-table/results-table.component'
-// import { AnnotationServiceResultSelectcomponentComponent } from 'app/annotation-service-result-selectcomponent/annotation-service-result-selectcomponent.component';
-import { ViewChild } from '@angular/core';
-import { LoadingBarService } from '@ngx-loading-bar/core';
-
-
-import * as XLSX from 'xlsx';
+import { EntitySelectService } from 'app/core/entity-select/entity-select.service';
+import { IEntity } from 'app/interfaces/IEntity';
 
 
 const EXCEL_EXTENSION = '.xlsx';
 
-interface ENTITIES {
-  id : string;
-  URI: string;
-  label: string;
-  source: string;
-  classes: string
-} // TODO: Shared types
 
 // data model of the RESTful annotationService API result
 type AnnotationResponse = {
-  entities: ENTITIES[];
+  entities: IEntity[];
   relations: [];
   hierarchy: HierarchyTree;
 };
@@ -50,9 +42,10 @@ type HierarchyTree = {
 @Component({
   selector: 'jhi-annotation-service-ui',
   templateUrl: './annotation-service-ui.component.html',
-  styleUrls: ['./annotation-service-ui.component.scss']
+  styleUrls: ['./annotation-service-ui.component.scss'],
+  providers: [ EntitySelectService ]
 })
-export class AnnotationServiceUIComponent implements OnInit{
+export class AnnotationServiceUIComponent implements OnInit {
   loader = this.loadingBar.useRef();
   textToAnnotate = new FormControl('');
   ts4tibOntologies = [
@@ -116,6 +109,19 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   ngOnInit():any {
     this.getTs4tibOntologies();
+
+    // Material bug workaround
+    const workaroundMatTabChangeScroll = (): void => {
+      this.elRef.nativeElement.querySelectorAll("mat-tab-group")
+      .forEach((tab: HTMLElement) => {
+        tab.style.minHeight = "auto";
+        tab.style.minHeight = `${tab.offsetHeight}px`;
+      });
+    };
+    workaroundMatTabChangeScroll();
+    document.addEventListener("collapse", workaroundMatTabChangeScroll);
+    document.addEventListener("uncollapse", workaroundMatTabChangeScroll);
+    window.addEventListener("scroll", workaroundMatTabChangeScroll);
   }
 
   startLoading():void {
@@ -323,7 +329,7 @@ export class AnnotationServiceUIComponent implements OnInit{
       // display as string
       // this.msg = JSON.stringify(result, null, 4);
       this.annotation = result;
-      console.log(this.annotation)
+      
       this.resultCount = this.annotation.hierarchy.children
       .reduce((a, c: { children: unknown[] }) => a + c.children.length, 0);
 
@@ -337,7 +343,7 @@ export class AnnotationServiceUIComponent implements OnInit{
         this.graph.clear();
         this.graph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
         this.table.createTableFromWikiDataHierarchy(this.annotation.entities);
-        
+
         document.dispatchEvent(new CustomEvent("collapse"));
       } else {
         this.msg = "No Results found";
@@ -358,7 +364,6 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   // remove the graph and clear all input fields
   clearAll(): void {
-    // console.log("test")
     this.msg = "";
     this.err = "";
     this.annotation = {"entities":[], "relations":[], hierarchy:{} as unknown as HierarchyTree};
@@ -369,10 +374,9 @@ export class AnnotationServiceUIComponent implements OnInit{
     this.loader.set(0);
     this.showResultContainer = false;
 
-    document.querySelector("jhi-annotation-service-result-selectcomponent")
-    ?.dispatchEvent(new CustomEvent("deselect-node", {
-      bubbles: false
-    }));
+    EntitySelectService.unselect();
+
+    document.dispatchEvent(new CustomEvent("uncollapse"));
   }
 
   saveJson():void{
@@ -420,10 +424,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   }
 
   public onTabChanged(): void {
-    document.querySelector("jhi-annotation-service-result-selectcomponent")
-    ?.dispatchEvent(new CustomEvent("deselect-node", {
-      bubbles: false
-    }));
+    EntitySelectService.unselect();
   }
 
   
