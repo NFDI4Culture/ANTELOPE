@@ -4,8 +4,8 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AlertError } from './alert-error.model';
-import { Alert, AlertService } from 'app/core/util/alert.service';
-import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { Alert, AlertService } from 'app/services/util/alert.service';
+import { EventManager, EventWithContent } from 'app/services/util/event-manager.service';
 
 @Component({
   selector: 'jhi-alert-error',

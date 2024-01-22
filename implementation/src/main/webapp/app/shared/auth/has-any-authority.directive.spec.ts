@@ -5,8 +5,8 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/services/auth/account.service';
+import { Account } from 'app/services/auth/account.model';
 
 import { HasAnyAuthorityDirective } from './has-any-authority.directive';
 
