@@ -72,14 +72,14 @@ export class SelectionBarComponent implements OnInit {
     const filterOrderSerialObj = (obj: { [ key: string ]: any; }):
       { [ key: string ]: string|number|boolean; }  => {
       const serialKeys: string[] = [];
-      for(let key in obj) {
+      for(const key in obj) {
         if([ "string", "number", "boolean" ].includes(typeof(obj[key]))) {
           serialKeys.push(key);
         }
       }
       serialKeys.sort();
       const filteredObj: { [ key: string ]: string|number|boolean; } = {};
-      for(let key of serialKeys) {
+      for(const key of serialKeys) {
         filteredObj[key] = obj[key];
       }
       return filteredObj;
@@ -105,7 +105,7 @@ export class SelectionBarComponent implements OnInit {
   }
 
   private select(entity: IEntity): boolean {
-    if(Array.from(this.entities).map((entity: IEntity) => entity.id).includes(entity.id)) {
+    if(Array.from(this.entities).map((e: IEntity) => e.id).includes(entity.id)) {
       return false;
     }
 

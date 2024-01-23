@@ -26,15 +26,13 @@ const TRANSPARENT = "#00000000";
 export class ResultsGraphTidytreeComponent implements OnInit {
 
   constructor(private elRef: ElementRef) { }
-
-  public static markCopied(): void { }
-
+  
   ngOnInit(): void {
-    const getNodeChildren = (dataId: string): HTMLElement[] => {
-      return this.elRef.nativeElement
-      .querySelector(`#${this.getNodeId(dataId)}`)!
-      .children;
-    };
+    const getNodeChildren = (dataId: string): HTMLElement[] => this
+    .elRef.nativeElement
+    .querySelector(`#${this.getNodeId(dataId)}`)
+    .children as HTMLElement[];
+
     EntitySelectService.on("select", (entity: IEntity) => {
       getNodeChildren(entity.id)[2].style.stroke = "black";
       getNodeChildren(entity.id)[4].style.stroke = "black";

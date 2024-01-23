@@ -1,9 +1,11 @@
 ######################
 # Project Specific
 ######################
-/src/main/webapp/content/css/main.css
-/target/classes/static/**
-/src/test/javascript/coverage/
+implementation/src/main/webapp/content/css/main.css
+implementation/src/test/javascript/coverage/
+implementation/target/
+implementation/.apt_generated/
+implementation/.apt_generated_tests/
 
 ######################
 # Node

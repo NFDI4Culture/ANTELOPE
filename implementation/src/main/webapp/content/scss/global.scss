@@ -265,6 +265,16 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   outline: none !important;
 }
 
+*.disabled, *[disabled] {
+  pointer-events: none;
+  pointer-events: none;
+  filter: saturate(0.25) opacity(0.55);
+
+  mat-ink-bar {
+    background-color: var(--color-bg-gray) !important;
+  }
+}
+
 p {
   max-width: calc(10 * 5ch); // optimum paragraph width is ~ 10 words (mean word length 5 chars)
 }
@@ -302,11 +312,6 @@ p {
 
   &--slim {
     padding: 0.35rem 0.95rem;
-  }
-
-  &.disabled, &[disabled] {
-    pointer-events: none;
-    filter: saturate(0.3);
   }
 
   @mixin icon($file) {

@@ -8,9 +8,9 @@ import { IEntity } from 'app/interfaces/IEntity';
 })
 export class EntitySelectService {
 
-  private static eventEmitter = new EventEmitter();
-
   public static selected: IEntity|null = null;
+  
+  private static eventEmitter = new EventEmitter();
 
   public static select(entity: IEntity): void {
     EntitySelectService.unselect();

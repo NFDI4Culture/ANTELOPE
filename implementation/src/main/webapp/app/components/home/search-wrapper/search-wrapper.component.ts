@@ -342,19 +342,20 @@ export class AnnotationServiceUIComponent implements OnInit {
         this.graph.clear();
         this.graph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
         // this.table.createTableFromWikiDataHierarchy(this.annotation.entities); // TODO: Delivers wrong IDs (uses label instead)
+        // TEMPORARY WORKAROUND:
         this.table.createTableFromWikiDataHierarchy([]
-          .concat.apply([], this.annotation.hierarchy
+          .concat(...(this.annotation.hierarchy
             .children
-            .map((child: any) => child.children))
-          .map((rawEntity: any) => {
+            .map((child: any) => child.children)))  // eslint-disable-line
+          .map((rawEntity: any) => {                // eslint-disable-line
             const refinedEntity: any = {
               ...rawEntity,
               label: rawEntity.name
             };
-            delete refinedEntity.name;
-            return refinedEntity;
+            delete refinedEntity.name;              // eslint-disable-line
+            return refinedEntity;                   // eslint-disable-line
           })
-        );  // TEMPORARY WORKAROUND (s.a.)
+        );
         
         document.dispatchEvent(new CustomEvent("collapse"));
       } else {
