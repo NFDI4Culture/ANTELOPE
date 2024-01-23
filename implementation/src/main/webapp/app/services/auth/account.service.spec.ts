@@ -1,4 +1,4 @@
-jest.mock('app/core/auth/state-storage.service');
+jest.mock('app/services/auth/state-storage.service');
 
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';

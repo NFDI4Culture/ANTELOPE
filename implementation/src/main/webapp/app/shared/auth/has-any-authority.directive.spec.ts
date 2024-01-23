@@ -1,4 +1,4 @@
-jest.mock('app/core/auth/account.service');
+jest.mock('app/services/auth/account.service');
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';

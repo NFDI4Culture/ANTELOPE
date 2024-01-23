@@ -1,4 +1,4 @@
-jest.mock('app/core/util/alert.service');
+jest.mock('app/services/util/alert.service');
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 

@@ -1,4 +1,4 @@
-jest.mock('app/core/auth/account.service');
+jest.mock('app/services/auth/account.service');
 
 import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';

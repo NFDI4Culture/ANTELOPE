@@ -1,5 +1,5 @@
-jest.mock('app/core/auth/account.service');
-jest.mock('app/login/login.service');
+jest.mock('app/services/auth/account.service');
+jest.mock('app/components/login/login.service');
 
 import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -10,8 +10,8 @@ import { of, throwError } from 'rxjs';
 
 import { AccountService } from 'app/services/auth/account.service';
 
-import { LoginService } from './login.service';
-import { LoginComponent } from './login.component';
+import { LoginService } from 'app/components/login/login.service';
+import { LoginComponent } from 'app/components/login/login.component';
 
 describe('LoginComponent', () => {
   let comp: LoginComponent;

@@ -1,4 +1,4 @@
-jest.mock('app/core/auth/account.service');
+jest.mock('app/services/auth/account.service');
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { of, Subject } from 'rxjs';
 import { AccountService } from 'app/services/auth/account.service';
 import { Account } from 'app/services/auth/account.model';
 
-import { HomeComponent } from './home.component';
+import { HomeComponent } from 'app/components/home/home.component';
 
 describe('Home Component', () => {
   let comp: HomeComponent;
