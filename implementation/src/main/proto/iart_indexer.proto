@@ -8,6 +8,8 @@ option java_package = "iart.client";
 
 package iart.indexer;
 
+import "data.proto";
+
 service Indexer {
   rpc list_plugins(ListPluginsRequest) returns (ListPluginsReply) {}
   rpc status(StatusRequest) returns (StatusReply) {}
@@ -21,7 +23,7 @@ service Indexer {
 
   rpc suggest(SuggestRequest) returns (SuggestReply) {}
 
-  rpc analyze(AnalyzeRequest) returns (AnalyzeReply) {}
+  rpc analyse(AnalyseRequest) returns (AnalyseReply) {}
 
   rpc build_indexer(BuildIndexerRequest) returns (BuildIndexerReply) {}
   rpc build_feature_cache(BuildFeatureCacheRequest)
@@ -39,6 +41,17 @@ service Indexer {
   rpc collection_delete(CollectionDeleteRequest)
       returns (CollectionDeleteReply) {}
   rpc collection_list(CollectionListRequest) returns (CollectionListReply) {}
+}
+
+enum DataType {
+  UNKOWN_TYPE = 0;
+  STRING_TYPE = 1;
+  INT_TYPE = 2;
+  FLOAT_TYPE = 3;
+  BOOL_TYPE = 4;
+  BYTES_TYPE = 5;
+  IMAGE_TYPE = 6;
+  BOUNDING_BOX_TYPE = 7;
 }
 
 message Collection {
@@ -89,33 +102,11 @@ message PluginConfig {
   string state = 4;
 }
 
-message Concept {
-  string concept = 1;
-  string type = 2;
-  float prob = 3;
-}
-
-message ClassifierResult {
-  string plugin = 1;
-  repeated Concept concepts = 2;
-}
-
-// TODO maybe move this to feature list
-message FeatureResult {
-  string plugin = 1;
-  string type = 2;
-  string binary = 3;
-  repeated float feature = 4;
-}
-
 message PluginResult {
   string plugin = 1;
   string type = 2;
   string version = 3;
-  oneof result {
-    ClassifierResult classifier = 4;
-    FeatureResult feature = 5;
-  }
+  PluginData result = 4;
 }
 
 message ImageResult {
@@ -254,7 +245,9 @@ message SearchRequest {
   AggregateRequest aggregate = 4;
   string random_seed = 5;
 
-  enum Extra { EXTRA_FEATURES = 0; }
+  enum Extra {
+    EXTRA_FEATURES = 0;
+  }
 
   repeated Extra extras = 6;
 
@@ -274,7 +267,7 @@ message SearchResultEntry {
   repeated ValueField meta = 2;
   repeated ValueField origin = 3;
   repeated ClassifierResult classifier = 4;
-  repeated FeatureResult feature = 5;
+  repeated Feature feature = 5;
   repeated float coordinates = 6;
   int64 cluster = 7;
   float distance = 8;
@@ -330,13 +323,6 @@ message IndexingReply {
   string id = 2;
 }
 
-// message AggregateRequest {
-//   string type = 1;
-//   string part = 2;
-//   string field_name = 3;
-//   int32 size = 4;
-// }
-
 message AggregateReply { repeated ValueField field = 1; }
 
 message GetRequest { string id = 1; }
@@ -345,7 +331,7 @@ message GetReply {
   repeated ValueField meta = 2;
   repeated ValueField origin = 3;
   repeated ClassifierResult classifier = 4;
-  repeated FeatureResult feature = 5;
+  repeated Feature feature = 5;
   Collection collection = 7;
 }
 
@@ -361,10 +347,17 @@ message CollectionDeleteReply {
 message CollectionListRequest {}
 message CollectionListReply { repeated Collection collections = 1; }
 
-message AnalyzeRequest {
-  bytes image = 1;
-  repeated string plugin_names = 2;
+message PluginParameter {
+  string name = 1;
+  bytes content = 2;
+  repeated int32 shape = 3;
+  DataType type = 4;
 }
-message AnalyzeReply {
-  repeated PluginResult results = 1;
+
+message AnalyseRequest {
+  string plugin = 1;
+  repeated PluginParameter parameters = 2;
+  repeated PluginData inputs = 3;
 }
+
+message AnalyseReply { repeated PluginResult results = 1; }

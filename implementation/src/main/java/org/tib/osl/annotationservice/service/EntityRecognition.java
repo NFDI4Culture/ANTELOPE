@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -674,26 +675,27 @@ public class EntityRecognition {
         
        
         Map<String,FullDictionaryValue> result = new HashMap<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/dict/iconclass/kw_en_keys.txt"))) {
+        
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/dict/iconclass/kw_en_keys.txt", Charset.forName("utf8")))) {
             String line;
             int i = 0;
             while ((line = br.readLine()) != null) {
                 FullDictionaryValue actResultEntry = new FullDictionaryValue();
                 String[] values = line.split("[|]");
                 //System.out.println(values.toString());
-                String entity_id = values[0];
+                String entity_id = values[0].toLowerCase();
                 List<String> labels = new ArrayList<>();
                 labels.add(values[1]);
                 
-                actResultEntry.setKbId(values[0]);
+                actResultEntry.setKbId(entity_id);
                 actResultEntry.setLabel(values[1]);
                 actResultEntry.setPatterns(labels);
-                actResultEntry.setKbUrl("http://iconclass.org/"+values[0]);
+                actResultEntry.setKbUrl("http://iconclass.org/"+entity_id);
                 result.put(entity_id, actResultEntry );
                 i++;
-                if( i > 10){
-                    break;
-                }
+                //if( i > 10){
+                //    break;
+                //}
             }
         }
         return result;

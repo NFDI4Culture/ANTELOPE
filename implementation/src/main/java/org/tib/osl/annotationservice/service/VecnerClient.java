@@ -21,10 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.tib.osl.annotationservice.service.api.dto.FullDictionaryValue;
 import org.tib.osl.annotationservice.service.api.dto.TextEntityLinkingRequest;
 
-import org.tib.osl.annotationservice.service.api.dto.TextEntityLinkingRequest.DictionaryTypeEnum;
-
-import com.google.gson.Gson;
-
 public class VecnerClient {
     private static Logger log = LoggerFactory.getLogger(VecnerClient.class);
 
@@ -61,18 +57,18 @@ public class VecnerClient {
 
         // vecner is called in a two step process: 1) get entity linking using simple dictionary 2) get visualization using optional additional data from full dictionary 
         Map<String, List<String>> simpleDictionary = new HashMap<>();
-        switch (request.getDictionaryType()) {
+        switch (request.getDictionary().getDictionaryType()) {
             case LISTOFWORDS:
-                for( String word : request.getListOfWords()){
+                for( String word : request.getDictionary().getListOfWords()){
                     simpleDictionary.put(word, Arrays.asList(word));
                 }
 
                 break;
             case SIMPLEDICTIONARY:
-                simpleDictionary = request.getSimpleDictionary();
+                simpleDictionary = request.getDictionary().getSimpleDictionary();
                 break;
             case FULLDICTIONARY:
-                Map<String, FullDictionaryValue> fullDict = request.getFullDictionary();
+                Map<String, FullDictionaryValue> fullDict = request.getDictionary().getFullDictionary();
                 for( String key : fullDict.keySet()) {
                     FullDictionaryValue val = fullDict.get(key);
                     simpleDictionary.put(val.getKbId(), val.getPatterns());
@@ -104,14 +100,20 @@ public class VecnerClient {
             
             log.debug("vizualize");
             log.debug(request.toString());
-            if( request.getFullDictionary() != null ) {
+            if( request.getDictionary().getFullDictionary() != null ) {
                 log.debug("found full dict, extend el_result...");
                 for( Object e : elResultJson.getJSONArray("ents") ){
                     JSONObject ent = (JSONObject)e;
-                    String ent_id = ent.getString("label");
-                    ent.put("label", request.getFullDictionary().get(ent_id).getLabel());
-                    ent.put("kb_id", request.getFullDictionary().get(ent_id).getKbId());
-                    ent.put("kb_url", request.getFullDictionary().get(ent_id).getKbUrl());
+                    System.out.println(ent);
+                    String ent_id = ent.getString("label"); 
+                    if(request.getDictionary().getFullDictionary().containsKey(ent_id)) {
+                        ent.put("label", request.getDictionary().getFullDictionary().get(ent_id).getLabel());
+                        ent.put("kb_id", request.getDictionary().getFullDictionary().get(ent_id).getKbId());
+                        ent.put("kb_url", request.getDictionary().getFullDictionary().get(ent_id).getKbUrl());
+                    } else {
+                        System.err.println( "unknown id:"+ent_id+" in:"+request.getDictionary().getFullDictionary().keySet());
+                        throw new IllegalStateException("dictionary error. Unknown id:"+ent_id);
+                    }
                 }
             }
             vRequest.put("el_result", elResultJson);

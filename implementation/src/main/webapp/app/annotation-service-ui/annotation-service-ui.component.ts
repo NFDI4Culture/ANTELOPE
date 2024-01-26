@@ -1,12 +1,15 @@
 import { Component,ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
+import { GraphBarchartComponent } from 'app/graph-barchart/graph-barchart.component';
+
 // import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { ViewChild } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { HttpClient } from '@angular/common/http';
 
 import * as XLSX from 'xlsx';
+import { catchError } from 'rxjs';
 
 const EXCEL_EXTENSION = '.xlsx';
 
@@ -15,7 +18,8 @@ interface ENTITIES {
   URI: string;
   label: string;
   source: string;
-  classes: string
+  classes: string;
+  score: number;
 }
 
 // data model of the RESTful annotationService API result
@@ -66,7 +70,8 @@ type HierarchyTree = {
 
 export class AnnotationServiceUIComponent implements OnInit{
   loader = this.loadingBar.useRef();
-  textToAnnotate = new FormControl('Vincent van Gogh was a dutch post-impressionist painter');
+  textTerminologySearch = new FormControl('Vincent van Gogh');
+  textEntityLinking = new FormControl('Vincent van Gogh was a dutch post-impressionist painter');
   el_user_dict_examples = [
     '"michelangelo", "van gogh"',
     '{"artist": ["michelangelo","van gogh"]}',
@@ -89,7 +94,7 @@ export class AnnotationServiceUIComponent implements OnInit{
   initArrayCollections:FormControl[] = [];
   selectedSources = new FormArray(this.initArray);
   selectedTs4tibOntologies= [];// [{name: 'All'}];
-  selectedIartImageModels = "KaggleResnetClassifier";
+  selectedIartImageModels = "ClipClassification";
   imageUrl : string | null = "content/images/landscape.jpg";
   selectedFile: File | null = null;
   msg = "";
@@ -127,7 +132,11 @@ export class AnnotationServiceUIComponent implements OnInit{
   public iart_result : String = "";
   
   @ViewChild(GraphTidytreeComponent)
-  private graph!: GraphTidytreeComponent;
+  private hierarchyGraph!: GraphTidytreeComponent;
+  @ViewChild(GraphBarchartComponent)
+  private imageELgraph!: GraphBarchartComponent;
+  @ViewChild('abcde')
+  private resultHead!: ElementRef;
   
   // init a custom loadingbar to show progress while waiting for the annotationService result and creating the d3 graph
   constructor(private loadingBar: LoadingBarService, fb: FormBuilder ,private http: HttpClient  ) {
@@ -162,6 +171,20 @@ export class AnnotationServiceUIComponent implements OnInit{
   {
     this.loadingBar.useRef().complete();
   }
+
+  public dictSourceTabChange(index:number|null)
+  {
+    if( index != null){
+      this.selectedDictSourceTabIndex = index;
+    }
+  } 
+
+  public userDictTabChange(index:number|null)
+  {
+    if( index != null){
+      this.selectedUserDictTabIndex = index;
+    }
+  } 
 
   setDefaultFile() {
     console.log( 'test' )
@@ -216,6 +239,359 @@ export class AnnotationServiceUIComponent implements OnInit{
     this.startLoading();
     // this.annotate();
     this.stopLoading();
+  }
+
+
+
+  async entityRecognition(): Promise<void> {
+    // call the java backend service (falcon)
+    //return this.callAnnotationService("entities");
+
+    // call the python rest service (VecNER)
+    this.callVecnerServiceViaBackend();
+    //return this.callVecnerServiceDirect();
+  }
+
+  async imageEL(): Promise<void> {
+    this.loader.start();
+    this.iart_result = "";
+    console.log( this.selectedFile);
+    const url = 'api/annotation/entitylinking/image?model='+this.selectedIartImageModels;
+    
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('image', this.selectedFile);
+      
+      if( this.selectedIartImageModels == "ClipClassification" ) {
+      let user_dict = {}
+      var dict_param = "";
+      
+      if( this.selectedDictSourceTabIndex == 0) {
+        if(this.selectedUserDictTabIndex == 2 && this.el_user_dict_full.value) {
+          user_dict = JSON.parse(this.el_user_dict_full.value as string);
+          dict_param = JSON.stringify({fullDictionary:user_dict, dictionaryType: "FullDictionary"} );
+          console.log("full");
+        } else if(this.selectedUserDictTabIndex == 1 && this.el_user_dict_simple.value) {
+          user_dict = JSON.parse(this.el_user_dict_simple.value as string);
+          dict_param = JSON.stringify({simpleDictionary:user_dict, dictionaryType: "SimpleDictionary"} );
+          console.log("simple");
+        } else if(this.selectedUserDictTabIndex == 0 && this.el_user_dict_list.value) {
+          user_dict = JSON.parse("["+this.el_user_dict_list.value as string+"]");
+          dict_param = JSON.stringify({ listOfWords:user_dict, dictionaryType: "ListOfWords"} );
+          console.log("list");
+        } 
+        //formData.append('dictionary',dict_param);
+        formData.append('dictionary', new Blob([dict_param], { type: 'application/json' }));
+        formData.append('threshold',this.el_threshold.toString());
+        
+      } else {
+        console.log("predefined dict");
+        // TODO: add dict        
+        formData.append('threshold',this.el_threshold.toString());
+      }
+      }
+
+      const requestOptions: RequestInit = {
+        method: "POST",
+        body: formData
+      };
+    
+      await fetch(url, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          this.annotation.entities = result[0];
+          this.imageELgraph.clear();
+          this.imageELgraph.createChartFromClassificationResult(this.annotation.entities);
+          this.hierarchyGraph.svg.nativeElement.style.display = 'none';
+          this.resultHead.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        })
+        .catch(error => this.iart_result = "error")
+    }
+
+    
+    
+    // finish loading bar
+    this.loader.complete();
+    this.msg =  "";
+    // update graph
+
+    this.showResultContainer = true;
+  }
+
+
+  async callVecnerServiceViaBackend():Promise<void>{
+    this.err = "";
+    this.msg = "";
+    this.hierarchyGraph.clear();
+    this.showResultContainer = false;
+
+    if( this.textEntityLinking.value === "") {
+      this.err = 'Search text cannot be empty';
+      return;
+    }
+    // start the loading bar
+    this.loader.start();
+    try {
+      
+      // url of the annotationService api (restful service with json payload)
+      let url = 'api/annotation/entitylinking/text?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
+        
+      let response;
+     
+      let user_dict = {};
+      let dict_param = {};
+      var request_body;
+      
+      if( this.selectedDictSourceTabIndex == 0) {
+        if(this.selectedUserDictTabIndex == 2 && this.el_user_dict_full.value) {
+          user_dict = JSON.parse(this.el_user_dict_full.value as string);
+          dict_param = {fullDictionary:user_dict, dictionaryType: "FullDictionary"} ;
+          console.log("full");
+        } else if(this.selectedUserDictTabIndex == 1 && this.el_user_dict_simple.value) {
+          user_dict = JSON.parse(this.el_user_dict_simple.value as string);
+          dict_param = {simpleDictionary:user_dict, dictionaryType: "SimpleDictionary"};
+          console.log("simple");
+        } else if(this.selectedUserDictTabIndex == 0 && this.el_user_dict_list.value) {
+          user_dict = JSON.parse("["+this.el_user_dict_list.value as string+"]");
+          dict_param = { listOfWords:user_dict, dictionaryType: "ListOfWords"};
+          console.log("list");
+        } 
+      } else {
+        console.log("predefined dict");
+        // TODO: add dict        
+      }
+      console.log(dict_param);
+      request_body = JSON.stringify({text:this.textEntityLinking.value, dictionary:dict_param, threshold:this.el_threshold} );
+      const body = request_body;
+      console.log(body);
+      response = await fetch(url, {
+        method: "POST",
+        body,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      } 
+
+      // get response and save
+      const result = (await response.json()) ;
+      
+      // display as string
+      // this.msg = JSON.stringify(result, null, 4);
+      //this.annotation = '';
+      this.el_result = result as VecnerResponse;
+      // set link target to new tab for html result
+      this.el_result.html = this.el_result.html.replace(/href/g, 'target="_blank" href')
+      this.hierarchyGraph.svg.nativeElement.style.display = 'none';
+      //this.imageELgraph.svg.nativeElement.style.display = 'none';
+      this.annotation = result;
+      console.log(result);
+      
+      // finish loading bar
+      this.loader.complete();
+
+      this.msg =  "";
+      
+      this.showResultContainer = true;
+
+
+    } catch (error) {
+      if (error instanceof Error) {
+        this.err = error.message;
+        this.loader.stop();
+        this.loader.set(0);
+      } else {
+        this.err = 'An unexpected error occurred';
+      }
+    }
+
+  }
+
+  // start the annotation process when user submit the request form
+  async callAnnotationService(endpoint:string): Promise<void> {
+    this.err = "";
+    this.msg = "";
+    this.hierarchyGraph.clear();
+    this.showResultContainer = false;
+
+    if( this.textTerminologySearch.value === "") {
+      this.err = 'Search text cannot be empty';
+      return;
+    }
+    // start the loading bar
+    this.loader.start();
+    try {
+      // force utf 8 encoding of text
+      
+      // url of the annotationService api (restful service with json payload)
+      let url = 'api/annotation/' + endpoint + '?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
+      
+      // add datasource parameters (optional) to url e.g. wikidata=true, based on the checkbox formgroup
+      let ts4tibSelected;
+      ts4tibSelected = false;
+      this.selectedSources.controls.forEach((element:FormControl) => {
+        // check, if this datasource is valid for the endpoint, if valid and checked, add it as a url parameter
+        if(
+          ( endpoint === "entitylinking" && this.datasources.find((i:any) => i.value === element.value).shownER === true) ||
+          ( endpoint === "terminology" && this.datasources.find((i:any) => i.value === element.value).shownTS === true)) {
+            url += this.getStringValue(element.value)+"=true&";  
+        }
+        if(element.value === "ts4tib") {
+          ts4tibSelected = true;
+        }
+      });
+
+      // if ts4Tib is selected as a datasource, add selected ontologies as parameters
+      if( ts4tibSelected === true && this.selectedTs4tibOntologies.length > 0) {
+        url += "ts4tib_ontology="+this.selectedTs4tibOntologies.join()+"&";
+      }
+        
+      let response;
+      if( endpoint === "terminology") {
+
+        url += "searchtext="+String(this.textTerminologySearch.value);
+        response = await fetch(url, {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        });
+        
+      } else {
+        
+          const body = JSON.stringify(
+          // this.textToAnnotate.value?.split(".") // to split sentences (may fail with terms like "alan M. turing" !)
+          [this.textTerminologySearch.value]
+          );
+
+          response = await fetch(url, {
+          method: "POST",
+          body,
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        });
+        
+      }
+
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      } 
+
+      // get response and save
+      const result = (await response.json()) as AnnotationResponse;
+      
+      // display as string
+      // this.msg = JSON.stringify(result, null, 4);
+      this.annotation = result;
+      // console.log(result);
+      
+      // finish loading bar
+      this.loader.complete();
+      
+
+      if( result.entities.length > 0) {
+        this.msg = "";
+        this.showResultContainer = true;
+        // update graph
+        this.hierarchyGraph.clear();
+        this.hierarchyGraph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
+
+      } else {
+        this.msg = "No Results found";
+        this.showResultContainer = false;
+      }
+
+    } catch (error) {
+      if (error instanceof Error) {
+        this.err = error.message;
+        this.loader.stop();
+        this.loader.set(0);
+      } else {
+        this.err = 'An unexpected error occurred';
+      }
+    }
+    
+  }
+
+  // remove the graph and clear all input fields
+  clearAll(): void {
+    // console.log("test")
+    this.msg = "";
+    this.err = "";
+    this.annotation = {"entities":[], "relations":[], hierarchy:{} as unknown as HierarchyTree};
+    this.textTerminologySearch.setValue("");
+    this.selectedSources = new FormArray(this.initArray);
+    this.hierarchyGraph.clear();
+    this.loader.stop();
+    this.loader.set(0);
+    this.showResultContainer = false;
+  }
+
+
+  saveJson():void{
+    this.writeContents(JSON.stringify(this.annotation, null, 2), 'antelope_result'+'.json', 'text/plain');
+  }
+
+  saveTableCSV():void{
+    this.exportTableElmToCsv(this.resultTableRef, 'antelope_result');
+  }
+
+  saveTableXLS():void{
+    this.exportTableElmToExcel(this.resultTableRef, 'antelope_result');
+  }
+
+  // save content to file and download it
+  writeContents(content:string, fileName:string, contentType:string):void {
+    const a = document.createElement('a');
+    const file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+  }
+
+  // get a html table element reference and write it to xls file
+  public exportTableElmToExcel(element: ElementRef, fileName: string): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element.nativeElement);
+    // generate workbook and add the worksheet
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, ws, 'Sheet1');
+    // save to file
+    XLSX.writeFile(workbook, `${fileName}${EXCEL_EXTENSION}`);
+    
+
+  }
+
+   // get a html table element reference and write it to csv file
+   public exportTableElmToCsv(element: ElementRef, fileName: string): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element.nativeElement);
+    // generate workbook and add the worksheet
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, ws, 'Sheet1');
+    const csvOutput: string = XLSX.utils.sheet_to_csv(ws);
+    // save to file
+    this.writeContents(csvOutput, fileName, 'text/csv')
+    
+
+  }
+
+  // Helper function to convert Data URI to binary data
+  convertDataURIToBinary(dataURI: string): Uint8Array {
+    //dataURI = btoa(dataURI);
+    //const base64Index = dataURI.indexOf(';base64,') + ';base64,'.length;
+    //const base64 = dataURI.substring(base64Index);
+    //const raw = atob(base64);
+    const binaryString = new Array(dataURI.length);
+    for (let i = 0; i < dataURI.length; i++) {
+      binaryString[i] = dataURI.charCodeAt(i);
+    }
+    return new Uint8Array(binaryString);
   }
 
   getStringValue(value: any): string {
@@ -316,387 +692,5 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   async terminologySearch(): Promise<void> {
     return this.callAnnotationService("terminology");
-  }
-
-  async entityRecognition(): Promise<void> {
-    // call the java backend service (falcon)
-    //return this.callAnnotationService("entities");
-
-    // call the python rest service (VecNER)
-    this.callVecnerServiceViaBackend();
-    //return this.callVecnerServiceDirect();
-  }
-
-  async imageEL(): Promise<void> {
-    this.loader.start();
-    console.log( this.selectedFile);
-    const url = 'api/annotation/entitylinking/image?model='+this.selectedIartImageModels;
-    
-    if (this.selectedFile) {
-      const formData = new FormData();
-      formData.append('image', this.selectedFile);
-
-      const requestOptions: RequestInit = {
-        method: "POST",
-        body: formData
-      };
-    
-      await fetch(url, requestOptions)
-        .then(response => response.json())
-        .then(result => this.iart_result = result)
-        .catch(error => this.iart_result = "error")
-    }
-    
-    // finish loading bar
-    this.loader.complete();
-
-    this.msg =  "";
-    
-    this.showResultContainer = true;
-  }
-
-
-  public dictSourceTabChange(index:number|null)
-  {
-    if( index != null){
-      this.selectedDictSourceTabIndex = index;
-    }
-  } 
-
-  public userDictTabChange(index:number|null)
-  {
-    if( index != null){
-      this.selectedUserDictTabIndex = index;
-    }
-  } 
-
-
-  async callVecnerServiceViaBackend():Promise<void>{
-    this.err = "";
-    this.msg = "";
-    this.graph.clear();
-    this.showResultContainer = false;
-
-    if( this.textToAnnotate.value === "") {
-      this.err = 'Search text cannot be empty';
-      return;
-    }
-    // start the loading bar
-    this.loader.start();
-    try {
-      
-      // url of the annotationService api (restful service with json payload)
-      let url = 'api/annotation/entitylinking/text?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
-        
-      let response;
-     
-      let user_dict = {}
-      var request_body;
-      
-      if( this.selectedDictSourceTabIndex == 1) {
-        if(this.selectedUserDictTabIndex == 2 && this.el_user_dict_full.value) {
-          user_dict = JSON.parse(this.el_user_dict_full.value as string);
-          request_body = JSON.stringify({text:this.textToAnnotate.value, fullDictionary:user_dict, dictionaryType: "FullDictionary", threshold:this.el_threshold} );
-          console.log("full");
-        } else if(this.selectedUserDictTabIndex == 1 && this.el_user_dict_simple.value) {
-          user_dict = JSON.parse(this.el_user_dict_simple.value as string);
-          request_body = JSON.stringify({text:this.textToAnnotate.value, simpleDictionary:user_dict, dictionaryType: "SimpleDictionary", threshold:this.el_threshold} );
-          console.log("simple");
-        } else if(this.selectedUserDictTabIndex == 0 && this.el_user_dict_list.value) {
-          user_dict = JSON.parse("["+this.el_user_dict_list.value as string+"]");
-          request_body = JSON.stringify({text:this.textToAnnotate.value, listOfWords:user_dict, dictionaryType: "ListOfWords", threshold:this.el_threshold} );
-          console.log("list");
-        } 
-      } else {
-        console.log("predefined dict");
-        // TODO: add dict        
-        request_body = JSON.stringify({text:this.textToAnnotate.value, threshold:this.el_threshold} );
-      }
-      const body = request_body;
-      console.log(body);
-      response = await fetch(url, {
-        method: "POST",
-        body,
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
-      } 
-
-      // get response and save
-      const result = (await response.json()) ;
-      
-      // display as string
-      // this.msg = JSON.stringify(result, null, 4);
-      //this.annotation = '';
-      this.el_result = result as VecnerResponse;
-      // set link target to new tab for html result
-      this.el_result.html = this.el_result.html.replace(/href/g, 'target="_blank" href')
-      this.annotation = result;
-      console.log(result);
-      
-      // finish loading bar
-      this.loader.complete();
-
-      this.msg =  "";
-      
-      this.showResultContainer = true;
-
-
-    } catch (error) {
-      if (error instanceof Error) {
-        this.err = error.message;
-        this.loader.stop();
-        this.loader.set(0);
-      } else {
-        this.err = 'An unexpected error occurred';
-      }
-    }
-
-  }
-
-  async callVecnerServiceDirect():Promise<void> {
-    this.err = "";
-    this.msg = "";
-    this.graph.clear();
-    this.showResultContainer = false;
-    if( this.textToAnnotate.value === "") {
-      this.err = 'Search text cannot be empty';
-      return;
-    }
-    // start the loading bar
-    this.loader.start();
-
-    try {
-      let url = 'http://localhost:5000/entitylinking';
-      const body = JSON.stringify( {'text':this.textToAnnotate.value, dict: {'food':['food','burger']} } );
-      let response = await fetch(url, {
-        method: "POST",
-        body,
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
-      } 
-
-      // get response and save
-      const result = (await response.json()) ;
-      
-      // display as string
-      // this.msg = JSON.stringify(result, null, 4);
-      //this.annotation = '';
-      this.el_result = result as VecnerResponse;
-      this.annotation = result;
-      // console.log(result);
-      
-      // finish loading bar
-      this.loader.complete();
-
-      this.msg =  "";
-      
-      this.showResultContainer = true;
-
-    } catch (error) {
-      if (error instanceof Error) {
-
-        this.err = error.message;
-        console.log(error.stack);
-        
-        this.loader.stop();
-        this.loader.set(0);
-      } else {
-        this.err = 'An unexpected error occurred';
-      }
-    }
-  }
-
-  // start the annotation process when user submit the request form
-  async callAnnotationService(endpoint:string): Promise<void> {
-    this.err = "";
-    this.msg = "";
-    this.graph.clear();
-    this.showResultContainer = false;
-
-    if( this.textToAnnotate.value === "") {
-      this.err = 'Search text cannot be empty';
-      return;
-    }
-    // start the loading bar
-    this.loader.start();
-    try {
-      // force utf 8 encoding of text
-      
-      // url of the annotationService api (restful service with json payload)
-      let url = 'api/annotation/' + endpoint + '?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
-      
-      // add datasource parameters (optional) to url e.g. wikidata=true, based on the checkbox formgroup
-      let ts4tibSelected;
-      ts4tibSelected = false;
-      this.selectedSources.controls.forEach((element:FormControl) => {
-        // check, if this datasource is valid for the endpoint, if valid and checked, add it as a url parameter
-        if(
-          ( endpoint === "entitylinking" && this.datasources.find((i:any) => i.value === element.value).shownER === true) ||
-          ( endpoint === "terminology" && this.datasources.find((i:any) => i.value === element.value).shownTS === true)) {
-            url += this.getStringValue(element.value)+"=true&";  
-        }
-        if(element.value === "ts4tib") {
-          ts4tibSelected = true;
-        }
-      });
-
-      // if ts4Tib is selected as a datasource, add selected ontologies as parameters
-      if( ts4tibSelected === true && this.selectedTs4tibOntologies.length > 0) {
-        url += "ts4tib_ontology="+this.selectedTs4tibOntologies.join()+"&";
-      }
-        
-      let response;
-      if( endpoint === "terminology") {
-
-        url += "searchtext="+String(this.textToAnnotate.value);
-        response = await fetch(url, {
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        });
-        
-      } else {
-        
-          const body = JSON.stringify(
-          // this.textToAnnotate.value?.split(".") // to split sentences (may fail with terms like "alan M. turing" !)
-          [this.textToAnnotate.value]
-          );
-
-          response = await fetch(url, {
-          method: "POST",
-          body,
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        });
-        
-      }
-
-      if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
-      } 
-
-      // get response and save
-      const result = (await response.json()) as AnnotationResponse;
-      
-      // display as string
-      // this.msg = JSON.stringify(result, null, 4);
-      this.annotation = result;
-      // console.log(result);
-      
-      // finish loading bar
-      this.loader.complete();
-      
-
-      if( result.entities.length > 0) {
-        this.msg = "";
-        this.showResultContainer = true;
-        // update graph
-        this.graph.clear();
-        this.graph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
-
-      } else {
-        this.msg = "No Results found";
-        this.showResultContainer = false;
-      }
-
-    } catch (error) {
-      if (error instanceof Error) {
-        this.err = error.message;
-        this.loader.stop();
-        this.loader.set(0);
-      } else {
-        this.err = 'An unexpected error occurred';
-      }
-    }
-    
-  }
-
-  // remove the graph and clear all input fields
-  clearAll(): void {
-    // console.log("test")
-    this.msg = "";
-    this.err = "";
-    this.annotation = {"entities":[], "relations":[], hierarchy:{} as unknown as HierarchyTree};
-    this.textToAnnotate.setValue("");
-    this.selectedSources = new FormArray(this.initArray);
-    this.graph.clear();
-    this.loader.stop();
-    this.loader.set(0);
-    this.showResultContainer = false;
-  }
-
-
-  saveJson():void{
-    this.writeContents(JSON.stringify(this.annotation, null, 2), 'antelope_result'+'.json', 'text/plain');
-  }
-
-  saveTableCSV():void{
-    this.exportTableElmToCsv(this.resultTableRef, 'antelope_result');
-  }
-
-  saveTableXLS():void{
-    this.exportTableElmToExcel(this.resultTableRef, 'antelope_result');
-  }
-
-  // save content to file and download it
-  writeContents(content:string, fileName:string, contentType:string):void {
-    const a = document.createElement('a');
-    const file = new Blob([content], {type: contentType});
-    a.href = URL.createObjectURL(file);
-    a.download = fileName;
-    a.click();
-  }
-
-  // get a html table element reference and write it to xls file
-  public exportTableElmToExcel(element: ElementRef, fileName: string): void {
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element.nativeElement);
-    // generate workbook and add the worksheet
-    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, ws, 'Sheet1');
-    // save to file
-    XLSX.writeFile(workbook, `${fileName}${EXCEL_EXTENSION}`);
-    
-
-  }
-
-   // get a html table element reference and write it to csv file
-   public exportTableElmToCsv(element: ElementRef, fileName: string): void {
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element.nativeElement);
-    // generate workbook and add the worksheet
-    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, ws, 'Sheet1');
-    const csvOutput: string = XLSX.utils.sheet_to_csv(ws);
-    // save to file
-    this.writeContents(csvOutput, fileName, 'text/csv')
-    
-
-  }
-
-  // Helper function to convert Data URI to binary data
-  convertDataURIToBinary(dataURI: string): Uint8Array {
-    //dataURI = btoa(dataURI);
-    //const base64Index = dataURI.indexOf(';base64,') + ';base64,'.length;
-    //const base64 = dataURI.substring(base64Index);
-    //const raw = atob(base64);
-    const binaryString = new Array(dataURI.length);
-    for (let i = 0; i < dataURI.length; i++) {
-      binaryString[i] = dataURI.charCodeAt(i);
-    }
-    return new Uint8Array(binaryString);
   }
 }

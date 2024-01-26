@@ -2,15 +2,15 @@
 
 <mat-tab-group dynamicHeight preserveContent >
      <!-- ********************** Terminology search ********************* -->
-    <mat-tab label="Terminology search">
+    <mat-tab label="Search">
         <div style="margin: 5px;">
             <br>
-            <label for="textToAnnotate">Type the term you want to search for (single word or phrase): </label>
+            <label for="textTerminologySearch">Type the term you want to search for (single word or phrase): </label>
             <div class="btn tib-btn-info" 
                 matTooltip="Terminology search is used to search for a term in a controlled vocabulary. The annotation service will propose entities, that are best matching the whole provided phrase. If you want to receive all contained entities within your phrase, choose 'Entity recognition' above"
                 matTooltipPosition="right"
                 matTooltipSize="12px"></div>
-            <input type="text" id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"/>
+            <input type="text" id="textTerminologySearch" class="form-control" [formControl]="textTerminologySearch" style="margin:2px"/>
             <span class="subheading" >Select terminology sources:</span>
             <div class="btn tib-btn-info" 
                 matTooltip="Please select the datasources you want to search. Currently we don't provide DBpedia as a standalone source"
@@ -83,23 +83,38 @@
         </div>
     </mat-tab>
     <!-- ********************** Text EL ********************* -->
-    <mat-tab label="Text entities">
+    <mat-tab label="Text">
         <div style="margin: 5px;">
             <br>
-            <label for="textToAnnotate">Type the text you want to run entity linking on (single words or whole sentences): </label>
+            <label for="textEntityLinking">Type the text you want to run entity linking on (single words or whole sentences): </label>
             <div class="btn tib-btn-info" 
                 matTooltip="Use Entity recognition to map as many words as possible, of your input text, to entities from the datasources. If you want to search for a single term, that is described by your text, choose 'Terminology search' above"
                 matTooltipPosition="right"
                 matTooltipSize="12px"></div>
-            <textarea id="textToAnnotate" class="form-control" [formControl]="textToAnnotate" style="margin:2px"></textarea>
+            <textarea id="textEntityLinking" class="form-control" [formControl]="textEntityLinking" style="margin:2px"></textarea>
             <span class="subheading">Select dictionary: </span>
             <div class="btn tib-btn-info" 
                 matTooltip="Choose an existing dictionary from the 'predefined' section or define your own dictionary in the 'custom' section"
                 matTooltipPosition="right"
-                matTooltipSize="12px"></div>
+                matTooltipSize="12px">
+            </div>
                 <mat-tab-group #dictsourceTab dynamicHeight preserveContent (selectedTabChange)="dictSourceTabChange(dictsourceTab.selectedIndex)">
+                    <mat-tab label="Custom">
+                        <mat-tab-group #userdictTab dynamicHeight preserveContent (selectedTabChange)="userDictTabChange(userdictTab.selectedIndex)">
+                            <mat-tab label="List of entities">
+                                <textarea id="el_user_dict_list" class="form-control" [formControl]="el_user_dict_list" style="margin:2px" hint="test"></textarea>
+                            </mat-tab>
+                            <mat-tab label="Simple dictionary">
+                                <textarea id="el_user_dict_simple" class="form-control" [formControl]="el_user_dict_simple" style="margin:2px"></textarea>
+                            </mat-tab>
+                            <mat-tab label="Extended dictionary">
+                                <textarea id="el_user_dict_full" class="form-control" [formControl]="el_user_dict_full" style="margin:2px"></textarea>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </mat-tab>
                     <mat-tab label="Predefined">
                         <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
+                            <div class="alert alert-warning">Using large dictionaries may take several minutes to compute!</div>
                             <div style="font-size: 14px;"
                                 *ngFor="let datasource of datasources; let i=index"
                                 [ngClass]="{'greyout': datasource.disabled == true}" >
@@ -115,19 +130,6 @@
                                 </div>
                             </div>
                         </form>
-                    </mat-tab>
-                    <mat-tab label="Custom">
-                        <mat-tab-group #userdictTab dynamicHeight preserveContent (selectedTabChange)="userDictTabChange(userdictTab.selectedIndex)">
-                            <mat-tab label="List of entities">
-                                <textarea id="el_user_dict_list" class="form-control" [formControl]="el_user_dict_list" style="margin:2px" hint="test"></textarea>
-                            </mat-tab>
-                            <mat-tab label="Simple dictionary">
-                                <textarea id="el_user_dict_simple" class="form-control" [formControl]="el_user_dict_simple" style="margin:2px"></textarea>
-                            </mat-tab>
-                            <mat-tab label="Extended dictionary">
-                                <textarea id="el_user_dict_full" class="form-control" [formControl]="el_user_dict_full" style="margin:2px"></textarea>
-                            </mat-tab>
-                        </mat-tab-group>
                     </mat-tab>
                 </mat-tab-group>
             
@@ -159,7 +161,7 @@
         </div>
     </mat-tab>
     <!-- ********************** Image EL ********************* -->
-    <mat-tab label="Image entities">
+    <mat-tab label="Image">
         <div style="margin: 5px;">
             <br>
             <input type="file" (change)="onFileSelected($event)" accept="image/*"><br>
@@ -186,7 +188,50 @@
                     {{item.type || ' '}}
                 </ng-template>
             </ng-select>
-        
+            <div id="ClipClassifierDictionary" *ngIf="selectedIartImageModels == 'ClipClassification'">
+                <br>
+                <span class="subheading">Select dictionary: </span>
+                <div class="btn tib-btn-info" 
+                    matTooltip="Choose an existing dictionary from the 'predefined' section or define your own dictionary in the 'custom' section"
+                    matTooltipPosition="right"
+                    matTooltipSize="12px">
+                </div>
+                <mat-tab-group #dictsourceTab dynamicHeight preserveContent (selectedTabChange)="dictSourceTabChange(dictsourceTab.selectedIndex)">
+                    <mat-tab label="Custom">
+                        <mat-tab-group #userdictTab dynamicHeight preserveContent (selectedTabChange)="userDictTabChange(userdictTab.selectedIndex)">
+                            <mat-tab label="List of entities">
+                                <textarea id="el_user_dict_list" class="form-control" [formControl]="el_user_dict_list" style="margin:2px" hint="test"></textarea>
+                            </mat-tab>
+                            <mat-tab label="Simple dictionary">
+                                <textarea id="el_user_dict_simple" class="form-control" [formControl]="el_user_dict_simple" style="margin:2px"></textarea>
+                            </mat-tab>
+                            <mat-tab label="Extended dictionary">
+                                <textarea id="el_user_dict_full" class="form-control" [formControl]="el_user_dict_full" style="margin:2px"></textarea>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </mat-tab>
+                    <mat-tab label="Predefined">
+                        <form [formGroup]="sourcesForm" (ngSubmit)="submit()" novalidate>
+                            <div class="alert alert-warning">Using large dictionaries may take several minutes to compute!</div>
+                            <div style="font-size: 14px;"
+                                *ngFor="let datasource of datasources; let i=index"
+                                [ngClass]="{'greyout': datasource.disabled == true}" >
+                                <div *ngIf="datasource.shownER == true">
+                                    <input 
+                                        type="checkbox" 
+                                        formArrayName="selectedSources" 
+                                        [value]="datasource.value" 
+                                        [checked]="datasource.checked == true" 
+                                        [disabled]="datasource.disabled == true"
+                                        (change)="onCheckboxChange($event)" />
+                                    {{datasource.name}}
+                                </div>
+                            </div>
+                        </form>
+                    </mat-tab>
+                </mat-tab-group>
+                <br>
+            </div>
             <div style="margin-top:15px">
                 <button type="submit" class="btn btn-tib" (click)="imageEL()">Run service</button>
                 <button type="button" class="btn btn-tib-secondary" (click)="clearAll()">Reset</button>
@@ -239,14 +284,14 @@
 
 <!-- ********************** Results ********************* -->    
 <div [hidden]="!showResultContainer" style="position:relative">
-    <h4>Results</h4>
-    <pre><p style="font-size:11px;">{{ iart_result | json}}</p></pre>
+    <h4 #abcde>Results</h4>
+    <pre><p *ngIf="iart_result" style="font-size:11px;">{{ iart_result | json}}</p></pre>
     
     <mat-tab-group style='min-height:1000px'>
         <mat-tab label="Graph" style="font-size:10px !important;">
-            Use the mousewheel to zoom in/out. Use drag and drop to move the graph.
             <div [innerHTML]="el_result.html"></div>
             <jhi-graph-tidytree></jhi-graph-tidytree>
+            <jhi-graph-barchart></jhi-graph-barchart>
         </mat-tab>
         <mat-tab label="JSON">
             <button style="margin:5px;margin-left:157px;" class="btn btn-tib" [cdkCopyToClipboard]="annotation | json">Copy</button>
@@ -264,6 +309,7 @@
                       <th>ID</th>
                       <th>URI</th>
                       <th>Classes</th>
+                      <th>Score</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -272,7 +318,8 @@
                     <td>{{ entity.label }}</td>
                     <td>{{ entity.id }}</td>
                     <td><a href='{{ entity.URI }}' target="_blank">{{ entity.URI }}</a></td>
-                    <td>n.n.</td>
+                    <td></td>
+                    <td>{{ entity.score }}</td>
                   </tr>
                 </tbody>
               </table>

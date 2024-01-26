@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
 
@@ -17,8 +17,8 @@ type HierarchyTree = {
   styleUrls: ['./graph-tidytree.component.scss']
 })
 export class GraphTidytreeComponent {
-  
-  // tree:SVGSVGElement|null = null;
+  @ViewChild('tree')
+  svg!: ElementRef;
 
   clear():void {
     const svg = d3.select("#tree");

@@ -263,11 +263,8 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                image:
-                  type: string
-                  format: binary
+              $ref: '#/components/schemas/ImageEntityLinkingRequest'
+              
       responses:
         "200":
           description: a list of entities depending on the choosen plugin
@@ -338,11 +335,9 @@ components:
             type: string
             description: link to the entity (will be linked in html visualization of entity linking result)
         
-    TextEntityLinkingRequest:
+    Dictionary:
       type: object
       properties:
-        text:
-          type: string
         dictionaryType:
           type: string
           enum:
@@ -355,9 +350,32 @@ components:
           $ref: '#/components/schemas/SimpleDictionary'
         fullDictionary:
           $ref: '#/components/schemas/FullDictionary'
+      description: User defined dictionary that implements one of the types "WordArry, SimpleDictionary or FullDictionary"
+
+    TextEntityLinkingRequest:
+      type: object
+      properties:
+        text:
+          type: string
+        dictionary:
+            $ref: '#/components/schemas/Dictionary'
         threshold:
           type: number
           description: wanted similarity score for linkings. 0-1 default:0.6
+          example: 0.6
+      description: Entity linking input format
+
+    ImageEntityLinkingRequest:
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+        dictionary:
+          $ref: '#/components/schemas/Dictionary'
+        threshold:
+          type: number
+          description: filter returned classifications by probability. return only results with probability >= threshold
           example: 0.6
       description: Entity linking input format
 

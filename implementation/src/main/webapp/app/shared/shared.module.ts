@@ -16,6 +16,7 @@ import { FilterComponent } from './filter/filter.component';
 import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotation-service-ui.component';
 import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
 import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
+import { GraphBarchartComponent } from 'app/graph-barchart/graph-barchart.component';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MaterialModule } from "./material/material.module";
 import {ClipboardModule} from '@angular/cdk/clipboard'; 
@@ -39,9 +40,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FilterComponent,
     AnnotationServiceUIComponent,
     AnnotationserviceResultSelectcomponentComponent,
-    GraphTidytreeComponent
+    GraphTidytreeComponent,
+    GraphBarchartComponent
     
-
   ],
   exports: [
     SharedLibsModule,
@@ -60,6 +61,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     AnnotationServiceUIComponent,
     AnnotationserviceResultSelectcomponentComponent,
     GraphTidytreeComponent,
+    GraphBarchartComponent, 
     MaterialModule,
     ClipboardModule
   ],

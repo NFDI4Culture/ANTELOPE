@@ -1,5 +1,6 @@
 package org.tib.osl.annotationservice.service;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +27,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tib.osl.annotationservice.service.api.dto.Dictionary;
 import org.tib.osl.annotationservice.service.api.dto.TextEntityLinkingRequest;
-import org.tib.osl.annotationservice.service.api.dto.TextEntityLinkingRequest.DictionaryTypeEnum;
+import org.tib.osl.annotationservice.service.api.dto.Dictionary.DictionaryTypeEnum;
 import org.tib.osl.annotationservice.web.api.AnnotationApiDelegate;
 
 import iart.client.*;
+import iart.indexer.Data.Concept;
 
 import com.google.gson.Gson;  
 import org.apache.commons.io.IOUtils;
@@ -113,9 +116,9 @@ public class AnnotationService implements AnnotationApiDelegate {
 
         try {
         
-            if( request.getListOfWords() == null && request.getSimpleDictionary() == null && request.getFullDictionary() == null) {
-                request.setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
-                request.setFullDictionary( EntityRecognition.getIconclassDict());
+            if( request.getDictionary() == null || (request.getDictionary().getListOfWords() == null && request.getDictionary().getSimpleDictionary() == null && request.getDictionary().getFullDictionary() == null)) {
+                request.getDictionary().setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
+                request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict());
             }
             System.out.println(request.toString());
             JSONObject el_results = VecnerClient.callEntityLinking(request);
@@ -129,19 +132,41 @@ public class AnnotationService implements AnnotationApiDelegate {
     }
 
     @Override
-    public ResponseEntity<String> getImageEntities(String model, MultipartFile image) {
+    public ResponseEntity<String> getImageEntities(
+        String model,
+        MultipartFile image,
+        Dictionary dictionary,
+        BigDecimal threshold) {
         if( model == null) {
-            model = "KaggleResnetClassifier";
+            model = "ClipClassification";
         }
         try {
             JSONArray resultArr = new JSONArray();
-            System.out.println(image);
-            byte[] bytes = IOUtils.toByteArray(image.getInputStream());
-            String base64imageString = Base64.getEncoder().encodeToString(bytes);
-            List<iart.client.PluginResult> response = iArtClient.analyze(model, base64imageString);
+            //System.out.println(image);
+            //byte[] bytes = IOUtils.toByteArray(image.getInputStream());
+            //String base64imageString = Base64.getEncoder().encodeToString(bytes);
+            List<iart.client.PluginResult> response = iArtClient.analyze(model, image.getBytes(), dictionary.getListOfWords());
             
+            for( PluginResult actEntry : response){
+               
+                try{
+                    for( Concept actConcept : actEntry.getResult().getClassifier().getConceptsList()){
+                        JSONObject actResultObj = new JSONObject();
+                        actResultObj.put("label", actConcept.getConcept());
+                        actResultObj.put("score", actConcept.getProb());
+                        resultArr.put(actResultObj);
+                    }
+                } catch (Exception e) {
+                    log.error("error during result creation for object: "+actEntry, e);
+                    e.printStackTrace();
+                }
+                
+            }
             
-            String responseString = new Gson().toJson(response);
+            //String responseString = new Gson().toJson(response);
+            JSONArray resultContainer = new JSONArray();
+            resultContainer.put(resultArr);
+            String responseString = resultContainer.toString();
             return new ResponseEntity<String>(responseString, HttpStatus.OK);
 
         } catch ( Exception e) {

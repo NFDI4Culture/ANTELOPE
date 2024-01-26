@@ -4,6 +4,7 @@ import io.grpc.ManagedChannelBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,7 +14,13 @@ import java.util.List;
 import org.h2.command.ddl.Analyze;
 import org.wildfly.common.bytes.ByteStringBuilder;
 
+import com.google.protobuf.ByteString;
+
 import iart.client.*;
+import iart.indexer.Data.BoundingBox;
+import iart.indexer.Data.ImageData;
+import iart.indexer.Data.PluginData;
+import iart.indexer.Data.StringData;
 
 public class iArtClient {
   private static int port = 50051;
@@ -44,33 +51,39 @@ public class iArtClient {
     return response.getPluginsList();
   }
 
-  public static List<iart.client.PluginResult> analyze(String imageModel, String base64imageString) {
+  public static List<iart.client.PluginResult> analyze(String imageModel, byte[] image, List<String> dict) {
     try {
       ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
         .usePlaintext()
         .build();
 
       IndexerGrpc.IndexerBlockingStub stub = IndexerGrpc.newBlockingStub(channel);
-      
-      /*
-      // load local file
-      Path imagePath = Paths.get("./src/main/webapp/content/images/landscape.jpg");
-      File imageFile = imagePath.toFile();
-      byte[] imageBytes;
 
-      FileInputStream fileInputStream = new FileInputStream(imageFile);
-      imageBytes = fileInputStream.readAllBytes();
-      */
-      if( imageModel == null) {
-        imageModel = "KaggleResnetClassifier";
+
+      //ImageData imageData = ImageData.newBuilder().setContent(ByteString.copyFrom(base64imageString.getBytes())).setType("image").build();
+      ImageData imageData = ImageData.newBuilder().setContent(ByteString.copyFrom(image)).setType("image").build();
+      AnalyseRequest.Builder requestBuilder= AnalyseRequest.newBuilder();
+        
+        
+      requestBuilder.addInputs(
+        PluginData.newBuilder().setName("image").setImage(imageData).build()
+      );
+        
+      for( String word : dict) {
+        requestBuilder.addInputs(
+          PluginData.newBuilder().setName("text").setString(StringData.newBuilder().setText( word ).build()).build()
+        );
       }
 
-      AnalyzeReply response = stub.analyze(AnalyzeRequest.newBuilder()
-        //.setImage(com.google.protobuf.ByteString.copyFrom(imageBytes))
-        .setImage(com.google.protobuf.ByteString.copyFromUtf8(base64imageString))
-        .addPluginNames(imageModel)
-        .build());
+      requestBuilder.addInputs(
+        PluginData.newBuilder().setName("text").setString(StringData.newBuilder().setText("other").build()).build()
+      );
 
+             
+      requestBuilder.setPlugin(imageModel);
+        
+
+      AnalyseReply response = stub.analyse(requestBuilder.build());
       System.out.println(  response.toString());
       channel.shutdown();
       return response.getResultsList();
