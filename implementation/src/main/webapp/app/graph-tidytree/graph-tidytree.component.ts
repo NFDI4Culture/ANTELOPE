@@ -56,7 +56,7 @@ export class GraphTidytreeComponent {
     // Released under the ISC license.
     // https://observablehq.com/@d3/tree
   createTree(data : any, { // data is either tabular (array of objects) or hierarchy (nested objects)
-      //path, // as an alternative to id and parentId, returns an array identifier, imputing internal nodes
+      // path, // as an alternative to id and parentId, returns an array identifier, imputing internal nodes
       id = Array.isArray(data) ? (d:d3.HierarchyNode<NodeData>) => d.id : null, // if tabular data, given a d in data, returns a unique identifier (string)
       parentId = Array.isArray(data) ? (d:d3.HierarchyNode<NodeData>) => d.parent?.id : null, // if tabular data, given a node d, returns its parent’s identifier
       children = (d:any):Iterable<any> | null | undefined => d !== undefined ? d.children as Iterable<any> : [], // if hierarchical data, given a d in data, returns its children
@@ -90,12 +90,12 @@ export class GraphTidytreeComponent {
       let root:d3.HierarchyNode<NodeData> = null as unknown as d3.HierarchyNode<NodeData>;
      
       if( id != null || parentId != null ){
-        //console.log("use d3.stratify()");
-        //console.debug( data );
+        // console.log("use d3.stratify()");
+        // console.debug( data );
         root = d3.stratify().id((d:any, i:any, data2:any): string|null|undefined => d["id"] as string).parentId((d:any, i:any, data2:any): string|null|undefined => d["parentId"] as string)(data) as HierarchyNode<NodeData> ;
       
       } else {
-        //console.log("use d3.hierarchy()");
+        // console.log("use d3.hierarchy()");
         root =  d3.hierarchy(data, children ) as HierarchyNode<NodeData> ;
       }
           

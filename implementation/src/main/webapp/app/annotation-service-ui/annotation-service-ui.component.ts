@@ -9,7 +9,6 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { HttpClient } from '@angular/common/http';
 
 import * as XLSX from 'xlsx';
-import { catchError } from 'rxjs';
 
 const EXCEL_EXTENSION = '.xlsx';
 
@@ -32,7 +31,7 @@ type AnnotationResponse = {
 // data model of the RESTful Vecner entity linking API result
 type VecnerResponse = {
   json: string;
-  html: String;
+  html: string;
 };
 
 // data model of the RESTful annotationService API result
@@ -45,12 +44,6 @@ type ts4tibOntology =
     collections?: string[];
     label: string;
     paramValue: string;
-    };
-
-type iartImageModel = 
-    {
-    name: string;
-    type: string;
     };
 
 // data model for initialising the d3 tree graph
@@ -106,10 +99,6 @@ export class AnnotationServiceUIComponent implements OnInit{
   resultLimit = 20; // service parameter. number of results, fetched per datasource
   
   @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
-  
-  el_similarity_label(value: number): string {
-    return value + '';
-  }
 
   // create a FormGroup to select the datasources checkboxes state
   sourcesForm: FormGroup;
@@ -124,12 +113,11 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   ];
   
-
   dropdownSettings = {};
   
   public annotation: AnnotationResponse = {entities:[], relations:[], hierarchy:{} as unknown as HierarchyTree};
   public el_result: VecnerResponse = {json:'', html:''};
-  public iart_result : String = "";
+  public iart_result = "";
   
   @ViewChild(GraphTidytreeComponent)
   private hierarchyGraph!: GraphTidytreeComponent;
@@ -157,6 +145,11 @@ export class AnnotationServiceUIComponent implements OnInit{
      
   }
 
+  el_similarity_label(value: number): string {
+    return value.toString();
+  }
+  
+
   ngOnInit():any {
     this.getTs4tibOntologies();
     this.getIartImageModels();
@@ -172,33 +165,28 @@ export class AnnotationServiceUIComponent implements OnInit{
     this.loadingBar.useRef().complete();
   }
 
-  public dictSourceTabChange(index:number|null)
+  public dictSourceTabChange(index:number|null):void
   {
     if( index != null){
       this.selectedDictSourceTabIndex = index;
     }
   } 
 
-  public userDictTabChange(index:number|null)
+  public userDictTabChange(index:number|null):void
   {
     if( index != null){
       this.selectedUserDictTabIndex = index;
     }
   } 
 
-  setDefaultFile() {
-    console.log( 'test' )
+  setDefaultFile():void {
     // Create a default file object
     const defaultImageBytes = this.convertDataURIToBinary('content/images/landscape.jpg');
     const defaultFile = new File([defaultImageBytes], 'content/images/landscape.jpg', { type: 'image/jpg' });
-
-    // Assign the default file to selectedFile
-    console.log('default')
-    console.log(defaultFile)
     this.selectedFile = defaultFile;
   }
 
-  onFileSelected(event: any) {
+  onFileSelected(event: any):void {
     const file: File = event.target.files[0];
     this.selectedFile = file;
 
@@ -245,47 +233,47 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   async entityRecognition(): Promise<void> {
     // call the java backend service (falcon)
-    //return this.callAnnotationService("entities");
+    // return this.callAnnotationService("entities");
 
     // call the python rest service (VecNER)
-    this.callVecnerServiceViaBackend();
-    //return this.callVecnerServiceDirect();
+    await this.callVecnerServiceViaBackend();
+    // return this.callVecnerServiceDirect();
   }
 
   async imageEL(): Promise<void> {
     this.loader.start();
     this.iart_result = "";
-    console.log( this.selectedFile);
+    
     const url = 'api/annotation/entitylinking/image?model='+this.selectedIartImageModels;
     
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('image', this.selectedFile);
       
-      if( this.selectedIartImageModels == "ClipClassification" ) {
+      if( this.selectedIartImageModels === "ClipClassification" ) {
       let user_dict = {}
-      var dict_param = "";
+      let dict_param = "";
       
-      if( this.selectedDictSourceTabIndex == 0) {
-        if(this.selectedUserDictTabIndex == 2 && this.el_user_dict_full.value) {
-          user_dict = JSON.parse(this.el_user_dict_full.value as string);
+      if( this.selectedDictSourceTabIndex === 0) {
+        if(this.selectedUserDictTabIndex === 2 && this.el_user_dict_full.value) {
+          user_dict = JSON.parse(this.el_user_dict_full.value);
           dict_param = JSON.stringify({fullDictionary:user_dict, dictionaryType: "FullDictionary"} );
-          console.log("full");
-        } else if(this.selectedUserDictTabIndex == 1 && this.el_user_dict_simple.value) {
-          user_dict = JSON.parse(this.el_user_dict_simple.value as string);
+          // console.log("full");
+        } else if(this.selectedUserDictTabIndex === 1 && this.el_user_dict_simple.value) {
+          user_dict = JSON.parse(this.el_user_dict_simple.value);
           dict_param = JSON.stringify({simpleDictionary:user_dict, dictionaryType: "SimpleDictionary"} );
-          console.log("simple");
-        } else if(this.selectedUserDictTabIndex == 0 && this.el_user_dict_list.value) {
-          user_dict = JSON.parse("["+this.el_user_dict_list.value as string+"]");
+          // console.log("simple");
+        } else if(this.selectedUserDictTabIndex === 0 && this.el_user_dict_list.value) {
+          user_dict = JSON.parse("["+this.el_user_dict_list.value+"]");
           dict_param = JSON.stringify({ listOfWords:user_dict, dictionaryType: "ListOfWords"} );
-          console.log("list");
+          // console.log("list");
         } 
-        //formData.append('dictionary',dict_param);
+        // formData.append('dictionary',dict_param);
         formData.append('dictionary', new Blob([dict_param], { type: 'application/json' }));
         formData.append('threshold',this.el_threshold.toString());
         
       } else {
-        console.log("predefined dict");
+        // console.log("predefined dict");
         // TODO: add dict        
         formData.append('threshold',this.el_threshold.toString());
       }
@@ -334,37 +322,37 @@ export class AnnotationServiceUIComponent implements OnInit{
     try {
       
       // url of the annotationService api (restful service with json payload)
-      let url = 'api/annotation/entitylinking/text?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
+      const url = 'api/annotation/entitylinking/text?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
         
-      let response;
+     
      
       let user_dict = {};
       let dict_param = {};
-      var request_body;
       
-      if( this.selectedDictSourceTabIndex == 0) {
-        if(this.selectedUserDictTabIndex == 2 && this.el_user_dict_full.value) {
-          user_dict = JSON.parse(this.el_user_dict_full.value as string);
+      
+      if( this.selectedDictSourceTabIndex === 0) {
+        if(this.selectedUserDictTabIndex === 2 && this.el_user_dict_full.value) {
+          user_dict = JSON.parse(this.el_user_dict_full.value);
           dict_param = {fullDictionary:user_dict, dictionaryType: "FullDictionary"} ;
-          console.log("full");
-        } else if(this.selectedUserDictTabIndex == 1 && this.el_user_dict_simple.value) {
-          user_dict = JSON.parse(this.el_user_dict_simple.value as string);
+          // console.log("full");
+        } else if(this.selectedUserDictTabIndex === 1 && this.el_user_dict_simple.value) {
+          user_dict = JSON.parse(this.el_user_dict_simple.value);
           dict_param = {simpleDictionary:user_dict, dictionaryType: "SimpleDictionary"};
-          console.log("simple");
-        } else if(this.selectedUserDictTabIndex == 0 && this.el_user_dict_list.value) {
-          user_dict = JSON.parse("["+this.el_user_dict_list.value as string+"]");
+          // console.log("simple");
+        } else if(this.selectedUserDictTabIndex === 0 && this.el_user_dict_list.value) {
+          user_dict = JSON.parse("["+this.el_user_dict_list.value+"]");
           dict_param = { listOfWords:user_dict, dictionaryType: "ListOfWords"};
-          console.log("list");
+          // console.log("list");
         } 
       } else {
-        console.log("predefined dict");
+        // console.log("predefined dict");
         // TODO: add dict        
       }
-      console.log(dict_param);
-      request_body = JSON.stringify({text:this.textEntityLinking.value, dictionary:dict_param, threshold:this.el_threshold} );
+      // console.log(dict_param);
+      const request_body = JSON.stringify({text:this.textEntityLinking.value, dictionary:dict_param, threshold:this.el_threshold} );
       const body = request_body;
-      console.log(body);
-      response = await fetch(url, {
+      // console.log(body);
+      const response = await fetch(url, {
         method: "POST",
         body,
         headers: {
@@ -382,14 +370,14 @@ export class AnnotationServiceUIComponent implements OnInit{
       
       // display as string
       // this.msg = JSON.stringify(result, null, 4);
-      //this.annotation = '';
+      // this.annotation = '';
       this.el_result = result as VecnerResponse;
       // set link target to new tab for html result
       this.el_result.html = this.el_result.html.replace(/href/g, 'target="_blank" href')
       this.hierarchyGraph.svg.nativeElement.style.display = 'none';
-      //this.imageELgraph.svg.nativeElement.style.display = 'none';
+      // this.imageELgraph.svg.nativeElement.style.display = 'none';
       this.annotation = result;
-      console.log(result);
+      // console.log(result);
       
       // finish loading bar
       this.loader.complete();
@@ -583,10 +571,10 @@ export class AnnotationServiceUIComponent implements OnInit{
 
   // Helper function to convert Data URI to binary data
   convertDataURIToBinary(dataURI: string): Uint8Array {
-    //dataURI = btoa(dataURI);
-    //const base64Index = dataURI.indexOf(';base64,') + ';base64,'.length;
-    //const base64 = dataURI.substring(base64Index);
-    //const raw = atob(base64);
+    // dataURI = btoa(dataURI);
+    // const base64Index = dataURI.indexOf(';base64,') + ';base64,'.length;
+    // const base64 = dataURI.substring(base64Index);
+    // const raw = atob(base64);
     const binaryString = new Array(dataURI.length);
     for (let i = 0; i < dataURI.length; i++) {
       binaryString[i] = dataURI.charCodeAt(i);
@@ -676,18 +664,18 @@ export class AnnotationServiceUIComponent implements OnInit{
         },
       });
       if (!response.ok) {
-       //add warning message
+       // add warning message
        console.error("unable to fetch image models from iart api")
        return;
       } 
-    //console.log(response);
+    // console.log(response);
     // get response and save
     const responsejson = await response.json();
-    //console.log(responsejson);
+    // console.log(responsejson);
     
     this.iartImageModels = responsejson.models;
-    console.log("valid iart models:");
-    console.log(this.iartImageModels);
+    // console.log("valid iart models:");
+    // console.log(this.iartImageModels);
   }
 
   async terminologySearch(): Promise<void> {

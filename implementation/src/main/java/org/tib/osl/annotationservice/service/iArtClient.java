@@ -2,22 +2,12 @@ package org.tib.osl.annotationservice.service;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.List;
 
-import org.h2.command.ddl.Analyze;
-import org.wildfly.common.bytes.ByteStringBuilder;
 
 import com.google.protobuf.ByteString;
 
 import iart.client.*;
-import iart.indexer.Data.BoundingBox;
 import iart.indexer.Data.ImageData;
 import iart.indexer.Data.PluginData;
 import iart.indexer.Data.StringData;
