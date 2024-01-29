@@ -100,7 +100,7 @@ public class VecnerClient {
             
             log.debug("vizualize");
             log.debug(request.toString());
-            if( request.getDictionary().getFullDictionary() != null ) {
+            if( request.getDictionary().getFullDictionary()  != null &&  !request.getDictionary().getFullDictionary().isEmpty()) {
                 log.debug("found full dict, extend el_result...");
                 for( Object e : elResultJson.getJSONArray("ents") ){
                     JSONObject ent = (JSONObject)e;
