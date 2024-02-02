@@ -46,35 +46,29 @@ public class iArtClient {
       ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
         .usePlaintext()
         .build();
-
       IndexerGrpc.IndexerBlockingStub stub = IndexerGrpc.newBlockingStub(channel);
-
-
-      //ImageData imageData = ImageData.newBuilder().setContent(ByteString.copyFrom(base64imageString.getBytes())).setType("image").build();
-      ImageData imageData = ImageData.newBuilder().setContent(ByteString.copyFrom(image)).setType("image").build();
       AnalyseRequest.Builder requestBuilder= AnalyseRequest.newBuilder();
-        
-        
-      requestBuilder.addInputs(
-        PluginData.newBuilder().setName("image").setImage(imageData).build()
-      );
-        
-      for( String word : dict) {
+
+      ImageData imageData = null;
+      if( image != null){
+        imageData = ImageData.newBuilder().setContent(ByteString.copyFrom(image)).setType("image").build();
         requestBuilder.addInputs(
-          PluginData.newBuilder().setName("text").setString(StringData.newBuilder().setText( word ).build()).build()
+          PluginData.newBuilder().setName("image").setImage(imageData).build()
         );
       }
-
-      requestBuilder.addInputs(
-        PluginData.newBuilder().setName("text").setString(StringData.newBuilder().setText("other").build()).build()
-      );
-
+      
+      if(dict != null) { 
+        for( String word : dict) {
+          requestBuilder.addInputs(
+            PluginData.newBuilder().setName("text").setString(StringData.newBuilder().setText( word ).build()).build()
+          );
+        }
+      }
              
       requestBuilder.setPlugin(imageModel);
         
-
       AnalyseReply response = stub.analyse(requestBuilder.build());
-      System.out.println(  response.toString());
+      System.out.println( response.toString());
       channel.shutdown();
       return response.getResultsList();
     } catch (Exception e) {

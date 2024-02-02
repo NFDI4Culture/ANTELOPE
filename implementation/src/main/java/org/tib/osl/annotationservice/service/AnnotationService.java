@@ -1,14 +1,17 @@
 package org.tib.osl.annotationservice.service;
 
+import java.io.FileReader;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 import java.util.Locale;
 
 import org.springframework.http.HttpStatus;
@@ -28,16 +31,18 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tib.osl.annotationservice.service.api.dto.Dictionary;
+import org.tib.osl.annotationservice.service.api.dto.FullDictionaryValue;
 import org.tib.osl.annotationservice.service.api.dto.TextEntityLinkingRequest;
 import org.tib.osl.annotationservice.service.api.dto.Dictionary.DictionaryTypeEnum;
 import org.tib.osl.annotationservice.web.api.AnnotationApiDelegate;
 
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+
 import iart.client.*;
 import iart.indexer.Data.Concept;
 
-import com.google.gson.Gson;  
-import org.apache.commons.io.IOUtils;
-import java.util.Base64;
 
 
 @Service
@@ -118,7 +123,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         
             if( request.getDictionary() == null || (request.getDictionary().getListOfWords() == null && request.getDictionary().getSimpleDictionary() == null && request.getDictionary().getFullDictionary() == null)) {
                 request.getDictionary().setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
-                request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict());
+                request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict(false));
             }
             System.out.println(request.toString());
             JSONObject el_results = VecnerClient.callEntityLinking(request);
@@ -135,32 +140,38 @@ public class AnnotationService implements AnnotationApiDelegate {
     public ResponseEntity<String> getImageEntities(
         String model,
         MultipartFile image,
+        String text,
         Dictionary dictionary,
         BigDecimal threshold) {
         if( model == null) {
             model = "ClipClassification";
         }
         try {
+            log.info(text);
             JSONArray resultArr = new JSONArray();
-            //System.out.println(image);
-            //byte[] bytes = IOUtils.toByteArray(image.getInputStream());
-            //String base64imageString = Base64.getEncoder().encodeToString(bytes);
-            List<iart.client.PluginResult> response = iArtClient.analyze(model, image.getBytes(), dictionary.getListOfWords());
-            
-            for( PluginResult actEntry : response){
-               
-                try{
-                    for( Concept actConcept : actEntry.getResult().getClassifier().getConceptsList()){
-                        JSONObject actResultObj = new JSONObject();
-                        actResultObj.put("label", actConcept.getConcept());
-                        actResultObj.put("score", actConcept.getProb());
-                        resultArr.put(actResultObj);
+            List<iart.client.PluginResult> response = null;
+            if( dictionary == null || (dictionary.getListOfWords() == null && dictionary.getSimpleDictionary() == null && dictionary.getFullDictionary() == null)) {
+                //List<String> dict = EntityRecognition.getIconclassDict(true).values().stream().map(e -> e.getLabel()).collect(Collectors.toList());
+                //response = iArtClient.analyze(model, image.getBytes(), dict);
+                resultArr = getImageEntitiesIconClass(model, image, text, threshold);
+            } else {
+                response = iArtClient.analyze(model, image.getBytes(), dictionary.getListOfWords());
+                for( PluginResult actEntry : response){
+                    try{
+                        for( Concept actConcept : actEntry.getResult().getClassifier().getConceptsList()){
+                            //if( threshold != null && actConcept.getProb() < threshold.doubleValue()) {
+                            //    continue;
+                            //}
+                            JSONObject actResultObj = new JSONObject();
+                            actResultObj.put("label", actConcept.getConcept());
+                            actResultObj.put("score", actConcept.getProb());
+                            resultArr.put(actResultObj);
+                        }
+                    } catch (Exception e) {
+                        log.error("error during result creation for object: "+actEntry, e);
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    log.error("error during result creation for object: "+actEntry, e);
-                    e.printStackTrace();
                 }
-                
             }
             
             //String responseString = new Gson().toJson(response);
@@ -174,6 +185,117 @@ public class AnnotationService implements AnnotationApiDelegate {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    private JSONArray getImageEntitiesIconClass(String model, MultipartFile image, String imageText, BigDecimal threshold) throws Exception {
+        
+        // get vector of image
+        List<iart.client.PluginResult> response = iArtClient.analyze("ClipImageEmbeddingFeature", image.getBytes(), null);
+        List<Float> imgVector = response.get(0).getResult().getFeature().getFeatureList();
+
+        // if imageText is given, get vector of that too
+        List<Float> imgTextVector = null;
+        log.info("1"+imageText);
+        if( imageText != null) {
+            log.info("2"+imageText);
+            List<String> textList = new ArrayList<String>();
+            textList.add(imageText);
+            List<iart.client.PluginResult> imageTextResponse = iArtClient.analyze("ClipTextEmbeddingFeature", null, textList);
+            imgTextVector = getClipVectorFromPluginResults(imageTextResponse).get(0);
+        }
+
+        // get iconclass dictionary vectors
+        log.info("parse dict embeddings file..");
+        JSONArray resultArr = new JSONArray();
+        
+
+        try (CSVReader br = new CSVReaderBuilder(new FileReader("src/main/resources/dict/iconclass/txt_cliptextembeddings.csv"))
+        .withCSVParser(new CSVParserBuilder()
+            .withSeparator(';')
+            .withQuoteChar('"')
+            .build())
+        .withSkipLines(0)
+        .build()) {
+            
+            String[] values;
+            br.readNextSilently();
+            while ((values = br.readNext()) != null) {
+                String id = values[0];
+                String txt = values[1];
+                
+                String vectorStr = values[2];
+                vectorStr = vectorStr.replace("[", "");
+                vectorStr = vectorStr.replace("]", "");
+                vectorStr = vectorStr.replaceAll(" ", "");
+                //log.info(vectorStr);
+                List<Float> txtVector = Arrays.asList(vectorStr.split(",")).stream().map(e -> Float.parseFloat(e)).collect(Collectors.toList());
+                double similarityImageToDictEntity = Math.abs(cosineSimilarity(txtVector, imgVector)); 
+                double normedSimilarityImageToDictEntity = (similarityImageToDictEntity + 1.) / 2.;
+                double similarityScore = normedSimilarityImageToDictEntity;
+
+                if( imgTextVector != null) {
+                    double similarityImageTextToDictEntity = Math.abs(cosineSimilarity(txtVector, imgTextVector));
+                    double normedSimilarityImageTextToDictEntity = (similarityImageTextToDictEntity + 1.) / 2.;
+                    similarityScore = (normedSimilarityImageToDictEntity + normedSimilarityImageTextToDictEntity) / 2.;
+                }
+                JSONObject actResultObj = new JSONObject();
+                actResultObj.put("label", id+": "+txt);
+                actResultObj.put("score", similarityScore);
+                resultArr.put(actResultObj);
+                //log.info(actResultObj.toString());
+            }
+            br.close();
+        }
+        
+        return resultArr;
+    }
+    
+    private List<List<Float>> getClipVectorFromPluginResults( List<iart.client.PluginResult> pluginResults) {
+        List<List<Float>> resultArr = new ArrayList<List<Float>>();
+        for( PluginResult actEntry : pluginResults){
+            List<Float> actVector = actEntry.getResult().getFeature().getFeatureList();
+            resultArr.add(actVector);
+        } 
+        return resultArr;
+    }
+
+    @Override
+    public ResponseEntity<String> getClipTextEmbedding(List<String> requestBody) {
+        try {
+            List<iart.client.PluginResult> response = iArtClient.analyze("ClipTextEmbeddingFeature", null, requestBody);
+            List<List<Float>> resultVectors = getClipVectorFromPluginResults(response); 
+            String responseString = resultVectors.toString();
+            return new ResponseEntity<String>(responseString, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> getClipImageEmbedding(MultipartFile image) {
+        try {
+            
+            List<iart.client.PluginResult> response = iArtClient.analyze("ClipImageEmbeddingFeature", image.getBytes(), null);
+            List<List<Float>> resultVectors = getClipVectorFromPluginResults(response);
+            String responseString = resultVectors.toString();
+            return new ResponseEntity<String>(responseString, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private static double cosineSimilarity(List<Float> vectorA, List<Float> vectorB) {
+        double dotProduct = 0.0;
+        double normA = 0.0;
+        double normB = 0.0;
+        for (int i = 0; i < vectorA.size(); i++) {
+            dotProduct += vectorA.get(i) * vectorB.get(i);
+            normA += Math.pow(vectorA.get(i), 2);
+            normB += Math.pow(vectorB.get(i), 2);
+        }   
+        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+      }
 
     @Override
     public ResponseEntity<String> getParameterImageModels() {

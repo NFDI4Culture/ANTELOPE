@@ -24,9 +24,17 @@ import org.tib.osl.annotationservice.service.api.dto.TextEntityLinkingRequest;
 public class VecnerClient {
     private static Logger log = LoggerFactory.getLogger(VecnerClient.class);
 
+    private static String getBaseUrl() {
+        String url = System.getenv("VECNER_SERVICE_URL");
+        if( url == null) {
+            url = "http://localhost:5000";
+        }
+        return url;
+    }
+    
     private static String callVisualize( JSONObject request ) throws Exception {
         
-        String url = "http://localhost:5000/visualize";
+        String url = getBaseUrl()+ "/visualize";
         String resultStr = "";
         
         HttpPost post = new HttpPost(new URI(url));
@@ -49,7 +57,7 @@ public class VecnerClient {
 
     public static JSONObject callEntityLinking(TextEntityLinkingRequest request) throws Exception {
         log.info(request.toString());
-        String url = "http://localhost:5000/entitylinking";
+        String url = getBaseUrl()+ "/entitylinking";
         String elResultStr = "";
         
         HttpPost post = new HttpPost(new URI(url));

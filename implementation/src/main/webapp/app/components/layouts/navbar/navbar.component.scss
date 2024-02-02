@@ -1,0 +1,94 @@
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/functions';
+@import '~bootswatch/dist/sandstone/variables';
+@import '~bootstrap/scss/variables';
+
+/* ==========================================================================
+Navbar
+========================================================================== */
+
+:host {
+  position: relative;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  pointer-events: none;
+  
+  a {
+    pointer-events: auto !important;
+  }
+}
+
+.navbar-version {
+  font-size: 0.65em;
+  color: $navbar-dark-color;
+}
+
+.profile-image {
+  height: 1.75em;
+  width: 1.75em;
+}
+
+.navbar {
+  padding: 2rem 1rem;
+  background: transparent;
+  color: var(--color-fg-gray);
+  font-size: 1rem;
+
+  .dropdown-item.active,
+  .dropdown-item.active:focus,
+  .dropdown-item.active:hover {
+    background-color: $dark;
+  }
+
+  div, a {
+    @include media-breakpoint-down(md) {
+      padding: 0;
+      margin: 0 !important;
+    }
+  }
+
+  &-toggler {
+    border: none;
+    border-radius: 2px;
+
+    * {
+      height: 1.5em !important;
+    }
+  }
+  &-nav li {
+    @include media-breakpoint-down(md) {
+      margin: 0;
+      margin-top: 0.75rem !important;
+    }
+  }
+
+  span, a {
+    color: inherit;
+    font-size: var(--font-size-s);
+    font-weight: 200;
+    text-transform: none;
+  }
+  a {
+    padding: 0;
+    margin: 0 1.5rem;
+  }
+}
+
+.dropdown-menu {
+  border-color: var(--color-contrast);
+
+  .dropdown-item {
+    margin: 0;
+    padding: 0.25rem 0.75rem;
+
+    &:hover {
+      background-color: var(--color-bg-gray);
+    }
+
+    &.active {
+      background-color: inherit !important;
+      font-weight: 400;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<div>
+    <h4>{{ selectedEntity?.label }}</h4>
+    <span>{{ selectedEntity?.id }}</span>
+</div>
+<p>
+    {{ selectedEntity?.description }}
+</p>
+<img src="{{ selectedEntity?.imageUrl }}" *ngIf="selectedEntity?.imageUrl">
+<div>
+    <button type="button" class="btn-annotationservice btn-annotationservice--slim btn-annotationservice--primary btn-annotationservice--i-add" (click)="copyId()" jhiTranslate="home.node.copyid">COPY ID</button>
+    <button type="button" class="btn-annotationservice btn-annotationservice--slim btn-annotationservice--secondary btn-annotationservice--i-arrow" (click)="view()" jhiTranslate="home.node.view">VIEW</button>
+</div>

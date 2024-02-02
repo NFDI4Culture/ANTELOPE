@@ -671,15 +671,19 @@ public class EntityRecognition {
         return finalResult;
     }
 
-    public static Map<String,FullDictionaryValue> getIconclassDict() throws Exception{
+    public static Map<String,FullDictionaryValue> getIconclassDict(boolean fullTexts) throws Exception{
         
-       
+        String file = "src/main/resources/dict/iconclass/kw_en_keys.txt";
+        if( fullTexts) {
+            file = "src/main/resources/dict/iconclass/txt_en.txt";
+        }
         Map<String,FullDictionaryValue> result = new HashMap<>();
         
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/dict/iconclass/kw_en_keys.txt", Charset.forName("utf8")))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file, Charset.forName("utf8")))) {
             String line;
             int i = 0;
             while ((line = br.readLine()) != null) {
+                try {
                 FullDictionaryValue actResultEntry = new FullDictionaryValue();
                 String[] values = line.split("[|]");
                 //System.out.println(values.toString());
@@ -693,9 +697,12 @@ public class EntityRecognition {
                 actResultEntry.setKbUrl("http://iconclass.org/"+entity_id);
                 result.put(entity_id, actResultEntry );
                 i++;
-                //if( i > 10){
+                //if( i > 1000){
                 //    break;
                 //}
+                } catch ( ArrayIndexOutOfBoundsException e) {
+                    log.error( "error parsing the following line:"+line  );
+                }
             }
         }
         return result;

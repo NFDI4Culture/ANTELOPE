@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Annotation & Terminology Service",
+    "title": "Antelope: Annotation, Terminology Lookup and Personalization",
     "subtitle": "Dies ist Ihre Hauptseite",
     "logged": {
       "message": "Sie sind als Benutzer \"{{username}}\" angemeldet."
@@ -14,6 +14,49 @@
       "follow": "kontaktieren Sie uns mit @jhipster auf Twitter"
     },
     "like": "Wenn Sie JHipster mögen, vergessen Sie nicht uns einen Stern zu geben auf",
-    "github": "GitHub"
+    "github": "GitHub",
+    "info": "Antelope ist ein leistungsfähiger, kostenloser Open-Source-Dienst für die einfache Annotation von Daten: Terminologiesuche, Verknüpfung von Entitäten und Integration in Forschungsdatenmanagementsysteme.",
+    "node": {
+      "copyid": "ID KOPIEREN",
+      "view": "ANSEHEN"
+    },
+    "integration": {
+      "title": "Integration",
+      "paragraph0_0": "Die Antilope kann auf verschiedene Weise verwendet werden. Sie können:",
+      "list0_0_0": "Nutzen Sie diese Website direkt für Ihre Suche",
+      "link0_0": "Einbetten",
+      "list0_0_1": "das Antilopen-Suchformular auf Ihrer Website",
+      "list0_0_2": "Verbinden Sie sich mit unserer",
+      "link0_1": "RESTful API",
+      "headline1": "Via iframe",
+      "paragraph1_0": "Kopieren Sie den unten stehenden Code und fügen Sie ihn in Ihre Website oder webbasierte Software ein. Dadurch wird die Antelope-Frontend-Komponente auf Ihrer Website angezeigt.",
+      "paragraph1_1": "Sie können von Ihrer eigenen Website aus Suchanfragen an die Komponente senden. Nachdem Ihre Benutzer Entitäten innerhalb der Antelope-Komponente ausgewählt haben, stehen die Ergebnisse auf Ihrer Website zur weiteren Verwendung zur Verfügung. Eine ausführliche Dokumentation der Einbettung von Antelope finden Sie unter",
+      "link1_0": "hier",
+      "headline2": "RESTful API",
+      "paragraph2_0": "Sie können die volle Funktionalität dieser Website über unsere API nutzen. Werfen Sie einen Blick auf die",
+      "link2_0": "API docs"
+    },
+    "service": {
+      "typehintph": "Geben Sie den Begriff ein, nach dem Sie suchen möchten (einzelnes Wort oder Satz):",
+      "typehinter": "Geben Sie den Text ein, den Sie für die Entity-Erkennung verwenden möchten (einzelnes Wort oder Satz):",
+      "selectsources": "Terminologie-Quellen auswählen",
+      "selectontologies": "Ontologien auswählen (optional)",
+      "settings": "Einstellungen",
+      "allowclassduplicates": "Klassenduplikate erlauben",
+      "search": "Suchen",
+      "reset": "Zurücksetzen",
+      "change": "Ändern",
+      "resultsin": "Ergebnisse in",
+      "terminologysources": "Terminologie-Quellen"
+    }
+  },
+  "sidebar": {
+    "title": "Ihre Auswahl",
+    "selectedentities": "Ausgewählte Entitäten",
+    "unselectall": "Alle abwählen",
+    "export": "Auswahl Exportieren",
+    "exportjson": "JSON",
+    "exportcsv": "CSV",
+    "selectionempty": "Sie haben noch keine Entitäten ausgewählt"
   }
 }

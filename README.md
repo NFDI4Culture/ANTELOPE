@@ -1,54 +1,42 @@
-# Annotation service
+# [Antelope](https://service.tib.eu/annotation/): Annotation, Terminology Lookup and Personalization
 
-This is the repository where we'll organize research and work on the annotation / terminology service for NFDI4Culture.
+<img src="https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/raw/main/implementation/src/main/webapp/content/images/logo_antelope.png?ref_type=heads" width="300">
 
-## Description
-We are in the process of researching and planning this service which will connect various terminology services with enduser applications (Wikibase / Kompakkt for now, potentially more in the future) supporting users with automation and NER features.
+Antelope is a free, open-source service to support your data annotation. It offers terminology search, entity linking and easy integration into your projects. The serice integrates with various terminology services and enduser applications (Wikibase and Kompakkt for now). At that, it supports users with process automation and named entity recognition features.  
+  
+> Antelope is a project for [NFDI4Culture](https://nfdi4culture.de/).
 
-Example user stories and workflows v0.1: https://miro.com/app/board/uXjVOn6frZY=/
+## ⚠️ Project Status
 
-Report from preparatory user research workshop with the NFDI community: https://zenodo.org/record/7100818 
+We are in an iterative process of research and development of Antelope.
 
-## Service architecture
+**Current Version**: `v0.2`
 
-V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/blob/main/AnnotationService_SystemArch_2022_05_23.png
+**Further Reading**:
 
-## Screenshot of tool interface
-V0.1: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/blob/main/2022_11_30_AnnotationService_screenshot.png 
+- [Example user stories / workflows](https://miro.com/app/board/uXjVOn6frZY=/)
+- [Report of preparatory workshop with NFDI community](https://zenodo.org/record/7100818)
+- [Plug-in solution](https://youtu.be/FvU6O23Ozyc)
+- [Integrated NER solutions](https://semlab.io/howto/selavy_alpha)
 
-## Inspiration sources for UI solutions:
-1) solution as a plugin: https://youtu.be/FvU6O23Ozyc
-2) integrated NER solutions: https://semlab.io/howto/selavy_alpha  
+## Architecture
 
-## Roadmap
-A high level roadmap can be [viewed here](https://docs.google.com/spreadsheets/d/1aCI6LHKs70q2vynO-L1MyRJqbS7IpzHY1dtj4lMIkqY/edit?usp=sharing).
-For more granular development, follow the issues and the milestones in this repository and the TA1 sub-group.
+`V0.1`
 
-## Authors and acknowledgment
-Contributors to this project: Kolja Bailly, Paul Duchesne and Lozana Rossenova
+<img src="https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/raw/main/annotation-service-architecture.png?ref_type=heads">
 
-## License
-MIT License
+## Screenshot
 
-Copyright (c) 2022 Open Science Lab, TIB Hannover
+`V0.2`
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+<img src="https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/raw/main/annotation-service-screenshot.png?ref_type=heads">
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## Resources
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+- [High level roadmap](https://docs.google.com/spreadsheets/d/1aCI6LHKs70q2vynO-L1MyRJqbS7IpzHY1dtj4lMIkqY/edit?usp=sharing)
+- [Current issues](https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/issues)
+- [Milestones](https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/milestones)
 
-## Project status
-In development.
+---
+
+<sub>&copy; TIB Hannover</sub>

@@ -1,340 +1,250 @@
-# annotationService
+# Antelope Development
 
-This application was generated using JHipster 7.9.3, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.9.3](https://www.jhipster.tech/documentation-archive/v7.9.3).
+> ↳ [Project README](../README.md)
 
-## Integration in other websites
-To integrate the annotationService into another website, use the integration html code found in src/main/examples/webpage/index.html.
-This will integrate the annotationService within an iframe on the website, as well as some javascript code to handle data exchange.
-The example gets Text from a user via a textfield and sends it to the annotationService for entity mapping via the iframe (function 'queryEntities()').
-The Annotationservice will display the results in a select component (e.g. a selectbox) within the iframe.
-When the user selects a result within the iframe, a message is send to the parent frame (your website).
-The message contains the selected entity data and is processed within the function 'onMessage()'
-In the example, the function displays the selected entity data using a  tag 'selectedEntity' feel free to change the onMessage function according to your needs and usecases.
-See schema graph: src/main/examples/webpage/integrationConcept.svg
+Antelope is powered by [JHipster](https://www.jhipster.tech/documentation-archive/v7.9.3) and [Angular](https://angular.io/docs).
 
-## CI/CD
-use the ./src/main/docker/Dockerfile_PROD or ../Dockerfile_TEST to build a container image of the application:
-The dockerfile is capable to push the image into the annotationService container registry. See Dockerfile comments for further instructions
-docker build - < src/main/docker/Dockerfile_PROD
-docker build - < src/main/docker/Dockerfile_TEST
+## Prerequisites
 
+- [Node.js](https://nodejs.org/en) v17+ (ships with *NPM* by default)
+- [Node Package Manager (NPM)](https://www.npmjs.com/) v9+
+- [Java Runtime Environment (JRE)](https://www.java.com/en/download/manual.jsp) v16+
+- [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/downloads/) v22+
 
-start the application via docker:
-docker-compose -f src/main/docker/app.yml up
+## Installation
 
-development environment
-If you want to have a docker image for development purposes, use the ./src/main/docker/Dockerfile but remove the line for building the image
+1. Check out the project from [GitLab](https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service).
 
-## Project Structure
+2. Install dependencies
 
-Node is required for generation and recommended for development. `package.json` is always generated for a better development experience with prettier, commit hooks, scripts and so on.
-
-In the project root, JHipster generates configuration files for tools like git, prettier, eslint, husky, and others that are well known and you can find references in the web.
-
-`/src/*` structure follows default Java structure.
-
-- `.yo-rc.json` - Yeoman configuration file
-  JHipster configuration is stored in this file at `generator-jhipster` key. You may find `generator-jhipster-*` for specific blueprints configuration.
-- `.yo-resolve` (optional) - Yeoman conflict resolver
-  Allows to use a specific action when conflicts are found skipping prompts for files that matches a pattern. Each line should match `[pattern] [action]` with pattern been a [Minimatch](https://github.com/isaacs/minimatch#minimatch) pattern and action been one of skip (default if ommited) or force. Lines starting with `#` are considered comments and are ignored.
-- `.jhipster/*.json` - JHipster entity configuration files
-
-- `npmw` - wrapper to use locally installed npm.
-  JHipster installs Node and npm locally using the build tool by default. This wrapper makes sure npm is installed locally and uses it avoiding some differences different versions can cause. By using `./npmw` instead of the traditional `npm` you can configure a Node-less environment to develop or test your application.
-- `/src/main/docker` - Docker configurations for the application and services that the application depends on
-
-## Development
-
-Before you can build this project, you must install and configure the following dependencies on your machine:
-
-1. [Node.js][]: We use Node to run a development web server and build the project.
-   Depending on your system, you can install Node either from source or as a pre-packaged bundle.
-
-After installing Node, you should be able to run the following command to install development tools.
-You will only need to run this command when dependencies change in [package.json](package.json).
-
-```
+``` console
 npm install
 ```
 
-We use npm scripts and [Angular CLI][] with [Webpack][] as our build system.
+## Project Structure
 
-Run the following commands in two separate terminals to create a blissful development experience where your browser
-auto-refreshes when files change on your hard drive.
+The root directory contains organizational project related files. Application related files reside below the `/implementation` directory. The source directory `./src` structure follows the common *Java* project file structure. Moreover, the *Angular* web application exists at `./src/main/webapp`.  
+  
+*JHipster* generates and reads configuration files for tools like *git*, *prettier*, *eslint*, *husky*, and others (you can find references in the web):
 
+- **./.yo-rc.json** - *Yeoman* configuration file storing *JHipster* configuration with the `generator-jhipster` key. You may find `generator-jhipster-*` for specific blueprints configuration.
+- **./.yo-resolve** (optional) - *Yeoman* conflict resolver allowing to use a specific action when conflicts are found skipping prompts for files that matches a pattern. Each line should match `[pattern] [action]` with pattern been a [Minimatch](https://github.com/isaacs/minimatch#minimatch) pattern and action been one of skip (default if ommited) or force.
+- **./.jhipster/*.json** - *JHipster* entity configuration files
+- **./npmw** - Wrapper for using locally installed *NPM*. *JHipster* installs *Node.js* and *NPM* locally using the build tool by default. This wrapper makes sure *NPM* is installed locally and uses it avoiding possible issues due to different development versions.
+- **./src/main/docker** - Docker configurations for the application and services that the application depends on.
+
+## Development
+
+1. Generate one branch per issue:
+
+``` console
+git checkout main
+git checkout -b issue<ISSUE_NR>_<BRANCHNAME>
 ```
+
+2. Implement issue objective.
+
+3. `optional` Write tests.
+
+4. Debug application:
+
+``` console
 ./mvnw
+```
+``` console
 npm start
 ```
 
-Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
-specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
-Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
+> The build process is managed via *NPM* abstracting [Angular CLI](https://angular.io/cli) with [Webpack](https://webpack.js.org/). Run the following commands in two separate console windows in order to obtain a blissful development experience.
 
-The `npm run` command will list all of the scripts available to run for this project.
+5. Check build under productive circumstances, including to linters, tests and audits:
 
-## Dev and deployment cycle
-
-### generate one branch per issue
-git checkout main
-git checkout -b issue<ISSUE_NR>_<BRANCHNAME>
-
-### develop
-do your development. When the functionality is implemented, check the building under Production circumstances. this will check for styleguide etc. and will save you a lot of later debugging of possible failing gitlab build jobs
-
+``` console
 ./mvnw package -Pprod verify jib:build 
+```
 
-### merge branch to test
+**IF** the previous step terminated with failure, repeat from implementation (2.).
+
+6. Commit changes with a proper message.
+
+7. Merge issue branch to test branch and check functionality again (4., 5.):
+
+``` console
 git checkout test
 git fetch
 git pull
-git merge <DEV_BRANCH>
-
-### deploy on test server
-
-# push changes to git, gitlab will rebuild the docker container automatically
-git push 
- 
--check for progress on: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/jobs
-if job creation fails, you may build and publish locally:
-./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/test:latest -Djib.to.auth.username=<USERNAME> -Djib.to.auth.password=<PASSWORD>
-
-
--check for rebuild container on https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/container_registry/4057458
--start deploy job "deploy TEST-annotationservice" in gitlab deploy project: https://git.tib.eu/nfdi4culture/annotation_service-deploy/-/pipelines/49416
--check functionality: http://nfdi4cultureann11.test.service.tib.eu:8080/ (only accessible from tib internal network)
- 
-### merge test branch (TEST) into main branch (PROD)
-git checkout main
-git fetch
-git pull
-git merge test
-
-### deploy on prod server
-git push 
- 
--check for progress on: https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/jobs
--check for rebuild container on https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/container_registry/3734515
--start deploy job "deploy PROD-annotationservice" in gitlab deploy project: https://git.tib.eu/nfdi4culture/annotation_service-deploy/-/pipelines/49416
--check functionality: https://service.tib.eu/annotation/ 
-
-### delete dev branch
-
-
-### PWA Support
-
-JHipster ships with PWA (Progressive Web App) support, and it's turned off by default. One of the main components of a PWA is a service worker.
-
-The service worker initialization code is disabled by default. To enable it, uncomment the following code in `src/main/webapp/app/app.module.ts`:
-
-```typescript
-ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
+git merge issue<ISSUE_NR>_<BRANCHNAME>
 ```
 
-### Managing dependencies
+> The `npm run` command helps with listing all available scripts provided for the project.
 
-For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
+### Client Tests
 
-```
-npm install --save --save-exact leaflet
-```
+Unit testing is powered by [Jest](https://jestjs.io/). Test files are located in `src/test/javascript/`. The test suite can be run through the following *NPM* script:
 
-To benefit from TypeScript type definitions from [DefinitelyTyped][] repository in development, you would run following command:
-
-```
-npm install --save-dev --save-exact @types/leaflet
-```
-
-Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
-Edit [src/main/webapp/app/app.module.ts](src/main/webapp/app/app.module.ts) file:
-
-```
-import 'leaflet/dist/leaflet.js';
-```
-
-Edit [src/main/webapp/content/scss/vendor.scss](src/main/webapp/content/scss/vendor.scss) file:
-
-```
-@import '~leaflet/dist/leaflet.css';
-```
-
-Note: There are still a few other things remaining to do for Leaflet that we won't detail here.
-
-For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
-
-### Using Angular CLI
-
-You can also use [Angular CLI][] to generate some custom client code.
-
-For example, the following command:
-
-```
-ng generate component my-component
-```
-
-will generate few files:
-
-```
-create src/main/webapp/app/my-component/my-component.component.html
-create src/main/webapp/app/my-component/my-component.component.ts
-update src/main/webapp/app/app.module.ts
+``` console
+npm test
 ```
 
 ### JHipster Control Center
 
-JHipster Control Center can help you manage and control your application(s). You can start a local control center server (accessible on http://localhost:7419) with:
+The *JHipster Control Center* helps with managing the application. It can be started for a local instance as follows:
 
-```
+``` console
 docker-compose -f src/main/docker/jhipster-control-center.yml up
 ```
 
-### Doing API-First development using openapi-generator-cli
+The *Control Center* will be available on http://localhost:7419`.
 
-[OpenAPI-Generator]() is configured for this application. You can generate API code from the `src/main/resources/swagger/api.yml` definition file by running:
+### API-first with OpenAPI
 
-```bash
+The project is configured for an [OpenAPI-Generator](https://github.com/OpenAPITools/openapi-generator). It can help with generating API code based on the definitions located in `src/main/resources/swagger/api.yml`. To use it, run:
+
+``` console
 ./mvnw generate-sources
 ```
 
-Then implements the generated delegate classes with `@Service` classes.
+> To edit the definitions file, the *Swagger-Editor* can help. It can be started for a local instance using *Docker*: `docker-compose -f src/main/docker/swagger-editor.yml up -d`. The editor will be available at http://localhost:7742.
 
-To edit the `api.yml` definition file, you can use a tool such as [Swagger-Editor](). Start a local instance of the swagger-editor using docker by running: `docker-compose -f src/main/docker/swagger-editor.yml up -d`. The editor will then be reachable at [http://localhost:7742](http://localhost:7742).
+## Deployment
 
-Refer to [Doing API-First development][] for more details.
+The deployment requires the following steps, spreading across **TEST** and **PROD** servers.
 
-## Building for production
+### TEST Server
 
-### Packaging as jar
+1. Push changes on test branch to the remote, *GitLab* will rebuild the docker container automatically:
 
-To build the final jar and optimize the annotationService application for production, run:
-
+``` console
+git push
 ```
+
+2. Check for build progress on https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/jobs. If the job creation fails, you may build and publish locally:
+
+``` console
+./mvnw package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/test:latest -Djib.to.auth.username=<USERNAME> -Djib.to.auth.password=<PASSWORD>
+```
+
+3. Check for rebuilt container on https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/container_registry/4057458.
+
+
+4. Start deploy job `deploy TEST-annotationservice` in the deploy project on https://git.tib.eu/nfdi4culture/annotation_service-deploy/-/pipelines/49416.
+
+
+5. Check proper functionality on http://nfdi4cultureann11.test.service.tib.eu:8080/ (note that the staging application is only accessible from a *TIB* internal network).
+
+### PROD Server
+
+1.  Merge test branch to main branch and check:
+
+``` console
+git checkout main
+git fetch
+git pull
+git merge test
+```
+
+2. Check for build progress on https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/jobs.
+
+3. Check for rebuilt container on https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/container_registry/3734515.
+
+4. Start deploy job `deploy PROD-annotationservice` in deploy project on https://git.tib.eu/nfdi4culture/annotation_service-deploy/-/pipelines/49416.
+
+5. Check proper functionality on https://service.tib.eu/annotation/.
+
+6. Delete isse branch.
+
+### Docker
+
+To build a *Docker* container image of the application, run one of the following commands (depending on the target environment):
+
+``` console
+docker build - < src/main/docker/Dockerfile_PROD
+```
+
+``` console
+docker build - < src/main/docker/Dockerfile_TEST
+```
+
+> The *Dockerfile* is capable to push the image into the annotation service container registry. See *Dockerfile* comments for further instructions.
+
+To start the application via docker, run:
+
+``` console
+docker-compose -f src/main/docker/app.yml up
+```
+
+### Packaging
+
+#### As `.jar`
+
+To build a `.jar` file and optimize the annotation service client application resources for production, run:
+
+``` console
 ./mvnw -Pprod clean verify
 ```
 
-This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
-To ensure everything worked, run:
+To ensure everything worked, subsequently type:
 
-```
+``` console
 java -jar target/*.jar
 ```
 
-Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
+Check on http://localhost:8080 for the results.
 
-Refer to [Using JHipster in production][] for more details.
+#### As `.war`
 
-### Packaging as war
+To package your application as a `.war` in order to deploy it to an application server, run:
 
-To package your application as a war in order to deploy it to an application server, run:
-
-```
+``` console
 ./mvnw -Pprod,war clean verify
 ```
 
-## Testing
+### Testing
 
-To launch your application's tests, run:
+To launch application tests, run:
 
-```
+``` console
 ./mvnw verify
 ```
 
-### Client tests
-
-Unit tests are run by [Jest][]. They're located in [src/test/javascript/](src/test/javascript/) and can be run with:
-
-```
-npm test
-```
-
-For more information, refer to the [Running tests page][].
-
 ### Code quality
 
-Sonar is used to analyse code quality. You can start a local Sonar server (accessible on http://localhost:9001) with:
+[Sonar](https://www.sonarsource.com/) provides code quality analysis capabilites. A local *Sonar* server can be run as stated below:
 
-```
+``` console
 docker-compose -f src/main/docker/sonar.yml up -d
 ```
 
-Note: we have turned off authentication in [src/main/docker/sonar.yml](src/main/docker/sonar.yml) for out of the box experience while trying out SonarQube, for real use cases turn it back on.
+The analysis interface will be available on http://localhost:9001.
 
-You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
+> Authentication is turned off in `src/main/docker/sonar.yml` to ensure an out-of-the-box experience while trying out *SonarQube*, for real use cases turn it back on.
 
-Then, run a Sonar analysis:
+A *Sonar* analysis can be run using [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner), or the related *Maven* plugin. Given this as a prerequisite, run:
 
-```
+``` console
 ./mvnw -Pprod clean verify sonar:sonar
 ```
 
-If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
+If the *Sonar* phase needs to be re-run, please be sure to specify at least the `initialize` phase. Since *Sonar* properties are loaded from the `sonar-project.properties` file, this is required.
 
-```
+``` console
 ./mvnw initialize sonar:sonar
 ```
 
-For more information, refer to the [Code quality page][].
+## Integration with Third-party Applications
 
-## Using Docker to simplify development (optional)
+A major contribution of Antelope is supposed to be the integration from third-party applications. That being said, an integration into other web based applications can happen in two ways.
 
-You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
+### Via `iframe`
 
-For example, to start a postgresql database in a docker container, run:
+The [HTML Example](./src/main/examples/html/index.html) gives a complete example on how to integrate Antelope via an `iframe` element. The example reads a textfield and sends it to the annotation service for entity mapping. Then, the annotation service will display the results in a select component within the `iframe`. When the user selects a result within the iframe, a message is send to the parent application. The message contains the selected entity data and is processed within the function `onMessage()`.
 
-```
-docker-compose -f src/main/docker/postgresql.yml up -d
-```
+> See the related schema graph at `src/main/examples/webpage/integrationConcept.svg`.
 
-To stop it and remove the container, run:
+### Via `RESTful API`
 
-```
-docker-compose -f src/main/docker/postgresql.yml down
-```
+More specific integration concepts with the annotation service can be achieved thorugh the provided *REST* compliant API. The API documentation is available on `https://service.tib.eu/annotation/v3/api-docs/openapi`.
 
-You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
+---
 
-```
-npm run java:docker
-```
-
-Or build a arm64 docker image when using an arm64 processor os like MacOS with M1 processor family running:
-
-```
-npm run java:docker:arm64
-```
-
-Then run:
-
-```
-docker-compose -f src/main/docker/app.yml up -d
-```
-
-When running Docker Desktop on MacOS Big Sur or later, consider enabling experimental `Use the new Virtualization framework` for better processing performance ([disk access performance is worse](https://github.com/docker/roadmap/issues/7)).
-
-For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
-
-## Continuous Integration (optional)
-
-To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
-
-[jhipster homepage and latest documentation]: https://www.jhipster.tech
-[jhipster 7.9.3 archive]: https://www.jhipster.tech/documentation-archive/v7.9.3
-[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v7.9.3/development/
-[service discovery and configuration with the jhipster-registry]: https://www.jhipster.tech/documentation-archive/v7.9.3/microservices-architecture/#jhipster-registry
-[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v7.9.3/docker-compose
-[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v7.9.3/production/
-[running tests page]: https://www.jhipster.tech/documentation-archive/v7.9.3/running-tests/
-[code quality page]: https://www.jhipster.tech/documentation-archive/v7.9.3/code-quality/
-[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v7.9.3/setting-up-ci/
-[node.js]: https://nodejs.org/
-[npm]: https://www.npmjs.com/
-[webpack]: https://webpack.github.io/
-[browsersync]: https://www.browsersync.io/
-[jest]: https://facebook.github.io/jest/
-[leaflet]: https://leafletjs.com/
-[definitelytyped]: https://definitelytyped.org/
-[angular cli]: https://cli.angular.io/
-[openapi-generator]: https://openapi-generator.tech
-[swagger-editor]: https://editor.swagger.io
-[doing api-first development]: https://www.jhipster.tech/documentation-archive/v7.9.3/doing-api-first-development/
+<sub>&copy; TIB Hannover</sub>

@@ -275,6 +275,51 @@ paths:
         default:
           description: Unexpected error
  
+  /annotation/clipEmbedding/text:
+    post:
+      summary: get a vector for texts that define their position in the vectorspace defined by the openAI CLIP model
+      operationId: getClipTextEmbedding
+      requestBody:
+        description: texts to process
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextArray'
+              
+      responses:
+        "200":
+          description: a list of vectors define the position of the given texts in the vectorspace defined by the openAI CLIP model
+          content:
+            text/html:
+              schema:
+                type: string
+        default:
+          description: Unexpected error
+
+  /annotation/clipEmbedding/image:
+    post:
+      summary: get a vector for an image that define the position in the vectorspace defined by the openAI CLIP model
+      operationId: getClipImageEmbedding
+      requestBody:
+        description: image to process
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              
+      responses:
+        "200":
+          description: a list of vectors define the position of the given texts in the vectorspace defined by the openAI CLIP model
+          content:
+            text/html:
+              schema:
+                type: string
+        default:
+          description: Unexpected error
 
   /annotation/entities/selectcomponent:
     get:
@@ -371,6 +416,9 @@ components:
         image:
           type: string
           format: binary
+        text:
+          type: string
+          description: optional text that describes the image. this will be used to further finetune the results
         dictionary:
           $ref: '#/components/schemas/Dictionary'
         threshold:

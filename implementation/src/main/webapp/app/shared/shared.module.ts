@@ -13,14 +13,18 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { FilterComponent } from './filter/filter.component';
-import { AnnotationServiceUIComponent } from 'app/annotation-service-ui/annotation-service-ui.component';
-import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
-import { GraphTidytreeComponent } from 'app/graph-tidytree/graph-tidytree.component';
-import { GraphBarchartComponent } from 'app/graph-barchart/graph-barchart.component';
+// import { AnnotationserviceResultSelectcomponentComponent } from 'app/annotationservice-result-selectcomponent/annotationservice-result-selectcomponent.component';
+import { OverlayComponent } from 'app/components/home/overlay/overlay.component';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MaterialModule } from "./material/material.module";
-import {ClipboardModule} from '@angular/cdk/clipboard'; 
+import { ClipboardModule } from '@angular/cdk/clipboard'; 
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AnnotationServiceUIComponent } from 'app/components/home/search-wrapper/search-wrapper.component';
+import { GraphSelectionCardComponent } from 'app/components/home/graph-selection-card/graph-selection-card.component';
+import { SelectionBarComponent } from 'app/components/home//selection-bar/selection-bar.component';
+import { ResultsGraphTidytreeComponent } from 'app/components/home//results-graph-tidytree/results-graph-tidytree.component';
+import { ResultsGraphBarchartComponent } from 'app/components/home/results-graph-barchart/results-graph-barchart.component';
+import { ResultsTableComponent } from 'app/components/home//results-table/results-table.component';
 
 
 @NgModule({
@@ -38,11 +42,14 @@ import { NgSelectModule } from '@ng-select/ng-select';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
+    OverlayComponent,
     AnnotationServiceUIComponent,
-    AnnotationserviceResultSelectcomponentComponent,
-    GraphTidytreeComponent,
-    GraphBarchartComponent
-    
+    GraphSelectionCardComponent,
+    SelectionBarComponent,
+    ResultsGraphTidytreeComponent,
+    ResultsGraphBarchartComponent,
+    ResultsTableComponent
+
   ],
   exports: [
     SharedLibsModule,
@@ -58,10 +65,13 @@ import { NgSelectModule } from '@ng-select/ng-select';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
+    OverlayComponent,
     AnnotationServiceUIComponent,
-    AnnotationserviceResultSelectcomponentComponent,
-    GraphTidytreeComponent,
-    GraphBarchartComponent, 
+    GraphSelectionCardComponent,
+    SelectionBarComponent,
+    ResultsGraphTidytreeComponent,
+    ResultsTableComponent,
+    ResultsGraphBarchartComponent,
     MaterialModule,
     ClipboardModule
   ],

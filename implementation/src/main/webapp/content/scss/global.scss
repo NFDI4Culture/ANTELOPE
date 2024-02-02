@@ -9,9 +9,16 @@ Bootstrap tweaks
 ===============================================================*/
 
 body {
- font-family: Roboto, "Helvetica Neue", sans-serif;;
- --bs-link-color: #dfb80b;
- --bs-link-hover-color: #555;
+  color: var(--color-fg-dark);
+  font-size: 16px;
+  font-weight: 400;
+
+  --bs-link-color: #dfb80b;
+  --bs-link-hover-color: #555;
+
+  &, * {
+    font-family: "Roboto Condensed", "Roboto", "Helvetica Neue", sans-serif;
+  }
 }
 h1,
 h2,
@@ -52,8 +59,11 @@ Generic styles
 }
 
 .error {
-  color: white;
-  background-color: red;
+  margin: auto;
+  margin-top: 1rem;
+  color: var(--color-error);
+  font-weight: 200;
+  text-align: center;
 }
 
 .pad {
@@ -214,3 +224,133 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
 
+
+@font-face {
+  font-family: "Roboto Condensed";
+  src: url(../fonts/RobotoCondensed-200.ttf);
+  font-weight: 200;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Condensed";
+  src: url(../fonts/RobotoCondensed-400.ttf);
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Condensed";
+  src: url(../fonts/RobotoCondensed-600.ttf);
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --color-primary: #F9CD0E;
+  --color-secondary: #18A0FB;
+  --color-contrast: #C4C4C4;
+  --color-error: #FF0E0A;
+  --color-fg-dark: #000000;
+  --color-fg-gray: #7B7B7B;
+  --color-fg-light: #FFFFFF;
+  --color-bg-gray: #E5E5E5;
+  --color-bg-lightgray: #F6F6F6;
+  --color-bg-light: #FFFFFF;
+
+  --font-size-s: 0.875rem;
+  --font-size-m: 1rem;
+  --font-size-l: 1.125rem;
+}
+
+*:focus {
+  outline: none !important;
+}
+
+*.disabled, *[disabled] {
+  pointer-events: none;
+  pointer-events: none;
+  filter: saturate(0.25) opacity(0.55);
+
+  mat-ink-bar {
+    background-color: var(--color-bg-gray) !important;
+  }
+}
+
+p {
+  max-width: calc(10 * 5ch); // optimum paragraph width is ~ 10 words (mean word length 5 chars)
+}
+
+.mat-tab-body:not(.mat-tab-body-active) {
+  opacity: 0.0;
+  pointer-events: none;
+  transition: opacity 200ms;
+}
+
+.btn-annotationservice {
+  cursor: pointer;
+  padding: 0.625rem 2rem;
+  font-size: var(--font-size-s);
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0.35rem;
+  white-space: nowrap;
+  transition: all 400ms;
+
+  &:hover {
+    filter: brightness(0.85);
+  }
+
+  &--primary {
+    background-color: var(--color-primary);
+    color: var(--color-fg-dark);
+  }
+  &--secondary {
+    background-color: var(--color-bg-gray);
+    color: var(--color-fg-gray);
+  }
+
+  &--slim {
+    padding: 0.35rem 0.95rem;
+  }
+
+  @mixin icon($file) {
+    display: flex;
+    align-items: center;
+
+    &::after {
+      content: "";
+      display: block;
+      margin-left: 0.35em;
+      width: 0.75em;
+      height: 0.75em;
+      background: url("../images/#{$file}");
+      background-size: 0.75em;
+      background-position: center;
+    }
+  }
+
+  &--i-add {
+    @include icon("add-icon.svg");
+  }
+  &--i-arrow {
+    @include icon("arrow-icon.svg");
+  }
+}
+
+.tib-btn-info {
+  display: inline-block;
+  padding: 0.65rem;
+}
+
+.subheading {
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.ngx-bar {
+  &, * {
+    height: 0.25rem !important;
+    background-color: var(--color-secondary) !important;
+  }
+}

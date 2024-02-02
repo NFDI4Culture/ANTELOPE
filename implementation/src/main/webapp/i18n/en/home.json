@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Welcome, Java Hipster!",
+    "title": "Antelope: Annotation, Terminology Lookup and Personalization",
     "subtitle": "This is your homepage",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
@@ -14,6 +14,49 @@
       "follow": "follow @jhipster on Twitter"
     },
     "like": "If you like JHipster, don't forget to give us a star on",
-    "github": "GitHub"
+    "github": "GitHub",
+    "info": "Antelope is a powerful free, open source service for easy data annotation: terminology search; entity linking; and integration with research data management systems.",
+    "node": {
+      "copyid": "COPY ID",
+      "view": "VIEW"
+    },
+    "integration": {
+      "title": "Integration",
+      "paragraph0_0": "Antelope can be used in various ways. You may:",
+      "list0_0_0": "Use this website directly for your search",
+      "link0_0": "Embed",
+      "list0_0_1": "the antelope search form in your website",
+      "list0_0_2": "Connect to our",
+      "link0_1": "RESTful API",
+      "headline1": "Via iframe",
+      "paragraph1_0": "Copy the code below and place it on your website or web-based software. This will display the Antelope frontend component within your site.",
+      "paragraph1_1": "You may send search requests to the component from your own site. After your users select entities within the Antelope component, the results are available in your site for further use. For detailled documentation of embedding Antelope see",
+      "link1_0": "here",
+      "headline2": "RESTful API",
+      "paragraph2_0": "You can use the full functionality of this website via our API. Have a look at the",
+      "link2_0": "API docs"
+    },
+    "service": {
+      "typehintph": "Type the term you want to search for (single word or phrase):",
+      "typehinter": "Type the text you want to run entity recognition on (single words or whole sentences):",
+      "selectsources": "Select terminology sources",
+      "selectontologies": "Select ontologies (optional)",
+      "settings": "Settings",
+      "allowclassduplicates": "Allow class duplicates",
+      "search": "Search",
+      "reset": "Reset",
+      "change": "Change",
+      "resultsin": "results in",
+      "terminologysources": "terminology sources"
+    },
+    "sidebar": {
+      "title": "Your Selection",
+      "selectedentities": "Selected Entities",
+      "unselectall": "unselect All",
+      "export": "Export Selection",
+      "exportjson": "JSON",
+      "exportcsv": "CSV",
+      "selectionempty": "You did not yet select any entities"
+    }
   }
 }
