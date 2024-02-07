@@ -72,7 +72,7 @@ export class ResultsGraphBarchartComponent {
       .range([0, width])
       .padding(0.1);
     const y = d3.scaleLinear()
-      .range([height, Math.min(...data.map((d:any) => d.score))]);
+      .range([height, Math.min(...data.map((d:any) => d.score as string))]);
 
     // append the svg object to the body of the page
     // append a 'group' element to 'svg'
@@ -91,7 +91,7 @@ export class ResultsGraphBarchartComponent {
 
     // Scale the range of the data in the domains
     x.domain(data.map(function (d: any): string { return label(d) }));
-    //y.domain([Math.min(...data.map((d:any) => d.score)), Math.max(...data.map((d:any) => d.score))]);
+    // y.domain([Math.min(...data.map((d:any) => d.score)), Math.max(...data.map((d:any) => d.score))]);
     y.domain([0, 1]);
 
 

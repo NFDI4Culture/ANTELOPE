@@ -3,6 +3,7 @@ package org.tib.osl.annotationservice.service;
 import java.io.FileReader;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -208,7 +209,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         JSONArray resultArr = new JSONArray();
         
 
-        try (CSVReader br = new CSVReaderBuilder(new FileReader("src/main/resources/dict/iconclass/txt_cliptextembeddings.csv"))
+        try (CSVReader br = new CSVReaderBuilder(new FileReader("src/main/resources/dict/iconclass/txt_cliptextembeddings.csv", Charset.forName("utf8")))
         .withCSVParser(new CSVParserBuilder()
             .withSeparator(';')
             .withQuoteChar('"')

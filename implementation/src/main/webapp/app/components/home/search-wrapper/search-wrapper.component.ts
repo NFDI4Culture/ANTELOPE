@@ -246,7 +246,7 @@ export class AnnotationServiceUIComponent implements OnInit {
 
   updateElThresholdLabel():void {
     const filtered = this.annotation.entities.filter((entity) => entity.score > this.el_threshold);
-    this.el_threshold_result_count = "(show: "+filtered.length + " of " + this.annotation.entities.length+" results)";
+    this.el_threshold_result_count = "(show: "+filtered.length.toString() + " of " + this.annotation.entities.length.toString()+" results)";
   }
 
   submit():void { 
@@ -298,7 +298,7 @@ export class AnnotationServiceUIComponent implements OnInit {
         formData.append('dictionary', new Blob([dict_param], { type: 'application/json' }));
         formData.append('threshold',this.el_threshold.toString());
         formData.append('text', this.imageText.value as string);
-        console.log(this.imageText.value);
+        // console.log(this.imageText.value);
       } else {
         // console.log("predefined dict");
         // TODO: add dict        
@@ -319,7 +319,7 @@ export class AnnotationServiceUIComponent implements OnInit {
           this.imageELgraph.clear();
           const filtered = this.annotation.entities.filter((entity) => entity.score > this.el_threshold);
           this.imageELgraph.createChartFromClassificationResult(filtered);
-          //this.imageELgraph.svg.nativeElement.style.display = 'block';
+          // this.imageELgraph.svg.nativeElement.style.display = 'block';
           this.hierarchyGraph.svg.nativeElement.style.display = 'none';
           (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'block';
           this.updateElThresholdLabel();
