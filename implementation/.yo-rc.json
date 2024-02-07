@@ -24,7 +24,7 @@
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.9.3",
     "jwtSecretKey": "OTMxNjlhYTQ4MDQwMTM0NjVlZWQ0OWIzODFhZDU5YWVmYmM4NDU5MmYwYjJlZjQ1NjRjMWM4NjBlMGE1NTg3MmEzZWUzMWM0MTU4ZDQzNzM1Y2Q5OGNlZTFmOTFmN2I2YmQ3NDk1MWNiNjY1OTk1ZjA1YmI3NjBkMDA4NWMyMjk=",
-    "languages": ["de", "en", "ua"],
+    "languages": ["de", "en"],
     "messageBroker": false,
     "monorepository": true,
     "nativeLanguage": "de",
