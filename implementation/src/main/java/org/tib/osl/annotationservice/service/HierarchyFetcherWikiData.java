@@ -32,8 +32,19 @@ public class HierarchyFetcherWikiData extends HierarchyFetcher{
         String objId = urlParts[ urlParts.length-1 ];
         // init connection to wikiData api
         String result = "";
-        String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+objId+" wdt:P31*/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
+        //String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+objId+" wdt:P31*/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
         //String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE { wd:"+entityId+" wdt:P31/wdt:P279* ?class. ?class wdt:P31/wdt:P279 ?superclass. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } ";
+        String sparqlQuery = "SELECT ?class ?classLabel ?superclass ?superclassLabel WHERE {" +
+            "BIND(wd:" + objId + " AS ?item) " +
+            "?item wdt:P31 ?class . " +
+            "OPTIONAL {" +
+                "{ ?class wdt:P31 ?superclass . }" +
+                "UNION" +
+                "{ ?class wdt:P279 ?superclass . }" +
+            "}"+
+            "SERVICE wikibase:label { bd:serviceParam wikibase:language '[AUTO_LANGUAGE],en'. }" +
+        "}" +
+        "LIMIT 100";
         HttpGet get = null;
         try {
             get = new HttpGet(new URI("https://query.wikidata.org/sparql?format=json&query="+URLEncoder.encode(sparqlQuery, StandardCharsets.UTF_8)+""));
