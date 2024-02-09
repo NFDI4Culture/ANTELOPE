@@ -253,3 +253,39 @@ textarea {
 input[type="checkbox"] {
   margin: 0.5em;
 }
+
+
+.results-graph-legend {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 1rem;
+  color: var(--color-fg-gray);
+  font-size: var(--font-size-s);
+  line-height: var(--font-size-s);
+
+  &-entry {
+    &::before {
+      content: "";
+      display: inline-block;
+      margin-right: 0.75rem;
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 100%;
+    }
+
+    &--terminology-source::before {
+      background-color: var(--color-contrast);
+    }
+    &--instance::before {
+      background-color: var(--color-secondary);
+    }
+    &--class::before {
+      background-color: var(--color-primary);
+    }
+
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
+}
