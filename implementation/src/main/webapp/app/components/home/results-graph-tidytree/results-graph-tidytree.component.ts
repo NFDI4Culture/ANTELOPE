@@ -3,6 +3,7 @@ import { EntitySelectService } from 'app/services/entity-select/entity-select.se
 import { IEntity } from 'app/interfaces/IEntity';
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
+import { ScrollAbilityService } from 'app/services/scroll-ability/scroll-ability.service';
 
 const MAX_LABEL_LENGTH = 24;
 
@@ -275,14 +276,15 @@ export class ResultsGraphTidytreeComponent implements OnInit {
       [((dy + 8) * levelsH) + zoomPadding, (dy * levelsV) + zoomPadding]
     ])
     .on("zoom", ({ transform }) => {
-      document.body.style.overflow = "hidden";
+      ScrollAbilityService.disable();
+
       g.attr("transform", transform);
       svg.attr("height", height * transform.k * 2)
       // resize viewbox e.g. if we zoom in, the graph gets larger and we want still to see it when scrolling down
       // .attr("viewBox", [-dy * padding, x0 - dx, width, height * transform.k * 1.05])
     })
     .on("end", () => {
-      document.body.style.overflow = "auto";
+      ScrollAbilityService.enable();
     }) as any;
 
     svg.call(zoom);
