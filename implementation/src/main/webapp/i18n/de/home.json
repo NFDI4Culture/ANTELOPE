@@ -47,7 +47,12 @@
       "reset": "Zurücksetzen",
       "change": "Ändern",
       "resultsin": "Ergebnisse in",
-      "terminologysources": "Terminologie-Quellen"
+      "terminologysources": "Terminologie-Quellen",
+      "legend": {
+        "terminologysource": "Terminologie-Quelle",
+        "instance": "Instanz",
+        "class": "Klasse"
+      }
     }
   },
   "sidebar": {

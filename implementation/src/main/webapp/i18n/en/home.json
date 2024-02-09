@@ -47,7 +47,12 @@
       "reset": "Reset",
       "change": "Change",
       "resultsin": "results in",
-      "terminologysources": "terminology sources"
+      "terminologysources": "terminology sources",
+      "legend": {
+        "terminologysource": "Terminology Source",
+        "instance": "Instance",
+        "class": "Class"
+      }
     },
     "sidebar": {
       "title": "Your Selection",
