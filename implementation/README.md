@@ -25,8 +25,8 @@ npm install
 - checkout iart project (branch: ray_serve) from [Gitlab](https://github.com/TIBHannover/iart/tree/ray_serve)
 - follow the iare readme for setup (run install.sh)
 - set environment var to iart home dir (needed to build antelope via docker-compose): 
-$> IART_HOME=/home/kolja/git/iart2
-$> export IART_HOME
+$> export IART_HOME=/home/kolja/git/iart2
+
 
 ## Project Structure
 

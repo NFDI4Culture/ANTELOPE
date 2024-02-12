@@ -93,4 +93,5 @@ services:
       - HF_HOME=/models
       - POETRY_VIRTUALENVS_CREATE=False
       - PYTHONPATH=/indexer/src/
+      - RAY_memory_monitor_refresh_ms=0
     command: "python3 -m iart_indexer --mode server -v -c /indexer/config.json"
