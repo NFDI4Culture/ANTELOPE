@@ -54,7 +54,8 @@
     "title": "Ihre Auswahl",
     "selectedentities": "Ausgewählte Entitäten",
     "unselectall": "Alle abwählen",
-    "export": "Auswahl Exportieren",
+    "exportselection": "Auswahl Exportieren",
+    "exportall": "Alles Exportieren",
     "exportjson": "JSON",
     "exportcsv": "CSV",
     "selectionempty": "Sie haben noch keine Entitäten ausgewählt"

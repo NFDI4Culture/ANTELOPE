@@ -54,7 +54,8 @@
     "title": "Ваш вибір",
     "selectedentities": "Вибрані організації",
     "unselectall": "Зніміть виділення з усіх",
-    "export": "Експортувати вибірку",
+    "exportselection": "Експортувати вибірку",
+    "exportall": "Експортувати все",
     "exportjson": "JSON",
     "exportcsv": "CSV",
     "selectionempty": "Ви ще не вибрали жодної організації"
