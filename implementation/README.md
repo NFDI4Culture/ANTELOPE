@@ -21,6 +21,13 @@ Antelope is powered by [JHipster](https://www.jhipster.tech/documentation-archiv
 npm install
 ```
 
+3. install iart:
+- checkout iart project (branch: ray_serve) from [Gitlab](https://github.com/TIBHannover/iart/tree/ray_serve)
+- follow the iare readme for setup (run install.sh)
+- set environment var to iart home dir (needed to build antelope via docker-compose): 
+$> IART_HOME=/home/kolja/git/iart2
+$> export IART_HOME
+
 ## Project Structure
 
 The root directory contains organizational project related files. Application related files reside below the `/implementation` directory. The source directory `./src` structure follows the common *Java* project file structure. Moreover, the *Angular* web application exists at `./src/main/webapp`.  
