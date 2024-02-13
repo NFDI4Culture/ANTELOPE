@@ -21,18 +21,22 @@ export class GraphSelectionCardComponent {
     window.addEventListener("resize", () => this.adjustPosition());
     window.addEventListener("scroll", () => this.adjustPosition());
     
-    EntitySelectService.on("select", (entity: IEntity) => {
-      this.selectedEntity = entity;
+    EntitySelectService.on("select", (entity: IEntity) => this.open(entity));
+    EntitySelectService.on("unselect", () => this.close());
+  }
 
-      this.elRef.nativeElement.classList.add("active");
+  public open(entity: IEntity) {
+    this.selectedEntity = entity;
 
-      setTimeout(() => this.adjustPosition(), 0);
-    });
-    EntitySelectService.on("unselect", () => {
-      this.selectedEntity = null;
+    this.elRef.nativeElement.classList.add("active");
 
-      this.elRef.nativeElement.classList.remove("active");
-    });
+    setTimeout(() => this.adjustPosition(), 0);
+  }
+
+  public close() {
+    this.selectedEntity = null;
+    
+    this.elRef.nativeElement.classList.remove("active");
   }
 
   public async copyId(): Promise<void> {

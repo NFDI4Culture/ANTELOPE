@@ -1,6 +1,9 @@
-<div>
-    <h4>{{ selectedEntity?.label }}</h4>
-    <span>{{ selectedEntity?.id }}</span>
+<div class="flex">
+    <div>
+        <h4>{{ selectedEntity?.label }}</h4>
+        <span>{{ selectedEntity?.id }}</span>
+    </div>
+    <button type="button" class="close" (click)="close()">Close</button>
 </div>
 <p>
     {{ selectedEntity?.description }}
