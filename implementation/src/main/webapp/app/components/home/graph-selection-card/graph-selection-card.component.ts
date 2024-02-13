@@ -14,8 +14,8 @@ export class GraphSelectionCardComponent {
   private static targetOffsetPx = 25;
 
   public selectedEntity: IEntity|null = null;
-  
   private graphElement: HTMLElement|null|undefined;
+  private unselectTimeout: ReturnType<typeof setTimeout>|undefined;
 
   constructor(private elRef: ElementRef) {
     window.addEventListener("resize", () => this.adjustPosition());
@@ -26,6 +26,8 @@ export class GraphSelectionCardComponent {
   }
 
   public open(entity: IEntity) {
+    clearTimeout(this.unselectTimeout);
+
     this.selectedEntity = entity;
 
     this.elRef.nativeElement.classList.add("active");
@@ -34,7 +36,9 @@ export class GraphSelectionCardComponent {
   }
 
   public close() {
-    this.selectedEntity = null;
+    this.unselectTimeout = setTimeout(() => {
+      this.selectedEntity = null;
+    }, 800);
     
     this.elRef.nativeElement.classList.remove("active");
   }

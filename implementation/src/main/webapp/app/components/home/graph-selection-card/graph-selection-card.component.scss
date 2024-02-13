@@ -58,9 +58,32 @@ img {
 
 button.close {
   cursor: pointer;
-  padding: 0;
-  background-color: transparent;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: var(--color-bg-gray);
   color: var(--color-fg-gray);
-  font-size: 0.9rem;
+  font-family: monospace;
   border: none;
+  border-radius: 100%;
+  transform: translateX(0.5rem) translateY(-0.5rem);
+
+  &::before {
+    content: "×";
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    width: 1.4rem;
+    height: 0;
+    line-height: 0;
+    font-size: 1.4rem;
+    transform: translateX(-0.7rem) translateY(-1px);
+  }
+
+  &:hover {
+    filter: brightness(0.975);
+  }
 }
