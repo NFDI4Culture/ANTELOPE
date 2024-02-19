@@ -48,7 +48,12 @@
     "reset": "Перезавантаження",
     "change": "Зміна",
     "resultsin": "результатів у",
-    "terminologysources": "джерела термінології"
+    "terminologysources": "джерела термінології",
+    "legend": {
+      "terminologysource": "джерело термінології",
+      "instance": "Примірник",
+      "class": "Клас"
+    }
   },
   "sidebar": {
     "title": "Ваш вибір",
