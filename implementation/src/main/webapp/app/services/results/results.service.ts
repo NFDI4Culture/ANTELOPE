@@ -8,9 +8,7 @@ export class ResultsService {
 
   private static entities: IEntity[] = [];
 
-  constructor() { }
-
-  public static set(entities: IEntity[]) {
+  public static set(entities: IEntity[]):void {
     this.entities = entities;
   }
 
@@ -18,7 +16,7 @@ export class ResultsService {
     return this.entities;
   }
 
-  public static clear() {
+  public static clear():void {
     this.entities = [];
   }
 

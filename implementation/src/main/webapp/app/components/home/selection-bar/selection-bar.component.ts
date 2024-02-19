@@ -66,20 +66,20 @@ export class SelectionBarComponent implements OnInit {
     });
   }
 
-  exportSelectionJSON() {
+  exportSelectionJSON():void {
     FileExportsService.exportJSON(Array.from(this.selectedEntities));
   }
 
-  exportSelectionCSV() {
+  exportSelectionCSV():void {
     FileExportsService.exportCSV(Array.from(this.selectedEntities));
   }
 
-  exportAllJSON() {
-    console.log(ResultsService.get());
+  exportAllJSON():void {
+    // console.log(ResultsService.get());
     FileExportsService.exportJSON(ResultsService.get());
   }
 
-  exportAllCSV() {
+  exportAllCSV():void {
     FileExportsService.exportCSV(ResultsService.get());
   }
 

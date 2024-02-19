@@ -6,22 +6,6 @@ import { IEntity } from 'app/interfaces/IEntity';
 })
 export class FileExportsService {
 
-  constructor() { }
-
-  private static downloadFile(fileName: string, fileExtension: string, contents: string): void {
-    const downloadAnchor = document.createElement("a");
-    downloadAnchor.setAttribute("href", `data:text/${fileExtension.toLowerCase()};charset=utf-8,${
-      encodeURIComponent(contents)
-    }`);
-    downloadAnchor.setAttribute("download", `${fileName}.${fileExtension.toLowerCase()}`);
-    document.body.appendChild(downloadAnchor);
-    setTimeout(() => {
-      downloadAnchor.click();
-      
-      downloadAnchor.remove();
-    }, 0);
-  }
-
   public static exportJSON(entities: IEntity[]): void {
     FileExportsService.downloadFile(`antelope-${Date.now()}`, "JSON", JSON.stringify(entities));
   }
@@ -51,5 +35,23 @@ export class FileExportsService {
       .join("\n")
     }`.trim());
   }
+  
+  private static downloadFile(fileName: string, fileExtension: string, contents: string): void {
+    const downloadAnchor = document.createElement("a");
+    downloadAnchor.setAttribute("href", `data:text/${fileExtension.toLowerCase()};charset=utf-8,${
+      encodeURIComponent(contents)
+    }`);
+    downloadAnchor.setAttribute("download", `${fileName}.${fileExtension.toLowerCase()}`);
+    document.body.appendChild(downloadAnchor);
+    setTimeout(() => {
+      downloadAnchor.click();
+      
+      downloadAnchor.remove();
+    }, 0);
+  }
+
+  
+
+  
 
 }

@@ -328,7 +328,7 @@ export class AnnotationServiceUIComponent implements OnInit {
           (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'block';
           this.updateElThresholdLabel();
         })
-        .catch(error => this.iart_result = "error")
+        .catch(error => this.iart_result = "error"+(error.toString() as string))
     }
     
     // finish loading bar

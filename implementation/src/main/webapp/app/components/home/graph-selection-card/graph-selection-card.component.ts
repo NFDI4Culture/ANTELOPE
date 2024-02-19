@@ -25,7 +25,7 @@ export class GraphSelectionCardComponent {
     EntitySelectService.on("unselect", () => this.close());
   }
 
-  public open(entity: IEntity) {
+  public open(entity: IEntity):void {
     clearTimeout(this.unselectTimeout);
 
     this.selectedEntity = entity;
@@ -35,7 +35,7 @@ export class GraphSelectionCardComponent {
     setTimeout(() => this.adjustPosition(), 0);
   }
 
-  public close() {
+  public close():void {
     this.unselectTimeout = setTimeout(() => {
       this.selectedEntity = null;
     }, 800);
