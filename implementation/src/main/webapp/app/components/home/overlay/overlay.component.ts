@@ -1,4 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
+import { ScrollAbilityService } from 'app/services/scroll-ability/scroll-ability.service';
 import { doc } from 'prettier';
 
 @Component({
@@ -17,7 +18,7 @@ export class OverlayComponent {
   public toggle(): void {
     this.isOpen = !this.isOpen;
 
-    document.body.style.overflow = this.isOpen ? "hidden" : "auto";
+    this.isOpen ? ScrollAbilityService.disable() : ScrollAbilityService.enable();
 
     this.elRef.nativeElement.classList.toggle("active");
   }

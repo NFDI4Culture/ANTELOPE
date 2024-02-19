@@ -1,6 +1,8 @@
 package org.tib.osl.annotationservice.service;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -122,7 +124,7 @@ public class AnnotationService implements AnnotationApiDelegate {
 
         try {
         
-            if( request.getDictionary() == null || (request.getDictionary().getListOfWords() == null && request.getDictionary().getSimpleDictionary() == null && request.getDictionary().getFullDictionary() == null)) {
+            if( request.getDictionary() == null || (request.getDictionary().getDictionaryType() == null)) {
                 request.getDictionary().setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
                 request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict(false));
             }
@@ -209,7 +211,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         JSONArray resultArr = new JSONArray();
         
 
-        try (CSVReader br = new CSVReaderBuilder(new FileReader("src/main/resources/dict/iconclass/txt_cliptextembeddings.csv", Charset.forName("utf8")))
+        try (CSVReader br = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("dict/iconclass/txt_cliptextembeddings.csv"))))
         .withCSVParser(new CSVParserBuilder()
             .withSeparator(';')
             .withQuoteChar('"')
