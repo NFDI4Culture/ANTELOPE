@@ -673,13 +673,14 @@ public class EntityRecognition {
 
     public static Map<String,FullDictionaryValue> getIconclassDict(boolean fullTexts) throws Exception{
         
-        String file = "src/main/resources/dict/iconclass/kw_en_keys.txt";
+        //String file = "src/main/resources/dict/iconclass/kw_en_keys.txt";
+        String file = "dict/iconclass/kw_en_keys.txt";
         if( fullTexts) {
-            file = "src/main/resources/dict/iconclass/txt_en.txt";
+            file = "dict/iconclass/txt_en.txt";
         }
         Map<String,FullDictionaryValue> result = new HashMap<>();
         
-        try (BufferedReader br = new BufferedReader(new FileReader(file, Charset.forName("utf8")))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(file)))) {
             String line;
             int i = 0;
             while ((line = br.readLine()) != null) {
