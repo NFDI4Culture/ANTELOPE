@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { EntitySelectService } from 'app/services/entity-select/entity-select.service';
 import { IEntity } from 'app/interfaces/IEntity';
+import { FileExportsService } from 'app/services/file-exports/file-exports.service';
+import { ResultsService } from 'app/services/results/results.service';
 
 
 @Component({
@@ -11,7 +13,7 @@ import { IEntity } from 'app/interfaces/IEntity';
 })
 export class SelectionBarComponent implements OnInit {
 
-  public entities: Set<IEntity> = new Set();
+  public selectedEntities: Set<IEntity> = new Set();
 
   private isActive = false;
   private spacers: {
@@ -43,7 +45,7 @@ export class SelectionBarComponent implements OnInit {
     });
 
     document.addEventListener("collapse", () => {
-      this.entities.forEach((entity: IEntity) => {
+      this.selectedEntities.forEach((entity: IEntity) => {
         EntitySelectService.copy(entity);
       });
     });
@@ -64,54 +66,35 @@ export class SelectionBarComponent implements OnInit {
     });
   }
 
-  exportJSON(): void {
-    this.downloadFile(`antelope-${Date.now()}`, "JSON", JSON.stringify(Array.from(this.entities)));
+  exportSelectionJSON() {
+    FileExportsService.exportJSON(Array.from(this.selectedEntities));
   }
 
-  exportCSV(): void {
-    const filterOrderSerialObj = (obj: { [ key: string ]: any; }):
-      { [ key: string ]: string|number|boolean; }  => {
-      const serialKeys: string[] = [];
-      for(const key in obj) {
-        if([ "string", "number", "boolean" ].includes(typeof(obj[key]))) {
-          serialKeys.push(key);
-        }
-      }
-      serialKeys.sort();
-      const filteredObj: { [ key: string ]: string|number|boolean; } = {};
-      for(const key of serialKeys) {
-        filteredObj[key] = obj[key];
-      }
-      return filteredObj;
-    };
+  exportSelectionCSV() {
+    FileExportsService.exportCSV(Array.from(this.selectedEntities));
+  }
 
-    this.downloadFile(`antelope-${Date.now()}`, "CSV", `${
-      Object.keys(filterOrderSerialObj(Array.from(this.entities)[0])).join(",").trim()
-    }\n${
-      Array.from(this.entities)
-      .map((e: IEntity) => Object.values(filterOrderSerialObj(e)).join(",").trim())
-      .join("\n")
-    }`.trim());
+  exportAllJSON() {
+    console.log(ResultsService.get());
+    FileExportsService.exportJSON(ResultsService.get());
+  }
+
+  exportAllCSV() {
+    FileExportsService.exportCSV(ResultsService.get());
   }
 
   unselectEntity(entity: IEntity): void {
-    this.entities.delete(entity);
+    this.selectedEntities.delete(entity);
 
     EntitySelectService.uncopy(entity);
   }
 
   unselectAll(): void {
-    this.entities.forEach((entitiy: IEntity) => this.unselectEntity(entitiy));
+    this.selectedEntities.forEach((entitiy: IEntity) => this.unselectEntity(entitiy));
   }
 
-  private select(entity: IEntity): boolean {
-    if(Array.from(this.entities).map((e: IEntity) => e.id).includes(entity.id)) {
-      return false;
-    }
-
-    this.entities.add(entity);
-
-    return true;
+  hasResults(): boolean {
+    return !!ResultsService.get().length;
   }
 
   private updateVisibility(): void {
@@ -122,18 +105,14 @@ export class SelectionBarComponent implements OnInit {
     : this.elRef.nativeElement.classList.remove("show");
   }
 
-  private downloadFile(fileName: string, fileExtension: string, contents: string): void {
-    const downloadAnchor = document.createElement("a");
-    downloadAnchor.setAttribute("href", `data:text/${fileExtension.toLowerCase()};charset=utf-8,${
-      encodeURIComponent(contents)
-    }`);
-    downloadAnchor.setAttribute("download", `${fileName}.${fileExtension.toLowerCase()}`);
-    document.body.appendChild(downloadAnchor);
-    setTimeout(() => {
-      downloadAnchor.click();
-      
-      downloadAnchor.remove();
-    }, 0);
+  private select(entity: IEntity): boolean {
+    if(Array.from(this.selectedEntities).map((e: IEntity) => e.id).includes(entity.id)) {
+      return false;
+    }
+
+    this.selectedEntities.add(entity);
+
+    return true;
   }
 
 }

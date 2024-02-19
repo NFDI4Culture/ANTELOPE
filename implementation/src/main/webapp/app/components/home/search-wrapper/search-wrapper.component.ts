@@ -8,6 +8,7 @@ import { ResultsGraphBarchartComponent } from '../results-graph-barchart/results
 import { ResultsTableComponent } from 'app/components/home/results-table/results-table.component'
 import { EntitySelectService } from 'app/services/entity-select/entity-select.service';
 import { HttpClient } from '@angular/common/http';
+import { ResultsService } from 'app/services/results/results.service';
 
 const EXCEL_EXTENSION = '.xlsx';
 
@@ -266,7 +267,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     // return this.callVecnerServiceDirect();
   }
 
-  async imageEL(): Promise<void> {
+  async imageEL(): Promise<void> {  // TODO: Use factory-style public method as listener entry for all search tabs
     this.loader.start();
     this.iart_result = "";
     
@@ -311,11 +312,14 @@ export class AnnotationServiceUIComponent implements OnInit {
         method: "POST",
         body: formData
       };
-    
+      
       await fetch(url, requestOptions)
         .then(response => response.json())
         .then(result => {
           this.annotation.entities = result[0];
+          
+          ResultsService.set(this.annotation.entities);
+
           this.imageELgraph.clear();
           const filtered = this.annotation.entities.filter((entity) => entity.score > this.el_threshold);
           this.imageELgraph.createChartFromClassificationResult(filtered);
@@ -326,8 +330,6 @@ export class AnnotationServiceUIComponent implements OnInit {
         })
         .catch(error => this.iart_result = "error")
     }
-
-    
     
     // finish loading bar
     this.loader.complete();
@@ -630,6 +632,9 @@ export class AnnotationServiceUIComponent implements OnInit {
       // display as string
       // this.msg = JSON.stringify(result, null, 4);
       this.annotation = result;
+
+      ResultsService.set(this.annotation.entities);
+
       (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
       this.hierarchyGraph.svg.nativeElement.style.display = 'block';
 
@@ -693,19 +698,9 @@ export class AnnotationServiceUIComponent implements OnInit {
 
     EntitySelectService.unselect();
 
+    ResultsService.clear();
+
     document.dispatchEvent(new CustomEvent("uncollapse"));
-  }
-
-  saveJson():void{
-    this.writeContents(JSON.stringify(this.annotation, null, 2), 'antelope_result'+'.json', 'text/plain');
-  }
-
-  saveTableCSV():void{
-    this.exportTableElmToCsv(this.resultTableRef, 'antelope_result');
-  }
-
-  saveTableXLS():void{
-    this.exportTableElmToExcel(this.resultTableRef, 'antelope_result');
   }
 
   // save content to file and download it
