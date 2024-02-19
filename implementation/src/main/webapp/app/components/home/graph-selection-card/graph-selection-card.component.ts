@@ -14,25 +14,33 @@ export class GraphSelectionCardComponent {
   private static targetOffsetPx = 25;
 
   public selectedEntity: IEntity|null = null;
-  
   private graphElement: HTMLElement|null|undefined;
+  private unselectTimeout: ReturnType<typeof setTimeout>|undefined;
 
   constructor(private elRef: ElementRef) {
     window.addEventListener("resize", () => this.adjustPosition());
     window.addEventListener("scroll", () => this.adjustPosition());
     
-    EntitySelectService.on("select", (entity: IEntity) => {
-      this.selectedEntity = entity;
+    EntitySelectService.on("select", (entity: IEntity) => this.open(entity));
+    EntitySelectService.on("unselect", () => this.close());
+  }
 
-      this.elRef.nativeElement.classList.add("active");
+  public open(entity: IEntity) {
+    clearTimeout(this.unselectTimeout);
 
-      setTimeout(() => this.adjustPosition(), 0);
-    });
-    EntitySelectService.on("unselect", () => {
+    this.selectedEntity = entity;
+
+    this.elRef.nativeElement.classList.add("active");
+
+    setTimeout(() => this.adjustPosition(), 0);
+  }
+
+  public close() {
+    this.unselectTimeout = setTimeout(() => {
       this.selectedEntity = null;
-
-      this.elRef.nativeElement.classList.remove("active");
-    });
+    }, 800);
+    
+    this.elRef.nativeElement.classList.remove("active");
   }
 
   public async copyId(): Promise<void> {
