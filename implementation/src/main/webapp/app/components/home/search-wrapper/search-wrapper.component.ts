@@ -9,6 +9,7 @@ import { ResultsTableComponent } from 'app/components/home/results-table/results
 import { EntitySelectService } from 'app/services/entity-select/entity-select.service';
 import { HttpClient } from '@angular/common/http';
 import { ResultsService } from 'app/services/results/results.service';
+import { MatTabGroup } from '@angular/material/tabs';
 
 const EXCEL_EXTENSION = '.xlsx';
 
@@ -93,6 +94,9 @@ export class AnnotationServiceUIComponent implements OnInit {
   
   @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
 
+  @ViewChild('resultTypeTabGroup', { static: false })
+  resultTabGroup!: MatTabGroup;
+  
   // create a FormGroup to select the datasources checkboxes state
   sourcesForm: FormGroup;
 
@@ -271,6 +275,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.loader.start();
     this.iart_result = "";
     (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    (document.getElementById("terminologysearchResultContainer") as HTMLElement).style.display = 'none';
     this.hierarchyGraph.svg.nativeElement.style.display = 'none';
     const url = 'api/annotation/entitylinking/image?model='+this.selectedIartImageModels;
     this.el_result.html = "";
@@ -350,6 +355,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.hierarchyGraph.clear();
     this.showResultContainer = false;
     (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    (document.getElementById("terminologysearchResultContainer") as HTMLElement).style.display = 'none';
     this.hierarchyGraph.svg.nativeElement.style.display = 'none';
     
     if( this.textEntityLinking.value === "") {
@@ -414,6 +420,7 @@ export class AnnotationServiceUIComponent implements OnInit {
       // set link target to new tab for html result
       this.el_result.html = this.el_result.html.replace(/href/g, 'target="_blank" href')
       this.hierarchyGraph.svg.nativeElement.style.display = 'none';
+      this.table.createTable([]);
       // this.imageELgraph.svg.nativeElement.style.display = 'none';
       this.annotation = result;
       // console.log(result);
@@ -644,6 +651,7 @@ export class AnnotationServiceUIComponent implements OnInit {
       ResultsService.set(this.annotation.entities);
 
       (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+      (document.getElementById("terminologysearchResultContainer") as HTMLElement).style.display = 'block';
       this.hierarchyGraph.svg.nativeElement.style.display = 'block';
 
       this.resultCount = this.annotation.hierarchy.children
@@ -660,7 +668,7 @@ export class AnnotationServiceUIComponent implements OnInit {
         this.hierarchyGraph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
         // this.table.createTableFromWikiDataHierarchy(this.annotation.entities); // TODO: Delivers wrong IDs (uses label instead)
         // TEMPORARY WORKAROUND:
-        this.table.createTableFromWikiDataHierarchy([]
+        this.table.createTable([]
           .concat(...(this.annotation.hierarchy
             .children
             .map((child: any) => child.children)))  // eslint-disable-line
@@ -694,6 +702,7 @@ export class AnnotationServiceUIComponent implements OnInit {
 
   // remove the graph and clear all input fields
   clearAll(): void {
+    //this.resultTabGroup.focusTab(0); //.selectedIndex = 0; // select graph tab in result section. otherwise, submit button doesnt work anymore (lost focus to subcomponent?)
     this.msg = "";
     this.err = "";
     this.annotation = {"entities":[], "relations":[], hierarchy:{} as unknown as HierarchyTree};
@@ -704,6 +713,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.loader.set(0);
     this.showResultContainer = false;
     (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    this.el_result.html="";
 
     EntitySelectService.unselect();
 

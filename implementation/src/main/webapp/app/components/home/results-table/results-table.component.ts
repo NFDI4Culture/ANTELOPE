@@ -15,7 +15,7 @@ export class ResultsTableComponent {
 
   constructor(private elRef: ElementRef) { }
 
-  createTableFromWikiDataHierarchy(entities: IEntity[]): void {
+  createTable(entities: IEntity[]): void {
     this.entities = entities;
   }
 

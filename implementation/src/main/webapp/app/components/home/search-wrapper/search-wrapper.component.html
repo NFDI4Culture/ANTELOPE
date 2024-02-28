@@ -270,18 +270,22 @@
     <pre><p *ngIf="iart_result" style="font-size:11px;">{{ iart_result | json}}</p></pre>
     <mat-tab-group (selectedTabChange)="onTabChanged()" style="min-height: 0;">
         <mat-tab label="Graph">
+            <div id="terminologysearchResultContainer"> 
+                <div class="results-graph-legend">
+                    <div class="results-graph-legend-entry results-graph-legend-entry--terminology-source"
+                        jhiTranslate="home.service.legend.terminologysource">Terminology Source</div>
+                    <div class="results-graph-legend-entry results-graph-legend-entry--instance"
+                        jhiTranslate="home.service.legend.instance">Instance</div>
+                    <div class="results-graph-legend-entry results-graph-legend-entry--class"
+                        jhiTranslate="home.service.legend.class">Class</div>
+                </div>
+                <div class="tib-btn-info"
+                    matTooltip="The graph view shows the results in a hierarchy. Roll the mouse wheel to zoom. Hold left mouse button to move the graph."
+                    matTooltipPosition="right" matTooltipSize="12px">
+                </div>
+                <jhi-results-graph-tidytree></jhi-results-graph-tidytree>
+            </div>
             <div [innerHTML]="el_result.html"></div>
-            <div class="results-graph-legend">
-                <div class="results-graph-legend-entry results-graph-legend-entry--terminology-source" jhiTranslate="home.service.legend.terminologysource">Terminology Source</div>
-                <div class="results-graph-legend-entry results-graph-legend-entry--instance" jhiTranslate="home.service.legend.instance">Instance</div>
-                <div class="results-graph-legend-entry results-graph-legend-entry--class" jhiTranslate="home.service.legend.class">Class</div>
-            </div>
-            <div class="tib-btn-info" 
-                matTooltip="The graph view shows the results in a hierarchy. Roll the mouse wheel to zoom. Hold left mouse button to move the graph."
-                matTooltipPosition="right"
-                matTooltipSize="12px">
-            </div>
-            <jhi-results-graph-tidytree></jhi-results-graph-tidytree>
             <div id="imageELresultContainer">
                 Threshold:
                 <div>
