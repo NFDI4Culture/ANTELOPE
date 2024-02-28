@@ -6,11 +6,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.tib.osl.annotationservice</groupId>
-    <artifactId>annotation-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>antelope</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Annotation Service</name>
-    <description>Description for annotationService</description>
+    <name>ANTELOPE Annotation Service</name>
+    <description>Service for semantic annotation functionality for the culture domain</description>
 
     <repositories>
         <!-- jhipster-needle-maven-repository -->

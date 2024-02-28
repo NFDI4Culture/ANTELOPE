@@ -117,6 +117,12 @@ The project is configured for an [OpenAPI-Generator](https://github.com/OpenAPIT
 
 The deployment requires the following steps, spreading across **TEST** and **PROD** servers.
 
+### update Vecner Container
+if Vecner implementation changed, build the project and deploy it in the gitlab container registry
+> docker build -t registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/vecner:latest <VECNER_PATH>
+> docker push registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/vecner:latest
+see https://docs.gitlab.com/ee/user/packages/container_registry/build_and_push_images.html for more details
+
 ### TEST Server
 
 1. Push changes on test branch to the remote, *GitLab* will rebuild the docker container automatically:

@@ -408,6 +408,11 @@ components:
           type: number
           description: wanted similarity score for linkings. 0-1 default:0.6
           example: 0.6
+        language:
+          type: string
+          enum: [en, de]
+          example: en
+          description: the optiona language parameter defines which language model is used for text analysis. en=en_core_web_sm, de=de_core_web_sm. default language is english
       description: Entity linking input format
 
     ImageEntityLinkingRequest:
