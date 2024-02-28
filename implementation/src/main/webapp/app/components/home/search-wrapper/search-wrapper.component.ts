@@ -270,9 +270,11 @@ export class AnnotationServiceUIComponent implements OnInit {
   async imageEL(): Promise<void> {  // TODO: Use factory-style public method as listener entry for all search tabs
     this.loader.start();
     this.iart_result = "";
-    
+    (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    this.hierarchyGraph.svg.nativeElement.style.display = 'none';
     const url = 'api/annotation/entitylinking/image?model='+this.selectedIartImageModels;
-    
+    this.el_result.html = "";
+
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('image', this.selectedFile);
@@ -299,12 +301,14 @@ export class AnnotationServiceUIComponent implements OnInit {
         formData.append('dictionary', new Blob([dict_param], { type: 'application/json' }));
         formData.append('threshold',this.el_threshold.toString());
         formData.append('text', this.imageText.value as string);
+        
         // console.log(this.imageText.value);
       } else {
         // console.log("predefined dict");
         // TODO: add dict        
         formData.append('text', this.imageText.value as string);
         formData.append('threshold',this.el_threshold.toString());
+      
       }
       }
 
@@ -345,7 +349,9 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.msg = "";
     this.hierarchyGraph.clear();
     this.showResultContainer = false;
-
+    (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    this.hierarchyGraph.svg.nativeElement.style.display = 'none';
+    
     if( this.textEntityLinking.value === "") {
       this.err = 'Search text cannot be empty';
       return;
@@ -357,8 +363,8 @@ export class AnnotationServiceUIComponent implements OnInit {
       // url of the annotationService api (restful service with json payload)
       const url = 'api/annotation/entitylinking/text?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
         
-     
-     
+      
+      this.el_result.html = ""
       let user_dict = {};
       let dict_param = {};
       
@@ -559,6 +565,8 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.msg = "";
     this.hierarchyGraph.clear();
     this.showResultContainer = false;
+    (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    this.el_result.html = "";  
 
     if( this.textTerminologySearch.value === "") {
       this.err = 'Search text cannot be empty';
@@ -695,6 +703,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.loader.stop();
     this.loader.set(0);
     this.showResultContainer = false;
+    (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
 
     EntitySelectService.unselect();
 

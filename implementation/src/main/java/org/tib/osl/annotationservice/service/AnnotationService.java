@@ -80,7 +80,7 @@ public class AnnotationService implements AnnotationApiDelegate {
             entitiesToSelect = new String[]{};
         
             
-            Locale locale = Locale.forLanguageTag("de");
+            Locale locale = Locale.forLanguageTag("en");
             Context context = new Context(locale);
             context.setVariable("entities", entitiesToSelect);
             String content = templateEngine.process("annotationService-selectComponent", context);
