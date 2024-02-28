@@ -47,6 +47,8 @@ export class NavbarComponent implements OnInit {
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
     });
+
+    this.changeLanguage("en")
   }
 
   changeLanguage(languageKey: string): void {
