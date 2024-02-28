@@ -154,6 +154,7 @@ git checkout main
 git fetch
 git pull
 git merge test
+git push
 ```
 
 2. Check for build progress on https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/jobs.
