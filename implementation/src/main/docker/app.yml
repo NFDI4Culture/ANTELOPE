@@ -13,6 +13,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://annotationservice-postgresql:5432/annotationService
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://annotationservice-postgresql:5432/annotationService
       - VECNER_SERVICE_URL=http://vecner:5000
+      - IART_SERVICE_HOST=iart
+      - IART_SERVICE_PORT=50051
       - JHIPSTER_SLEEP=60 # gives time for other services to boot before the application
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
@@ -60,3 +62,36 @@ services:
     # remove the "127.0.0.1:" prefix
     ports:
       - 127.0.0.1:5000:5000    
+  iart:
+    #image: registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/iart/indexer:latest
+    #pull_policy: always
+
+    build:
+      context:    ${IART_HOME}/indexer
+      dockerfile: ${IART_HOME}/indexer/Dockerfile
+    working_dir: /indexer/src/iart_indexer/
+        # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    
+    ports:
+      - 50051:50051    
+    volumes:
+      - type: bind
+        source: ${IART_HOME}/data/
+        target: /data/
+      - type: bind
+        source: ${IART_HOME}/data/ray/
+        target: /tmp/ray/
+      - type: bind
+        source: ${IART_HOME}/data/models/
+        target: /models/
+      - type: bind
+        source: ${IART_HOME}/indexer/
+        target: /indexer/
+    
+    environment:
+      - HF_HOME=/models
+      - POETRY_VIRTUALENVS_CREATE=False
+      - PYTHONPATH=/indexer/src/
+      - RAY_memory_monitor_refresh_ms=0
+    command: "python3 -m iart_indexer --mode server -v -c /indexer/config.json"
