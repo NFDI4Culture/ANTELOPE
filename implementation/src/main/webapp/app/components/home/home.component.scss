@@ -10,35 +10,39 @@ Main page styles
   padding: 0;
 }
 
-.logo-wrapper.collapsed {
-  margin-top: 2rem;
-
-  .logo {
-    &-l {
-      display: none;
-    }
-    &-s {
-      display: block;
-    }
-  }
+.lead {
+  margin: 2rem auto !important;
 }
 
 .logo-wrapper {
   align-content: center;
-  margin-top: 7.5rem;
+  margin-top: 3rem;
   text-align: center;
+
+  &.collapsed {
+    margin-top: 2rem;
+  
+    .logo {
+      &-l {
+        display: none;
+      }
+      &-s {
+        display: block;
+      }
+    }
+  }
 }
 .logo {
   display: block;
   margin: auto;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 
   &-l {
-    height: 4rem;
+    height: 5rem;
   }
   &-s {
     display: none;
-    height: 2rem;
+    height: 3rem;
   }
 }
 
