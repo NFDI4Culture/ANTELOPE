@@ -142,7 +142,7 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     let x0 = Infinity;
     let x1 = -x0;
     root.each((d: any) => {
-      if(d.depth < 2) return;
+      if(d.depth < 2) {return;}
       if (d.x > x1) { x1 = d.x };
       if (d.x < x0) { x0 = d.x };
     });
@@ -179,7 +179,7 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     .attr("style", "position: relative; min-height: 600px; min-width: 600px; max-width: 100%; height: auto; height: intrinsic;")
     .attr("font-family", "sans-serif")
     .attr("font-size", "1rem");
-    console.log(root.links())
+    
     // GRAPH
     const g = svg.append("g")
     g.append("g")
