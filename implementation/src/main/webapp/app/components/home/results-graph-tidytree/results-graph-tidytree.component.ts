@@ -176,10 +176,10 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     .attr("viewBow", [0,0, width, height])
     .attr("width", "100%")
     .attr("height", height)
-    .attr("style", "position: relative; min-height: 600px; min-width: 600px; max-width: 100%; height: auto; height: intrinsic;")
+    .attr("style", "position: relative; min-height: 1200px; min-width: 1200px; max-width: 100%; height: auto; height: intrinsic;")
     .attr("font-family", "sans-serif")
     .attr("font-size", "1rem");
-    
+
     // GRAPH
     const g = svg.append("g")
     g.append("g")
