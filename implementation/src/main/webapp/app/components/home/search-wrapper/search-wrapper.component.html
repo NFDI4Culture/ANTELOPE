@@ -268,7 +268,7 @@
     </div>
     <span class="results-label">{{ resultCount }} <span jhiTranslate="home.service.resultsin">results in</span> {{ selectedSources.length }} <span jhiTranslate="home.service.terminologysources">terminology sources</span></span>
     <pre><p *ngIf="iart_result" style="font-size:11px;">{{ iart_result | json}}</p></pre>
-    <mat-tab-group (selectedTabChange)="onTabChanged()" style="min-height: 0;">
+    <mat-tab-group #resultTypeTabGroup (selectedTabChange)="onTabChanged()" style="min-height: 0;">
         <mat-tab label="Graph">
             <div id="terminologysearchResultContainer"> 
                 <div class="results-graph-legend">

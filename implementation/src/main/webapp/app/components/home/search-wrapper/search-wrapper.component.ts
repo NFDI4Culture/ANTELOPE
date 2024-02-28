@@ -702,7 +702,7 @@ export class AnnotationServiceUIComponent implements OnInit {
 
   // remove the graph and clear all input fields
   clearAll(): void {
-    //this.resultTabGroup.focusTab(0); //.selectedIndex = 0; // select graph tab in result section. otherwise, submit button doesnt work anymore (lost focus to subcomponent?)
+    this.resultTabGroup.selectedIndex = 0; // select graph tab in result section. otherwise, submit button doesnt work anymore (lost focus to subcomponent?)
     this.msg = "";
     this.err = "";
     this.annotation = {"entities":[], "relations":[], hierarchy:{} as unknown as HierarchyTree};
