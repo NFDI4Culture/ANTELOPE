@@ -55,7 +55,7 @@ public class VecnerClient {
         }
     }
 
-    public static JSONObject callEntityLinking(TextEntityLinkingRequest request) throws Exception {
+    public static JSONObject callEntityLinking(TextEntityLinkingRequest request, String dictName, String kbUrl) throws Exception {
         log.info(request.toString());
         String url = getBaseUrl()+ "/entitylinking";
         String elResultStr = "";
@@ -65,6 +65,7 @@ public class VecnerClient {
 
         // vecner is called in a two step process: 1) get entity linking using simple dictionary 2) get visualization using optional additional data from full dictionary 
         Map<String, List<String>> simpleDictionary = new HashMap<>();
+        if( request.getDictionary() != null && request.getDictionary().getDictionaryType() != null) {
         switch (request.getDictionary().getDictionaryType()) {
             case LISTOFWORDS:
                 for( String word : request.getDictionary().getListOfWords()){
@@ -83,17 +84,22 @@ public class VecnerClient {
                 }
                 break;
         }
+        }
 
         // escape spccial chars in request body
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("text", request.getText());
-        jsonObject.put("dict", simpleDictionary);
+        if( dictName != null) {
+            jsonObject.put("dict", dictName);
+        } else {
+            jsonObject.put("dict", simpleDictionary);
+        }
         jsonObject.put("threshold", request.getThreshold());
         String payload = jsonObject.toString();
         //Gson gson = new Gson();
         //String payload = gson.toJson(jsonObject);
         //log.debug("test");
-        log.debug("payload"+payload);
+        //log.debug("payload"+payload);
         // send a JSON data
         post.setEntity(new StringEntity(payload, "UTF-8"));
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -107,12 +113,12 @@ public class VecnerClient {
             JSONObject vRequest = new JSONObject();
             
             log.debug("vizualize");
-            log.debug(request.toString());
+            //log.debug(request.toString());
             if( request.getDictionary().getFullDictionary()  != null &&  !request.getDictionary().getFullDictionary().isEmpty()) {
                 log.debug("found full dict, extend el_result...");
                 for( Object e : elResultJson.getJSONArray("ents") ){
                     JSONObject ent = (JSONObject)e;
-                    System.out.println(ent);
+                    //System.out.println(ent);
                     String ent_id = ent.getString("label"); 
                     if(request.getDictionary().getFullDictionary().containsKey(ent_id)) {
                         ent.put("label", request.getDictionary().getFullDictionary().get(ent_id).getLabel());
@@ -125,9 +131,11 @@ public class VecnerClient {
                 }
             }
             vRequest.put("el_result", elResultJson);
-
+            if( kbUrl != null) {
+                vRequest.put("static_kb_url", kbUrl);
+            }
             String vResultStr = callVisualize( vRequest ); 
-            log.debug("test2"+vResultStr);
+            //log.debug("test2"+vResultStr);
             JSONObject result = new JSONObject();
             result.put("json", vRequest);
             result.put("html", vResultStr);

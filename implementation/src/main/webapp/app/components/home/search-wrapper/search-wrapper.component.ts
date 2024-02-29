@@ -66,8 +66,9 @@ export class AnnotationServiceUIComponent implements OnInit {
   el_user_dict_full = new FormControl(this.el_user_dict_examples[2]);
   selectedUserDictTabIndex = 0;
   selectedDictSourceTabIndex = 0;
-  el_threshold = 0.0;
-  el_threshold_result_count = "";
+  el_threshold = 1.0;
+  image_el_threshold = 0.0;
+  image_el_threshold_result_count = "";
   ts4tibOntologies = [
     {id: "NONE", name:"loading ontologies...", collection:"-"}
   ]
@@ -236,22 +237,22 @@ export class AnnotationServiceUIComponent implements OnInit {
     }
   }
 
-  onElThresholdChange(): void {
+  onImageElThresholdChange(): void {
     if( this.annotation.entities.length > 0 ){ 
       this.imageELgraph.clear();
-      const filtered = this.annotation.entities.filter((entity) => entity.score > this.el_threshold);
+      const filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
       this.imageELgraph.createChartFromClassificationResult(filtered);
     }
   }
 
-  onElThresholdInput(event: any): void {
-    this.el_threshold = event.value;
-    this.updateElThresholdLabel();
+  onImageElThresholdInput(event: any): void {
+    this.image_el_threshold = event.value;
+    this.updateImageElThresholdLabel();
   }
 
-  updateElThresholdLabel():void {
-    const filtered = this.annotation.entities.filter((entity) => entity.score > this.el_threshold);
-    this.el_threshold_result_count = "(show: "+filtered.length.toString() + " of " + this.annotation.entities.length.toString()+" results)";
+  updateImageElThresholdLabel():void {
+    const filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
+    this.image_el_threshold_result_count = "(show: "+filtered.length.toString() + " of " + this.annotation.entities.length.toString()+" results)";
   }
 
   submit():void { 
@@ -330,12 +331,12 @@ export class AnnotationServiceUIComponent implements OnInit {
           ResultsService.set(this.annotation.entities);
 
           this.imageELgraph.clear();
-          const filtered = this.annotation.entities.filter((entity) => entity.score > this.el_threshold);
+          const filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
           this.imageELgraph.createChartFromClassificationResult(filtered);
           // this.imageELgraph.svg.nativeElement.style.display = 'block';
           this.hierarchyGraph.svg.nativeElement.style.display = 'none';
           (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'block';
-          this.updateElThresholdLabel();
+          this.updateImageElThresholdLabel();
         })
         .catch(error => this.iart_result = "error"+(error.toString() as string))
     }
@@ -357,7 +358,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
     (document.getElementById("terminologysearchResultContainer") as HTMLElement).style.display = 'none';
     this.hierarchyGraph.svg.nativeElement.style.display = 'none';
-    
+   
     if( this.textEntityLinking.value === "") {
       this.err = 'Search text cannot be empty';
       return;

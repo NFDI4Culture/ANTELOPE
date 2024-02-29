@@ -123,13 +123,16 @@ public class AnnotationService implements AnnotationApiDelegate {
     ) {
 
         try {
-        
+            String dictName = null;
+            String kbUrl = null;
             if( request.getDictionary() == null || (request.getDictionary().getDictionaryType() == null)) {
-                request.getDictionary().setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
-                request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict(false));
+                //request.getDictionary().setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
+                //request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict(false));
+                dictName = "iconclass";
+                kbUrl = "https://iconclass.org/en/";
             }
-            System.out.println(request.toString());
-            JSONObject el_results = VecnerClient.callEntityLinking(request);
+            //System.out.println(request.toString());
+            JSONObject el_results = VecnerClient.callEntityLinking(request, dictName, kbUrl);
             
             return new ResponseEntity<String>( el_results.toString(), HttpStatus.OK );
 
