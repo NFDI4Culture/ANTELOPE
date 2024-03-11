@@ -68,7 +68,6 @@ Generic styles
   margin: auto;
   margin-top: 1rem;
   color: var(--color-error);
-  font-weight: 200;
   text-align: center;
 }
 
@@ -231,12 +230,12 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 /* jhipster-needle-scss-add-main JHipster will add new css style */
 
 
-@font-face {
+/* @font-face {
   font-family: "Roboto Condensed";
   src: url(../fonts/RobotoCondensed-200.ttf);
   font-weight: 200;
   font-display: swap;
-}
+} */
 @font-face {
   font-family: "Roboto Condensed";
   src: url(../fonts/RobotoCondensed-400.ttf);
@@ -282,7 +281,7 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 }
 
 p {
-  max-width: calc(10 * 5ch); // optimum paragraph width is ~ 10 words (mean word length 5 chars)
+  max-width: calc(10 * 7.5ch); // optimum paragraph width is ~ 10 words (mean word length 7.5 chars)
 }
 
 .mat-tab-body:not(.mat-tab-body-active) {
