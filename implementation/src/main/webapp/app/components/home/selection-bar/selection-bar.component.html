@@ -19,8 +19,8 @@
         <hr>
         <strong class="subheading" jhiTranslate="home.sidebar.exportselection">Export Selection</strong>
         <div class="btn-list" [class.disabled]="selectedEntities.size == 0">
-            <button type="submit" class="btn-annotationservice btn-annotationservice--primary" jhiTranslate="home.sidebar.exportjson">JSON</button>
-            <button type="button" class="btn-annotationservice btn-annotationservice--primary" jhiTranslate="home.sidebar.exportcsv">CSV</button>
+            <button type="submit" class="btn-annotationservice btn-annotationservice--primary" (click)="exportSelectionJSON()" jhiTranslate="home.sidebar.exportjson">JSON</button>
+            <button type="button" class="btn-annotationservice btn-annotationservice--primary" (click)="exportSelectionCSV()" jhiTranslate="home.sidebar.exportcsv">CSV</button>
         </div>
         <hr>
         <strong class="subheading" jhiTranslate="home.sidebar.exportall">Export All</strong>
