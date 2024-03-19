@@ -9,6 +9,7 @@ import { ResultsTableComponent } from 'app/components/home/results-table/results
 import { EntitySelectService } from 'app/services/entity-select/entity-select.service';
 import { HttpClient } from '@angular/common/http';
 import { ResultsService } from 'app/services/results/results.service';
+import { MatTabGroup } from '@angular/material/tabs';
 
 const EXCEL_EXTENSION = '.xlsx';
 
@@ -57,7 +58,7 @@ export class AnnotationServiceUIComponent implements OnInit {
   textEntityLinking = new FormControl('Vincent van Gogh was a dutch post-impressionist painter');
   el_user_dict_examples = [
     '"michelangelo", "van gogh"',
-    '{"artist": ["michelangelo","van gogh"]}',
+    '{"artist": ["michelangelo=","van gogh"]}',
     '{"entity1": {"label":"artist", "patterns":["michelangelo", "van gogh"], "kb_id":"entity1", "kb_url":"entity1_url"}}'
   ];
   el_user_dict_list = new FormControl(this.el_user_dict_examples[0]);
@@ -65,8 +66,9 @@ export class AnnotationServiceUIComponent implements OnInit {
   el_user_dict_full = new FormControl(this.el_user_dict_examples[2]);
   selectedUserDictTabIndex = 0;
   selectedDictSourceTabIndex = 0;
-  el_threshold = 0.0;
-  el_threshold_result_count = "";
+  el_threshold = 1.0;
+  image_el_threshold = 0.0;
+  image_el_threshold_result_count = "";
   ts4tibOntologies = [
     {id: "NONE", name:"loading ontologies...", collection:"-"}
   ]
@@ -93,6 +95,9 @@ export class AnnotationServiceUIComponent implements OnInit {
   
   @ViewChild('result_table') resultTableRef: ElementRef = {} as ElementRef;
 
+  @ViewChild('resultTypeTabGroup', { static: false })
+  resultTabGroup!: MatTabGroup;
+  
   // create a FormGroup to select the datasources checkboxes state
   sourcesForm: FormGroup;
 
@@ -102,6 +107,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false, shownTS: true, shownER: false},
     { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false , shownTS: true, shownER: true},
     { name: 'GND (Gemeinsame Normdatei)', value: 'gnd', checked: false, disabled: false, shownTS: true, shownER: false},
+    { name: 'Getty AAT (Art & Architecture Thesaurus)', value: 'aat', checked: false, disabled: false, shownTS: true, shownER: false},
     { name: 'TIB Terminology Service', value: 'ts4tib', checked: false, disabled: false, shownTS: true, shownER: false}
   ];
   
@@ -142,7 +148,6 @@ export class AnnotationServiceUIComponent implements OnInit {
   el_similarity_label(value: number): string {
     return value.toString();
   }
-  
 
   ngOnInit():any {
     this.getTs4tibOntologies();
@@ -232,22 +237,22 @@ export class AnnotationServiceUIComponent implements OnInit {
     }
   }
 
-  onElThresholdChange(): void {
+  onImageElThresholdChange(): void {
     if( this.annotation.entities.length > 0 ){ 
       this.imageELgraph.clear();
-      const filtered = this.annotation.entities.filter((entity) => entity.score > this.el_threshold);
+      const filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
       this.imageELgraph.createChartFromClassificationResult(filtered);
     }
   }
 
-  onElThresholdInput(event: any): void {
-    this.el_threshold = event.value;
-    this.updateElThresholdLabel();
+  onImageElThresholdInput(event: any): void {
+    this.image_el_threshold = event.value;
+    this.updateImageElThresholdLabel();
   }
 
-  updateElThresholdLabel():void {
-    const filtered = this.annotation.entities.filter((entity) => entity.score > this.el_threshold);
-    this.el_threshold_result_count = "(show: "+filtered.length.toString() + " of " + this.annotation.entities.length.toString()+" results)";
+  updateImageElThresholdLabel():void {
+    const filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
+    this.image_el_threshold_result_count = "(show: "+filtered.length.toString() + " of " + this.annotation.entities.length.toString()+" results)";
   }
 
   submit():void { 
@@ -270,9 +275,12 @@ export class AnnotationServiceUIComponent implements OnInit {
   async imageEL(): Promise<void> {  // TODO: Use factory-style public method as listener entry for all search tabs
     this.loader.start();
     this.iart_result = "";
-    
+    (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    (document.getElementById("terminologysearchResultContainer") as HTMLElement).style.display = 'none';
+    this.hierarchyGraph.svg.nativeElement.style.display = 'none';
     const url = 'api/annotation/entitylinking/image?model='+this.selectedIartImageModels;
-    
+    this.el_result.html = "";
+
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('image', this.selectedFile);
@@ -299,12 +307,14 @@ export class AnnotationServiceUIComponent implements OnInit {
         formData.append('dictionary', new Blob([dict_param], { type: 'application/json' }));
         formData.append('threshold',this.el_threshold.toString());
         formData.append('text', this.imageText.value as string);
+        
         // console.log(this.imageText.value);
       } else {
         // console.log("predefined dict");
         // TODO: add dict        
         formData.append('text', this.imageText.value as string);
         formData.append('threshold',this.el_threshold.toString());
+      
       }
       }
 
@@ -321,12 +331,12 @@ export class AnnotationServiceUIComponent implements OnInit {
           ResultsService.set(this.annotation.entities);
 
           this.imageELgraph.clear();
-          const filtered = this.annotation.entities.filter((entity) => entity.score > this.el_threshold);
+          const filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
           this.imageELgraph.createChartFromClassificationResult(filtered);
           // this.imageELgraph.svg.nativeElement.style.display = 'block';
           this.hierarchyGraph.svg.nativeElement.style.display = 'none';
           (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'block';
-          this.updateElThresholdLabel();
+          this.updateImageElThresholdLabel();
         })
         .catch(error => this.iart_result = "error"+(error.toString() as string))
     }
@@ -337,6 +347,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     // update graph
 
     this.showResultContainer = true;
+    document.dispatchEvent(new CustomEvent("collapse"));
   }
 
 
@@ -345,7 +356,10 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.msg = "";
     this.hierarchyGraph.clear();
     this.showResultContainer = false;
-
+    (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    (document.getElementById("terminologysearchResultContainer") as HTMLElement).style.display = 'none';
+    this.hierarchyGraph.svg.nativeElement.style.display = 'none';
+   
     if( this.textEntityLinking.value === "") {
       this.err = 'Search text cannot be empty';
       return;
@@ -357,8 +371,8 @@ export class AnnotationServiceUIComponent implements OnInit {
       // url of the annotationService api (restful service with json payload)
       const url = 'api/annotation/entitylinking/text?allowDuplicates=' + JSON.stringify(this.allowDuplicates) + '&';
         
-     
-     
+      
+      this.el_result.html = ""
       let user_dict = {};
       let dict_param = {};
       
@@ -408,6 +422,7 @@ export class AnnotationServiceUIComponent implements OnInit {
       // set link target to new tab for html result
       this.el_result.html = this.el_result.html.replace(/href/g, 'target="_blank" href')
       this.hierarchyGraph.svg.nativeElement.style.display = 'none';
+      this.table.createTable([]);
       // this.imageELgraph.svg.nativeElement.style.display = 'none';
       this.annotation = result;
       // console.log(result);
@@ -418,8 +433,7 @@ export class AnnotationServiceUIComponent implements OnInit {
       this.msg =  "";
       
       this.showResultContainer = true;
-
-
+      document.dispatchEvent(new CustomEvent("collapse"));
     } catch (error) {
       if (error instanceof Error) {
         this.err = error.message;
@@ -559,6 +573,8 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.msg = "";
     this.hierarchyGraph.clear();
     this.showResultContainer = false;
+    (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    this.el_result.html = "";  
 
     if( this.textTerminologySearch.value === "") {
       this.err = 'Search text cannot be empty';
@@ -630,12 +646,14 @@ export class AnnotationServiceUIComponent implements OnInit {
       const result = (await response.json()) as AnnotationResponse; // TODO: Add type {class, instance}
       
       // display as string
-      // this.msg = JSON.stringify(result, null, 4);
+      //this.msg = JSON.stringify(result, null, 4);
+      console.log(result);
       this.annotation = result;
-
+      
       ResultsService.set(this.annotation.entities);
 
       (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+      (document.getElementById("terminologysearchResultContainer") as HTMLElement).style.display = 'block';
       this.hierarchyGraph.svg.nativeElement.style.display = 'block';
 
       this.resultCount = this.annotation.hierarchy.children
@@ -652,7 +670,8 @@ export class AnnotationServiceUIComponent implements OnInit {
         this.hierarchyGraph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
         // this.table.createTableFromWikiDataHierarchy(this.annotation.entities); // TODO: Delivers wrong IDs (uses label instead)
         // TEMPORARY WORKAROUND:
-        this.table.createTableFromWikiDataHierarchy([]
+        //this.table.createTable(this.annotation.entities);
+        this.table.createTable([]
           .concat(...(this.annotation.hierarchy
             .children
             .map((child: any) => child.children)))  // eslint-disable-line
@@ -686,6 +705,7 @@ export class AnnotationServiceUIComponent implements OnInit {
 
   // remove the graph and clear all input fields
   clearAll(): void {
+    this.resultTabGroup.selectedIndex = 0; // select graph tab in result section. otherwise, submit button doesnt work anymore (lost focus to subcomponent?)
     this.msg = "";
     this.err = "";
     this.annotation = {"entities":[], "relations":[], hierarchy:{} as unknown as HierarchyTree};
@@ -695,6 +715,8 @@ export class AnnotationServiceUIComponent implements OnInit {
     this.loader.stop();
     this.loader.set(0);
     this.showResultContainer = false;
+    (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
+    this.el_result.html="";
 
     EntitySelectService.unselect();
 

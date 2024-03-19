@@ -74,7 +74,7 @@ services:
     # remove the "127.0.0.1:" prefix
     
     ports:
-      - 50051:50051    
+      - 127.0.0.1:50051:50051    
     volumes:
       - type: bind
         source: ${IART_HOME}/data/

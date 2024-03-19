@@ -141,7 +141,7 @@
             </div>
             <div>
                 wide&ensp;
-                <mat-slider min="0.01" max="0.99" step="-0.1" value="0.6" discrete [displayWith]="el_similarity_label" [(ngModel)]="el_threshold">
+                <mat-slider min="0.01" max="1.0" step="-0.1" value="0.6" discrete [displayWith]="el_similarity_label" [(ngModel)]="el_threshold">
                     <input matSliderThumb>
                 </mat-slider>
                 &ensp;narrow
@@ -268,27 +268,31 @@
     </div>
     <span class="results-label">{{ resultCount }} <span jhiTranslate="home.service.resultsin">results in</span> {{ selectedSources.length }} <span jhiTranslate="home.service.terminologysources">terminology source</span>{{ (selectedSources.length > 1) ? "s" : "" }}</span>
     <pre><p *ngIf="iart_result" style="font-size:11px;">{{ iart_result | json}}</p></pre>
-    <mat-tab-group (selectedTabChange)="onTabChanged()" style="min-height: 0;">
+    <mat-tab-group #resultTypeTabGroup (selectedTabChange)="onTabChanged()" style="min-height: 0;">
         <mat-tab label="Graph">
-            <div [innerHTML]="el_result.html"></div>
-            <!-- <div class="results-graph-legend">
-                <div class="results-graph-legend-entry results-graph-legend-entry--terminology-source" jhiTranslate="home.service.legend.terminologysource">Terminology Source</div>
-                <div class="results-graph-legend-entry results-graph-legend-entry--instance" jhiTranslate="home.service.legend.instance">Instance</div>
-                <div class="results-graph-legend-entry results-graph-legend-entry--class" jhiTranslate="home.service.legend.class">Class</div>
-            </div> -->
-            <div class="tib-btn-info" 
-                matTooltip="The graph view shows the results in a hierarchy. Roll the mouse wheel to zoom. Hold left mouse button to move the graph."
-                matTooltipPosition="right"
-                matTooltipSize="12px">
+            <div id="terminologysearchResultContainer"> 
+                <div class="results-graph-legend">
+                    <div class="results-graph-legend-entry results-graph-legend-entry--terminology-source"
+                        jhiTranslate="home.service.legend.terminologysource">Terminology Source</div>
+                    <div class="results-graph-legend-entry results-graph-legend-entry--instance"
+                        jhiTranslate="home.service.legend.instance">Instance</div>
+                    <div class="results-graph-legend-entry results-graph-legend-entry--class"
+                        jhiTranslate="home.service.legend.class">Class</div>
+                </div>
+                <div class="tib-btn-info"
+                    matTooltip="The graph view shows the results in a hierarchy. Roll the mouse wheel to zoom. Hold left mouse button to move the graph."
+                    matTooltipPosition="right" matTooltipSize="12px">
+                </div>
+                <jhi-results-graph-tidytree></jhi-results-graph-tidytree>
             </div>
-            <jhi-results-graph-tidytree></jhi-results-graph-tidytree>
+            <div [innerHTML]="el_result.html"></div>
             <div id="imageELresultContainer">
                 Threshold:
                 <div>
-                    {{el_threshold}}&ensp;
-                    <mat-slider min="0.0" max="1.0" step="-0.01" value="0.2" discrete [displayWith]="el_similarity_label" [(ngModel)]="el_threshold" (input)="onElThresholdInput($event)" (change)="onElThresholdChange()">
+                    {{image_el_threshold}}&ensp;
+                    <mat-slider min="0.0" max="1.0" step="-0.01" value="0.2" discrete [displayWith]="el_similarity_label" [(ngModel)]="image_el_threshold" (input)="onImageElThresholdInput($event)" (change)="onImageElThresholdChange()">
                         <input matSliderThumb>
-                    </mat-slider>{{el_threshold_result_count}}
+                    </mat-slider>{{image_el_threshold_result_count}}
                 </div>
               <span class="btn tib-btn-info" 
                 matTooltip="As lower the threshold is, the more entities from the dictionary will be included in the results"

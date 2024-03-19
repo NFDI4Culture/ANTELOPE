@@ -80,7 +80,7 @@ public class AnnotationService implements AnnotationApiDelegate {
             entitiesToSelect = new String[]{};
         
             
-            Locale locale = Locale.forLanguageTag("de");
+            Locale locale = Locale.forLanguageTag("en");
             Context context = new Context(locale);
             context.setVariable("entities", entitiesToSelect);
             String content = templateEngine.process("annotationService-selectComponent", context);
@@ -102,13 +102,14 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean iconclass,
     Boolean ts4tib,
     Boolean lobidGnd,
+    Boolean gettyAAT,
     String ts4tib_collection,
     String ts4tib_ontology,
     Boolean allowDuplicates
     ) {
         List<String> requestBody = new ArrayList<String>();
         requestBody.add(searchText);
-        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, lobidGnd, allowDuplicates);
+        return search(requestBody, SearchMode.TERMINOLOGY_SEARCH, wikidata, wikidataDbpedia, iconclass, ts4tib, ts4tib_ontology, lobidGnd, gettyAAT, allowDuplicates);
     }
 
     @Override
@@ -123,13 +124,16 @@ public class AnnotationService implements AnnotationApiDelegate {
     ) {
 
         try {
-        
+            String dictName = null;
+            String kbUrl = null;
             if( request.getDictionary() == null || (request.getDictionary().getDictionaryType() == null)) {
-                request.getDictionary().setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
-                request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict(false));
+                //request.getDictionary().setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
+                //request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict(false));
+                dictName = "iconclass";
+                kbUrl = "https://iconclass.org/en/";
             }
-            System.out.println(request.toString());
-            JSONObject el_results = VecnerClient.callEntityLinking(request);
+            //System.out.println(request.toString());
+            JSONObject el_results = VecnerClient.callEntityLinking(request, dictName, kbUrl);
             
             return new ResponseEntity<String>( el_results.toString(), HttpStatus.OK );
 
@@ -306,7 +310,7 @@ public class AnnotationService implements AnnotationApiDelegate {
             JSONArray resultArr = new JSONArray();
             
             List<PluginInfo> response = iArtClient.getPluginList();
-            System.out.println(response);
+            //System.out.println(response);
             for (PluginInfo pluginInfo : response) {
                 JSONObject o = new JSONObject();
                 o.put("name", pluginInfo.getName());
@@ -405,6 +409,7 @@ public class AnnotationService implements AnnotationApiDelegate {
     Boolean ts4tib, 
     String ts4tibOntology,
     Boolean lobidGnd,
+    Boolean gettyAAT,
     boolean allowDuplicates
     ) {
         
@@ -412,7 +417,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         // if no parameter is given, all datasources are used
         boolean useAllSources = true;
         
-        if (wikidata != null || wikidataDbpedia != null || iconclass != null || ts4tib != null || lobidGnd != null) {
+        if (wikidata != null || wikidataDbpedia != null || iconclass != null || ts4tib != null || lobidGnd != null || gettyAAT != null) {
             useAllSources = false;
         }
 
@@ -438,7 +443,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         if( useAllSources || (iconclass != null && iconclass) ){
             try {
                 iconclassNotations = EntityRecognition.getIconclassNotations(requestBody);
-                System.out.println( "iconClassResults:"+iconclassNotations );
+                //System.out.println( "iconClassResults:"+iconclassNotations );
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseEntity<>("Failed to request Iconclass API", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -452,7 +457,7 @@ public class AnnotationService implements AnnotationApiDelegate {
        if( useAllSources || (ts4tib != null && ts4tib) ){
            try {
             olsResults = EntityRecognition.getTs4TibResults(requestBody, ts4tibOntology);
-               System.out.println( "Tib Terminology service (TS4TIB) Results:"+olsResults );
+               //System.out.println( "Tib Terminology service (TS4TIB) Results:"+olsResults );
            } catch (Exception e) {
                e.printStackTrace();
                return new ResponseEntity<>("Failed to request tib terminology service (TS4TIB) API", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -475,6 +480,19 @@ public class AnnotationService implements AnnotationApiDelegate {
             gndResults = new ArrayList<>();
         }
 
+        // Get Entities from Getty AAT
+        List<String> aatResults;
+            if (useAllSources || (gettyAAT != null && gettyAAT)) {
+                try {
+                    aatResults = EntityRecognition.getGettyAATResults(requestBody);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return new ResponseEntity<>("Failed to request Getty AAT", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            } else {
+                aatResults = new ArrayList<>();
+            }
+
         // init executorService for parallel fetching of results
         ExecutorService executor = Executors.newFixedThreadPool(10);
 
@@ -484,6 +502,8 @@ public class AnnotationService implements AnnotationApiDelegate {
         Future<Map<String, String>> iconclassResultsByNotation = null;
         Future<Map<String, String>> olsResultsByEntity = null;
         Future<Map<String, String>> gndResultsByEntity = null;
+        Future<Map<String, String>> aatResultsByEntity = null;
+        
 
         // get all superclasses for the falcon entities from wikidata
         try {
@@ -566,13 +586,30 @@ public class AnnotationService implements AnnotationApiDelegate {
             return new ResponseEntity<>("Failed to request lobid gnd API", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+         // get all superclasses for the Getty AAT entities 
+         try {
+            Callable<Map<String, String>> aatCall = new Callable<>() {
+
+                @Override
+                public Map<String, String> call() throws Exception {
+                    //return null;
+                   return EntityRecognition.getGettyAATSuperClasses(aatResults);
+                }
+            };
+            aatResultsByEntity = executor.submit(aatCall);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to request Getty AAT API", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
 
         while( 
             !wikidataResultsByEntity.isDone() 
         || !dbpediaResultsByEntity.isDone() 
         || !iconclassResultsByNotation.isDone()
         || !olsResultsByEntity.isDone()
-        || !gndResultsByEntity.isDone()) {
+        || !gndResultsByEntity.isDone()
+        || !aatResultsByEntity.isDone()) {
             log.debug("wait for completion");
             try {
                 Thread.sleep(250);
@@ -597,6 +634,8 @@ public class AnnotationService implements AnnotationApiDelegate {
                 olsResultsByEntity.get(),
                 gndResults,
                 gndResultsByEntity.get(),
+                aatResults,
+                aatResultsByEntity.get(),
                 allowDuplicates
                 );
         } catch (Exception e) {
