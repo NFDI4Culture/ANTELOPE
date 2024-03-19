@@ -646,8 +646,8 @@ export class AnnotationServiceUIComponent implements OnInit {
       const result = (await response.json()) as AnnotationResponse; // TODO: Add type {class, instance}
       
       // display as string
-      //this.msg = JSON.stringify(result, null, 4);
-      console.log(result);
+      // this.msg = JSON.stringify(result, null, 4);
+    
       this.annotation = result;
       
       ResultsService.set(this.annotation.entities);
@@ -670,7 +670,7 @@ export class AnnotationServiceUIComponent implements OnInit {
         this.hierarchyGraph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
         // this.table.createTableFromWikiDataHierarchy(this.annotation.entities); // TODO: Delivers wrong IDs (uses label instead)
         // TEMPORARY WORKAROUND:
-        //this.table.createTable(this.annotation.entities);
+        // this.table.createTable(this.annotation.entities);
         this.table.createTable([]
           .concat(...(this.annotation.hierarchy
             .children
