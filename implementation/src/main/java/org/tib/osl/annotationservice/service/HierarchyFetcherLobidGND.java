@@ -35,11 +35,8 @@ public class HierarchyFetcherLobidGND extends HierarchyFetcher{
             JSONArray resultArr = new JSONArray();
             //super.entitiesToProcess.put("label", super.entitiesToProcess.getString("label"));
             getParentClasses( super.entitiesToProcess.getJSONObject("obj"), resultArr );
-        
-        
-        
             super.resultsByEntity.put( super.entitiesToProcess.toString(), resultArr.toString());
-            System.out.println(resultsByEntity);
+            //System.out.println(resultsByEntity);
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,7 +116,7 @@ public class HierarchyFetcherLobidGND extends HierarchyFetcher{
         
         
         for( int i=0; i<parentEntitiesJsonArr.length(); i++){ 
-            log.debug(parentEntitiesJsonArr.get(i).toString());
+            //log.debug(parentEntitiesJsonArr.get(i).toString());
             JSONObject actParent = parentEntitiesJsonArr.getJSONObject(i);
             String url = actParent.getString("id");
             String[] urlParts = url.split("/");
@@ -171,12 +168,12 @@ public class HierarchyFetcherLobidGND extends HierarchyFetcher{
                 // Add the subResult to the current level's result array
                 result.putAll(subResult);
             }catch ( Exception e) {
-            log.error( "unable to receive ols Classes for '"+super.entitiesToProcess.toString()+"' error: "+e.getMessage() );
+            log.error( "unable to receive Lobid GND Classes for '"+super.entitiesToProcess.toString()+"' error: "+e.getMessage() );
             
             e.printStackTrace();
         }
             
-            log.debug("ols result fetched sucessfully");
+            log.debug("Lobid GND result fetched sucessfully");
         }
     
     }

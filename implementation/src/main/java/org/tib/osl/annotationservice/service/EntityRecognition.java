@@ -1,14 +1,14 @@
 package org.tib.osl.annotationservice.service;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -29,12 +32,16 @@ import org.apache.http.util.EntityUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tib.osl.annotationservice.service.AnnotationService.SearchMode;
 import org.tib.osl.annotationservice.service.api.dto.FullDictionaryValue;
-
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 public class EntityRecognition {
     private static Logger log = LoggerFactory.getLogger(EntityRecognition.class);
@@ -81,8 +88,6 @@ public class EntityRecognition {
                 CloseableHttpResponse response = httpClient.execute(post)) {
 
                 resultStr = EntityUtils.toString(response.getEntity());
-                
-                log.debug( resultStr.toString() );
                 JSONObject resultJson = new JSONObject( resultStr );  
                 JSONObject normalizedResultJson = new JSONObject();
                 String[] resultArrKeys = null;
@@ -115,7 +120,7 @@ public class EntityRecognition {
                 falconResults.add(normalizedResultJson.toString());
             }
         }
-        System.out.println("falconResult:"+falconResults);
+        //System.out.println("falconResult:"+falconResults);
         return falconResults;
     }
 
@@ -138,7 +143,6 @@ public class EntityRecognition {
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
                 result = EntityUtils.toString(response.getEntity());
-                log.debug( result.toString() );
                 JSONObject actJsonResult = new JSONObject( result );
                 JSONArray resultArr = actJsonResult.getJSONArray("result"); 
                 
@@ -168,7 +172,6 @@ public class EntityRecognition {
                             json.append((char) c);
                         }
                         String jsonStr = json.toString();
-                        log.debug(url.toString()+" result= "+jsonStr);
                         notationJson = new JSONObject(jsonStr);
                     }
 
@@ -187,7 +190,7 @@ public class EntityRecognition {
             iconclassResults.add( jsonResult.toString() );
         }
         
-        System.out.println("iconclassResults:"+iconclassResults);
+        //System.out.println("iconclassResults:"+iconclassResults);
         return iconclassResults;
     }
 
@@ -290,7 +293,7 @@ public class EntityRecognition {
                 JSONObject extractedEntity = new JSONObject();
                 extractedEntity.put("id", actEntityId);
                 extractedEntity.put("URI", actEntityUri);
-                extractedEntity.put("label", actEntityName);
+                ((extractedEntity)).put("label", actEntityName);
                 extractedEntity.put("name", actEntityName);
                 extractedEntity.put("obj", actEntityObj);
 
@@ -521,6 +524,8 @@ public class EntityRecognition {
             Map<String,String> olsResultsByEntity,
             List<String> gndResults,
             Map<String,String> gndResultsByEntity,
+            List<String> aatResults,
+            Map<String,String> aatResultsByEntity,
             boolean allowDuplicates
             )throws Exception {
     
@@ -554,7 +559,6 @@ public class EntityRecognition {
                             JSONObject actResultObj = new JSONObject(actResultStr);
                             log.debug(actResultObj.getString("URI")+""+ actEntity.getString("URI") );
                            
-
                             if( actResultObj.getString("URI").equals( actEntity.getString("URI"))){
                                 log.debug("match");
                                 actEntity.put("label", actResultObj.getString("label")); 
@@ -606,6 +610,11 @@ public class EntityRecognition {
             entitiesArr.putAll( new JSONArray(actEntity));
         }
 
+        // ========== section Getty AAT =================
+        for (String actEntity : aatResults){
+            entitiesArr.putAll( new JSONArray(actEntity));
+        }
+
         finalResult.put("entities", entitiesArr);
         
         // ========== section hierarchy ===============
@@ -638,6 +647,12 @@ public class EntityRecognition {
         if( !gndResultsByEntity.isEmpty() ) {
             JSONObject gndHierarchy = TreeBuilder.buildCategoryTree( gndResultsByEntity , 100000, "GND", "http://gnd.network", "label", "URI", allowDuplicates);
             resultHierarchy.getJSONArray("children").put(gndHierarchy);
+        }
+
+        // build hierarchy from gnd and add to root node
+        if( !aatResultsByEntity.isEmpty() ) {
+            JSONObject aatHierarchy = TreeBuilder.buildCategoryTree( aatResultsByEntity , 200000, "Getty AAT", "https://www.getty.edu/research/tools/vocabularies/aat/", "label", "URI", allowDuplicates);
+            resultHierarchy.getJSONArray("children").put(aatHierarchy);
         }
 
          // build hierarchy from ols and add to root node
@@ -709,6 +724,101 @@ public class EntityRecognition {
         return result;
     }
 
-    
-   
+    public static List<String> getGettyAATResults(List<String> requestText) throws Exception {
+        List<String> results = new ArrayList<>();
+        String baseUrl = "http://vocabsservices.getty.edu/AATService.asmx/AATGetTermMatch"; //?term=rhyta&logop=and&notes=vessels
+
+        for (String actText : requestText) {
+            String result = "";
+
+            // Encode the search text
+            String encodedText = URLEncoder.encode(actText, StandardCharsets.UTF_8);
+
+            // Create the API request URL
+            String requestUrl = baseUrl +"?term="+ encodedText + "&logop=or&notes=" + encodedText;
+
+            HttpGet request = new HttpGet(new URI(requestUrl));
+            request.addHeader("content-type", "application/xml");
+
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
+                result = EntityUtils.toString(response.getEntity());
+                // getty delivers xml, we need to parse it to get the ids of the found entities
+                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                Document doc = builder.parse(new InputSource(new StringReader(result)));
+                NodeList foundEntitiesXML = doc.getElementsByTagName("Subject_ID");
+                List<String> foundEntityIds = new ArrayList<>();
+                for(int i = 0; i < foundEntitiesXML.getLength(); i++) {
+                    Node actEntityXML = foundEntitiesXML.item(i);
+                    String actEntityId = actEntityXML.getTextContent();
+                    foundEntityIds.add(actEntityId);
+                }
+                
+                // now we fetch the aat json file for each found entity
+                List<JSONObject> foundEntitiesJSON = new ArrayList<>();
+                for( String actEntityId : foundEntityIds){
+                    // fetch getty
+                    String url = "https://vocab.getty.edu/aat/"+actEntityId+".json";
+                    BufferedInputStream in = new BufferedInputStream(new URL( url ).openStream());
+                    JSONTokener tokener = new JSONTokener(in);
+                    JSONObject actEntityJSON = new JSONObject(tokener);
+                    foundEntitiesJSON.add(actEntityJSON);
+                }
+
+                // build result
+                JSONArray extractedEntities = new JSONArray();
+                for (int i = 0; i < foundEntitiesJSON.size(); i++) {
+                    JSONObject actEntityObj = foundEntitiesJSON.get(i);
+                    String actEntityUri = actEntityObj.getString("id");
+                    String[] uriParts = actEntityUri.split("/");
+                    String actEntityId = uriParts[uriParts.length-1];
+                    String actEntityName = actEntityObj.getString("_label");
+                    JSONObject actResultObj = new JSONObject();
+                    actResultObj.put("label", actEntityName);
+                    actResultObj.put("name", actEntityName);
+                    actResultObj.put("id", actEntityId);
+                    actResultObj.put("URI", actEntityUri);
+                    actResultObj.put("obj", actEntityObj);
+                    actResultObj.put("source", "aat");
+                    extractedEntities.put(actResultObj);
+                }
+
+                results.add(extractedEntities.toString());
+            }
+        }
+        return results;
+    }
+
+    public static Map<String, String> getGettyAATSuperClasses(List<String> aatResults) throws Exception {
+        Map<String, String> resultsByEntity = new ConcurrentHashMap<>();
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        List<Future<?>> futures = new ArrayList<Future<?>>();
+
+        try {
+            // Get superclass triples from Lobid-GND for each entity in the results
+            for (String actResults : aatResults) {
+                JSONArray entities = new JSONArray(actResults);
+                for( Object actEntity : entities) {
+                    HierarchyFetcherGettyAAT fetcher = new HierarchyFetcherGettyAAT(resultsByEntity, (JSONObject)actEntity);
+                    Future<?> actFuture = executorService.submit(fetcher);
+                    futures.add(actFuture);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error in getGettyAATSuperClasses: " + e.getMessage());
+        }
+
+        // Wait for HTTP requests to terminate
+        while (!futures.stream().allMatch(f -> f.isDone())) {
+            log.debug("Waiting for completion of Getty AAT fetching");
+            Thread.sleep(200);
+        }
+
+        executorService.shutdown();
+
+        return resultsByEntity;
+    }
+
 }
