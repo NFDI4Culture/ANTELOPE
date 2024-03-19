@@ -266,7 +266,7 @@
             <button type="button" class="btn-annotationservice btn-annotationservice--secondary" (click)="clearAll()" jhiTranslate="home.service.change">Change</button>
         </div>
     </div>
-    <span class="results-label">{{ resultCount }} <span jhiTranslate="home.service.resultsin">results in</span> {{ selectedSources.length }} <span jhiTranslate="home.service.terminologysources">terminology sources</span></span>
+    <span class="results-label">{{ resultCount }} <span jhiTranslate="home.service.resultsin">results in</span> {{ selectedSources.length }} <span jhiTranslate="home.service.terminologysources">terminology source</span>{{ (selectedSources.length > 1) ? "s" : "" }}</span>
     <pre><p *ngIf="iart_result" style="font-size:11px;">{{ iart_result | json}}</p></pre>
     <mat-tab-group #resultTypeTabGroup (selectedTabChange)="onTabChanged()" style="min-height: 0;">
         <mat-tab label="Graph">

@@ -133,6 +133,14 @@ paths:
         explode: true
         schema:
           type: boolean
+      - name: aat
+        in: query
+        description: Optional parameter to include or exclude entities from Getty AAT
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
       - name: ts4tib_collection
         in: query
         description: Optional parameter to restrict search within the TIB terminology service to one or more ontology collections. More than one collection can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'

@@ -66,7 +66,6 @@ Navbar
   span, a {
     color: inherit;
     font-size: var(--font-size-s);
-    font-weight: 200;
     text-transform: none;
   }
   a {
@@ -91,4 +90,8 @@ Navbar
       font-weight: 400;
     }
   }
+}
+
+.col-md-12 #sidebar-l-spacer {
+  width: 9.5rem;
 }

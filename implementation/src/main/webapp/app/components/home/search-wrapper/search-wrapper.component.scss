@@ -126,7 +126,6 @@ textarea {
   height: 5rem;
   min-height: 5rem;
   max-height: 10rem;
-  font-weight: 200;
   border: 1px solid var(--color-fg-gray);
   border-radius: 0.5rem;
 
@@ -207,7 +206,6 @@ textarea {
   .results-label {
     display: block;
     margin-bottom: 1.5rem;
-    font-weight: 200;
   }
 
   .tib-btn-info {
@@ -238,7 +236,6 @@ textarea {
     height: auto !important;
     color: var(--color-fg-dark);
     font-size: var(--font-size-m);
-    font-weight: 200;
     text-transform: uppercase;
     opacity: 1.0 !important;
   }
@@ -294,6 +291,15 @@ input[type="checkbox"] {
     &:not(:last-child) {
       margin-right: 1rem;
     }
+  }
+}
+
+.entities {
+  padding: 2px 0 !important;
+
+  mark.entity {
+    border: 1px solid var(--color-primary) !important;
+    border-radius: 0.2rem;
   }
 }
 

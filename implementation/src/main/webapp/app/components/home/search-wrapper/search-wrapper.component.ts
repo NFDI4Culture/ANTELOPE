@@ -58,7 +58,7 @@ export class AnnotationServiceUIComponent implements OnInit {
   textEntityLinking = new FormControl('Vincent van Gogh was a dutch post-impressionist painter');
   el_user_dict_examples = [
     '"michelangelo", "van gogh"',
-    '{"artist": ["michelangelo","van gogh"]}',
+    '{"artist": ["michelangelo=","van gogh"]}',
     '{"entity1": {"label":"artist", "patterns":["michelangelo", "van gogh"], "kb_id":"entity1", "kb_url":"entity1_url"}}'
   ];
   el_user_dict_list = new FormControl(this.el_user_dict_examples[0]);
@@ -107,6 +107,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     { name: 'WIKIDATA + DBpedia', value: 'wikidata_dbpedia', checked: true, disabled: false, shownTS: true, shownER: false},
     { name: 'ICONCLASS', value: 'iconclass', checked: true, disabled: false , shownTS: true, shownER: true},
     { name: 'GND (Gemeinsame Normdatei)', value: 'gnd', checked: false, disabled: false, shownTS: true, shownER: false},
+    { name: 'Getty AAT (Art & Architecture Thesaurus)', value: 'aat', checked: false, disabled: false, shownTS: true, shownER: false},
     { name: 'TIB Terminology Service', value: 'ts4tib', checked: false, disabled: false, shownTS: true, shownER: false}
   ];
   
@@ -147,7 +148,6 @@ export class AnnotationServiceUIComponent implements OnInit {
   el_similarity_label(value: number): string {
     return value.toString();
   }
-  
 
   ngOnInit():any {
     this.getTs4tibOntologies();
@@ -347,6 +347,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     // update graph
 
     this.showResultContainer = true;
+    document.dispatchEvent(new CustomEvent("collapse"));
   }
 
 
@@ -432,8 +433,7 @@ export class AnnotationServiceUIComponent implements OnInit {
       this.msg =  "";
       
       this.showResultContainer = true;
-
-
+      document.dispatchEvent(new CustomEvent("collapse"));
     } catch (error) {
       if (error instanceof Error) {
         this.err = error.message;
@@ -646,9 +646,10 @@ export class AnnotationServiceUIComponent implements OnInit {
       const result = (await response.json()) as AnnotationResponse; // TODO: Add type {class, instance}
       
       // display as string
-      // this.msg = JSON.stringify(result, null, 4);
+      //this.msg = JSON.stringify(result, null, 4);
+      console.log(result);
       this.annotation = result;
-
+      
       ResultsService.set(this.annotation.entities);
 
       (document.getElementById("imageELresultContainer") as HTMLElement).style.display = 'none';
@@ -669,6 +670,7 @@ export class AnnotationServiceUIComponent implements OnInit {
         this.hierarchyGraph.createTreeFromWikiDataHierarchy(this.annotation.hierarchy);
         // this.table.createTableFromWikiDataHierarchy(this.annotation.entities); // TODO: Delivers wrong IDs (uses label instead)
         // TEMPORARY WORKAROUND:
+        //this.table.createTable(this.annotation.entities);
         this.table.createTable([]
           .concat(...(this.annotation.hierarchy
             .children

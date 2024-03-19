@@ -101,8 +101,8 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     height = 1200, // outer height, in pixels
     r = 10, // radius of nodes
     padding = 1, // horizontal padding for first and last column
-    fillBackgroundClass = "#F9CD0E",
-    fillBackgroundInstance = "#18A0FB",
+    fillBackgroundClass = "#18A0FB",
+    fillBackgroundInstance = "#F9CD0E",
     fillBackgroundSource = "#C4C4C4",
     fillForeground = "white",
     stroke = "black", // stroke for links,
@@ -117,7 +117,6 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     // format), and use d3.hierarchy.
 
     let root: d3.HierarchyNode<NodeData> = null as unknown as d3.HierarchyNode<NodeData>;
-    
     root = (id != null || parentId != null)
     ? (d3.stratify().id((d: any, i: any, data2: any): string | null | undefined => d["id"] as string).parentId((d: any, i: any, data2: any): string | null | undefined => d["parentId"] as string)(data) as HierarchyNode<NodeData>)
     : d3.hierarchy(data, children) as HierarchyNode<NodeData>;
@@ -131,7 +130,8 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     .map((d: any) => ({
       label: label(d),
       depth: d.depth
-    }));
+    }))
+    .filter((d: any) => d.depth >= 2);
 
     // Compute the layout.
     const dx = 30; // Vertical margin between nodes
@@ -142,6 +142,7 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     let x0 = Infinity;
     let x1 = -x0;
     root.each((d: any) => {
+      if(d.depth < 2) {return;}
       if (d.x > x1) { x1 = d.x };
       if (d.x < x0) { x0 = d.x };
     });
@@ -151,6 +152,7 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     // if (!width) {width = x1 - x0 + dx * 2;}
     height = x1 - x0 + dx * 2;
     width = x1 - x0 + dy * 2;
+
     const linkGenerator = d3.linkHorizontal()
     .x((d: any) => d.y as number)
     .y((d: any) => d.x as number);
@@ -170,11 +172,11 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     // SVG
     const svg = d3.select("#tree")
     .attr("viewBox", [-dy * padding, x0 - dx, width, height])
-    // .attr("viewBox", [x1-dy , x0 - dx, width, height])
-    // .attr("viewBow", [0,0, width, height])
+    .attr("viewBox", [x1-dy , x0 - dx, width, height])
+    .attr("viewBow", [0,0, width, height])
     .attr("width", "100%")
     .attr("height", height)
-    .attr("style", "position: relative ; min-height: 600px; min-width: 600px; max-width: 100%; height: auto; height: intrinsic; margin: 10px; margin-bottom:150px; z-index:100")
+    .attr("style", "position: relative; min-height: 1200px; min-width: 1200px; max-width: 100%; height: auto; height: intrinsic;")
     .attr("font-family", "sans-serif")
     .attr("font-size", "1rem");
 
@@ -188,14 +190,14 @@ export class ResultsGraphTidytreeComponent implements OnInit {
     .attr("stroke-linejoin", strokeLinejoin)
     .attr("stroke-width", strokeWidth)
     .selectAll("path")
-    .data(root.links())
+    .data(root.links().filter((d: any) => d.source.depth >= 2))
     .join("path")
     .attr("d", (d: any) => linkGenerator(d) as unknown as string);
 
     // NODE
     const node = g.append("g")
     .selectAll("a")
-    .data(root.descendants())
+    .data(root.descendants().filter((d: any) => d.depth >= 2))
     .join("a")
     .attr("id", (d: any) => this.getNodeId(d.data.id))
     .attr("transform", (d: any) => `translate(${d.y as string},${d.x as string})`)
