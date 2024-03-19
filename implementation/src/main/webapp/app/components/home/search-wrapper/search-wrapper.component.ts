@@ -347,6 +347,7 @@ export class AnnotationServiceUIComponent implements OnInit {
     // update graph
 
     this.showResultContainer = true;
+    document.dispatchEvent(new CustomEvent("collapse"));
   }
 
 
@@ -432,8 +433,7 @@ export class AnnotationServiceUIComponent implements OnInit {
       this.msg =  "";
       
       this.showResultContainer = true;
-
-
+      document.dispatchEvent(new CustomEvent("collapse"));
     } catch (error) {
       if (error instanceof Error) {
         this.err = error.message;
