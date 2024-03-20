@@ -241,8 +241,8 @@ export class AnnotationServiceUIComponent implements OnInit {
   onImageElResultParamChange(): void {
     if( this.annotation.entities.length > 0 ){ 
       this.imageELgraph.clear();
-      var filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
-      if( this.image_el_orderby == "score") {
+      const filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
+      if( this.image_el_orderby === "score") {
          filtered.sort( (e1,e2) => e1.score - e2.score );
       }
       this.imageELgraph.createChartFromClassificationResult(filtered);
