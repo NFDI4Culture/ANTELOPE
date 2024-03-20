@@ -6,6 +6,8 @@ import { MatInputModule} from '@angular/material/input';
 import { MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [],
@@ -16,7 +18,9 @@ import {MatSliderModule} from '@angular/material/slider';
     MatInputModule,
     MatSelectModule,
     MatExpansionModule,
-    MatSliderModule
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatButtonToggleModule
   ],
   exports: [
     MatTabsModule, 
@@ -24,7 +28,9 @@ import {MatSliderModule} from '@angular/material/slider';
     MatInputModule,
     MatSelectModule,
     MatExpansionModule,
-    MatSliderModule
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatButtonToggleModule
   ]
 })
 export class MaterialModule { }

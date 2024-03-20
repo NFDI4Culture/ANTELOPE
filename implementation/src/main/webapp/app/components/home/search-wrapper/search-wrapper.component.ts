@@ -69,6 +69,7 @@ export class AnnotationServiceUIComponent implements OnInit {
   el_threshold = 1.0;
   image_el_threshold = 0.0;
   image_el_threshold_result_count = "";
+  image_el_orderby = "name";
   ts4tibOntologies = [
     {id: "NONE", name:"loading ontologies...", collection:"-"}
   ]
@@ -82,7 +83,7 @@ export class AnnotationServiceUIComponent implements OnInit {
   selectedTs4tibOntologies= [];// [{name: 'All'}];
   selectedIartImageModels = "ClipClassification";
   imageUrl : string | null = "content/images/landscape.jpg";
-  imageText = new FormControl('Die Vertreibung Heliodors aus dem Tempel');
+  imageText = new FormControl('');
   selectedFile: File | null = null;
   msg = "";
   err = "";
@@ -237,10 +238,13 @@ export class AnnotationServiceUIComponent implements OnInit {
     }
   }
 
-  onImageElThresholdChange(): void {
+  onImageElResultParamChange(): void {
     if( this.annotation.entities.length > 0 ){ 
       this.imageELgraph.clear();
-      const filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
+      var filtered = this.annotation.entities.filter((entity) => entity.score > this.image_el_threshold);
+      if( this.image_el_orderby == "score") {
+         filtered.sort( (e1,e2) => e1.score - e2.score );
+      }
       this.imageELgraph.createChartFromClassificationResult(filtered);
     }
   }

@@ -287,12 +287,19 @@
             </div>
             <div [innerHTML]="el_result.html"></div>
             <div id="imageELresultContainer">
-                Threshold:
+                
                 <div>
-                    {{image_el_threshold}}&ensp;
-                    <mat-slider min="0.0" max="1.0" step="-0.01" value="0.2" discrete [displayWith]="el_similarity_label" [(ngModel)]="image_el_threshold" (input)="onImageElThresholdInput($event)" (change)="onImageElThresholdChange()">
+                    Threshold: {{image_el_threshold}}&ensp;
+                    <mat-slider min="0.0" max="1.0" step="-0.01" value="0.2" discrete [displayWith]="el_similarity_label" [(ngModel)]="image_el_threshold" (input)="onImageElThresholdInput($event)" (change)="onImageElResultParamChange()">
                         <input matSliderThumb>
                     </mat-slider>{{image_el_threshold_result_count}}
+                </div>
+                <div>
+                    Order by: <mat-button-toggle-group [(ngModel)]="image_el_orderby" aria-label="Sort order" appearance="legacy" value="name" (change)="onImageElResultParamChange()">
+                        <mat-button-toggle value="name">Name</mat-button-toggle>
+                        <mat-button-toggle value="score">Score</mat-button-toggle>
+                    </mat-button-toggle-group>
+                        
                 </div>
               <span class="btn tib-btn-info" 
                 matTooltip="As lower the threshold is, the more entities from the dictionary will be included in the results"

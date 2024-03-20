@@ -307,3 +307,18 @@ input[type="checkbox"] {
   margin: 1rem 0 !important;
   height: 20rem;
 }
+
+//image_el__threshold slider style
+::ng-deep {
+  .mat-accent .mat-slider-track-fill {
+    background-color: #f9cd0e !important;
+  }
+
+  //.mat-slider-thumb-label {
+  //  background-color: red !important;
+  //}
+
+  .mat-slider-thumb {
+    background-color: #f9cd0e !important;
+  }
+}
