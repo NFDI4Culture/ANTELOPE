@@ -1,5 +1,6 @@
 package org.tib.osl.annotationservice.service;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
@@ -153,8 +154,9 @@ public class AnnotationService implements AnnotationApiDelegate {
         if( model == null) {
             model = "ClipClassification";
         }
+
         try {
-            log.info(text);
+            //log.info(text);
             JSONArray resultArr = new JSONArray();
             List<iart.client.PluginResult> response = null;
             if( dictionary == null || (dictionary.getListOfWords() == null && dictionary.getSimpleDictionary() == null && dictionary.getFullDictionary() == null)) {

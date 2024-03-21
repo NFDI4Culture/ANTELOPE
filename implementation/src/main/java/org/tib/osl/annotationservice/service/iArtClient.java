@@ -3,7 +3,19 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 import java.util.List;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.protobuf.ByteString;
 
@@ -11,6 +23,7 @@ import iart.client.*;
 import iart.indexer.Data.ImageData;
 import iart.indexer.Data.PluginData;
 import iart.indexer.Data.StringData;
+
 
 public class iArtClient {
  
@@ -56,6 +69,8 @@ public class iArtClient {
 
   public static List<iart.client.PluginResult> analyze(String imageModel, byte[] image, List<String> dict) {
     try {
+      // iArt models are trained on images without alpha(transparency) and are not able to process these
+      image = removeAlphaChannel(image);
       ManagedChannel channel = ManagedChannelBuilder.forAddress(getHost(), getPort())
         .usePlaintext()
         .build();
@@ -88,5 +103,25 @@ public class iArtClient {
       e.printStackTrace();
       return null;
     }
+  }
+
+  public static byte[] removeAlphaChannel(byte[] inputImageBytes) throws Exception{
+    System.out.println("remove alpha channel..");
+    BufferedImage img = ImageIO.read(new ByteArrayInputStream(inputImageBytes));
+  
+    if (img.getColorModel().hasAlpha()) {
+      BufferedImage target = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+      Graphics2D g = target.createGraphics();
+      g.setColor(Color.WHITE); // --
+      g.fillRect(0, 0, img.getWidth(), img.getHeight());
+      g.drawImage(img, 0, 0, null);
+      g.dispose();
+      System.out.println(target);
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      ImageIO.write(target, "jpg", baos);
+      byte[] noAlphaImageBytes = baos.toByteArray();
+      return noAlphaImageBytes;
+    }
+    return inputImageBytes;
   }
 }
