@@ -22,6 +22,7 @@ build_prod:
     - cd annotationService
     - git checkout main
     # build project
+    - npm i
     - npm ci --quiet
     # package docker container and push to gitlab container registry (PROD)
     - cd backend
@@ -41,6 +42,7 @@ build_test:
     - cd annotationService
     - git checkout test
     # build project
+    - npm i
     - npm ci --quiet
     # package docker container and push to gitlab container registry (TEST)
     - cd backend
