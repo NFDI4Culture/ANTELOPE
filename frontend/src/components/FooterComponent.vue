@@ -41,6 +41,9 @@
 		border-top: 1px solid var(--color-bg-contrast);
 		
 		@include nav;
+		@include s {
+			flex-direction: column;
+		}
 
 		/* &::before {
 			content: "";
@@ -54,9 +57,10 @@
 		} */
 
 		nav {
-			display: flex;
-			flex-direction: row;
-			align-items: center;
+			@include s {
+				margin-bottom: var(--space-s);
+				max-width: $wrapperWidth;
+			}
 		}
 
 		&-org {

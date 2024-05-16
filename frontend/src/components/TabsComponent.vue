@@ -3,37 +3,55 @@
 
     type TChangeHandler = (newIndex: number) => void;
 
+    let defaultIndex = -1;
+
     const bodyEl = ref(null);
     const tabs: Ref<{
+        desktopOnly: boolean;
         index: number;
         label: string;
     }[]> = ref([]);
-    const activeTabIndex = ref(0);
+    const activeTabIndex = ref(defaultIndex);
 
     const changeHandlers: TChangeHandler[] = [];
 
     onMounted(() => {
         const bodies: HTMLElement[] = Array.from(bodyEl.value.children);
 
-        bodies.forEach((child: HTMLElement, i: number) => {
+        bodies
+        .forEach((child: HTMLElement, i: number) => {
+            const desktopOnly: boolean = child.classList.contains("desktop");
+
             tabs.value.push({
+                desktopOnly,
                 index: i,
                 label: child.getAttribute("tab-label") ?? ""
             });
+            
+            defaultIndex = (
+                defaultIndex < 0
+                && (
+                    !desktopOnly
+                    || window.innerWidth >= parseInt(getComputedStyle(document.documentElement).getPropertyValue("--breakpoint"))
+                )
+            ) ? i : defaultIndex;
         });
-        bodies[0].classList.add("active");
+
+        activateTab(defaultIndex);
     });
 
-    function activateTab(newIndex: number) {
+    function activateTab(newIndex: number = defaultIndex) {
         const bodies: HTMLElement[] = Array.from(bodyEl.value.children);
 
-        const index = (newIndex < bodies.length) ? newIndex : 0; 
+        const index = bodies[newIndex] ? newIndex : defaultIndex; 
 
-        bodies[activeTabIndex.value].classList.remove("active");
-        bodies[index].classList.add("active");
+        bodies[activeTabIndex.value]
+        && bodies[activeTabIndex.value].classList.remove("active");
+        bodies[index]
+        && bodies[index].classList.add("active");
 
         activeTabIndex.value = index;
-        
+
         changeHandlers.forEach((callback: TChangeHandler) => callback(activeTabIndex.value));
     }
     
@@ -51,7 +69,7 @@
 <template>
     <div class="tabs">
         <ol class="tabs-head">
-            <li v-for="tab in tabs" :key="tab.label">
+            <li v-for="tab in tabs" :key="tab.label" :class="tab.desktopOnly ? 'desktop' : ''">
                 <a :class="(activeTabIndex === tab.index) ? 'active' : ''" @click="activateTab(tab.index)">{{ tab.label }}</a>
             </li>
         </ol>

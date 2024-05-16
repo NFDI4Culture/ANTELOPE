@@ -17,6 +17,12 @@ noscript {
     filter: saturate(0.25) opacity(0.5) !important;
 }
 
+*.desktop {
+    @include s {
+        display: none !important;
+    }
+}
+
 html, body {
     margin: 0;
     width: 100%;

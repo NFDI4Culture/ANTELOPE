@@ -1,3 +1,9 @@
+@mixin s {
+    @media all and (max-width: #{$breakpoint}px) {
+        @content;
+    }
+}
+
 @mixin font-s {
     font-size: var(--font-size-s);
 }
@@ -67,8 +73,8 @@
         align-items: center;
         padding: 0;
 
-        li:not(:last-child) {
-            margin-right: var(--space-m);
+        li:not(:first-child) {
+            margin-left: var(--space-m);
         }
         a:hover {
             filter: brightness(0.75);

@@ -399,12 +399,12 @@
         position: relative;
         display: flex;
         flex-direction: row;
-        //margin-left: calc(-1 * $wrapper-width / 2 + var(--space-m));
-        //margin-left: calc(-1 * (($wrapper-width / 2) + $offset));
+        //margin-left: calc(-1 * $wrapperWidth / 2 + var(--space-m));
+        //margin-left: calc(-1 * (($wrapperWidth / 2) + $offset));
         margin-left: calc(var(--main-width) * -0.5);
         left: 50%;
-        //width: calc($wrapper-width - (var(--space-m) * 2));
-        //width: calc($wrapper-width + (2 * $offset));
+        //width: calc($wrapperWidth - (var(--space-m) * 2));
+        //width: calc($wrapperWidth + (2 * $offset));
         width: var(--main-width);
         height: fit-content;
         
