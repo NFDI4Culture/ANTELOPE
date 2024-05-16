@@ -21,10 +21,10 @@ build_prod:
     - git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
     - cd annotationService
     - git checkout main
-    - cd implementation
     # build project
     - npm ci --quiet
     # package docker container and push to gitlab container registry (PROD)
+    - cd backend
     - ./mvnw -e --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD
 
 build_test:
@@ -40,8 +40,8 @@ build_test:
     - git clone https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service.git annotationService
     - cd annotationService
     - git checkout test
-    - cd implementation
     # build project
     - npm ci --quiet
     # package docker container and push to gitlab container registry (TEST)
+    - cd backend
     - ./mvnw -e --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/test:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD
