@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ANTELOPE | API Documentation</title>
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@3/swagger-ui.css">
+        <style>
+            html, body {
+                margin: 0;
+            }
+            #swagger-ui {
+                border-top: 0.425rem solid #F9CD0E;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="swagger-ui"></div>
+        <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"> </script>
+        <script type="text/javascript">
+            window.onload = () => {
+                SwaggerUIBundle({
+                    deepLinking: true,
+                    dom_id: "#swagger-ui",
+                    showExtensions: true,
+                    showCommonExtensions: true,
+                    url: "/assets/api.yml"
+                });
+            };
+        </script>
+    </body>
+</html>

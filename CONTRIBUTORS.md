@@ -1,4 +1,4 @@
 Kolja Bailly  
-Paul Duchesne  
-Lozana Rossenova  
 Thassilo Martin Schiepanski  
+Lozana Rossenova  
+Paul Duchesne

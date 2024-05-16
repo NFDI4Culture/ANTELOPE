@@ -1,0 +1,452 @@
+---
+openapi: 3.0.3
+info:
+  title: ANTELOPE
+  version: 0.0.1
+servers:
+- url: http://localhost:8080/api
+  description: Development server
+- url: https://localhost:8080/api
+  description: Development server with TLS Profile
+security:
+- jwt: []
+- basic: []
+paths:
+  /annotation/status:
+    get:
+      summary: get the current status of the service
+      description: ""
+      operationId: getStatus
+      responses:
+        "200":
+          description: Service is running
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+        default:
+          description: Unexpected error
+  /annotation/parameterOptions/imagemodels:
+    get:
+      summary: get list of available model names (iart plugins) as parameter value for /annotation/entities/image
+      operationId: getParameterImageModels
+      responses:
+        "200":
+          description: a list of entities depending on the choosen plugin
+          content:
+            application/json:
+              schema:
+                type: string
+                example: plugin1, plugin2
+        default:
+          description: Unexpected error
+
+  /annotation/parameterOptions/ts4tib_collection:
+    get:
+      summary: get valid parameter options for the parameter 'ts4tib_collection'
+      description: retrieves actual collection names from the tib terminology service
+      operationId: getParameterTs4tibCollection
+      responses:
+        "200":
+          description: Parameter options for ts4tib_collection
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: error in retrieving valid parameter options for parameter 'ts4tib'
+  /annotation/parameterOptions/ts4tib_ontology:
+    get:
+      summary: get valid parameter options for the parameter 'ts4tib_ontology'
+      description: retrieves actual ontology names from the tib terminology service
+      operationId: getParameterTs4tibOntology
+      parameters:
+      - name: collection
+        in: query
+        description: name of a collection. use '/annotation/getValidParameterOptions/ts4tib_collection' to get valid names. use multiple names seperated by comma.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Parameter options for ts4tib_ontology
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: error in retrieving valid parameter options
+  /annotation/terminology:
+    get:
+      summary: retrieves a text and delivers a list of all recognized entities and relations within the specified datasources as well as the corresponding class hierachy tree
+      description: Uses the specified datasources to retrieve entities and relations. Adds the category hierarchy graph for these entities and relations.
+      operationId: getTerminology
+      parameters:
+      - name: searchtext
+        in: query
+        description: text that contains or describes the wanted entity/terminology
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: wikidata
+        in: query
+        description: Optional parameter to include or exclude entities from wikidata
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: wikidata_dbpedia
+        in: query
+        description: Optional parameter to include or exclude entities from dbpedia
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: iconclass
+        in: query
+        description: Optional parameter to include or exclude entities(notations) from iconclass
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: ts4tib
+        in: query
+        description: Optional parameter to include or exclude entities(notations) from ols terminology service TIB Hannove
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: gnd
+        in: query
+        description: Optional parameter to include or exclude entities from GND subjectClasses and SubjectHeadings
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: aat
+        in: query
+        description: Optional parameter to include or exclude entities from Getty AAT
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: ts4tib_collection
+        in: query
+        description: Optional parameter to restrict search within the TIB terminology service to one or more ontology collections. More than one collection can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ts4tib_ontology
+        in: query
+        description: Optional parameter to restrict search within the TIB terminology service to one or more specific ontologies. More than one ontology can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: allowDuplicates
+        in: query
+        description: "if 'true', the hierarchy graph is allowed to contain superclasses multiple times (in different branches). This will show more complete results but the graph will be bigger and might contain the same information multiple times"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: Annotations of the given searchtext
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: Generic error response
+  /annotation/entitylinking/text:
+    post:
+      summary: retrieves a text and delivers a list of all recognized entities and relations within the specified datasources as well as the corresponding class hierachy tree
+      description: Uses the specified datasources to retrieve entities and relations. Adds the category hierarchy graph for these entities and relations.
+      operationId: getTextEntities
+      parameters:
+      - name: wikidata
+        in: query
+        description: Optional parameter to include or exclude entities from wikidata
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: wikidata_dbpedia
+        in: query
+        description: Optional parameter to include or exclude entities from dbpedia
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: iconclass
+        in: query
+        description: Optional parameter to include or exclude entities(notations) from iconclass
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: ts4tib
+        in: query
+        description: Optional parameter to include or exclude entities(notations) from ols terminology service TIB Hannove
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: ts4tib_collection
+        in: query
+        description: Optional parameter to restrict search within the TIB terminology service to one or more ontology collections. More than one collection can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ts4tib_ontology
+        in: query
+        description: Optional parameter to restrict search within the TIB terminology service to one or more specific ontologies. More than one ontology can be defined using comma seperator. only used when parameter 'ts4tib' is set 'true'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: allowDuplicates
+        in: query
+        description: "if 'true', the hierarchy graph is allowed to contain superclasses multiple times (in different branches). This will show more complete results but the graph will be bigger and might contain the same information multiple times"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      requestBody:
+        description: Json array of text samples to annotate
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextEntityLinkingRequest'
+        required: true
+      responses:
+        "200":
+          description: Annotations of the given post parameters
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: Generic error response
+  
+  /annotation/entitylinking/image:
+    post:
+      summary: test call for iart integration
+      operationId: getImageEntities
+      parameters:
+      - name: model
+        in: query
+        description: name of a iart plugin, valid parameters can be get via /annotation/parameterOptions/imagemodels
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      requestBody:
+        description: image to process
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImageEntityLinkingRequest'
+              
+      responses:
+        "200":
+          description: a list of entities depending on the choosen plugin
+          content:
+            text/html:
+              schema:
+                type: string
+        default:
+          description: Unexpected error
+ 
+  /annotation/clipEmbedding/text:
+    post:
+      summary: get a vector for texts that define their position in the vectorspace defined by the openAI CLIP model
+      operationId: getClipTextEmbedding
+      requestBody:
+        description: texts to process
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextArray'
+              
+      responses:
+        "200":
+          description: a list of vectors define the position of the given texts in the vectorspace defined by the openAI CLIP model
+          content:
+            text/html:
+              schema:
+                type: string
+        default:
+          description: Unexpected error
+
+  /annotation/clipEmbedding/image:
+    post:
+      summary: get a vector for an image that define the position in the vectorspace defined by the openAI CLIP model
+      operationId: getClipImageEmbedding
+      requestBody:
+        description: image to process
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              
+      responses:
+        "200":
+          description: a list of vectors define the position of the given texts in the vectorspace defined by the openAI CLIP model
+          content:
+            text/html:
+              schema:
+                type: string
+        default:
+          description: Unexpected error
+
+  /annotation/entities/selectcomponent:
+    get:
+      summary: get a html selectbox for all found entities according to the delivered text
+      description: "retrieves a text and delivers a html page, containing an interactive  selectbox of all recognized entities within the specified datasources.  The selectpage can be embedded via the <iframe> tag into other websites"
+      operationId: getEntitiesSelectComponent
+      responses:
+        "200":
+          description: a rendered html selectbox
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <select> <option value="entity1">entity1</option> <option value="entity2">entity2</option> </select>
+        default:
+          description: Unexpected error
+components:
+  schemas:
+    
+    TextArray:
+      type: array
+      items:
+        type: string
+        description: a example phrase or label
+    
+    SimpleDictionary:
+      type: object
+      additionalProperties: 
+        $ref: '#/components/schemas/TextArray'
+           
+      description: map of entity ids (key) and list of labels for that entity (value)
+      example:
+        e1_food:
+        - food
+        - burger
+        - pasta
+        - pizza
+        e2_flavor:
+        - flavor
+        - delicious
+        - tasty
+    
+    FullDictionary:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          label: 
+            type: string
+            description: main label of the entity
+          patterns:
+            $ref: '#/components/schemas/TextArray'
+            description: list of words/phrases/synonyms representing the entity
+          kb_id:
+            type: string
+            description: unique id of the entity
+          kb_url:
+            type: string
+            description: link to the entity (will be linked in html visualization of entity linking result)
+        
+    Dictionary:
+      type: object
+      properties:
+        dictionaryType:
+          type: string
+          enum:
+            - ListOfWords
+            - SimpleDictionary
+            - FullDictionary
+        listOfWords:
+          $ref: '#/components/schemas/TextArray'
+        simpleDictionary:
+          $ref: '#/components/schemas/SimpleDictionary'
+        fullDictionary:
+          $ref: '#/components/schemas/FullDictionary'
+      description: User defined dictionary that implements one of the types "WordArry, SimpleDictionary or FullDictionary"
+
+    TextEntityLinkingRequest:
+      type: object
+      properties:
+        text:
+          type: string
+        dictionary:
+            $ref: '#/components/schemas/Dictionary'
+        threshold:
+          type: number
+          description: wanted similarity score for linkings. 0-1 default:0.6
+          example: 0.6
+        language:
+          type: string
+          enum: [en, de]
+          example: en
+          description: the optiona language parameter defines which language model is used for text analysis. en=en_core_web_sm, de=de_core_web_sm. default language is english
+      description: Entity linking input format
+
+    ImageEntityLinkingRequest:
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+        text:
+          type: string
+          description: optional text that describes the image. this will be used to further finetune the results
+        dictionary:
+          $ref: '#/components/schemas/Dictionary'
+        threshold:
+          type: number
+          description: filter returned classifications by probability. return only results with probability >= threshold
+          example: 0.6
+      description: Entity linking input format
+
+  securitySchemes:
+    jwt:
+      type: http
+      description: JWT Authentication
+      scheme: bearer
+      bearerFormat: JWT
+    basic:
+      type: http
+      description: Basic Authentication
+      scheme: basic

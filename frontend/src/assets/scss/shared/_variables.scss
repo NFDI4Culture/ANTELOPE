@@ -1,0 +1,42 @@
+:root {
+    @mixin color($name, $valueLight, $valueDark: $valueLight) {
+        --#{$name}: #{$valueLight};
+        --#{$name}--light: #{$valueLight};
+
+        @media (prefers-color-scheme: dark) {
+            --#{$name}: #{$valueDark};
+        }
+    }
+
+    @include color("color-primary", #F9CD0E);
+    @include color("color-primary-subtle", #FFF6D0, #9A947C);
+    @include color("color-secondary", #18A0FB);
+    @include color("color-secondary-subtle", #B3E1FF, #6B8698);
+    @include color("color-interact", #FFFEF8, #3D3D39);
+    @include color("color-error", #FF0E0A);
+    @include color("color-code", #BB2596, #E680CD);
+    @include color("color-fg-dark", #000000, #FFFFFF);
+    @include color("color-fg-gray", #737373, #C2C2C2);
+    @include color("color-fg-contrast", #D1D1D1, #666666);
+    @include color("color-fg-light", #FFFFFF, #000000);
+    @include color("color-bg-dark", #434343, #FFFFFF);
+    @include color("color-bg-gray", #F2F2F2, #474747);
+    @include color("color-bg-contrast", #E5E5E5, #686868);
+    @include color("color-bg-light", #FFFFFF, #2C2C2C);
+
+    --font-size-s: .875rem;
+    --font-size-m: 1rem;
+    --font-size-l: 1.125rem;
+    
+    --space-xs: 0.75rem;
+    --space-s: 1.25rem;
+    --space-m: 2rem;
+    --space-l: 4rem;
+
+    --border-radius-s: 0.25rem;
+    --border-radius-m: 0.5rem;
+    --border-radius-l: 0.75rem;
+}
+
+
+$wrapper-width: 1400px;

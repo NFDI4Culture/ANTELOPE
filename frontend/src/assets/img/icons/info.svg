@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse style="stroke-linecap: square; stroke: rgb(0, 0, 0);" cx="5.5" cy="5.5" rx="4.982" ry="4.982"/>
+  <g transform="matrix(0.852663, 0, 0, 0.859607, 0.882401, 0.963849)" style="">
+    <rect x="4.793" y="4.397" width="1.234" height="4.161" style="stroke-linecap: square; stroke-width: 10px; fill: rgb(0, 0, 0);"/>
+    <rect x="4.793" y="1.996" width="1.234" height="1.271" style="stroke-linecap: square; stroke-width: 10px; fill: rgb(0, 0, 0);"/>
+  </g>
+</svg>

@@ -1,0 +1,51 @@
+@mixin font($name, $weight, $fileName: $name) {
+    @font-face {
+        font-family: $name;
+        font-weight: #{$weight};
+        font-display: swap;
+        src: url(@/assets/fonts/#{$fileName}-#{$weight}.ttf);
+    }
+}
+
+@include font("Roboto Condensed", 200, "RobotoCondensed");
+@include font("Roboto Condensed", 400, "RobotoCondensed");
+@include font("Roboto Condensed", 600, "RobotoCondensed");
+
+@include font("Roboto", 400);
+@include font("Roboto", 600);
+
+html {
+    font-family: "Roboto Condensed";
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    letter-spacing: 0.05px;
+}
+
+p, blockquote {
+    line-height: 1.5em;
+    max-width: 35em;
+}
+
+h1, h2, h3, h4, h5,
+strong {
+    line-height: 1.35em;
+
+    &:first-child {
+       transform: translateY(calc(0.35em * -0.5)); 
+    }
+}
+
+h1 {
+    font-size: calc(2 * var(--font-size-l));
+}
+h2 {
+    font-size: calc(1.5 * var(--font-size-l));
+}
+h3 {
+    @include font-l;
+}
+h4, h5 {
+    text-transform: uppercase;
+    
+    @include font-m;
+}

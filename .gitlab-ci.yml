@@ -1,12 +1,12 @@
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://docker:2375
-  DOCKER_TLS_CERTDIR: ""
+  DOCKER_TLS_CERTDIR: ''
 
 services:
   - name: docker:dind
     # explicitly disable tls to avoid docker startup interruption
-    command: ["--tls=false"]
+    command: ['--tls=false']
 
 build_prod:
   rules:
@@ -45,4 +45,3 @@ build_test:
     - npm ci --quiet
     # package docker container and push to gitlab container registry (TEST)
     - ./mvnw -e --quiet package -Pprod verify jib:build -Djib.to.image=registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/test:latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_REGISTRY_PASSWORD
-
