@@ -70,7 +70,8 @@
 		<div class="content wrapper" :class="showSidebar ? 'right' : ''" ref="mainEl">
 			<header class="header" :class="isScrolled ? 'scroll' : ''">
 				<h1>
-					Annotation, Terminology Lookup and Personalization
+					<span class="desktop">Annotation, Terminology Lookup and Personalization</span>
+					<span class="mobile">ANTELOPE</span>
 					<DevTagComponent />
 				</h1>
 				<nav>
@@ -259,6 +260,10 @@
         width: 100%;
         max-width: 42.5rem;
 		text-align: center;
+
+		@include s {
+			margin-top: calc(1.75 * var(--space-l));
+		}
 
 		&.uncollapse {
 			.hero-logo {

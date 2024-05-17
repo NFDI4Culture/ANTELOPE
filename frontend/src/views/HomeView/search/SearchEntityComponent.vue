@@ -86,7 +86,7 @@
     <div ref="customDictInputEl">
         <TextareaComponent placeholder="Start with an example below" monospace ref="tDictionary" />
         <div class="search-entity-examples">
-            <span>Apply Example</span>
+            <span class="desktop">Apply Example</span>
             <ButtonComponent contrast small @click="setDictExample(exampleDicts.LIST)">Entity List</ButtonComponent>
             <ButtonComponent contrast small @click="setDictExample(exampleDicts.SIMPLE)">Labelled Entity Lists</ButtonComponent>
             <ButtonComponent contrast small @click="setDictExample(exampleDicts.EXTENDED)">Arbitrary</ButtonComponent>
@@ -123,7 +123,7 @@
             margin-top: calc(-1 * var(--space-s));
             margin-bottom: var(--space-m);
             color: var(--color-fg-gray);
-
+            
             span {
                 margin-right: var(--space-s);
 

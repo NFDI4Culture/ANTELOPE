@@ -21,11 +21,11 @@ We are in an iterative process of research and development of ANTELOPE.
 
 ## Architecture
 
-![Figure of basic architecture](./readme/antelope-architecture.png)
+<img alt="Figure of fundamental architecture" src="./readme/antelope-architecture.png" width="700">
 
 ## Integrated UI
 
-![Screenshot of integrated UI](./readme/antelope-screenshot.png)
+<img alt="Screenshot of integrated UI" src="./readme/antelope-screenshot.png" width="700">
 
 ## Resources
 

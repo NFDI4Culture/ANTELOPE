@@ -22,6 +22,11 @@ noscript {
         display: none !important;
     }
 }
+*.mobile {
+    @include l {
+        display: none !important;
+    }
+}
 
 html, body {
     margin: 0;
@@ -146,6 +151,7 @@ code {
     padding: 0.5rem var(--space-xs);
     padding-right: var(--space-s);
     width: fit-content;
+    max-width: 100%;
     background-color: var(--color-bg-gray);
     color: var(--color-code);
     font-family: monospace;

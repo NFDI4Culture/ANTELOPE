@@ -92,11 +92,18 @@
             // border-bottom: 1px solid var(--color-fg-contrast);
 
             @include flex;
+            @include s {
+                flex-direction: column;
+            }
             
             li {
                 margin-bottom: 0;
                 height: fit-content;
                 user-select: none;
+
+                @include s {
+                    width: 100%;
+                }
 
                 a {
                     display: block;
@@ -105,7 +112,7 @@
                     text-align: center;
                     text-transform: uppercase;
                     border-bottom: 0.45rem solid /* transparent */var(--color-bg-gray);
-
+                    
                     &:hover {
                         border-bottom-color: var(--color-primary-subtle);
                     }

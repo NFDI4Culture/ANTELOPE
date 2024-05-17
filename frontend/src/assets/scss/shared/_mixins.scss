@@ -4,6 +4,12 @@
     }
 }
 
+@mixin l {
+    @media all and (min-width: #{$breakpoint + 1}px) {
+        @content;
+    }
+}
+
 @mixin font-s {
     font-size: var(--font-size-s);
 }
