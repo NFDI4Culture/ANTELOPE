@@ -1,4 +1,9 @@
+$wrapperWidth: 1420px;
+$breakpoint: 1076;
+
 :root {
+    --breakpoint: #{$breakpoint};
+    
     @mixin color($name, $valueLight, $valueDark: $valueLight) {
         --#{$name}: #{$valueLight};
         --#{$name}--light: #{$valueLight};
@@ -37,6 +42,3 @@
     --border-radius-m: 0.5rem;
     --border-radius-l: 0.75rem;
 }
-
-
-$wrapper-width: 1400px;

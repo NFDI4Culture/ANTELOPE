@@ -23,7 +23,7 @@
     ResultsService.on("clear", () => {
         active.value = false;
 
-        tabsEl.value.activateTab(0);
+        tabsEl.value.activateTab();
     });
     
     defineExpose({
@@ -44,7 +44,7 @@
         <span v-show="error" class="results-error">{{ error }}</span>
         <span v-show="active" class="results-count">{{ resultsCount }} results</span>
         <TabsComponent ref="tabsEl" v-show="active">
-            <div tab-label="Tree Graph">
+            <div tab-label="Tree Graph" class="desktop">
                 <ResultsGraphComponent />
             </div>
             <div tab-label="Table">
@@ -68,6 +68,7 @@
             color: var(--color-error);
         }
         &-count {
+            margin-bottom: var(--space-s);
             color: var(--color-fg-gray);
         }
     }

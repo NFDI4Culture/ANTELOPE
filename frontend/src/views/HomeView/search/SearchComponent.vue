@@ -24,7 +24,7 @@
     const searchImageEl: Ref<SearchImageComponent> = ref(null);
 
     onMounted(() => {
-        tabsEl.value.activateTab(parseInt(new URLSearchParams(window.location.search).get("s") ?? "0"));
+        tabsEl.value.activateTab(parseInt(new URLSearchParams(window.location.search).get("s")));
         tabsEl.value.onTabChange((index: number) => {
             window.history.replaceState(null, null, `${document.location.pathname}?s=${index}`)
         });
@@ -35,7 +35,7 @@
             0: searchTerminologyEl.value,
             1: searchEntityEl.value,
             2: searchImageEl.value
-        }[tabsEl.value.getIndex()];
+        }[tabsEl.value.getIndex()] ?? searchTerminologyEl.value;
     }
     
     function search() {

@@ -86,8 +86,8 @@
             padding: calc(1.25 * var(--space-m));
             padding-bottom: calc(1.5 * var(--space-m));
             background-color: var(--color-bg-light);
-            width: fit-content;
-            max-width: calc($wrapper-width * 0.625);
+            width: 100%;
+            max-width: calc($wrapperWidth * 0.625);
             border-radius: var(--border-radius-m);
             transform: translateY(10%);
             transition: inherit;

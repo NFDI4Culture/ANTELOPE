@@ -47,6 +47,7 @@
 	@import "@/assets/scss/shared";
 
     .results-table {
+        table-layout: fixed;
         width: 100%;
 
         tr {

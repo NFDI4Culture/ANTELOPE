@@ -70,14 +70,15 @@
 		<div class="content wrapper" :class="showSidebar ? 'right' : ''" ref="mainEl">
 			<header class="header" :class="isScrolled ? 'scroll' : ''">
 				<h1>
-					Annotation, Terminology Lookup and Personalization
+					<span class="desktop">Annotation, Terminology Lookup and Personalization</span>
+					<span class="mobile">ANTELOPE</span>
 					<DevTagComponent />
 				</h1>
 				<nav>
 					<ol>
 						<li><a @click="integrationOverlayEl.toggle()">Integration</a></li>
 						<li><a href="/api.html" target="_blank">API</a></li>
-						<li scroll-keep><a class="header-button--selection" :class="[ showSidebar ? 'active' : '', showSidebarNotification ? 'notify' : '' ]" @click="toggleSidebar()">Your Selection</a></li>
+						<li class="scroll-keep desktop"><a class="header-button--selection" :class="[ showSidebar ? 'active' : '', showSidebarNotification ? 'notify' : '' ]" @click="toggleSidebar()">Your Selection</a></li>
 					</ol>
 				</nav>
 			</header>
@@ -101,7 +102,7 @@
 			</section>
 			<FooterComponent />
 		</div>
-		<aside v-show="showSidebar">
+		<aside v-show="showSidebar" class="desktop">
 			<SidebarComponent />
 		</aside>
 	</main>
@@ -155,7 +156,7 @@
 		
 		&.scroll {
 			h1, li {
-				&:not([scroll-keep]) {
+				&:not(.scroll-keep) {
 					transform: rotateX(-90deg);
 					pointer-events: auto;
 					user-select: none;
@@ -163,13 +164,13 @@
 			}
 		}
 		h1, li {
-			&:not([scroll-keep]) {
+			&:not(.scroll-keep) {
 				transform-origin: center 0;
 				perspective: 5rem;
 				transition: all 100ms;
 			}
 		}
-		li[scroll-keep] {
+		li.scroll-keep {
 			border-radius: var(--border-radius-m);
 			background-color: #FFFFFF90;
 			backdrop-filter: blur(0.25em);
@@ -259,6 +260,10 @@
         width: 100%;
         max-width: 42.5rem;
 		text-align: center;
+
+		@include s {
+			margin-top: calc(1.75 * var(--space-l));
+		}
 
 		&.uncollapse {
 			.hero-logo {
