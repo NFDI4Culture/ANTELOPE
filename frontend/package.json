@@ -5,7 +5,7 @@
   "scripts": {
     "build:static:api-docs": "node ./scripts/build-api.js",
     "build:static:version": "node ./scripts/build-version.js",
-    "build:static": "npm run build:static:version",
+    "build:static": "npm run build:static:version && npm run build:static:api-docs",
     "start:dev": "npm run build:static && echo '' && npx vite",
     "build:vite": "npx vite build",
     "build": "npm run build:vite && npm run build:static && cp -rf ./dist/ ../target/classes/static/",
