@@ -105,11 +105,16 @@ npm run openapi -w backend
 
 The deployment requires the following steps, spreading across **TEST** and **PROD** servers.
 
-### update Vecner Container
-if Vecner implementation changed, build the project and deploy it in the gitlab container registry
-> docker build -t registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/vecner:latest <VECNER_PATH>
-> docker push registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/vecner:latest
-see https://docs.gitlab.com/ee/user/packages/container_registry/build_and_push_images.html for more details
+### Update Vecner Container
+
+If the Vecner implementation has changed, the project must be rebuild and deployed to the GitLab container registry.
+
+``` cli
+docker build -t registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/vecner:latest <VECNER_PATH>
+docker push registry.gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/vecner:latest
+```
+
+> See https://docs.gitlab.com/ee/user/packages/container_registry/build_and_push_images.html for more details.
 
 ### TEST Server
 
