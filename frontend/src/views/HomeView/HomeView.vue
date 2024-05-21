@@ -30,7 +30,6 @@ EntitySelectionService.on('select', () => {
   showSidebarNotification.value = !showSidebar.value;
 
   if (!toggleSidebarOnSelect || showSidebar.value) return;
-  toggleSidebarOnSelect = false;
 
   toggleSidebar();
 });
@@ -50,6 +49,8 @@ function checkScroll() {
 }
 
 function toggleSidebar() {
+  toggleSidebarOnSelect = false;
+
   showSidebar.value = !showSidebar.value;
 
   showSidebarNotification.value = false;
@@ -77,8 +78,8 @@ function uncollapse() {
         </h1>
         <nav>
           <ol>
+            <li><a @click="integrationOverlayEl.toggle()" class="desktop">Integration</a></li>
             <li><a @click="aboutOverlayEl.toggle()">About</a></li>
-            <li><a @click="integrationOverlayEl.toggle()">Integration</a></li>
             <li><a href="/api.html" target="_blank">API</a></li>
             <li class="scroll-keep desktop">
               <a
