@@ -1,5 +1,5 @@
 <template>
-  <h2>About ANTELOPE</h2>
+  <h2>About</h2>
   <p>
     Vocabularies and ontologies used in the arts and humanities disciplines are particularly challenging for terminology services providers
     due to their typically large size, divergence in serialisation formats, and variety of hierarchical relations within complex category

@@ -382,23 +382,27 @@ function createTree(
 
 <template>
   <div class="results-graph" @mousedown="mouseEnableSVGInteraction">
-    <div class="results-graph-selection" :class="hasPreselectedEntity ? 'active' : ''">
-      <a class="results-graph-selection-close" @click="unselectPreselected()"></a>
-      <EntityComponent>
-        <template #label>
-          {{ preselectedEntity?.label }}
-        </template>
-        <template #id>
-          {{ preselectedEntity?.id }}
-        </template>
-      </EntityComponent>
-      <!-- <p v-show="preselectedEntity?.description">
-                {{ preselectedEntity?.description }}
-            </p> -->
-      <img v-show="preselectedEntity?.imageURI" :src="preselectedEntity?.imageURI" />
-      <div>
-        <ButtonComponent small class="selection-button--select desktop" @click="selectPreselected()">Select</ButtonComponent>
-        <ButtonComponent small contrast class="selection-button--view" @click="viewPreselected()">View</ButtonComponent>
+    <div class="results-graph-selection">
+      <div class="results-graph-selection-box" :class="hasPreselectedEntity ? 'active' : ''">
+        <a class="results-graph-selection-box-close" @click="unselectPreselected()"></a>
+        <EntityComponent>
+          <template #label>
+            {{ preselectedEntity?.label }}
+          </template>
+          <template #id>
+            {{ preselectedEntity?.id }}
+          </template>
+        </EntityComponent>
+        <!-- <p v-show="preselectedEntity?.description">
+                  {{ preselectedEntity?.description }}
+              </p> -->
+        <img v-show="preselectedEntity?.imageURI" :src="preselectedEntity?.imageURI" />
+        <div>
+          <ButtonComponent small class="results-graph-selection-box-button--select desktop" @click="selectPreselected()"
+            >Select</ButtonComponent
+          >
+          <ButtonComponent small contrast class="results-graph-selection-box-button--view" @click="viewPreselected()">View</ButtonComponent>
+        </div>
       </div>
     </div>
     <div class="results-graph-d3">
@@ -502,115 +506,119 @@ function createTree(
     }
   }
   &-selection {
-    position: sticky;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    top: var(--space-m);
-    left: 0;
     width: 0;
-    height: fit-content;
-    opacity: 0;
-    overflow: hidden;
-    pointer-events: none;
-    user-select: none;
-    transform: translateY(1rem);
-    transition: transform 400ms, opacity 400ms;
-    z-index: 10;
+    overflow: visible;
 
-    &.active {
-      margin-left: var(--space-m);
-      padding: calc(1.35 * var(--space-xs));
-      width: fit-content;
-      opacity: 1;
-      overflow: visible;
-      pointer-events: auto;
-      user-select: auto;
-      transform: translateY(0);
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      display: block;
-      top: 0;
+    &-box {
+      position: sticky;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      top: var(--space-m);
       left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--color-bg-light);
-      border: 1px solid var(--color-fg-contrast);
-      border-radius: var(--border-radius-s);
-      z-index: -1;
+      width: 0;
+      height: fit-content;
+      opacity: 0;
+      overflow: hidden;
+      pointer-events: none;
+      user-select: none;
+      transform: translateY(1rem);
+      transition: transform 400ms, opacity 400ms;
+      z-index: 10;
 
-      @include shadow;
-    }
-
-    & > *:not(:last-child) {
-      margin-bottom: var(--space-xs);
-    }
-
-    p {
-      width: max-content;
-    }
-    img {
-      width: 100%;
-      height: 8.25rem;
-      object-fit: cover;
-      object-position: center 25%;
-    }
-    div {
-      display: flex;
-      flex-direction: row;
-    }
-    div:last-child {
-      margin-top: 0.5rem;
-    }
-
-    $closeButtonSize: 1.55rem;
-
-    &::after,
-    &-close {
-      position: absolute;
-      margin-top: calc($closeButtonSize * -0.5);
-      margin-right: calc($closeButtonSize * -0.5);
-      top: 0;
-      right: 0;
-      border-radius: 100%;
-    }
-    &::after {
-      content: '';
-      // display: block;
-      display: none;
-      width: calc($closeButtonSize + 0.5px);
-      height: calc($closeButtonSize);
-      border: 1px solid var(--color-fg-contrast);
-      transform: translateX(1px) translateY(-0.75px);
-      width: $closeButtonSize;
-      z-index: -2;
-
-      @include shadow;
-    }
-    &-close {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: $closeButtonSize;
-      height: $closeButtonSize;
-      background-color: var(--color-bg-contrast);
-
-      @include icon('cross', calc($closeButtonSize * 0.65));
-
-      &:hover {
-        filter: brightness(0.95);
+      &.active {
+        margin-left: var(--space-m);
+        padding: calc(1.35 * var(--space-xs));
+        width: fit-content;
+        opacity: 1;
+        overflow: visible;
+        pointer-events: auto;
+        user-select: auto;
+        transform: translateY(0);
       }
-    }
 
-    &-button {
-      &--select {
-        @include icon('plus', 0.8em);
+      &::before {
+        content: '';
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-bg-light);
+        border: 1px solid var(--color-fg-contrast);
+        border-radius: var(--border-radius-s);
+        z-index: -1;
+
+        @include shadow;
       }
-      &--view {
-        @include icon('arrow-r', 0.8em);
+
+      & > *:not(:last-child) {
+        margin-bottom: var(--space-xs);
+      }
+
+      p {
+        width: max-content;
+      }
+      img {
+        width: 100%;
+        height: 8.25rem;
+        object-fit: cover;
+        object-position: center 25%;
+      }
+      div {
+        display: flex;
+        flex-direction: row;
+      }
+      div:last-child {
+        margin-top: 0.5rem;
+      }
+
+      $closeButtonSize: 1.55rem;
+
+      &::after,
+      &-close {
+        position: absolute;
+        margin-top: calc($closeButtonSize * -0.5);
+        margin-right: calc($closeButtonSize * -0.5);
+        top: 0;
+        right: 0;
+        border-radius: 100%;
+      }
+      &::after {
+        content: '';
+        // display: block;
+        display: none;
+        width: calc($closeButtonSize + 0.5px);
+        height: calc($closeButtonSize);
+        border: 1px solid var(--color-fg-contrast);
+        transform: translateX(1px) translateY(-0.75px);
+        width: $closeButtonSize;
+        z-index: -2;
+
+        @include shadow;
+      }
+      &-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $closeButtonSize;
+        height: $closeButtonSize;
+        background-color: var(--color-bg-contrast);
+
+        @include icon('cross', calc($closeButtonSize * 0.65));
+
+        &:hover {
+          filter: brightness(0.95);
+        }
+      }
+      &-button {
+        &--select {
+          @include icon('plus', 0.8em);
+        }
+        &--view {
+          @include icon('arrow-r', 0.8em);
+        }
       }
     }
   }

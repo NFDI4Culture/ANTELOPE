@@ -95,7 +95,7 @@ defineExpose({
     padding-bottom: calc(1.5 * var(--space-m));
     background-color: var(--color-bg-light);
     width: 100%;
-    max-width: calc($wrapperWidth * 0.625);
+    max-width: calc($wrapperWidth * 0.5);
     border-radius: var(--border-radius-m);
 
     @include shadow;
