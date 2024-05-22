@@ -7,8 +7,6 @@
     "build:static": "npm run build:static:version && npm run build:static:api-docs",
     "build:static:api-docs": "node ./scripts/build-api.js",
     "build:static:version": "node ./scripts/build-version.js",
-    "build:static": "npm run build:static:version && npm run build:static:api-docs",
-    "start:dev": "npm run build:static && echo '' && npx vite",
     "build:vite": "npx vite build",
     "lint": "npx eslint ./src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
     "lint:fix": "npx eslint ./src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
