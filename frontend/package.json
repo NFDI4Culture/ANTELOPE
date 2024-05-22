@@ -3,17 +3,19 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "npm run build:vite && npm run build:static && cp -rf ./dist/ ../target/classes/static/",
+    "build:static": "npm run build:static:version && npm run build:static:api-docs",
     "build:static:api-docs": "node ./scripts/build-api.js",
     "build:static:version": "node ./scripts/build-version.js",
     "build:static": "npm run build:static:version && npm run build:static:api-docs",
     "start:dev": "npm run build:static && echo '' && npx vite",
     "build:vite": "npx vite build",
-    "build": "npm run build:vite && npm run build:static && cp -rf ./dist/ ../target/classes/static/",
-    "preview": "npx vite preview",
-    "test:unit": "npx vitest",
-    "type-check": "npx vue-tsc --build --force",
     "lint": "npx eslint ./src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
-    "lint:fix": "npx eslint ./src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix"
+    "lint:fix": "npx eslint ./src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "preview": "npx vite preview",
+    "start:dev": "npm run build:static && echo '' && npx vite",
+    "test:unit": "npx vitest",
+    "type-check": "npx vue-tsc --build --force"
   },
   "dependencies": {
     "d3": "^7.9.0",

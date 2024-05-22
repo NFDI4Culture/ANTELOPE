@@ -2,8 +2,10 @@
     "./backend/**/*": [
         "npx prettier --write"
     ],
+    "./frontend/**/*": [
+        "npx prettier --write"
+    ],
     "./frontend/src/**/*.ts": [
-        "npx prettier --write",
         "npx eslint --fix"
     ]
 }

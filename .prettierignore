@@ -6,4 +6,6 @@ package-lock.json
 gradle
 .gradle
 
+*.svg
+
 ./backend/src/main/resources/**/*
