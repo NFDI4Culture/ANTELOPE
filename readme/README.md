@@ -1,8 +1,6 @@
 # Antelope Development
 
-> ↳ [Project README](../README.md)
-
-Antelope is powered by [JHipster](https://www.jhipster.tech/documentation-archive/v7.9.3) and [Angular](https://angular.io/docs).
+Antelope is powered by a [JHipster](https://www.jhipster.tech/documentation-archive/v7.9.3)-scaffolded Java backend, as well as a custom [Vue](https://vuejs.org/) frontend.
 
 ## Prerequisites
 
