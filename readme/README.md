@@ -4,7 +4,7 @@ Antelope is powered by a [JHipster](https://www.jhipster.tech/documentation-arch
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/en) v17+ (ships with *NPM* by default)
+- [Node.js](https://nodejs.org/en) v17+ (ships with NPM by default)
 - [Node Package Manager (NPM)](https://www.npmjs.com/) v9+
 - [Java Runtime Environment (JRE)](https://www.java.com/en/download/manual.jsp) v16+
 - [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/downloads/) v22+
@@ -21,9 +21,9 @@ npm install -ws
 
 3. Install iart:
 
-- checkout iart project (branch: ray_serve) from [Gitlab](https://github.com/TIBHannover/iart/tree/ray_serve)
-- follow the iare readme for setup (run install.sh)
-- set environment var to iart home dir (needed to build antelope via docker-compose): `export IART_HOME=/home/<user>/git/iart2`
+- Checkout iart project (branch: `ray_serve`) from [GitLab](https://github.com/TIBHannover/iart/tree/ray_serve)
+- Follow the iart README for setup (run install.sh)
+- Set environment variable to iart home dir (needed to build antelope via docker-compose): `export IART_HOME=/home/<user>/git/iart2`
 
 ## Project Structure
 
