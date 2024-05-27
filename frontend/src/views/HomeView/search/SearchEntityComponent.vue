@@ -11,7 +11,6 @@ import SliderComponent from '../../../components/SliderComponent.vue';
 
 const customDictInputEl: Ref<HTMLElement> = ref(null);
 
-const cCustomDictInputToggle: Ref<CheckboxComponent> = ref(null);
 const tSearchtext: Ref<TextareaComponent> = ref(null);
 const tDictionary: Ref<TextareaComponent> = ref(null);
 const cSource_Iconclass: Ref<CheckboxComponent> = ref(null);

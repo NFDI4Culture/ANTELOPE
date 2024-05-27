@@ -59,7 +59,8 @@ function readFile(e) {
 
 function validate(params: IImageSearchData): IImageSearchData {
   if (!params.body.image) throw new RangeError('Image must not be empty');
-  if (!params.body.dictionary) throw new RangeError('Dictionary must not be empty');
+  if (!params.body.dictionary && !params.searchParams.iconclass)
+    throw new RangeError('Select a predefined dictionary or provide one individually');
 
   return params;
 }
@@ -81,11 +82,14 @@ defineExpose({
     const imageSearchData: IImageSearchData = validate({
       endpoint: '/annotation/entitylinking/image',
       searchParams: {
+        ...(!tDictionary.value.getText().trim().length ? { iconclass: cSource_Iconclass.value.getChecked() } : {}),
+
         model: 'ClipClassification',
+        allowDuplicates: cSettings_ClassDuplicates.value.getChecked(),
       },
       body: {
         image: currentFile.value,
-        text: tSearchtext.value.getText(),
+        text: tSearchtext.value.getText().trim(),
         dictionary: makeDictionary(tDictionary.value.getText()),
         threshold: 0.6,
         language: 'en',
@@ -128,16 +132,28 @@ defineExpose({
     <template #info> Describe the image in natural language to possbily improve the search results. </template>
   </TextareaComponent>
   <h4>
-    Dictionary
+    Dictionaries
     <InfoComponent> Choose an existing dictionary or define your own dictionary (also in combination). </InfoComponent>
   </h4>
-  <TextareaComponent placeholder="Start with an example below" monospace ref="tDictionary" />
-  <div class="search-image-examples">
-    <span class="desktop">Apply Example</span>
-    <ButtonComponent contrast small @click="setDictExample(exampleDicts.LIST)">Entity List</ButtonComponent>
-    <ButtonComponent contrast small @click="setDictExample(exampleDicts.SIMPLE)">Labelled Entity Lists</ButtonComponent>
-    <ButtonComponent contrast small @click="setDictExample(exampleDicts.EXTENDED)">Arbitrary</ButtonComponent>
+  <CheckboxComponent ref="cSource_Iconclass" checked>ICONCLASS</CheckboxComponent>
+  <div ref="customDictInputEl">
+    <TextareaComponent placeholder="Start with an example below" monospace ref="tDictionary" />
+    <div class="search-image-examples">
+      <span class="desktop">Apply Example</span>
+      <ButtonComponent contrast small @click="setDictExample(exampleDicts.LIST)">Entity List</ButtonComponent>
+      <ButtonComponent contrast small @click="setDictExample(exampleDicts.SIMPLE)">Labelled Entity Lists</ButtonComponent>
+      <ButtonComponent contrast small @click="setDictExample(exampleDicts.EXTENDED)">Arbitrary</ButtonComponent>
+    </div>
   </div>
+  <h4>Settings</h4>
+  <CheckboxComponent ref="cSettings_ClassDuplicates">
+    Show Class Duplicates
+    <InfoComponent>
+      If set, the result hierarchy graph may contain the same class multiple times (in different branches). This will give you a more
+      complete view of the original results but may show the same information multiple times. Every class will still be shown only once per
+      branch in the hierarchy tree to avoid circles (circles are possible in graphs but not in trees like taxonomies).
+    </InfoComponent>
+  </CheckboxComponent>
 </template>
 
 <style scoped lang="scss">
