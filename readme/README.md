@@ -158,6 +158,28 @@ git push
 
 6. Delete isse branch.
 
+### server maintenance
+
+on the server, antelope is stared via a systemd service. the service file is located at /etc/systemd/system/annotation.service
+The service can be controled via the following commands:
+sudo systemctl status annotation.service
+sudo systemctl start annotation.service
+sudo systemctl restart annotation.service
+sudo systemctl stop annotation.service
+
+the log file can be found at 
+/var/log/antelope-err.log
+/var/log/antelope.log
+
+the log file is written continuosly, to check last results  (here last 500 lines) use:
+
+sudo tail /var/log/antelope.log -n 500
+
+the docker images need space on disk. if an "out of disk" space occurs, you may free disk space by removing unused (old) docker images and volumes:
+
+docker system prune
+docker volume rm <VOLUME NAME>
+
 ### Docker
 
 To build a *Docker* container image of the application, run one of the following commands (depending on the target environment):
