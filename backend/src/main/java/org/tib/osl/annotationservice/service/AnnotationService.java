@@ -127,7 +127,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         try {
             String dictName = null;
             String kbUrl = null;
-            if( request.getDictionary() == null || (request.getDictionary().getDictionaryType() == null)) {
+            if( iconclass ) {
                 //request.getDictionary().setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
                 //request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict(false));
                 dictName = "iconclass";

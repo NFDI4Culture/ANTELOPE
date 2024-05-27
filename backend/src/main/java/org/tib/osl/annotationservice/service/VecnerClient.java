@@ -114,19 +114,21 @@ public class VecnerClient {
             
             log.debug("vizualize");
             //log.debug(request.toString());
-            if( request.getDictionary().getFullDictionary()  != null &&  !request.getDictionary().getFullDictionary().isEmpty()) {
-                log.debug("found full dict, extend el_result...");
-                for( Object e : elResultJson.getJSONArray("ents") ){
-                    JSONObject ent = (JSONObject)e;
-                    //System.out.println(ent);
-                    String ent_id = ent.getString("label"); 
-                    if(request.getDictionary().getFullDictionary().containsKey(ent_id)) {
-                        ent.put("label", request.getDictionary().getFullDictionary().get(ent_id).getLabel());
-                        ent.put("kb_id", request.getDictionary().getFullDictionary().get(ent_id).getKbId());
-                        ent.put("kb_url", request.getDictionary().getFullDictionary().get(ent_id).getKbUrl());
-                    } else {
-                        System.err.println( "unknown id:"+ent_id+" in:"+request.getDictionary().getFullDictionary().keySet());
-                        throw new IllegalStateException("dictionary error. Unknown id:"+ent_id);
+            if( request.getDictionary() != null) {
+                if( request.getDictionary().getFullDictionary()  != null &&  !request.getDictionary().getFullDictionary().isEmpty()) {
+                    log.debug("found full dict, extend el_result...");
+                    for( Object e : elResultJson.getJSONArray("ents") ){
+                        JSONObject ent = (JSONObject)e;
+                        //System.out.println(ent);
+                        String ent_id = ent.getString("label"); 
+                        if(request.getDictionary().getFullDictionary().containsKey(ent_id)) {
+                            ent.put("label", request.getDictionary().getFullDictionary().get(ent_id).getLabel());
+                            ent.put("kb_id", request.getDictionary().getFullDictionary().get(ent_id).getKbId());
+                            ent.put("kb_url", request.getDictionary().getFullDictionary().get(ent_id).getKbUrl());
+                        } else {
+                            System.err.println( "unknown id:"+ent_id+" in:"+request.getDictionary().getFullDictionary().keySet());
+                            throw new IllegalStateException("dictionary error. Unknown id:"+ent_id);
+                        }
                     }
                 }
             }
