@@ -1,6 +1,36 @@
 {
+  "name": "antelope",
+  "version": "0.0.3-SNAPSHOT",
+  "private": true,
+  "description": "ANTELOPE: Annotation, Terminology Lookup and Personalization",
+  "license": "MIT",
+  "workspaces": [
+    "./backend/",
+    "./frontend/"
+  ],
+  "scripts": {
+		"prepare": "npx husky install",
+    "clean": "rm -rf ./target/",
+    "start": "npm run clean && npm run start -w backend",
+    "start:dev": "npm run clean && node ./scripts/develop.js",
+    "docker": "docker compose -f ./backend/src/main/docker/app_test.yml up",
+    "prettier:check": "npx prettier --check \"{,./backend/src/**/,./frontend/src/}*.{md,json,yml,html,java}\"",
+    "prettier:format": "npx prettier --write \"{,./backend/src/**/,./frontend/src/}*.{md,json,yml,html,cjs,mjs,js,ts,tsx,css,scss}\""
+  },
+  "config": {
+    "backend_port": "8080",
+    "default_environment": "prod",
+    "packaging": "jar"
+  },
   "devDependencies": {
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3"
-  }
+    "commonmark": "^0.31.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "2.7.1",
+    "prettier-plugin-java": "1.6.2",
+    "prettier-plugin-packagejson": "2.2.18"
+  },
+  "cacheDirectories": [
+    "node_modules"
+  ]
 }

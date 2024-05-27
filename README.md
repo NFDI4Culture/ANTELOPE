@@ -1,16 +1,14 @@
-# [Antelope](https://service.tib.eu/annotation/): Annotation, Terminology Lookup and Personalization
+# [ANTELOPE](https://service.tib.eu/annotation/): Annotation, Terminology Lookup and Personalization
 
-<img src="https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/raw/main/implementation/src/main/webapp/content/images/logo_antelope.png?ref_type=heads" width="300">
+<br>
+<a href="https://service.tib.eu/annotation/" target="_blank">
+  <img src="https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/raw/main/implementation/src/main/webapp/content/images/logo_antelope.png?ref_type=heads" width="300">
+</a>
+<br><br>
 
-Antelope is a free, open-source service to support your data annotation. It offers terminology search, entity linking and easy integration into your projects. The serice integrates with various terminology services and enduser applications (Wikibase and Kompakkt for now). At that, it supports users with process automation and named entity recognition features.  
-  
-> Antelope is a project for [NFDI4Culture](https://nfdi4culture.de/).
+**ANTELOPE** is a free, open-source service to support your data annotation. It offers terminology search, entity linking and easy integration into your projects. The serice integrates with various terminology services and enduser applications (Wikibase and Kompakkt for now). At that, it supports users with process automation and named entity recognition features.
 
-## ⚠️ Project Status
-
-We are in an iterative process of research and development of Antelope.
-
-**Current Version**: `v0.2`
+> ↳ [Developer README](./readme/README.md)
 
 **Further Reading**:
 
@@ -21,15 +19,11 @@ We are in an iterative process of research and development of Antelope.
 
 ## Architecture
 
-`V0.1`
+<img alt="Figure of fundamental architecture" src="./readme/antelope-architecture.png" width="700">
 
-<img src="https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/raw/main/annotation-service-architecture.png?ref_type=heads">
+## Integrated UI
 
-## Screenshot
-
-`V0.2`
-
-<img src="https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/raw/main/annotation-service-screenshot.png?ref_type=heads">
+<img alt="Screenshot of integrated UI" src="./readme/antelope-screenshot.png" width="700">
 
 ## Resources
 
@@ -39,4 +33,7 @@ We are in an iterative process of research and development of Antelope.
 
 ---
 
-<sub>&copy; TIB Hannover</sub>
+<br>
+<a href="https://www.tib.eu/en/" target="_blank">
+  <img src="https://www.tib.eu/typo3conf/ext/tib_tmpl_bootstrap/Resources/Public/gfx/logos/tib-full-en.svg" height="35">
+</a>
