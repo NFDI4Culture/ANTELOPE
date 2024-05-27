@@ -38,6 +38,8 @@ onMounted(() => {
 
     ResultsService.clearResults();
 
+    resultsEl.value.clearError();
+
     if (!resultsCache.has(index)) return;
     resultsCache.get(index).isHTML
       ? ResultsService.defineHTMLResults((resultsCache.get(index).results as unknown as { html: string }).html)
