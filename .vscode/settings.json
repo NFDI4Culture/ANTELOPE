@@ -1,0 +1,9 @@
+{
+    "java.project.resourceFilters": [
+        ".git",
+        "node_modules",
+        "target"
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "disabled"
+}

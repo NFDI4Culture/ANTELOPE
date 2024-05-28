@@ -1,0 +1,89 @@
+@mixin s {
+    @media all and (max-width: #{$breakpoint}px) {
+        @content;
+    }
+}
+
+@mixin l {
+    @media all and (min-width: #{$breakpoint + 1}px) {
+        @content;
+    }
+}
+
+@mixin font-s {
+    font-size: var(--font-size-s);
+}
+@mixin font-m {
+    font-size: var(--font-size-m);
+}
+@mixin font-l {
+    font-size: var(--font-size-l);
+}
+
+@mixin icon($name, $size: 1em, $pseudo: "after") {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &::#{$pseudo} {
+        content: "";
+        display: block;
+        width: $size;
+        height: $size;
+        background: url(@/assets/img/icons/#{$name}.svg) no-repeat;
+        background-size: $size;
+        background-position: center;
+
+        @media (prefers-color-scheme: dark) {
+            filter: invert(1);
+        }
+    }
+    &:not(:empty) {
+        &::before {
+            margin-right: calc($size / 1.5);
+        }
+        &::after {
+            margin-left: calc($size / 1.5);
+        }
+    }
+}
+
+@mixin flex {
+    display: flex;
+    flex-direction: row;
+
+    & > * {
+        flex-grow: 1;
+        flex-basis: 0;
+    }
+}
+
+@mixin shadow($offset: 0.25rem, $color: #10101010) {
+    box-shadow: $offset $offset 0.05rem 0 $color;
+}
+
+@mixin nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    color: var(--color-fg-gray);
+    
+    @include font-s;
+
+    ol, ul {
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0;
+
+        li:not(:first-child) {
+            margin-left: var(--space-m);
+        }
+        a:hover {
+            filter: brightness(0.75);
+        }
+    }
+}

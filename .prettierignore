@@ -1,0 +1,11 @@
+node_modules
+build
+package-lock.json
+.git
+.mvn
+gradle
+.gradle
+
+*.svg
+
+./backend/src/main/resources/**/*
