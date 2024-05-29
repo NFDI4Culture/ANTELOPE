@@ -117,8 +117,8 @@ defineExpose({
         per branch in the hierarchy tree to avoid circles (circles are possible in graphs but not in trees like taxonomies).
       </InfoComponent>
     </template>
-    <template #label-min>narrow</template>
-    <template #label-max>wide</template>
+    <template #label-min>wide</template>
+    <template #label-max>narrow</template>
   </SliderComponent>
 </template>
 
