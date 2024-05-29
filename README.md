@@ -1,4 +1,4 @@
-# [ANTELOPE](https://service.tib.eu/annotation/): Annotation, Terminology Lookup and Personalization
+# <ins>ANTELOPE</ins>: <ins>An</ins>notation, <ins>Te</ins>rminology <ins>Lo</ins>okup and <ins>Pe</ins>rsonalization
 
 <br>
 <a href="https://service.tib.eu/annotation/" target="_blank">
@@ -6,7 +6,7 @@
 </a>
 <br><br>
 
-**ANTELOPE** is a free, open-source service to support your data annotation. It offers terminology search, entity linking and easy integration into your projects. The serice integrates with various terminology services and enduser applications (Wikibase and Kompakkt for now). At that, it supports users with process automation and named entity recognition features.
+[**ANTELOPE**](https://service.tib.eu/annotation/) is a free, open-source service to support your data annotation. It offers terminology search, entity linking and easy integration into your projects. The serice integrates with various terminology services and enduser applications (Wikibase and Kompakkt for now). At that, it supports users with process automation and named entity recognition features.
 
 > ↳ [Developer README](./readme/README.md)
 
