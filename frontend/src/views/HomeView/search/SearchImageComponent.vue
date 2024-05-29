@@ -89,8 +89,8 @@ defineExpose({
       },
       body: {
         image: currentFile.value,
-        text: tSearchtext.value.getText().trim(),
-        dictionary: makeDictionary(tDictionary.value.getText()),
+        text: tSearchtext.value.getText(),
+        dictionary: tDictionary.value.getText().trim().length ? makeDictionary(tDictionary.value.getText()) : null,
         threshold: 0.6,
         language: 'en',
       },
