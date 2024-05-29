@@ -1,34 +1,38 @@
 <script setup lang="ts">
-    /// TEMP
-    
-	import { Ref, ref } from "vue";
+/// TEMP
 
-    import { ResultsService } from "../../../services/ResultsService";
-    
-    const el: Ref<HTMLElement> = ref(null);
-    const active = ref(false);
+import { Ref, ref } from 'vue';
 
-    ResultsService.on("html", (results: string) => {
-        active.value = true;
-        
-        el.value.innerHTML = results;
-    });
-    ResultsService.on("clear", () => {
-        active.value = false;
+import { ResultsService } from '../../../services/ResultsService';
 
-        el.value.innerHTML = "";
-    });
+const el: Ref<HTMLElement> = ref(null);
+const active = ref(false);
+
+ResultsService.on('html', (results: string) => {
+  active.value = true;
+
+  el.value.innerHTML = results;
+});
+ResultsService.on('clear', () => {
+  active.value = false;
+
+  el.value.innerHTML = '';
+});
 </script>
 
 <template>
-    <div class="results-html" v-show="active" ref="el"></div>
+  <div class="results-html" v-show="active" ref="el"></div>
 </template>
 
 <style scoped lang="scss">
-	@import "@/assets/scss/shared";
-    
-	.results-html {
-        margin-top: var(--space-l);
-        width: 100%;
-    }
+@import '@/assets/scss/shared';
+
+.results-html {
+  margin-top: var(--space-l);
+  width: 100%;
+
+  .entities {
+    text-align: left !important;
+  }
+}
 </style>
