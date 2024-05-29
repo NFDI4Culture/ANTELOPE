@@ -127,7 +127,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         try {
             String dictName = null;
             String kbUrl = null;
-            if( iconclass ) {
+            if( iconclass != null && iconclass ) {
                 dictName = "iconclass";
                 kbUrl = "https://iconclass.org/en/";
             }
@@ -158,7 +158,7 @@ public class AnnotationService implements AnnotationApiDelegate {
             //log.info(text);
             JSONArray resultArr = new JSONArray();
             List<iart.client.PluginResult> response = null;
-            if( iconclass ) {
+            if( iconclass != null && iconclass ) {
                 resultArr = getImageEntitiesIconClass(model, image, text, threshold);
             } else {
                 response = iArtClient.analyze(model, image.getBytes(), dictionary.getListOfWords());
