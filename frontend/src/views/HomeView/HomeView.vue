@@ -80,7 +80,7 @@ function uncollapse() {
           <ol>
             <li><a @click="integrationOverlayEl.toggle()" class="desktop">Integration</a></li>
             <li><a @click="aboutOverlayEl.toggle()">About</a></li>
-            <li><a href="/api.html" target="_blank">API</a></li>
+            <li><a href="/api.htm" target="_blank">API</a></li>
             <li class="scroll-keep desktop">
               <a
                 class="header-button--selection"

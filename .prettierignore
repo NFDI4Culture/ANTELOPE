@@ -11,4 +11,4 @@ gradle
 *.svg
 
 backend/src/main/resources/**/*
-frontend/api.html
+frontend/api.htm
