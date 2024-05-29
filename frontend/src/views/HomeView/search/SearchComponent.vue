@@ -105,6 +105,7 @@ function search() {
             </tr>
             ${(results as unknown as [{ score: number; label: string }[]])[0]
               .sort((a, b) => b.score - a.score)
+              .slice(0, 50)
               .map(
                 item => `<tr>
                 <td style="padding: var(--space-xs); background-color: var(--color-bg-gray);">${
