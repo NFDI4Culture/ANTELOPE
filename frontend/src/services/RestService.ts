@@ -7,7 +7,7 @@ type THeaders = { [key: string]: string };
 export class Request<T> {
 	private static MOCK_FALLBACK_ENABLED: boolean = true; // Set to false to test failure behaviour without mock intercept
 
-	private static baseUrl = `${document.location.origin.replace(/(:\d+)?$/, ":8080")}/api`;
+	private static baseUrl = `${document.location.origin.replace(/(:\d+)?$/, ":8080")}${!EnvService.IS_DEV ? "/annotation" : ""}/api`;
 
 	private readonly method: string;
 	private readonly endpoint: string;
