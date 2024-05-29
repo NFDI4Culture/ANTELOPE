@@ -30,9 +30,5 @@ ResultsService.on('clear', () => {
 .results-html {
   margin-top: var(--space-l);
   width: 100%;
-
-  .entities {
-    text-align: left !important;
-  }
 }
 </style>
