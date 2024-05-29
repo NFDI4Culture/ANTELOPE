@@ -62,7 +62,7 @@ function enableSVGInteraction() {
 function disableSVGInteraction() {
   svgEl.value.classList.remove('active');
 
-  interactionInfoHTML.value = 'Hold <b>SHIFT</b> to interact with the tree';
+  interactionInfoHTML.value = 'Hold <b>SHIFT</b> to interact with the graph';
 
   ScrollAbilityService.enableScroll();
 }

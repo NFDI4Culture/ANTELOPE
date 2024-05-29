@@ -2,7 +2,7 @@
 
 <br>
 <a href="https://service.tib.eu/annotation/" target="_blank">
-  <img src="https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/raw/main/implementation/src/main/webapp/content/images/logo_antelope.png?ref_type=heads" width="300">
+  <img alt="ANTELOPE Logo" src="./frontend/src/assets/img/logo.svg" width="300">
 </a>
 <br><br>
 
