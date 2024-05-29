@@ -266,6 +266,14 @@ paths:
         explode: true
         schema:
           type: string
+      - name: iconclass
+        in: query
+        description: Optional parameter to include or exclude entities(notations) from iconclass
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
       requestBody:
         description: image to process
         content:

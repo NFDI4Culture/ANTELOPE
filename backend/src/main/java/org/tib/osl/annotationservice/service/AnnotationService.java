@@ -127,9 +127,7 @@ public class AnnotationService implements AnnotationApiDelegate {
         try {
             String dictName = null;
             String kbUrl = null;
-            if( iconclass ) {
-                //request.getDictionary().setDictionaryType(DictionaryTypeEnum.FULLDICTIONARY);
-                //request.getDictionary().setFullDictionary( EntityRecognition.getIconclassDict(false));
+            if( iconclass != null && iconclass ) {
                 dictName = "iconclass";
                 kbUrl = "https://iconclass.org/en/";
             }
@@ -147,6 +145,7 @@ public class AnnotationService implements AnnotationApiDelegate {
     @Override
     public ResponseEntity<String> getImageEntities(
         String model,
+        Boolean iconclass,
         MultipartFile image,
         String text,
         Dictionary dictionary,
@@ -159,9 +158,7 @@ public class AnnotationService implements AnnotationApiDelegate {
             //log.info(text);
             JSONArray resultArr = new JSONArray();
             List<iart.client.PluginResult> response = null;
-            if( dictionary == null || (dictionary.getListOfWords() == null && dictionary.getSimpleDictionary() == null && dictionary.getFullDictionary() == null)) {
-                //List<String> dict = EntityRecognition.getIconclassDict(true).values().stream().map(e -> e.getLabel()).collect(Collectors.toList());
-                //response = iArtClient.analyze(model, image.getBytes(), dict);
+            if( iconclass != null && iconclass ) {
                 resultArr = getImageEntitiesIconClass(model, image, text, threshold);
             } else {
                 response = iArtClient.analyze(model, image.getBytes(), dictionary.getListOfWords());
