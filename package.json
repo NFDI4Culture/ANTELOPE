@@ -9,7 +9,7 @@
     "./frontend/"
   ],
   "scripts": {
-		"prepare": "npx husky install",
+    "prepare": "npx husky install",
     "clean": "rm -rf ./target/",
     "start": "npm run clean && npm run start -w backend",
     "start:dev": "npm run clean && node ./scripts/develop.js",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "commonmark": "^0.31.0",
     "husky": "^9.0.11",
+    "js-yaml": "^4.1.0",
     "lint-staged": "^15.2.2",
     "prettier": "2.7.1",
     "prettier-plugin-java": "1.6.2",
