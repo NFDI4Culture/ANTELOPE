@@ -97,7 +97,7 @@ function search() {
 
         return;
       } else if (tabsEl.value.getIndex() === 2) {
-        ResultsService.defineHTMLResults(`
+        const processedResults: string = `
           <table style="border-spacing: 0; width: 100%; text-align: left;">
             <tr>
               <th style="padding: var(--space-xs);">Entity</th>
@@ -116,16 +116,11 @@ function search() {
               )
               .join('\n')}
           </table>
-        `);
-        console.log(results);
-        console.log(`<table class="results-table">
-            ${(results as unknown as { score: number; label: string }[])
-              .sort((a, b) => b.score - a.score)
-              .map(item => `<tr><td>${item.label}</td><td>${item.score}</td></tr>`)
-              .join('\n')}
-          </table>`);
+        `;
+        ResultsService.defineHTMLResults(processedResults);
+
         resultsCache.set(2, {
-          results,
+          results: { html: processedResults } as unknown as IResults,
 
           isHTML: true,
         });
