@@ -3,10 +3,10 @@ import { ref } from 'vue';
 
 const version = ref(null);
 
-fetch(`/assets/version.txt`)
+fetch(`./assets/version.txt`)
   .then(res => res.text())
   .then(v => {
-    version.value = v ? `v${v}` : null;
+    version.value = v && v.length < 30 ? `v${v}` : null;
   })
   .catch(() => {});
 </script>

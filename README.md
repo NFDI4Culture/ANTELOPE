@@ -1,12 +1,12 @@
-# [ANTELOPE](https://service.tib.eu/annotation/): Annotation, Terminology Lookup and Personalization
+# <ins>ANTELOPE</ins>: <ins>An</ins>notation, <ins>Te</ins>rminology <ins>Lo</ins>okup and <ins>Pe</ins>rsonalization
 
 <br>
 <a href="https://service.tib.eu/annotation/" target="_blank">
-  <img src="https://gitlab.com/nfdi4culture/ta5-knowledge-graph/annotation-service/-/raw/main/implementation/src/main/webapp/content/images/logo_antelope.png?ref_type=heads" width="300">
+  <img alt="ANTELOPE Logo" src="./frontend/src/assets/img/logo.svg" width="300">
 </a>
 <br><br>
 
-**ANTELOPE** is a free, open-source service to support your data annotation. It offers terminology search, entity linking and easy integration into your projects. The serice integrates with various terminology services and enduser applications (Wikibase and Kompakkt for now). At that, it supports users with process automation and named entity recognition features.
+[**ANTELOPE**](https://service.tib.eu/annotation/) is a free, open-source service to support your data annotation. It offers terminology search, entity linking and easy integration into your projects. The serice integrates with various terminology services and enduser applications (Wikibase and Kompakkt for now). At that, it supports users with process automation and named entity recognition features.
 
 > ↳ [Developer README](./readme/README.md)
 

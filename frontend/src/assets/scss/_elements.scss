@@ -1,177 +1,196 @@
 noscript {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--color-bg-light);
-    z-index: 10000;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg-light);
+  z-index: 10000;
 }
 
 *.disable {
-    pointer-events: none !important;
-    user-select: none !important;
-    filter: saturate(0.25) opacity(0.5) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  filter: saturate(0.25) opacity(0.5) !important;
 }
 
 *.desktop {
-    @include s {
-        display: none !important;
-    }
+  @include s {
+    display: none !important;
+  }
 }
 *.mobile {
-    @include l {
-        display: none !important;
-    }
+  @include l {
+    display: none !important;
+  }
 }
 
-html, body {
-    margin: 0;
-    width: 100%;
+html,
+body {
+  margin: 0;
+  width: 100%;
 }
 html {
-    height: 100%;
-    background-color: var(--color-bg-light);
-    color: var(--color-fg-dark);
+  height: 100%;
+  background-color: var(--color-bg-light);
+  color: var(--color-fg-dark);
 }
 body {
-    min-height: 100%;
-    
-    &.init * {
-        transition: none !important;
-    }
-    &.no-scroll {
-        height: 100%;
-        overflow-y: hidden;
-    }
+  min-height: 100%;
+
+  &.init * {
+    transition: none !important;
+  }
+  &.no-scroll {
+    height: 100%;
+    overflow-y: hidden;
+  }
 }
 
 a {
-    cursor: pointer;
+  cursor: pointer;
 
-    &[target="_blank"] {
-        display: inline-flex;
-        flex-direction: row;
-        align-items: flex-start;
+  &[target='_blank'] {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: flex-start;
 
-        &::after {
-            content: "↗";
-            margin-left: 0.5em;
-            margin-right: 0.2em;
-            font-size: 0.5em;
-            font-weight: 600;
-            transform: translateY(-0.25em);
-        }
+    &::after {
+      content: '↗';
+      margin-left: 0.5em;
+      margin-right: 0.2em;
+      font-size: 0.5em;
+      font-weight: 600;
+      transform: translateY(-0.25em);
     }
+  }
 }
 
 section {
-    img,
-    ul, ol,
-    p, blockquote,
-    label, input, textarea,
-    code, pre {
-        &:not(:last-child) {
-            margin-bottom: var(--space-s);
-        }
+  img,
+  ul,
+  ol,
+  p,
+  blockquote,
+  label,
+  input,
+  textarea,
+  code,
+  pre {
+    &:not(:last-child) {
+      margin-bottom: var(--space-s);
     }
-    
-    h1, h2, h3, h4, h5,
-    strong {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        
-        &:not(:first-child) {
-            margin-top: calc(var(--space-s) + var(--space-xs));
-        }
-        &:not(:last-child) {
-            margin-bottom: var(--space-s);
-        }
-    }
+  }
 
-    *:not(h1):not(h2):not(h3):not(h4):not(h5):not(button) {
-        a, a:visited {
-            color: var(--color-secondary);
-        }
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  strong {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
-    ul, ol {
-        padding-left: var(--space-xs);
+    &:not(:first-child) {
+      margin-top: calc(var(--space-s) + var(--space-xs));
+    }
+    &:not(:last-child) {
+      margin-bottom: var(--space-s);
+    }
+  }
 
-        li {
-            &:not(:last-child) {
-                margin-bottom: 0.5em;
-            }
-        }
+  *:not(h1):not(h2):not(h3):not(h4):not(h5):not(button) {
+    a,
+    a:visited {
+      color: var(--color-secondary);
     }
-    ul {
-        li::marker {
-            @include font-s;
-        }
-    }
+  }
 
-    blockquote {
-        padding: var(--space-xs) var(--space-s);
-        width: fit-content;
-        background-color: var(--color-primary-subtle);
-        border-radius: var(--border-radius-m);
+  ul,
+  ol {
+    padding-left: var(--space-xs);
+
+    li {
+      &:not(:last-child) {
+        margin-bottom: 0.5em;
+      }
     }
+  }
+  ul {
+    li::marker {
+      @include font-s;
+    }
+  }
+
+  blockquote {
+    padding: var(--space-xs) var(--space-s);
+    width: fit-content;
+    background-color: var(--color-primary-subtle);
+    border-radius: var(--border-radius-m);
+  }
 }
 
 strong {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
-input, textarea {
-    padding: 0.65em 0.85em;
-    background-color: var(--color-bg-light);
-    color: inherit;
-    border: 1px solid var(--color-fg-contrast);
-    border-radius: var(--border-radius-m);
+input,
+textarea {
+  padding: 0.65em 0.85em;
+  background-color: var(--color-bg-light);
+  color: inherit;
+  border: 1px solid var(--color-fg-contrast);
+  border-radius: var(--border-radius-m);
 }
 textarea {
-    line-height: 1.35em;
+  line-height: 1.35em;
 }
 
 hr {
-    height: var(--space-l);
-    border: none;
+  height: var(--space-l);
+  border: none;
 }
 
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 code {
-    display: block;
-    padding: 0.5rem var(--space-xs);
-    padding-right: var(--space-s);
-    width: fit-content;
-    max-width: 100%;
-    background-color: var(--color-bg-gray);
-    color: var(--color-code);
-    font-family: monospace;
-    font-size: 0.9rem;
-    line-height: 1.5em;
-    border-radius: var(--border-radius-m);
-    overflow-x: scroll;
+  display: block;
+  padding: 0.5rem var(--space-xs);
+  padding-right: var(--space-s);
+  width: fit-content;
+  max-width: 100%;
+  background-color: var(--color-bg-gray);
+  color: var(--color-code);
+  font-family: monospace;
+  font-size: 0.9rem;
+  line-height: 1.5em;
+  border-radius: var(--border-radius-m);
+  overflow-x: scroll;
 }
 
-svg{
-    .fg-dark {
-        fill: var(--color-fg-dark);
-    }
-    .contrast {
-        fill: var(--color-fg-dark);
-    }
+svg {
+  .fg-dark {
+    fill: var(--color-fg-dark);
+  }
+  .contrast {
+    fill: var(--color-fg-dark);
+  }
 
-    @media (prefers-color-scheme: dark) {
-        .contrast {
-            fill: var(--color-bg-light);
-        }
+  @media (prefers-color-scheme: dark) {
+    .contrast {
+      fill: var(--color-bg-light);
     }
+  }
+}
+
+mark {
+  display: inline-block;
+  white-space: nowrap;
+  background-color: var(--color-primary-subtle) !important;
 }

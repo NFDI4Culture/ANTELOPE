@@ -270,7 +270,7 @@ The [HTML Example](../frontend/examples/iframe/index.html) gives a complete exam
 
 ### Via `HTTP API`
 
-More specific integration concepts with the annotation service can be achieved through the provided HTTP API. The API documentation is available on `https://service.tib.eu/annotation/api.html`.
+More specific integration concepts with the annotation service can be achieved through the provided HTTP API. The API documentation is available on `https://service.tib.eu/annotation/api.htm`.
 
 ---
 

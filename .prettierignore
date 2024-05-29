@@ -5,7 +5,10 @@ package-lock.json
 .mvn
 gradle
 .gradle
+.env
+.env.*
 
 *.svg
 
-./backend/src/main/resources/**/*
+backend/src/main/resources/**/*
+frontend/api.htm
