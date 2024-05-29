@@ -97,94 +97,33 @@ function search() {
 
         return;
       } else if (tabsEl.value.getIndex() === 2) {
-        ResultsService.defineHTMLResults(`
-                    <svg #barchart id="barchart"></svg>
-                `);
+        const processedResults: string = `
+          <table style="border-spacing: 0; width: 100%; text-align: left;">
+            <tr>
+              <th style="padding: var(--space-xs);">Entity</th>
+              <th style="padding-left: var(--space-xs);">Similarity Score</th>
+            </tr>
+            ${(results as unknown as [{ score: number; label: string }[]])[0]
+              .sort((a, b) => b.score - a.score)
+              .map(
+                item => `<tr>
+                <td style="padding: var(--space-xs); background-color: var(--color-bg-gray);">${
+                  item.label
+                }</td><td style="padding-left: var(--space-xs); width: 10rem; color: var(--color-code); font-weight: bold;">${item.score.toFixed(
+                  3
+                )}</td>
+              </tr>`
+              )
+              .join('\n')}
+          </table>
+        `;
+        ResultsService.defineHTMLResults(processedResults);
 
         resultsCache.set(2, {
-          results,
+          results: { html: processedResults } as unknown as IResults,
 
           isHTML: true,
         });
-
-        setTimeout(() => {
-          const data = results[0] as unknown as {
-            id: string;
-            URI: string;
-            label: string;
-            source: string;
-            classes: string;
-            score: number;
-          }[];
-          const util = {
-            label(d: any): string {
-              if (d.label !== undefined) {
-                // if (d.label.length < 24) {
-                return d.label as string;
-                // } else {
-                //   return d.label.substring(0, 20) as string + "[..]";
-                // }
-              } else {
-                return 'Label';
-              }
-            },
-            score(d: any): number {
-              if (d.score !== undefined) {
-                return d.score as number;
-              } else {
-                return 0.0;
-              }
-            },
-          };
-          const margin = { top: 20, right: 20, bottom: 30, left: 40 },
-            width = 700 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
-          const x = d3.scaleBand().range([0, width]).padding(0.1);
-          const y = d3.scaleLinear().range([height, Math.min(...data.map((d: any) => d.score))]);
-          // append the svg object to the body of the page
-          // append a 'group' element to 'svg'
-          // moves the 'group' element to the top left margin
-          const svg = d3
-            .select('#barchart')
-            .attr('width', width + margin.left + margin.right)
-            .attr('height', height + margin.top + margin.bottom)
-            .append('g')
-            .attr('transform', 'translate(' + margin.left.toString() + ',' + margin.top.toString() + ')');
-          // Scale the range of the data in the domains
-          x.domain(
-            data.map(function (d: any): string {
-              return util.label(d);
-            })
-          );
-          // y.domain([Math.min(...data.map((d:any) => d.score)), Math.max(...data.map((d:any) => d.score))]);
-          y.domain([0, 1]);
-          // append the rectangles for the bar chart
-          svg
-            .selectAll('.bar')
-            .data(data)
-            .enter()
-            .append('rect')
-            .attr('class', 'bar')
-            .attr('x', function (d: any): number {
-              return x(util.label(d)) as number;
-            })
-            .attr('width', x.bandwidth())
-            .attr('y', function (d: any): number {
-              return y(util.score(d));
-            })
-            .attr('height', function (d: any) {
-              return height - y(d.score);
-            })
-            .attr('fill', 'var(--color-primary)')
-            .append('title')
-            .text((d: any) => util.label(d) + ': ' + util.score(d).toString());
-          svg
-            .append('g')
-            .attr('transform', 'translate(0,' + height.toString() + ')')
-            .call(d3.axisBottom(x))
-            .selectAll('text');
-          svg.append('g').call(d3.axisLeft(y));
-        }, 50);
 
         return;
       }

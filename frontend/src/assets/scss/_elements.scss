@@ -189,8 +189,12 @@ svg {
   }
 }
 
-mark {
-  display: inline-block;
-  white-space: nowrap;
-  background-color: var(--color-primary-subtle) !important;
+.entities {
+  text-align: left !important;
+
+  mark.entity {
+    display: inline-block;
+    white-space: nowrap;
+    background-color: var(--color-primary-subtle) !important;
+  }
 }
