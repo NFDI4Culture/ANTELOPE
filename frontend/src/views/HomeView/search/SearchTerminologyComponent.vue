@@ -72,7 +72,7 @@ onMounted(() => {
 
   RestService.GET('/annotation/parameterOptions/ts4tib_ontology')
     .mock({
-      ontologies: [
+      ontologies: Array(500).fill({ collections: ['FAIR Data Spaces', 'ESS'], label: 'ABCD Base Ontology', paramValue: 'abcd' }) /* [
         { collections: ['FAIR Data Spaces', 'ESS'], label: 'ABCD Base Ontology', paramValue: 'abcd' },
         { collections: ['FAIR Data Spaces'], label: 'Audubon Core main vocabulary', paramValue: 'ac' },
         { collections: ['FAIR Data Spaces'], label: 'variant controlled vocabulary', paramValue: 'acvariant' },
@@ -84,7 +84,7 @@ onMounted(() => {
           paramValue: 'envo',
         },
         { collections: ['NFDI4CHEM'], label: 'Physico-chemical methods and properties', paramValue: 'fix' },
-      ],
+      ] */,
     })
     .call()
     .then((response: { ontologies: TTS4TIBOntology[] }) => {
@@ -123,6 +123,9 @@ defineExpose({
     cSource_TS4TIB.value.reset();
     cSource_Getty.value.reset();
     cSettings_ClassDuplicates.value.reset();
+
+    wikidataCheckboxDisabled.value = !cSource_Wikidata.value.getChecked();
+    ts4tibCheckboxDisabled.value = !cSource_TS4TIB.value.getChecked();
   },
   getParams(): ITerminologySearchData {
     return validate({
@@ -147,48 +150,9 @@ defineExpose({
 
       mock: {
         entities: [
-          { label: 'Vincent van Gogh', id: 'Q5582', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q5582' },
-          { label: 'Vincent van Gogh', id: 'Q5582', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q5582' },
-          { label: 'Vincent van Gogh', id: 'Q5582', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q5582' },
           { label: '4457 van Gogh', id: 'Q154160', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q154160' },
           { label: 'Van Gogh Museum', id: 'Q224124', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q224124' },
-          { label: 'Vincent van Gogh', id: 'Q1960369', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q1960369' },
-          { label: 'Vincent van Gogh', id: 'Q1960369', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q1960369' },
           { label: 'Vincent Willem van Gogh', id: 'Q2185351', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q2185351' },
-          { label: 'Vincent van Gogh', id: 'Q4013062', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q4013062' },
-          { label: 'Vincent van Gogh', id: 'Q4013062', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q4013062' },
-          { label: 'Vincent_van_Gogh', id: 'Vincent_van_Gogh', source: 'dbpedia', URI: 'http://dbpedia.org/resource/Vincent_van_Gogh' },
-          {
-            label: 'Vincent_van_Gogh_chronology',
-            id: 'Vincent_van_Gogh_chronology',
-            source: 'dbpedia',
-            URI: 'http://dbpedia.org/resource/Vincent_van_Gogh_chronology',
-          },
-          { label: 'Van_Gogh_Museum', id: 'Van_Gogh_Museum', source: 'dbpedia', URI: 'http://dbpedia.org/resource/Van_Gogh_Museum' },
-          {
-            label: 'Van_Gogh_(Van_Gogh_album)',
-            id: 'Van_Gogh_(Van_Gogh_album)',
-            source: 'dbpedia',
-            URI: 'http://dbpedia.org/resource/Van_Gogh_(Van_Gogh_album)',
-          },
-          {
-            label: 'Copies_by_Vincent_van_Gogh',
-            id: 'Copies_by_Vincent_van_Gogh',
-            source: 'dbpedia',
-            URI: 'http://dbpedia.org/resource/Copies_by_Vincent_van_Gogh',
-          },
-          {
-            label: 'Portraits_by_Vincent_van_Gogh',
-            id: 'Portraits_by_Vincent_van_Gogh',
-            source: 'dbpedia',
-            URI: 'http://dbpedia.org/resource/Portraits_by_Vincent_van_Gogh',
-          },
-          {
-            label: 'Fondation_Vincent_van_Gogh_Arles',
-            id: 'Fondation_Vincent_van_Gogh_Arles',
-            source: 'dbpedia',
-            URI: 'http://dbpedia.org/resource/Fondation_Vincent_van_Gogh_Arles',
-          },
         ],
         hierarchy: {
           children: [
@@ -253,116 +217,6 @@ defineExpose({
                   link: 'http://www.wikidata.org/entity/Q2185351',
                   id: '2002',
                 },
-                { children: [], name: 'Vincent van Gogh', link: 'http://www.wikidata.org/entity/Q1960369', id: '3002' },
-                {
-                  children: [
-                    {
-                      children: [
-                        { children: [], name: 'moving image', link: 'http://www.wikidata.org/entity/Q10301427', id: '4004' },
-                        { children: [], name: 'series', link: 'http://www.wikidata.org/entity/Q20937557', id: '4005' },
-                        { children: [], name: 'audiovisual work', link: 'http://www.wikidata.org/entity/Q2431196', id: '4006' },
-                        { children: [], name: 'visual artwork', link: 'http://www.wikidata.org/entity/Q4502142', id: '4007' },
-                      ],
-                      name: 'film',
-                      link: 'http://www.wikidata.org/entity/Q11424',
-                      id: '4003',
-                    },
-                  ],
-                  name: 'Vincent van Gogh',
-                  link: 'http://www.wikidata.org/entity/Q4013062',
-                  id: '4002',
-                },
-                { children: [], name: 'Vincent van Gogh', link: 'http://www.wikidata.org/entity/Q5582', id: '5002' },
-              ],
-              name: 'Wikidata',
-              link: 'http://wikidata.org',
-              id: 1,
-            },
-            {
-              children: [
-                {
-                  children: [
-                    {
-                      children: [{ children: [], name: 'work', link: 'http://dbpedia.org/ontology/Work', id: '1003' }],
-                      name: 'artwork',
-                      link: 'http://dbpedia.org/ontology/Artwork',
-                      id: '1002',
-                    },
-                  ],
-                  name: 'Copies_by_Vincent_van_Gogh',
-                  link: 'http://dbpedia.org/resource/Copies_by_Vincent_van_Gogh',
-                  id: '1001',
-                },
-                {
-                  children: [
-                    { children: [], name: 'agent', link: 'http://dbpedia.org/ontology/Agent', id: '2002' },
-                    {
-                      children: [],
-                      name: 'architectural structure',
-                      link: 'http://dbpedia.org/ontology/ArchitecturalStructure',
-                      id: '2003',
-                    },
-                    { children: [], name: 'building', link: 'http://dbpedia.org/ontology/Building', id: '2004' },
-                    { children: [], name: 'museum', link: 'http://dbpedia.org/ontology/Museum', id: '2005' },
-                    { children: [], name: 'organisation', link: 'http://dbpedia.org/ontology/Organisation', id: '2006' },
-                  ],
-                  name: 'Fondation_Vincent_van_Gogh_Arles',
-                  link: 'http://dbpedia.org/resource/Fondation_Vincent_van_Gogh_Arles',
-                  id: '2001',
-                },
-                {
-                  children: [],
-                  name: 'Portraits_by_Vincent_van_Gogh',
-                  link: 'http://dbpedia.org/resource/Portraits_by_Vincent_van_Gogh',
-                  id: '3001',
-                },
-                {
-                  children: [
-                    {
-                      children: [{ children: [], name: 'musical work', link: 'http://dbpedia.org/ontology/MusicalWork', id: '4003' }],
-                      name: 'album',
-                      link: 'http://dbpedia.org/ontology/Album',
-                      id: '4002',
-                    },
-                  ],
-                  name: 'Van_Gogh_(Van_Gogh_album)',
-                  link: 'http://dbpedia.org/resource/Van_Gogh_(Van_Gogh_album)',
-                  id: '4001',
-                },
-                { children: [], name: 'Van_Gogh_Museum', link: 'http://dbpedia.org/resource/Van_Gogh_Museum', id: '5001' },
-                {
-                  children: [
-                    {
-                      children: [
-                        {
-                          children: [{ children: [], name: 'species', link: 'http://dbpedia.org/ontology/Species', id: '6004' }],
-                          name: 'eukaryote',
-                          link: 'http://dbpedia.org/ontology/Eukaryote',
-                          id: '6003',
-                        },
-                      ],
-                      name: 'animal',
-                      link: 'http://dbpedia.org/ontology/Animal',
-                      id: '6002',
-                    },
-                    {
-                      children: [{ children: [], name: 'person', link: 'http://dbpedia.org/ontology/Person', id: '6006' }],
-                      name: 'artist',
-                      link: 'http://dbpedia.org/ontology/Artist',
-                      id: '6003',
-                    },
-                    { children: [], name: 'writer', link: 'http://dbpedia.org/ontology/Writer', id: '6007' },
-                  ],
-                  name: 'Vincent_van_Gogh',
-                  link: 'http://dbpedia.org/resource/Vincent_van_Gogh',
-                  id: '6001',
-                },
-                {
-                  children: [],
-                  name: 'Vincent_van_Gogh_chronology',
-                  link: 'http://dbpedia.org/resource/Vincent_van_Gogh_chronology',
-                  id: '7001',
-                },
               ],
               name: 'DBpedia',
               link: 'http://dbpedia.org',
@@ -403,16 +257,32 @@ defineExpose({
   <CheckboxComponent ref="cSource_TS4TIB" @change="ts4tibCheckboxDisabled = !ts4tibCheckboxDisabled"
     >TIB Terminology Service</CheckboxComponent
   >
-  <div v-show="!ts4tibCheckboxDisabled">
+  <div class="ts4tib" v-show="!ts4tibCheckboxDisabled">
     <LoaderComponent ref="loaderTS4TIBEl" />
     <h5>Collections</h5>
-    <CheckbuttonComponent class="ts4tib-collection" v-for="(collection, index) in ts4tibCollections" :key="index" :data-id="collection">{{
-      collection
-    }}</CheckbuttonComponent>
+    <div class="ts4tib-selects">
+      <div class="ts4tib-selects-wrapper">
+        <CheckbuttonComponent
+          class="ts4tib-collection"
+          v-for="(collection, index) in ts4tibCollections"
+          :key="index"
+          :data-id="collection"
+          >{{ collection }}</CheckbuttonComponent
+        >
+      </div>
+    </div>
     <h5>Ontologies</h5>
-    <CheckbuttonComponent class="ts4tib-ontology" v-for="(ontology, index) in ts4tibOntologies" :key="index" :data-id="ontology.label">{{
-      ontology.label
-    }}</CheckbuttonComponent>
+    <div class="ts4tib-selects">
+      <div class="ts4tib-selects-wrapper">
+        <CheckbuttonComponent
+          class="ts4tib-ontology"
+          v-for="(ontology, index) in ts4tibOntologies"
+          :key="index"
+          :data-id="ontology.label"
+          >{{ ontology.label }}</CheckbuttonComponent
+        >
+      </div>
+    </div>
   </div>
   <h4>Settings</h4>
   <CheckboxComponent ref="cSettings_ClassDuplicates">
@@ -424,3 +294,30 @@ defineExpose({
     </InfoComponent>
   </CheckboxComponent>
 </template>
+
+<style scoped lang="scss">
+@import '@/assets/scss/shared';
+
+.ts4tib {
+  &-selects {
+    position: relative;
+    margin-bottom: calc(-1 * var(--space-xs));
+
+    &-wrapper {
+      max-height: 20rem;
+      overflow-y: scroll;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      bottom: 0;
+      width: 100%;
+      height: 0.75rem;
+      background: linear-gradient(0deg, var(--color-bg-light) 0%, transparent 100%);
+      pointer-events: none;
+    }
+  }
+}
+</style>
