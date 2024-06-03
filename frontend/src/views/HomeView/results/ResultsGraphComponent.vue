@@ -406,7 +406,7 @@ function createTree(
       </div>
     </div>
     <div class="results-graph-d3">
-      <span v-html="interactionInfoHTML"></span>
+      <span class="results-graph-help" v-html="interactionInfoHTML"></span>
       <div class="results-graph-wrapper">
         <svg id="tree" ref="svgEl"></svg>
       </div>
@@ -453,6 +453,9 @@ function createTree(
 
   &-d3 {
     width: 100%;
+  }
+  &-help {
+    text-align: center;
   }
   &-wrapper {
     position: relative;

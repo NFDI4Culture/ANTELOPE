@@ -333,7 +333,14 @@ aside {
   margin-top: calc(2.5 * var(--space-l));
   width: 100%;
   max-width: 42.5rem;
-  text-align: center;
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-align: center;
+  }
 
   @include s {
     margin-top: calc(1.75 * var(--space-l));
