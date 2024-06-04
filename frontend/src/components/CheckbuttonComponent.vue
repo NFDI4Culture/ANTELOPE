@@ -69,9 +69,6 @@ defineExpose({
 
   @include font-s;
 
-  &:hover {
-  }
-
   input {
     cursor: pointer;
     position: absolute;
@@ -92,6 +89,7 @@ defineExpose({
     display: block;
     padding: 0.375em var(--space-xs);
     background-color: var(--color-bg-gray);
+    color: var(--color-fg-dark);
     border: 2px solid var(--color-bg-contrast);
     border-radius: var(--border-radius-s);
     user-select: none;

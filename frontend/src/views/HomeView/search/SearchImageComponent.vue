@@ -78,7 +78,7 @@ defineExpose({
     // Temporary
     d3.select('#barchart').selectAll('*').remove();
   },
-  getParams(): IImageSearchData {
+  async getParams(): Promise<IImageSearchData> {
     const imageSearchData: IImageSearchData = validate({
       endpoint: '/annotation/entitylinking/image',
       searchParams: {
@@ -109,12 +109,7 @@ defineExpose({
       // @ts-ignore
       body: formData,
 
-      mock: [
-        [
-          { score: 0.0012524304, label: 'michelangelo' },
-          { score: 0.9987476, label: 'van gogh' },
-        ],
-      ],
+      mock: (await import('./mock.image.json')).default,
     };
   },
 });

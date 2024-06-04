@@ -14,6 +14,7 @@ noscript {
 *.disable {
   pointer-events: none !important;
   user-select: none !important;
+  transition: filter 200ms;
   filter: saturate(0.25) opacity(0.5) !important;
 }
 

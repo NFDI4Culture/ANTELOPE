@@ -105,9 +105,9 @@ function validate(params: ITerminologySearchData): ITerminologySearchData {
   params.searchParams.searchtext = params.searchParams.searchtext.trim();
   if (!params.searchParams.searchtext.length) throw new RangeError('Search text must not be empty');
 
-  if (!params.searchParams.ts4tib_collection.length) delete params.searchParams.ts4tib_collection;
-  if (!params.searchParams.ts4tib_ontology.length) delete params.searchParams.ts4tib_ontology;
-  if (!params.searchParams.ts4tib_collection && !params.searchParams.ts4tib_ontology) delete params.searchParams.ts4tib;
+  if ((params.searchParams.ts4tib_collection ?? '').length === 0) delete params.searchParams.ts4tib_collection;
+  if ((params.searchParams.ts4tib_ontology ?? '').length === 0) delete params.searchParams.ts4tib_ontology;
+  if (!params.searchParams?.ts4tib_collection && !params.searchParams.ts4tib_ontology) delete params.searchParams.ts4tib;
 
   return params;
 }
@@ -127,7 +127,7 @@ defineExpose({
     wikidataCheckboxDisabled.value = !cSource_Wikidata.value.getChecked();
     ts4tibCheckboxDisabled.value = !cSource_TS4TIB.value.getChecked();
   },
-  getParams(): ITerminologySearchData {
+  async getParams(): Promise<ITerminologySearchData> {
     return validate({
       endpoint: '/annotation/terminology',
       searchParams: {
@@ -148,87 +148,7 @@ defineExpose({
           : {}),
       },
 
-      mock: {
-        entities: [
-          { label: '4457 van Gogh', id: 'Q154160', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q154160' },
-          { label: 'Van Gogh Museum', id: 'Q224124', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q224124' },
-          { label: 'Vincent Willem van Gogh', id: 'Q2185351', source: 'wikidata', URI: 'http://www.wikidata.org/entity/Q2185351' },
-        ],
-        hierarchy: {
-          children: [
-            {
-              children: [
-                {
-                  children: [
-                    {
-                      children: [
-                        { children: [], name: 'minor planet', link: 'http://www.wikidata.org/entity/Q1022867', id: '4' },
-                        { children: [], name: 'astronomical object type', link: 'http://www.wikidata.org/entity/Q17444909', id: '5' },
-                        { children: [], name: 'small Solar System body', link: 'http://www.wikidata.org/entity/Q193275', id: '6' },
-                      ],
-                      name: 'asteroid',
-                      link: 'http://www.wikidata.org/entity/Q3863',
-                      id: '3',
-                    },
-                  ],
-                  name: '4457 van Gogh',
-                  link: 'http://www.wikidata.org/entity/Q154160',
-                  id: '2',
-                },
-                {
-                  children: [
-                    {
-                      children: [
-                        { children: [], name: 'museum building', link: 'http://www.wikidata.org/entity/Q24699794', id: '1004' },
-                        { children: [], name: 'museum of culture', link: 'http://www.wikidata.org/entity/Q28737012', id: '1005' },
-                        { children: [], name: 'type of museum', link: 'http://www.wikidata.org/entity/Q63982911', id: '1006' },
-                      ],
-                      name: 'art museum',
-                      link: 'http://www.wikidata.org/entity/Q207694',
-                      id: '1003',
-                    },
-                  ],
-                  name: 'Van Gogh Museum',
-                  link: 'http://www.wikidata.org/entity/Q224124',
-                  id: '1002',
-                },
-                {
-                  children: [
-                    {
-                      children: [
-                        { children: [], name: 'mammal', link: 'http://www.wikidata.org/entity/Q110551885', id: '2004' },
-                        { children: [], name: 'natural person', link: 'http://www.wikidata.org/entity/Q154954', id: '2005' },
-                        { children: [], name: 'omnivore', link: 'http://www.wikidata.org/entity/Q164509', id: '2006' },
-                        { children: [], name: 'person', link: 'http://www.wikidata.org/entity/Q215627', id: '2007' },
-                        { children: [], name: 'individual animal', link: 'http://www.wikidata.org/entity/Q26401003', id: '2008' },
-                        {
-                          children: [],
-                          name: 'organisms known by a particular common name',
-                          link: 'http://www.wikidata.org/entity/Q55983715',
-                          id: '2009',
-                        },
-                      ],
-                      name: 'human',
-                      link: 'http://www.wikidata.org/entity/Q5',
-                      id: '2003',
-                    },
-                  ],
-                  name: 'Vincent Willem van Gogh',
-                  link: 'http://www.wikidata.org/entity/Q2185351',
-                  id: '2002',
-                },
-              ],
-              name: 'DBpedia',
-              link: 'http://dbpedia.org',
-              id: 1000,
-            },
-          ],
-          name: 'results',
-          link: '',
-          id: '0',
-        },
-        relations: [],
-      },
+      mock: (await import('./mock.terminology.json')).default,
     });
   },
 });
