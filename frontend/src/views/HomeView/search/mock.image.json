@@ -1,0 +1,1032 @@
+[
+  [
+    {
+      "score": 0.5747680086316672,
+      "label": "0: Abstract, Non-representational Art"
+    },
+    {
+      "score": 0.5206208312906764,
+      "label": "1: Religion and Magic"
+    },
+    {
+      "score": 0.5260440650457218,
+      "label": "10: (symbolic) representations ~ creation, cosmos, cosmogony, universe, and life (in the broadest sense)"
+    },
+    {
+      "score": 0.528875461319865,
+      "label": "11: Christian religion"
+    },
+    {
+      "score": 0.5348020924959768,
+      "label": "11A: Deity, God (in general) ~ Christian religion"
+    },
+    {
+      "score": 0.5445241647780519,
+      "label": "11A1: God the Creator"
+    },
+    {
+      "score": 0.5261334386056479,
+      "label": "11A11: God measuring the Universe (with compasses)"
+    },
+    {
+      "score": 0.5628837787417096,
+      "label": "11A2: Divine Nature"
+    },
+    {
+      "score": 0.5527928565476177,
+      "label": "11A21: Divinity, 'Divinità' (Ripa)"
+    },
+    {
+      "score": 0.5395737827867446,
+      "label": "11A22: symbols ~ Divine Nature"
+    },
+    {
+      "score": 0.5290474145298969,
+      "label": "11A221: circle symbolizing God's perfectness"
+    },
+    {
+      "score": 0.5401256035028136,
+      "label": "11A23: God's perfections"
+    },
+    {
+      "score": 0.5296389378732806,
+      "label": "11A3: God's wrath"
+    },
+    {
+      "score": 0.5602124540911151,
+      "label": "11A31: 'Flagello di Dio' (Ripa)"
+    },
+    {
+      "score": 0.5446945108753389,
+      "label": "11A4: God's will"
+    },
+    {
+      "score": 0.5238716941996174,
+      "label": "11B: the Holy Trinity, 'Trinitas coelestis'; Father, Son and Holy Ghost ~ Christian religion"
+    },
+    {
+      "score": 0.5362590462910534,
+      "label": "11B1: Trinity represented by tripartite symbols"
+    },
+    {
+      "score": 0.5258572176824998,
+      "label": "11B11: symbols of the Trinity ~ circular and/or triangular forms or arrangements"
+    },
+    {
+      "score": 0.5419206226241937,
+      "label": "11B111: three concentric circles ~ Trinity"
+    },
+    {
+      "score": 0.5474239642446715,
+      "label": "11B112: three interlocked circles ~ Trinity"
+    },
+    {
+      "score": 0.5131180955308432,
+      "label": "11B113: triangle (within circle), with eye or tetragram ~ Trinity"
+    },
+    {
+      "score": 0.5061088920497515,
+      "label": "11B114: three animals, geometrically arranged within a circle or triangle ~ Trinity"
+    },
+    {
+      "score": 0.5339173609150804,
+      "label": "11B115: three running men, arranged in circular form ~ Trinity"
+    },
+    {
+      "score": 0.5322747697970849,
+      "label": "11B12: Trinity represented as a person with three heads"
+    },
+    {
+      "score": 0.5381450537428364,
+      "label": "11B121: 'Tricephalus', three fused heads or faces only (~ Trinity)"
+    },
+    {
+      "score": 0.5315257091922454,
+      "label": "11B13: Trinity represented by three animals sharing one head"
+    },
+    {
+      "score": 0.531720942069281,
+      "label": "11B14: other tripartite symbols of the Trinity"
+    },
+    {
+      "score": 0.522051549093318,
+      "label": "11B2: Trinity in which each of the Persons (God, Christ, Holy Ghost) is represented either by an object or by an animal"
+    },
+    {
+      "score": 0.5200910888152357,
+      "label": "11B21: representation of the Trinity: hand (Father), lamb (Son), and dove (Holy Ghost)"
+    },
+    {
+      "score": 0.5184589424180931,
+      "label": "11B22: representation of the Trinity: hand, cross and dove"
+    },
+    {
+      "score": 0.5070848197113711,
+      "label": "11B23: representation of the Trinity: hand, chalice and dove"
+    },
+    {
+      "score": 0.5304111645538114,
+      "label": "11B3: Holy Trinity in which one, two or all figures are represented in human shape"
+    },
+    {
+      "score": 0.5435643361908914,
+      "label": "11B31: Trinity as three persons"
+    },
+    {
+      "score": 0.531185284770352,
+      "label": "11B311: Trinity as three identical persons"
+    },
+    {
+      "score": 0.5114074748024358,
+      "label": "11B312: Father and Holy Ghost holding the crucified Christ (~ Trinity)"
+    },
+    {
+      "score": 0.5295234041715994,
+      "label": "11B32: Trinity in which God the Father and Christ are represented as persons, the Holy Ghost as dove"
+    },
+    {
+      "score": 0.5264148013080298,
+      "label": "11B321: God the Father seated, holding the youthful Christ (Emmanuel) in his lap"
+    },
+    {
+      "score": 0.5178788805373012,
+      "label": "11B322: God the Father and Christ enthroned"
+    },
+    {
+      "score": 0.517897200564145,
+      "label": "11B3221: God the Father and Christ as identical persons"
+    },
+    {
+      "score": 0.5199398575986025,
+      "label": "11B3222: Christ showing his wounds"
+    },
+    {
+      "score": 0.5216893294605572,
+      "label": "11B323: God the Father holding the crucified or dead Christ"
+    },
+    {
+      "score": 0.5337370977640177,
+      "label": "11B3231: God the Father holding the crucifix, 'Gnadenstuhl', Mercy-Seat, Throne of Grace"
+    },
+    {
+      "score": 0.5406227387306889,
+      "label": "11B3232: God the Father standing or seated, holding the body of Christ, 'Pitié-de-Notre-Seigneur', 'Not Gottes'"
+    },
+    {
+      "score": 0.5449907100834889,
+      "label": "11B33: representations of the Trinity"
+    },
+    {
+      "score": 0.5124147959127894,
+      "label": "11B331: representation of the Trinity: person (Father), lamb (Son), and dove (Holy Ghost)"
+    },
+    {
+      "score": 0.515880986656352,
+      "label": "11B332: representation of the Trinity: person (Father), lion (Son), and dove (Holy Ghost)"
+    },
+    {
+      "score": 0.5245582043521521,
+      "label": "11B333: representation of the Trinity: symbol (Father), person (Son), dove (Holy Ghost)"
+    },
+    {
+      "score": 0.5623448090564499,
+      "label": "11B4: 'Ratschluss der Erlösung', 'Prolog im Himmel'; Divine decree of Redemption"
+    },
+    {
+      "score": 0.5299503254598378,
+      "label": "11B41: Divine decree of Redemption, allegorical figures present, e.g. Justice, Mercy, Peace and Truth (the Virtues reconciled)"
+    },
+    {
+      "score": 0.5558062232109587,
+      "label": "11B42: sending of Gabriel ~ 'Ratschluss der Erlösung'"
+    },
+    {
+      "score": 0.5628700296127808,
+      "label": "11B43: return of Gabriel ~ 'Ratschluss der Erlösung'"
+    },
+    {
+      "score": 0.5634512857684403,
+      "label": "11B44: sending of the Son ~ 'Ratschluss der Erlösung'"
+    },
+    {
+      "score": 0.5601717592594896,
+      "label": "11B45: return of the Son ~ 'Ratschluss der Erlösung'"
+    },
+    {
+      "score": 0.5400479583772868,
+      "label": "11B5: extensions of the Holy Trinity"
+    },
+    {
+      "score": 0.556115382039734,
+      "label": "11B51: Quaternity (i.e. Trinity with Mary)"
+    },
+    {
+      "score": 0.5543687272881481,
+      "label": "11B52: Quinity"
+    },
+    {
+      "score": 0.5315178287235486,
+      "label": "11C: God the Father"
+    },
+    {
+      "score": 0.520445367198621,
+      "label": "11C1: symbols of God the Father"
+    },
+    {
+      "score": 0.5118745089354937,
+      "label": "11C11: the all-seeing eye, triangle with eye ~ symbol of God the Father"
+    },
+    {
+      "score": 0.5253434689136397,
+      "label": "11C12: hand, 'Dextera Dei' ~ symbol of God the Father"
+    },
+    {
+      "score": 0.5109067798788306,
+      "label": "11C13: tetragram (in Roman or Hebrew script) ~ symbol of God the Father"
+    },
+    {
+      "score": 0.5267445314260908,
+      "label": "11C14: (pillar of) fire ~ symbol of God the Father"
+    },
+    {
+      "score": 0.5447362819558937,
+      "label": "11C15: (rays of) light ~ symbol of God the Father"
+    },
+    {
+      "score": 0.5319756115967247,
+      "label": "11C16: alpha and omega ~ symbol of God the Father"
+    },
+    {
+      "score": 0.5235982561386395,
+      "label": "11C2: God the Father represented as human being, usually with crown or tiara or sceptre and/or globe"
+    },
+    {
+      "score": 0.5387570772832571,
+      "label": "11C21: God the Father as young or adult man (perhaps resembling Christ)"
+    },
+    {
+      "score": 0.5150278316564786,
+      "label": "11C211: God the Father enthroned, usually with sceptre and/or globe"
+    },
+    {
+      "score": 0.5435049496299836,
+      "label": "11C22: God the Father as young or adult man resembling Jupiter"
+    },
+    {
+      "score": 0.5236909713182829,
+      "label": "11C221: God the Father (resembling Jupiter) enthroned, usually with sceptre and/or globe"
+    },
+    {
+      "score": 0.5239161879067225,
+      "label": "11C23: God the Father as bearded old man, usually with crown or tiara or sceptre and/or globe"
+    },
+    {
+      "score": 0.5204232078558478,
+      "label": "11C231: God the Father (as bearded old man) enthroned, usually with crown or tiara, and with sceptre and/or globe"
+    },
+    {
+      "score": 0.5414952014500092,
+      "label": "11C3: Christ sitting at God's right hand"
+    },
+    {
+      "score": 0.5264823876698836,
+      "label": "11C31: God crowning Christ"
+    },
+    {
+      "score": 0.5112794026797463,
+      "label": "11C32: God simultaneously crowning Christ and Mary"
+    },
+    {
+      "score": 0.5032804740139957,
+      "label": "11C4: 'Scala Salutis', Christ and Mary interceding with God the Father"
+    },
+    {
+      "score": 0.532369727451581,
+      "label": "11C41: Christ interceding with God the Father"
+    },
+    {
+      "score": 0.5429219139828957,
+      "label": "11C5: other representations ~ God the Father"
+    },
+    {
+      "score": 0.5229895843809584,
+      "label": "11C51: God the Father between the sun and the moon"
+    },
+    {
+      "score": 0.5522767257146324,
+      "label": "11D: Christ"
+    },
+    {
+      "score": 0.5184254649382922,
+      "label": "11D1: symbols and prefigurations of Christ"
+    },
+    {
+      "score": 0.5165260778883412,
+      "label": "11D11: letters and monograms ~ symbols of Christ"
+    },
+    {
+      "score": 0.5047587914327294,
+      "label": "11D111: alpha and omega, sometimes with wreath, triangle, instruments of the Passion, etc. ~ symbol of Christ"
+    },
+    {
+      "score": 0.5291312317627079,
+      "label": "11D112: Chrismon and derived forms ~ symbol of Christ"
+    },
+    {
+      "score": 0.5393021754565329,
+      "label": "11D113: IHS ('Iesus Hominum Salvator') ~ symbol of Christ"
+    },
+    {
+      "score": 0.537580779588196,
+      "label": "11D1131: labarum, i.e. imperial standard bearing the christogram IHS"
+    },
+    {
+      "score": 0.5280202990391836,
+      "label": "11D1132: adoration of the name of Jesus"
+    },
+    {
+      "score": 0.5517345009871586,
+      "label": "11D114: 'Ichthys' ~ symbol of Christ"
+    },
+    {
+      "score": 0.5353506418187542,
+      "label": "11D12: the cross ~ symbols of Christ"
+    },
+    {
+      "score": 0.528331532534695,
+      "label": "11D121: cross as symbol of Christ"
+    },
+    {
+      "score": 0.5169533455369658,
+      "label": "11D122: cross with symbol of Christ on it, e.g. lamb"
+    },
+    {
+      "score": 0.5063494824310014,
+      "label": "11D1221: cross with head or bust of Christ"
+    },
+    {
+      "score": 0.5213416121162007,
+      "label": "11D123: specific forms of the cross"
+    },
+    {
+      "score": 0.5102836605327054,
+      "label": "11D123(...): specific forms of the cross (with NAME)"
+    },
+    {
+      "score": 0.5300857191849594,
+      "label": "11D123(ANDREW'S CROSS): specific forms of the cross: Andrew's cross"
+    },
+    {
+      "score": 0.5274899025666937,
+      "label": "11D123(ANSATE CROSS): specific forms of the cross: ansate cross"
+    },
+    {
+      "score": 0.5035681259784419,
+      "label": "11D123(BENEDICTINE CROSS): specific forms of the cross: Benedictine cross"
+    },
+    {
+      "score": 0.5015807896632375,
+      "label": "11D123(CARAVACA CROSS): specific forms of the cross: Caravaca cross"
+    },
+    {
+      "score": 0.5222097689515771,
+      "label": "11D123(FORKED CROSS): specific forms of the cross: forked cross"
+    },
+    {
+      "score": 0.5024502462319029,
+      "label": "11D123(GREEK CROSS): specific forms of the cross: Greek cross"
+    },
+    {
+      "score": 0.5385085091497435,
+      "label": "11D123(LORRAINE CROSS): specific forms of the cross: Lorraine cross"
+    },
+    {
+      "score": 0.5124473623509758,
+      "label": "11D123(SWASTIKA): specific forms of the cross: swastika"
+    },
+    {
+      "score": 0.5311218138299141,
+      "label": "11D123(TAU-CROSS): specific forms of the cross: Tau-cross"
+    },
+    {
+      "score": 0.5258597383493006,
+      "label": "11D124: venerating the cross"
+    },
+    {
+      "score": 0.5271651838017564,
+      "label": "11D13: (other) symbols of Christ"
+    },
+    {
+      "score": 0.5207480742058552,
+      "label": "11D131: symbols of Christ ~ animals"
+    },
+    {
+      "score": 0.5379019751432353,
+      "label": "11D1311: lamb bearing cross or banner, 'Agnus Dei' ~ symbol of Christ"
+    },
+    {
+      "score": 0.5255478013814752,
+      "label": "11D1312: symbols of Christ ~ birds"
+    },
+    {
+      "score": 0.5248942699264498,
+      "label": "11D13121: dove as a symbol of Christ"
+    },
+    {
+      "score": 0.5280760405638895,
+      "label": "11D13122: eagle as a symbol of Christ"
+    },
+    {
+      "score": 0.5258868871180362,
+      "label": "11D13123: peacock as a symbol of Christ"
+    },
+    {
+      "score": 0.5196454173830308,
+      "label": "11D13124: pelican as a symbol of Christ"
+    },
+    {
+      "score": 0.5343370536005898,
+      "label": "11D1313: symbols of Christ ~ mammals"
+    },
+    {
+      "score": 0.543220316478283,
+      "label": "11D13131: deer as a symbol of Christ"
+    },
+    {
+      "score": 0.5216798319716272,
+      "label": "11D13132: dolphin as a symbol of Christ"
+    },
+    {
+      "score": 0.5358316667126608,
+      "label": "11D13133: hare as a symbol of Christ"
+    },
+    {
+      "score": 0.518333819000199,
+      "label": "11D13134: lion as a symbol of Christ"
+    },
+    {
+      "score": 0.5186209774984557,
+      "label": "11D1314: symbols of Christ ~ insects"
+    },
+    {
+      "score": 0.5113007446533746,
+      "label": "11D13141: scarabaeus as a symbol of Christ"
+    },
+    {
+      "score": 0.5201258518452789,
+      "label": "11D1315: symbols of Christ ~ fabulous animals"
+    },
+    {
+      "score": 0.5288623889777782,
+      "label": "11D13151: griffin as a symbol of Christ"
+    },
+    {
+      "score": 0.5150400069035788,
+      "label": "11D13152: phoenix as a symbol of Christ"
+    },
+    {
+      "score": 0.5355320520178366,
+      "label": "11D13153: unicorn as a symbol of Christ"
+    },
+    {
+      "score": 0.5283983608028211,
+      "label": "11D132: symbols of Christ ~ plants"
+    },
+    {
+      "score": 0.5183716856778715,
+      "label": "11D133: symbols of Christ ~ objects"
+    },
+    {
+      "score": 0.5237469180066252,
+      "label": "11D1331: 'Etimasia', empty throne with the book of life, prepared for Christ"
+    },
+    {
+      "score": 0.5310998237245287,
+      "label": "11D134: bread and fish ~ symbols of Christ"
+    },
+    {
+      "score": 0.527028633394768,
+      "label": "11D14: prefigurations of Christ, Christ and his prefigurations"
+    },
+    {
+      "score": 0.5431603895125656,
+      "label": "11D15: the Incarnation ~ Christ"
+    },
+    {
+      "score": 0.5307380139918675,
+      "label": "11D2: Christ as child or youth (in general) ~ Christian religion"
+    },
+    {
+      "score": 0.5211611903405389,
+      "label": "11D21: Christ-child (with attributes)"
+    },
+    {
+      "score": 0.5229209945476894,
+      "label": "11D22: Christ-child ~ types of adult Christ"
+    },
+    {
+      "score": 0.5488053336401482,
+      "label": "11D23: Christ-child ~ Passion, 'Schmerzenskind'"
+    },
+    {
+      "score": 0.5168847840866144,
+      "label": "11D231: Christ-child meditating before the instruments of the Passion"
+    },
+    {
+      "score": 0.5019886997359239,
+      "label": "11D232: Christ-child surrounded by the instruments of the Passion"
+    },
+    {
+      "score": 0.5138431059724672,
+      "label": "11D233: Christ-child carrying the instruments of the Passion"
+    },
+    {
+      "score": 0.5212752684920761,
+      "label": "11D234: Christ-child displaying the five wounds"
+    },
+    {
+      "score": 0.5223946445348182,
+      "label": "11D235: Christ-child winding a crown of thorns, or with thorny twigs"
+    },
+    {
+      "score": 0.5259442649193082,
+      "label": "11D236: Christ-child carrying the cross"
+    },
+    {
+      "score": 0.5188681298379179,
+      "label": "11D237: Christ-child kneeling before the cross"
+    },
+    {
+      "score": 0.5140297580747405,
+      "label": "11D238: Christ-child sleeping on the cross"
+    },
+    {
+      "score": 0.5258030280812672,
+      "label": "11D24: Christ-child as eucharistic symbol"
+    },
+    {
+      "score": 0.5219321073434714,
+      "label": "11D241: Christ-child in or on a chalice"
+    },
+    {
+      "score": 0.5304412742519526,
+      "label": "11D2411: 'Melismos' ~ Christ-child as eucharistic symbol"
+    },
+    {
+      "score": 0.5412570583169246,
+      "label": "11D242: Christ-child in the mystic mill"
+    },
+    {
+      "score": 0.5258398702171494,
+      "label": "11D25: Christ-child together with others"
+    },
+    {
+      "score": 0.5364458554829773,
+      "label": "11D26: Christ as youth"
+    },
+    {
+      "score": 0.5571746705181214,
+      "label": "11D261: Christ 'Emmanuel'"
+    },
+    {
+      "score": 0.5417891108418799,
+      "label": "11D3: Christ as adult"
+    },
+    {
+      "score": 0.5390078832078318,
+      "label": "11D31: 'portraits' of Christ"
+    },
+    {
+      "score": 0.519320438692022,
+      "label": "11D311: 'Mandylion', i.e. portrait, perhaps made for King Abgar of Edessa by Christ himself, by pressing his face against a cloth"
+    },
+    {
+      "score": 0.5316769605584168,
+      "label": "11D3111: Christ gives the Mandylion to the messenger of King Abgar"
+    },
+    {
+      "score": 0.5518530608145401,
+      "label": "11D3112: the Mandylion is brought to Edessa"
+    },
+    {
+      "score": 0.5630983561893941,
+      "label": "11D312: 'Vera Icon', 'Sudarium', Veronica-portrait"
+    },
+    {
+      "score": 0.5325843040498998,
+      "label": "11D3121: 'Vera Icon', held up by Veronica"
+    },
+    {
+      "score": 0.5219698942483239,
+      "label": "11D3122: 'Vera Icon', held up by angels"
+    },
+    {
+      "score": 0.548952748632465,
+      "label": "11D3123: 'Vera Icon', held up by Peter and Paul"
+    },
+    {
+      "score": 0.5058729849898754,
+      "label": "11D3124: 'Vera Icon', held up by the four symbols of the evangelists"
+    },
+    {
+      "score": 0.5274526932068779,
+      "label": "11D313: 'portrait' of Christ according to the letter of Lentulus"
+    },
+    {
+      "score": 0.535514395022726,
+      "label": "11D314: 'Volto Santo', e.g. of Lucca (perhaps carved by Nicodemus)"
+    },
+    {
+      "score": 0.5264119950278151,
+      "label": "11D315: portrait of Christ made by Luke"
+    },
+    {
+      "score": 0.5166866157618687,
+      "label": "11D316: ex-voto of the woman healed from the issue of blood"
+    },
+    {
+      "score": 0.5282483935998572,
+      "label": "11D317: (full-length) image of Christ on shroud, 'Sindone'"
+    },
+    {
+      "score": 0.5374920456704965,
+      "label": "11D318: (other) 'portraits' of Christ, e.g. profile portrait"
+    },
+    {
+      "score": 0.5189521071253735,
+      "label": "11D32: particular types of adult Christ (without others)"
+    },
+    {
+      "score": 0.5109535307732396,
+      "label": "11D321: 'Majestas Domini': Christ in mandorla seated on a rainbow or sphere and accompanied by the Tetramorph"
+    },
+    {
+      "score": 0.5353800202079463,
+      "label": "11D322: Christ enthroned"
+    },
+    {
+      "score": 0.5190324650122705,
+      "label": "11D3221: 'Pantocrator', (bust of) Christ, making a speaking or blessing gesture and holding a book"
+    },
+    {
+      "score": 0.5530198587075954,
+      "label": "11D3222: 'Christus Rex'"
+    },
+    {
+      "score": 0.5391211061245115,
+      "label": "11D3223: Christ as (heavenly) judge"
+    },
+    {
+      "score": 0.5435733104812797,
+      "label": "11D323: Christ-'Logos', the Word Incarnate"
+    },
+    {
+      "score": 0.5007651856820474,
+      "label": "11D324: 'Salvator Mundi', making a blessing gesture; an orb in his hand or at his feet"
+    },
+    {
+      "score": 0.5430604508583518,
+      "label": "11D325: Christ ~ the Eucharist"
+    },
+    {
+      "score": 0.5046982869337924,
+      "label": "11D3251: Christ with chalice, and bread or Host"
+    },
+    {
+      "score": 0.5345543251278245,
+      "label": "11D3252: Christ in the wine-press, 'Christus in der Kelter' (Is. 63:3)"
+    },
+    {
+      "score": 0.5449473297460172,
+      "label": "11D3253: Christ in the symbolic mill"
+    },
+    {
+      "score": 0.5670132261330135,
+      "label": "11D326: 'Fons Vitae', 'Fons Pietatis'"
+    },
+    {
+      "score": 0.5297208047295194,
+      "label": "11D3261: Christ standing on or near a fountain, shedding his blood"
+    },
+    {
+      "score": 0.5132130866510992,
+      "label": "11D3262: Christ on the cross (in a fountain), shedding his blood"
+    },
+    {
+      "score": 0.5272359859677602,
+      "label": "11D327: Christ ~ human occupations"
+    },
+    {
+      "score": 0.5554986632913481,
+      "label": "11D3271: Christ as Good Shepherd"
+    },
+    {
+      "score": 0.5339652339567014,
+      "label": "11D3272: Christ as physician"
+    },
+    {
+      "score": 0.5257238235100011,
+      "label": "11D32721: Christ as apothecary"
+    },
+    {
+      "score": 0.565380974813939,
+      "label": "11D3273: Christ fishing"
+    },
+    {
+      "score": 0.540452081389297,
+      "label": "11D3274: Christ as pedlar"
+    },
+    {
+      "score": 0.5514267640428426,
+      "label": "11D3275: Christ as farmer or gardener"
+    },
+    {
+      "score": 0.5442151910926228,
+      "label": "11D3276: Christ as host"
+    },
+    {
+      "score": 0.5350545607013649,
+      "label": "11D3277: Christ as (high) priest or prophet"
+    },
+    {
+      "score": 0.5524769667696123,
+      "label": "11D3278: Christ as pilgrim"
+    },
+    {
+      "score": 0.5283216471668506,
+      "label": "11D3279: 'Feiertagschristus', Christ with craftsman's tools"
+    },
+    {
+      "score": 0.5265355337401251,
+      "label": "11D328: types of adult Christ (alone)"
+    },
+    {
+      "score": 0.5363302875641887,
+      "label": "11D3281: Christ as woman"
+    },
+    {
+      "score": 0.5355294902083474,
+      "label": "11D3282: Christ in orans attitude"
+    },
+    {
+      "score": 0.5337893642345437,
+      "label": "11D3283: Christ as angel"
+    },
+    {
+      "score": 0.5637281315658965,
+      "label": "11D3284: Christ ~ Orpheus"
+    },
+    {
+      "score": 0.5403688346355059,
+      "label": "11D3285: Christ ~ Apollo (Helios)"
+    },
+    {
+      "score": 0.5290291475760548,
+      "label": "11D33: adult Christ together with others (non-narrative representations)"
+    },
+    {
+      "score": 0.5017528286113094,
+      "label": "11D331: adult Christ with Mary"
+    },
+    {
+      "score": 0.5136270969674219,
+      "label": "11D3311: Christ and Mary as bridegroom and bride"
+    },
+    {
+      "score": 0.5185625490373724,
+      "label": "11D332: adult Christ together with angels"
+    },
+    {
+      "score": 0.5136971711168183,
+      "label": "11D333: adult Christ ~ devil(s) and demonic creatures"
+    },
+    {
+      "score": 0.5316950920427896,
+      "label": "11D3331: Christ triumphing over devil(s)"
+    },
+    {
+      "score": 0.514834545220173,
+      "label": "11D334: adult Christ together with apostles, evangelists, saints, etc."
+    },
+    {
+      "score": 0.5296381603374193,
+      "label": "11D3341: Christ with John the Evangelist leaning on his breast, 'Johannesminne', 'Christus-Johannes-Gruppe'"
+    },
+    {
+      "score": 0.5316481479231234,
+      "label": "11D3342: 'Traditio legis', 'Dominus legem dat', i.e. Christ giving a scroll (the Law) to Paul; Peter present"
+    },
+    {
+      "score": 0.5271055628578589,
+      "label": "11D33421: Christ giving a scroll (the Law) to Paul; apostle(s) present"
+    },
+    {
+      "score": 0.5199107882837957,
+      "label": "11D3343: Christ with penitent sinners (Adam, David, prodigal son, Mary Magdalene, good malefactor, Peter, etc.)"
+    },
+    {
+      "score": 0.5170169000429164,
+      "label": "11D335: adult Christ together with mortals"
+    },
+    {
+      "score": 0.5357305206628958,
+      "label": "11D3351: (adult) Christ appearing to mortals"
+    },
+    {
+      "score": 0.5406795338384042,
+      "label": "11D336: triumphant Christ, e.g. on triumphal chariot"
+    },
+    {
+      "score": 0.5456784083204246,
+      "label": "11D337: Christ on horseback"
+    },
+    {
+      "score": 0.524482041080753,
+      "label": "11D3371: Christ on horseback leading an army of knights, 'Militia Christi'"
+    },
+    {
+      "score": 0.5295017560482634,
+      "label": "11D34: adult Christ ~ abstract conceptions"
+    },
+    {
+      "score": 0.5158666821619601,
+      "label": "11D35: specific types of crucified Christ (in non-narrative context)"
+    },
+    {
+      "score": 0.5095668015443494,
+      "label": "11D351: Christ suffering (with crown of thorns, head usually turned sidewards)"
+    },
+    {
+      "score": 0.5198445474508075,
+      "label": "11D352: Christ covered with pest-sores, 'Pestkruzifixus'"
+    },
+    {
+      "score": 0.5318508070990053,
+      "label": "11D353: Christ triumphing (with crown, head usually upright)"
+    },
+    {
+      "score": 0.517426288364352,
+      "label": "11D354: Christ bowing down from the cross to embrace someone"
+    },
+    {
+      "score": 0.543372722303217,
+      "label": "11D355: Christ crucified on a tree or on a vine"
+    },
+    {
+      "score": 0.5312473234747083,
+      "label": "11D356: Christ crucified on a 'living' cross"
+    },
+    {
+      "score": 0.5319145308655953,
+      "label": "11D357: the Virtues ~ crucified Christ"
+    },
+    {
+      "score": 0.5101998160046286,
+      "label": "11D36: other types of crucified Christ in non-narrative context"
+    },
+    {
+      "score": 0.5278665083939226,
+      "label": "11D4: legends and devotions ~ Christ"
+    },
+    {
+      "score": 0.5342977433876479,
+      "label": "11D41: legends ~ Christ"
+    },
+    {
+      "score": 0.5375020405176213,
+      "label": "11D411: legend of the True Cross"
+    },
+    {
+      "score": 0.5185090465873801,
+      "label": "11D4111: Seth puts a branch from the Tree of Knowledge on Adam's grave ~ legend of the True Cross"
+    },
+    {
+      "score": 0.5257021854821908,
+      "label": "11D41111: Seth searching for paradise; the angel gives him a twig or a flask of oil ~ legend of the True Cross"
+    },
+    {
+      "score": 0.543463348726662,
+      "label": "11D4112: the wood is used for the building of the temple of Solomon ~ the legend of the True Cross"
+    },
+    {
+      "score": 0.5610725344170553,
+      "label": "11D4113: the wood, serving as a bridge, is worshipped by the queen of Sheba ~ the legend of the True Cross"
+    },
+    {
+      "score": 0.5565463610616675,
+      "label": "11D4114: the wood is taken from the pool of Bethesda to serve as Christ's cross ~ legend of the True Cross"
+    },
+    {
+      "score": 0.5366340931679416,
+      "label": "11D4115: Helena's vision of the Holy Cross borne by angels ~ legend of the True Cross"
+    },
+    {
+      "score": 0.5482629841910757,
+      "label": "11D4116: the finding of the True Cross"
+    },
+    {
+      "score": 0.5176568821294664,
+      "label": "11D41161: Judas, a Jew, put into a well by Helena, mother of Constantine ~ legend of the True Cross"
+    },
+    {
+      "score": 0.5257424605400006,
+      "label": "11D41162: the three crosses are dug up near the temple of Venus ~ legend of the True Cross"
+    },
+    {
+      "score": 0.5201231923860108,
+      "label": "11D41163: Helena identifies the True Cross: a human corpse is restored to life when it touches the cross"
+    },
+    {
+      "score": 0.5150575676251944,
+      "label": "11D41164: Helena and Constantine kneeling before (or standing beside) the True Cross"
+    },
+    {
+      "score": 0.5367027032469218,
+      "label": "11D4117: the raising of the True Cross, Exaltation of the Holy Cross"
+    },
+    {
+      "score": 0.5310556744446263,
+      "label": "11D41171: Emperor Heraclius defeats Chosroes II of Persia, and recovers a part of the True Cross"
+    },
+    {
+      "score": 0.5203313496795017,
+      "label": "11D41172: Heraclius' entry into Jerusalem: as asked by an angel, the emperor, stripped of his royal robes, carries the True Cross into the city"
+    },
+    {
+      "score": 0.5236356184406263,
+      "label": "11D411721: emperor Heraclius' entry into Jerusalem, riding on an ass or on horseback ~ legend of the True Cross"
+    },
+    {
+      "score": 0.5215495581921161,
+      "label": "11D41173: the True Cross is erected on Golgotha (or on an altar) ~ legend of the True Cross"
+    },
+    {
+      "score": 0.5335773655052979,
+      "label": "11D41174: Chosroes II, having refused baptism, is executed ~ legend of the True Cross"
+    },
+    {
+      "score": 0.5178899838541101,
+      "label": "11D412: legend of the bleeding Holy Lance"
+    },
+    {
+      "score": 0.5331515952307552,
+      "label": "11D413: legend of the Holy Grail"
+    },
+    {
+      "score": 0.5177405494696428,
+      "label": "11D414: the prophecy of Basilides: on his way to Jerusalem, emperor Titus consults Basilides the Carmelite, who shows him a vision of God the Father with the dead Christ"
+    },
+    {
+      "score": 0.5359683747399661,
+      "label": "11D42: devotion ~ Christ"
+    },
+    {
+      "score": 0.5325310445104209,
+      "label": "11D421: the Seven Bleedings of Christ"
+    },
+    {
+      "score": 0.5390581637334473,
+      "label": "11D4211: single scenes of the Seven Bleedings of Christ"
+    },
+    {
+      "score": 0.5462424886777039,
+      "label": "11D422: the Sacred Heart"
+    },
+    {
+      "score": 0.5304822314809762,
+      "label": "11D423: the Sacred Blood"
+    },
+    {
+      "score": 0.5580365067666395,
+      "label": "11D424: the Sacred Tear"
+    },
+    {
+      "score": 0.5478128655292939,
+      "label": "11D425: Christ's length"
+    },
+    {
+      "score": 0.5261503181786723,
+      "label": "11D43: relics ~ Christ"
+    },
+    {
+      "score": 0.5278455122243462,
+      "label": "11D431: splinters of the cross ~ relics of Christ"
+    },
+    {
+      "score": 0.5153939320782152,
+      "label": "11D432: nails of the cross ~ relics of Christ"
+    },
+    {
+      "score": 0.5391392856402435,
+      "label": "11D433: the Holy Lance ~ relics of Christ"
+    },
+    {
+      "score": 0.5317283360275018,
+      "label": "11D434: Christ's robe ~ relics of Christ"
+    },
+    {
+      "score": 0.512223549304946,
+      "label": "11D435: 'Scala Santa', the stairs of Pilate's palace ~ relics of Christ"
+    }
+  ]
+]

@@ -1,0 +1,1380 @@
+{
+  "json": {
+    "static_kb_url": "https://iconclass.org/en/",
+    "el_result": {
+      "ents": [
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23g311",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23d622",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23f321",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23h612",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23k13",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23l13",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23e311",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23f622",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23g622",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23f311",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23g612",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23o21",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23d612",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23h622",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23e622",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23e321",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23n13",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23e612",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23g321",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23d311",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23d321",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23h311",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23f612",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23h321",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 29,
+          "end": 34,
+          "label": "23m13",
+          "text": "march",
+          "idx": 6
+        },
+        {
+          "start": 45,
+          "end": 49,
+          "label": "23l31",
+          "text": "july",
+          "idx": 10
+        },
+        {
+          "start": 45,
+          "end": 49,
+          "label": "23n31",
+          "text": "july",
+          "idx": 10
+        },
+        {
+          "start": 45,
+          "end": 49,
+          "label": "23h614",
+          "text": "july",
+          "idx": 10
+        },
+        {
+          "start": 45,
+          "end": 49,
+          "label": "23d614",
+          "text": "july",
+          "idx": 10
+        },
+        {
+          "start": 45,
+          "end": 49,
+          "label": "23e614",
+          "text": "july",
+          "idx": 10
+        },
+        {
+          "start": 45,
+          "end": 49,
+          "label": "23f614",
+          "text": "july",
+          "idx": 10
+        },
+        {
+          "start": 45,
+          "end": 49,
+          "label": "23m31",
+          "text": "july",
+          "idx": 10
+        },
+        {
+          "start": 45,
+          "end": 49,
+          "label": "23k31",
+          "text": "july",
+          "idx": 10
+        },
+        {
+          "start": 45,
+          "end": 49,
+          "label": "23g614",
+          "text": "july",
+          "idx": 10
+        },
+        {
+          "start": 63,
+          "end": 68,
+          "label": "32b311(dutch)",
+          "text": "dutch",
+          "idx": 15
+        },
+        {
+          "start": 69,
+          "end": 73,
+          "label": "46e2",
+          "text": "post",
+          "idx": 16
+        },
+        {
+          "start": 88,
+          "end": 95,
+          "label": "98b(parrhasius)",
+          "text": "painter",
+          "idx": 19
+        },
+        {
+          "start": 88,
+          "end": 95,
+          "label": "48c412",
+          "text": "painter",
+          "idx": 19
+        },
+        {
+          "start": 88,
+          "end": 95,
+          "label": "48c512",
+          "text": "painter",
+          "idx": 19
+        },
+        {
+          "start": 156,
+          "end": 163,
+          "label": "6",
+          "text": "history",
+          "idx": 31
+        },
+        {
+          "start": 156,
+          "end": 163,
+          "label": "25e",
+          "text": "history",
+          "idx": 31
+        },
+        {
+          "start": 156,
+          "end": 163,
+          "label": "23t",
+          "text": "history",
+          "idx": 31
+        },
+        {
+          "start": 156,
+          "end": 163,
+          "label": "42e372",
+          "text": "history",
+          "idx": 31
+        },
+        {
+          "start": 156,
+          "end": 163,
+          "label": "49k1",
+          "text": "history",
+          "idx": 31
+        },
+        {
+          "start": 156,
+          "end": 163,
+          "label": "32b2",
+          "text": "history",
+          "idx": 31
+        },
+        {
+          "start": 175,
+          "end": 178,
+          "label": "43c743",
+          "text": "art",
+          "idx": 34
+        },
+        {
+          "start": 175,
+          "end": 178,
+          "label": "48",
+          "text": "art",
+          "idx": 34
+        },
+        {
+          "start": 196,
+          "end": 202,
+          "label": "31d3",
+          "text": "decade",
+          "idx": 40
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "11q7154",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "11hh(cecilia)61",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "25d43",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "11h(ignatius)82",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "11h(george)62",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "11h(vitus)62",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "73f2753",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "41b12(oil)",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "11h(cyricus & julitta)61",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 267,
+          "end": 270,
+          "label": "73c8412",
+          "text": "oil",
+          "idx": 51
+        },
+        {
+          "start": 303,
+          "end": 307,
+          "label": "47h731",
+          "text": "last",
+          "idx": 59
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "23d2",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "71g1141",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "25f952",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "96a128(janus' head)",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "11h(onuphrius)",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "46a241",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "46aa241",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "31aa4422",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "44g151",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "49d11(2)",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "23f2",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "23e2",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "73c831",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "96a1222",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "31a4422",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "23h2",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "73g363",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "31a2331",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "25ff2412",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "71i434",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "25ff332",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "23g2",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 308,
+          "end": 311,
+          "label": "11h(paul the hermit)",
+          "text": "two",
+          "idx": 60
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "32b12",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "73c7441",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "31e5",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "31f33",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "31d",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "46a8",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "11r",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "58bb1",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "54f122",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "11s717",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "58b2",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "11d326",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "61b2(...)21",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "31g1",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "61bb2(...)21",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 325,
+          "end": 329,
+          "label": "61b121",
+          "text": "life",
+          "idx": 64
+        },
+        {
+          "start": 365,
+          "end": 370,
+          "label": "49e391",
+          "text": "still",
+          "idx": 71
+        },
+        {
+          "start": 538,
+          "end": 541,
+          "label": "43c743",
+          "text": "art",
+          "idx": 101
+        },
+        {
+          "start": 538,
+          "end": 541,
+          "label": "48",
+          "text": "art",
+          "idx": 101
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71e11314",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71d223",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "94h142",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "73f22367",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71h911",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71e1221",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "73f3561",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "94l3332",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "94m611",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "92n5451",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71h1451",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71i332",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71f2134",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71h114",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71f822",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "11h(john nepomuk)61",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71c1164",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71q6",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "73f223363",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71e33711",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71i13",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "95b(phaedra)2132",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71o76624",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71c25212",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71e116",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "92d1921744",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "92i212111",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "73f21233",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71f8341",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71c25222",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "98b(themistocles)51",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "11hh(mary magdalene)51331",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71q23",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "95a(midas)52",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71h26621",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "11hh(clare)131",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71i324",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "71h8243",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "92m137",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "73f2431",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "95a(orestes)33",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "73f223362",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 602,
+          "end": 608,
+          "label": "73d323",
+          "text": "before",
+          "idx": 113
+        },
+        {
+          "start": 650,
+          "end": 653,
+          "label": "12u(anthroposophy)83",
+          "text": "age",
+          "idx": 123
+        },
+        {
+          "start": 650,
+          "end": 653,
+          "label": "12u(theosophy)83",
+          "text": "age",
+          "idx": 123
+        },
+        {
+          "start": 650,
+          "end": 653,
+          "label": "12u(freemasonry)83",
+          "text": "age",
+          "idx": 123
+        },
+        {
+          "start": 650,
+          "end": 653,
+          "label": "12u(rosicrucians)83",
+          "text": "age",
+          "idx": 123
+        },
+        {
+          "start": 650,
+          "end": 653,
+          "label": "12b83",
+          "text": "age",
+          "idx": 123
+        },
+        {
+          "start": 650,
+          "end": 653,
+          "label": "42d311",
+          "text": "age",
+          "idx": 123
+        },
+        {
+          "start": 650,
+          "end": 653,
+          "label": "12u(...)83",
+          "text": "age",
+          "idx": 123
+        },
+        {
+          "start": 650,
+          "end": 653,
+          "label": "12u(socinians)83",
+          "text": "age",
+          "idx": 123
+        },
+        {
+          "start": 650,
+          "end": 653,
+          "label": "31e14",
+          "text": "age",
+          "idx": 123
+        },
+        {
+          "start": 686,
+          "end": 689,
+          "label": "31aa23711",
+          "text": "one",
+          "idx": 131
+        },
+        {
+          "start": 686,
+          "end": 689,
+          "label": "31a2313",
+          "text": "one",
+          "idx": 131
+        },
+        {
+          "start": 686,
+          "end": 689,
+          "label": "31a23711",
+          "text": "one",
+          "idx": 131
+        },
+        {
+          "start": 686,
+          "end": 689,
+          "label": "31aa2313",
+          "text": "one",
+          "idx": 131
+        },
+        {
+          "start": 686,
+          "end": 689,
+          "label": "31a23721",
+          "text": "one",
+          "idx": 131
+        },
+        {
+          "start": 686,
+          "end": 689,
+          "label": "43c91",
+          "text": "one",
+          "idx": 131
+        },
+        {
+          "start": 686,
+          "end": 689,
+          "label": "73b511",
+          "text": "one",
+          "idx": 131
+        },
+        {
+          "start": 686,
+          "end": 689,
+          "label": "31aa23721",
+          "text": "one",
+          "idx": 131
+        },
+        {
+          "start": 721,
+          "end": 724,
+          "label": "22c4(red)",
+          "text": "red",
+          "idx": 139
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "47i421",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "94i821",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "73c8181",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "73c815",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "71k274",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "11h(servatius)83",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "73c816",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "71f5431",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "71o351",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 725,
+          "end": 733,
+          "label": "71f324",
+          "text": "vineyard",
+          "idx": 140
+        },
+        {
+          "start": 26,
+          "end": 28,
+          "label": "73C721321",
+          "text": "30",
+          "idx": 5
+        },
+        {
+          "start": 141,
+          "end": 148,
+          "label": "41D122",
+          "text": "figures",
+          "idx": 28
+        },
+        {
+          "start": 167,
+          "end": 174,
+          "label": "25A144",
+          "text": "western",
+          "idx": 33
+        },
+        {
+          "start": 208,
+          "end": 215,
+          "label": "11L5412",
+          "text": "created",
+          "idx": 43
+        },
+        {
+          "start": 246,
+          "end": 255,
+          "label": "11D41161",
+          "text": "including",
+          "idx": 48
+        },
+        {
+          "start": 271,
+          "end": 280,
+          "label": "48C412",
+          "text": "paintings",
+          "idx": 52
+        },
+        {
+          "start": 312,
+          "end": 317,
+          "label": "31D3",
+          "text": "years",
+          "idx": 61
+        },
+        {
+          "start": 352,
+          "end": 362,
+          "label": "11S12",
+          "text": "landscapes",
+          "idx": 69
+        },
+        {
+          "start": 379,
+          "end": 388,
+          "label": "11D31",
+          "text": "portraits",
+          "idx": 74
+        },
+        {
+          "start": 400,
+          "end": 409,
+          "label": "11D31",
+          "text": "portraits",
+          "idx": 79
+        },
+        {
+          "start": 452,
+          "end": 458,
+          "label": "48C5152",
+          "text": "colors",
+          "idx": 88
+        },
+        {
+          "start": 506,
+          "end": 510,
+          "label": "46B471",
+          "text": "rise",
+          "idx": 96
+        },
+        {
+          "start": 531,
+          "end": 537,
+          "label": "98",
+          "text": "modern",
+          "idx": 100
+        },
+        {
+          "start": 556,
+          "end": 560,
+          "label": "11D41161",
+          "text": "work",
+          "idx": 106
+        },
+        {
+          "start": 565,
+          "end": 574,
+          "label": "43A141",
+          "text": "beginning",
+          "idx": 108
+        },
+        {
+          "start": 612,
+          "end": 616,
+          "label": "11L541411",
+          "text": "died",
+          "idx": 115
+        },
+        {
+          "start": 654,
+          "end": 656,
+          "label": "71D11",
+          "text": "37",
+          "idx": 124
+        },
+        {
+          "start": 705,
+          "end": 714,
+          "label": "48C412",
+          "text": "paintings",
+          "idx": 136
+        }
+      ],
+      "doc": "Vincent Willem van Gogh ( 30 March 1853 \u2013 29 July 1890 ) was a Dutch Post-Impressionist painter who is among the most famous and influential figures in the history of Western art . In just over a decade , he created approximately 2100 artworks , including around 860 oil paintings , most of them in the last two years of his life . His oeuvre includes landscapes , still lifes , portraits , and self-portraits , most of which are characterized by bold colors and dramatic brushwork that contributed to the rise of expressionism in modern art . Van Gogh 's work was beginning to gain critical attention before he died from a self-inflicted gunshot at age 37 . During his lifetime , only one of Van Gogh 's paintings , The Red Vineyard , was sold .",
+      "ids": {
+        "88": "48C5152",
+        "69": "11S12",
+        "48": "11D41161",
+        "28": "11B12",
+        "131": "31aa23721",
+        "113": "73d323",
+        "136": "11D31",
+        "115": "11B",
+        "139": "22c4(red)",
+        "71": "49e391",
+        "51": "73c8412",
+        "52": "11D31",
+        "74": "11D31",
+        "96": "46B471",
+        "31": "32b2",
+        "10": "23g614",
+        "33": "25A142",
+        "34": "48",
+        "79": "11D31",
+        "15": "32b311(dutch)",
+        "59": "47h731",
+        "16": "46e2",
+        "19": "48c512",
+        "140": "71f324",
+        "100": "23T22",
+        "101": "48",
+        "123": "31e14",
+        "124": "71C324",
+        "5": "73C721321",
+        "6": "23m13",
+        "106": "11D41161",
+        "108": "11R513",
+        "60": "11h(paul the hermit)",
+        "61": "11D326",
+        "40": "31d3",
+        "64": "61b121",
+        "43": "11L5412"
+      }
+    }
+  },
+  "html": "<div class=\"entities\" style=\"line-height: 2.5; direction: ltr\">Vincent Willem van Gogh ( 30 \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23g311\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23g311\">23g311</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23d622\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23d622\">23d622</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23f321\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23f321\">23f321</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23h612\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23h612\">23h612</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23k13\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23k13\">23k13</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23l13\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23l13\">23l13</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23e311\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23e311\">23e311</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23f622\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23f622\">23f622</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23g622\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23g622\">23g622</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23f311\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23f311\">23f311</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23g612\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23g612\">23g612</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23o21\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23o21\">23o21</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23d612\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23d612\">23d612</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23h622\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23h622\">23h622</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23e622\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23e622\">23e622</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23e321\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23e321\">23e321</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23n13\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23n13\">23n13</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23e612\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23e612\">23e612</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23g321\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23g321\">23g321</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23d311\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23d311\">23d311</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23d321\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23d321\">23d321</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23h311\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23h311\">23h311</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23f612\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23f612\">23f612</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23h321\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23h321\">23h321</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    March\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23m13\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23m13\">23m13</a>\n</span>\n</mark>\n 1853 \u2013 29 \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    July\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23l31\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23l31\">23l31</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    July\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23n31\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23n31\">23n31</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    July\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23h614\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23h614\">23h614</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    July\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23d614\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23d614\">23d614</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    July\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23e614\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23e614\">23e614</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    July\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23f614\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23f614\">23f614</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    July\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23m31\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23m31\">23m31</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    July\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23k31\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23k31\">23k31</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    July\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23g614\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23g614\">23g614</a>\n</span>\n</mark>\n 1890 ) was a \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Dutch\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">32b311(dutch)\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/32b311(dutch)\">32b311(dutch)</a>\n</span>\n</mark>\n \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Post\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">46e2\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/46e2\">46e2</a>\n</span>\n</mark>\n-Impressionist \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    painter\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">98b(parrhasius)\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/98b(parrhasius)\">98b(parrhasius)</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    painter\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">48c412\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/48c412\">48c412</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    painter\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">48c512\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/48c512\">48c512</a>\n</span>\n</mark>\n who is among the most famous and influential figures in the \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    history\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">6\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/6\">6</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    history\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">25e\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/25e\">25e</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    history\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23t\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23t\">23t</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    history\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">42e372\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/42e372\">42e372</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    history\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">49k1\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/49k1\">49k1</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    history\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">32b2\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/32b2\">32b2</a>\n</span>\n</mark>\n of Western \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    art\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">43c743\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/43c743\">43c743</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    art\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">48\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/48\">48</a>\n</span>\n</mark>\n . In just over a \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    decade\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31d3\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31d3\">31d3</a>\n</span>\n</mark>\n , he created approximately 2100 artworks , including around 860 \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11q7154\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11q7154\">11q7154</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11hh(cecilia)61\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11hh(cecilia)61\">11hh(cecilia)61</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">25d43\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/25d43\">25d43</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11h(ignatius)82\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11h(ignatius)82\">11h(ignatius)82</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11h(george)62\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11h(george)62\">11h(george)62</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11h(vitus)62\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11h(vitus)62\">11h(vitus)62</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73f2753\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73f2753\">73f2753</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">41b12(oil)\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/41b12(oil)\">41b12(oil)</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11h(cyricus & julitta)61\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11h(cyricus & julitta)61\">11h(cyricus & julitta)61</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    oil\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73c8412\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73c8412\">73c8412</a>\n</span>\n</mark>\n paintings , most of them in the \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    last\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">47h731\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/47h731\">47h731</a>\n</span>\n</mark>\n \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23d2\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23d2\">23d2</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71g1141\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71g1141\">71g1141</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">25f952\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/25f952\">25f952</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">96a128(janus' head)\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/96a128(janus' head)\">96a128(janus' head)</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11h(onuphrius)\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11h(onuphrius)\">11h(onuphrius)</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">46a241\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/46a241\">46a241</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">46aa241\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/46aa241\">46aa241</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31aa4422\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31aa4422\">31aa4422</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">44g151\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/44g151\">44g151</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">49d11(2)\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/49d11(2)\">49d11(2)</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23f2\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23f2\">23f2</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23e2\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23e2\">23e2</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73c831\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73c831\">73c831</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">96a1222\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/96a1222\">96a1222</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31a4422\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31a4422\">31a4422</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23h2\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23h2\">23h2</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73g363\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73g363\">73g363</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31a2331\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31a2331\">31a2331</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">25ff2412\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/25ff2412\">25ff2412</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71i434\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71i434\">71i434</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">25ff332\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/25ff332\">25ff332</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">23g2\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/23g2\">23g2</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    two\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11h(paul the hermit)\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11h(paul the hermit)\">11h(paul the hermit)</a>\n</span>\n</mark>\n years of his \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">32b12\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/32b12\">32b12</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73c7441\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73c7441\">73c7441</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31e5\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31e5\">31e5</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31f33\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31f33\">31f33</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31d\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31d\">31d</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">46a8\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/46a8\">46a8</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11r\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11r\">11r</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">58bb1\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/58bb1\">58bb1</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">54f122\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/54f122\">54f122</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11s717\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11s717\">11s717</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">58b2\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/58b2\">58b2</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11d326\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11d326\">11d326</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">61b2(...)21\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/61b2(...)21\">61b2(...)21</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31g1\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31g1\">31g1</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">61bb2(...)21\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/61bb2(...)21\">61bb2(...)21</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    life\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">61b121\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/61b121\">61b121</a>\n</span>\n</mark>\n . His oeuvre includes landscapes , \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    still\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">49e391\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/49e391\">49e391</a>\n</span>\n</mark>\n lifes , portraits , and self-portraits , most of which are characterized by bold colors and dramatic brushwork that contributed to the rise of expressionism in modern \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    art\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">43c743\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/43c743\">43c743</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    art\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">48\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/48\">48</a>\n</span>\n</mark>\n . Van Gogh 's work was beginning to gain critical attention \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71e11314\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71e11314\">71e11314</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71d223\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71d223\">71d223</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">94h142\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/94h142\">94h142</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73f22367\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73f22367\">73f22367</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71h911\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71h911\">71h911</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71e1221\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71e1221\">71e1221</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73f3561\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73f3561\">73f3561</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">94l3332\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/94l3332\">94l3332</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">94m611\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/94m611\">94m611</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">92n5451\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/92n5451\">92n5451</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71h1451\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71h1451\">71h1451</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71i332\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71i332\">71i332</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71f2134\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71f2134\">71f2134</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71h114\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71h114\">71h114</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71f822\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71f822\">71f822</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11h(john nepomuk)61\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11h(john nepomuk)61\">11h(john nepomuk)61</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71c1164\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71c1164\">71c1164</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71q6\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71q6\">71q6</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73f223363\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73f223363\">73f223363</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71e33711\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71e33711\">71e33711</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71i13\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71i13\">71i13</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">95b(phaedra)2132\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/95b(phaedra)2132\">95b(phaedra)2132</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71o76624\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71o76624\">71o76624</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71c25212\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71c25212\">71c25212</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71e116\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71e116\">71e116</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">92d1921744\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/92d1921744\">92d1921744</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">92i212111\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/92i212111\">92i212111</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73f21233\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73f21233\">73f21233</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71f8341\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71f8341\">71f8341</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71c25222\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71c25222\">71c25222</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">98b(themistocles)51\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/98b(themistocles)51\">98b(themistocles)51</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11hh(mary magdalene)51331\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11hh(mary magdalene)51331\">11hh(mary magdalene)51331</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71q23\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71q23\">71q23</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">95a(midas)52\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/95a(midas)52\">95a(midas)52</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71h26621\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71h26621\">71h26621</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11hh(clare)131\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11hh(clare)131\">11hh(clare)131</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71i324\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71i324\">71i324</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71h8243\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71h8243\">71h8243</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">92m137\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/92m137\">92m137</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73f2431\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73f2431\">73f2431</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">95a(orestes)33\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/95a(orestes)33\">95a(orestes)33</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73f223362\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73f223362\">73f223362</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    before\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73d323\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73d323\">73d323</a>\n</span>\n</mark>\n he died from a self-inflicted gunshot at \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    age\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">12u(anthroposophy)83\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/12u(anthroposophy)83\">12u(anthroposophy)83</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    age\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">12u(theosophy)83\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/12u(theosophy)83\">12u(theosophy)83</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    age\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">12u(freemasonry)83\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/12u(freemasonry)83\">12u(freemasonry)83</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    age\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">12u(rosicrucians)83\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/12u(rosicrucians)83\">12u(rosicrucians)83</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    age\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">12b83\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/12b83\">12b83</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    age\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">42d311\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/42d311\">42d311</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    age\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">12u(...)83\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/12u(...)83\">12u(...)83</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    age\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">12u(socinians)83\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/12u(socinians)83\">12u(socinians)83</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    age\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31e14\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31e14\">31e14</a>\n</span>\n</mark>\n 37 . During his lifetime , only \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    one\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31aa23711\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31aa23711\">31aa23711</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    one\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31a2313\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31a2313\">31a2313</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    one\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31a23711\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31a23711\">31a23711</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    one\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31aa2313\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31aa2313\">31aa2313</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    one\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31a23721\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31a23721\">31a23721</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    one\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">43c91\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/43c91\">43c91</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    one\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73b511\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73b511\">73b511</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    one\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31aa23721\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31aa23721\">31aa23721</a>\n</span>\n</mark>\n of Van Gogh 's paintings , The \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Red\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">22c4(red)\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/22c4(red)\">22c4(red)</a>\n</span>\n</mark>\n \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">47i421\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/47i421\">47i421</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">94i821\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/94i821\">94i821</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73c8181\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73c8181\">73c8181</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73c815\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73c815\">73c815</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71k274\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71k274\">71k274</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11h(servatius)83\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11h(servatius)83\">11h(servatius)83</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73c816\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73c816\">73c816</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71f5431\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71f5431\">71f5431</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71o351\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71o351\">71o351</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Vineyard\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71f324\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71f324\">71f324</a>\n</span>\n</mark>\n\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    30\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">73C721321\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/73C721321\">73C721321</a>\n</span>\n</mark>\n March 1853 \u2013 29 July 1890 ) was a Dutch Post-Impressionist painter who is among the most famous and influential \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    figures\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">41D122\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/41D122\">41D122</a>\n</span>\n</mark>\n in the history of \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Western\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">25A144\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/25A144\">25A144</a>\n</span>\n</mark>\n art . In just over a decade , he \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    created\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11L5412\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11L5412\">11L5412</a>\n</span>\n</mark>\n approximately 2100 artworks , \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    including\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11D41161\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11D41161\">11D41161</a>\n</span>\n</mark>\n around 860 oil \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    paintings\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">48C412\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/48C412\">48C412</a>\n</span>\n</mark>\n , most of them in the last two \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    years\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">31D3\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/31D3\">31D3</a>\n</span>\n</mark>\n of his life . His oeuvre includes \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    landscapes\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11S12\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11S12\">11S12</a>\n</span>\n</mark>\n , still lifes , \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    portraits\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11D31\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11D31\">11D31</a>\n</span>\n</mark>\n , and self-\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    portraits\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11D31\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11D31\">11D31</a>\n</span>\n</mark>\n , most of which are characterized by bold \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    colors\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">48C5152\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/48C5152\">48C5152</a>\n</span>\n</mark>\n and dramatic brushwork that contributed to the \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    rise\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">46B471\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/46B471\">46B471</a>\n</span>\n</mark>\n of expressionism in \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    modern\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">98\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/98\">98</a>\n</span>\n</mark>\n art . Van Gogh 's \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    work\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11D41161\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11D41161\">11D41161</a>\n</span>\n</mark>\n was \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    beginning\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">43A141\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/43A141\">43A141</a>\n</span>\n</mark>\n to gain critical attention before he \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    died\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">11L541411\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/11L541411\">11L541411</a>\n</span>\n</mark>\n from a self-inflicted gunshot at age \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    37\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">71D11\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/71D11\">71D11</a>\n</span>\n</mark>\n . During his lifetime , only one of Van Gogh 's \n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    paintings\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">48C412\n <a style=\"text-decoration: none; color: inherit; font-weight: normal\" href=\"https://iconclass.org/en/48C412\">48C412</a>\n</span>\n</mark>\n , The Red Vineyard , was sold .</div>"
+}

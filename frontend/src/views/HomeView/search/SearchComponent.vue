@@ -57,12 +57,12 @@ function getActiveTab(): SearchTerminologyComponent {
   );
 }
 
-function search() {
+async function search() {
   ResultsService.clearResults();
 
   let params;
   try {
-    params = getActiveTab().getParams();
+    params = await getActiveTab().getParams();
     for (let key in params.searchParams) {
       if (params.searchParams[key] !== false) continue;
       //delete params.searchParams[key]; // Force opt-in implicity

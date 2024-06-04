@@ -47,7 +47,7 @@ defineExpose({
 
     sSimilarity.value.reset();
   },
-  getParams(): IEntitySearchData {
+  async getParams(): Promise<IImageSearchData> {
     return validate({
       endpoint: '/annotation/entitylinking/text',
       searchParams: {
@@ -62,16 +62,7 @@ defineExpose({
         language: 'en',
       },
 
-      mock: {
-        json: {
-          el_result: {
-            ents: [{ start: 8, end: 16, label: 'van gogh', text: 'van gogh', idx: 1 }],
-            doc: 'Vincent van Gogh was a dutch post-impressionist painter',
-            ids: { '1': 'van gogh', '2': 'van gogh' },
-          },
-        },
-        html: '<div class="entities" style="line-height: 2.5; direction: ltr">Vincent \n<mark class="entity" style="background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;">\n    van Gogh\n    <span style="font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem">van gogh<\/span>\n<\/mark>\n was a dutch post-impressionist painter<\/div>',
-      },
+      mock: (await import('./mock.entity.json')).default,
     });
   },
 });
