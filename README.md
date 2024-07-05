@@ -7,7 +7,7 @@
 **ANTELOPE** is a free, open-source service to support your data annotation. It offers terminology search, entity linking and easy integration into your projects. The serice integrates with various terminology services and enduser applications (Wikibase and Kompakkt for now). At that, it supports users with process automation and named entity recognition features.
   
 • [View Application](https://service.tib.eu/annotation)  
-• [Documentation](nfdi4culture.gitlab.io/annotation-service)  
+• [Documentation](https://nfdi4culture.gitlab.io/ta5-knowledge-graph/antelope-documentation)  
 • [Developer README](./readme/)
 
 <img alt="ANTELOPE UI Screenshot" src="./readme/antelope-screenshot.png" width="700">
