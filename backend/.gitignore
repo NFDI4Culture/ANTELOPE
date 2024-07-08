@@ -137,3 +137,8 @@ deploy/
 ######################
 /coverage/
 /.nyc_output/
+
+######################
+# Terminology files
+######################
+backend/src/main/resources/dict/iconclass/txt_cliptextembeddings.csv

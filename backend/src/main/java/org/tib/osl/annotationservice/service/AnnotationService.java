@@ -221,50 +221,55 @@ public class AnnotationService implements AnnotationApiDelegate {
         log.info("parse dict embeddings file..");
         JSONArray resultArr = new JSONArray();
 
-        try (
-            CSVReader br = new CSVReaderBuilder(
-                new BufferedReader(
-                    new InputStreamReader(
-                        Thread.currentThread().getContextClassLoader().getResourceAsStream("dict/iconclass/txt_cliptextembeddings.csv")
+        for (int i = 0; i < 2; i++) {
+            try (
+                CSVReader br = new CSVReaderBuilder(
+                    new BufferedReader(
+                        new InputStreamReader(
+                            Thread
+                                .currentThread()
+                                .getContextClassLoader()
+                                .getResourceAsStream("dict/iconclass/txt_cliptextembeddings_" + i + ".csv")
+                        )
                     )
                 )
-            )
-                .withCSVParser(new CSVParserBuilder().withSeparator(';').withQuoteChar('"').build())
-                .withSkipLines(0)
-                .build()
-        ) {
-            String[] values;
-            br.readNextSilently();
-            while ((values = br.readNext()) != null) {
-                String id = values[0];
-                String txt = values[1];
+                    .withCSVParser(new CSVParserBuilder().withSeparator(';').withQuoteChar('"').build())
+                    .withSkipLines(0)
+                    .build()
+            ) {
+                String[] values;
+                br.readNextSilently();
+                while ((values = br.readNext()) != null) {
+                    String id = values[0];
+                    String txt = values[1];
 
-                String vectorStr = values[2];
-                vectorStr = vectorStr.replace("[", "");
-                vectorStr = vectorStr.replace("]", "");
-                vectorStr = vectorStr.replaceAll(" ", "");
-                //log.info(vectorStr);
-                List<Float> txtVector = Arrays
-                    .asList(vectorStr.split(","))
-                    .stream()
-                    .map(e -> Float.parseFloat(e))
-                    .collect(Collectors.toList());
-                double similarityImageToDictEntity = Math.abs(cosineSimilarity(txtVector, imgVector));
-                double normedSimilarityImageToDictEntity = (similarityImageToDictEntity + 1.) / 2.;
-                double similarityScore = normedSimilarityImageToDictEntity;
+                    String vectorStr = values[2];
+                    vectorStr = vectorStr.replace("[", "");
+                    vectorStr = vectorStr.replace("]", "");
+                    vectorStr = vectorStr.replaceAll(" ", "");
+                    //log.info(vectorStr);
+                    List<Float> txtVector = Arrays
+                        .asList(vectorStr.split(","))
+                        .stream()
+                        .map(e -> Float.parseFloat(e))
+                        .collect(Collectors.toList());
+                    double similarityImageToDictEntity = Math.abs(cosineSimilarity(txtVector, imgVector));
+                    double normedSimilarityImageToDictEntity = (similarityImageToDictEntity + 1.) / 2.;
+                    double similarityScore = normedSimilarityImageToDictEntity;
 
-                if (imgTextVector != null) {
-                    double similarityImageTextToDictEntity = Math.abs(cosineSimilarity(txtVector, imgTextVector));
-                    double normedSimilarityImageTextToDictEntity = (similarityImageTextToDictEntity + 1.) / 2.;
-                    similarityScore = (normedSimilarityImageToDictEntity + normedSimilarityImageTextToDictEntity) / 2.;
+                    if (imgTextVector != null) {
+                        double similarityImageTextToDictEntity = Math.abs(cosineSimilarity(txtVector, imgTextVector));
+                        double normedSimilarityImageTextToDictEntity = (similarityImageTextToDictEntity + 1.) / 2.;
+                        similarityScore = (normedSimilarityImageToDictEntity + normedSimilarityImageTextToDictEntity) / 2.;
+                    }
+                    JSONObject actResultObj = new JSONObject();
+                    actResultObj.put("label", id + ": " + txt);
+                    actResultObj.put("score", similarityScore);
+                    resultArr.put(actResultObj);
+                    //log.info(actResultObj.toString());
                 }
-                JSONObject actResultObj = new JSONObject();
-                actResultObj.put("label", id + ": " + txt);
-                actResultObj.put("score", similarityScore);
-                resultArr.put(actResultObj);
-                //log.info(actResultObj.toString());
+                br.close();
             }
-            br.close();
         }
 
         return resultArr;
