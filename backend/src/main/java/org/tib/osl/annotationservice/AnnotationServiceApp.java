@@ -73,6 +73,7 @@ public class AnnotationServiceApp {
 
     private static void logApplicationStartup(Environment env) {
         String protocol = Optional.ofNullable(env.getProperty("server.ssl.key-store")).map(key -> "https").orElse("http");
+        String localPort = "9000";
         String serverPort = env.getProperty("server.port");
         String contextPath = Optional
             .ofNullable(env.getProperty("server.servlet.context-path"))
@@ -93,7 +94,7 @@ public class AnnotationServiceApp {
             "Profile(s): \t{}\n----------------------------------------------------------",
             env.getProperty("spring.application.name"),
             protocol,
-            serverPort,
+            localPort,
             contextPath,
             protocol,
             hostAddress,
