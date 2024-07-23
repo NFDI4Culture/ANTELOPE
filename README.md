@@ -29,11 +29,3 @@ This project is open (see [license](./LICENSE)) to the public research community
 ## Roadmap
 
 A high level roadmap can be [viewed here](https://docs.google.com/spreadsheets/d/1aCI6LHKs70q2vynO-L1MyRJqbS7IpzHY1dtj4lMIkqY/edit?gid=1007010121#gid=1007010121). For more granular development, follow the issues and the milestones in this repository and the TA5 sub-group.
-
----
-
-<br>
-<div>
-  &copy;
-  <a href="https://www.tib.eu/en/" target="_blank"><img src="https://www.tib.eu/typo3conf/ext/tib_tmpl_bootstrap/Resources/Public/gfx/logos/tib-full-en.svg" height="20"></a>
-</div>
